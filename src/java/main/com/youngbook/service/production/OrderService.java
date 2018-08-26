@@ -112,75 +112,7 @@ public class OrderService extends BaseService {
     ILogDao logDao;
 
 
-    /**
-     * 通联万小宝
-     * 单笔购买交易，份额支付
-     * @param customerId
-     * @param accountId
-     * @param orderId
-     * @param operatorId
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    public ReturnObject allinpayCircle_PayByShare(String customerId, String accountId, String orderId, String operatorId, Connection conn) throws Exception {
 
-        String url = "";
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
-
-        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
-
-        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
-        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
-
-
-        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
-
-        ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
-
-        TransactionPO transactionPO = new TransactionPO();
-
-        transactionPO.setProcessing_code("2085");
-
-
-        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
-        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
-        transactionPO.getRequest().addItem("purchase_type", "0");
-        transactionPO.getRequest().addItem("pay_mode", "3");
-        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
-        transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", bankNumber);
-        transactionPO.getRequest().addItem("cer_type", "01");
-        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(orderPO.getMoney()));
-        transactionPO.getRequest().addItem("prod_import_flag", "0");
-        transactionPO.getRequest().addItem("supply_inst_code", productionPO.getAllinpayCircle_SupplyInstCode());
-        transactionPO.getRequest().addItem("product_num", productionPO.getAllinpayCircle_ProductNum());
-        transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
-        transactionPO.getRequest().addItem("order_num", orderPO.getId());
-        transactionPO.getRequest().addItem("resp_url", url);
-
-
-        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
-
-        if (returnObject != null) {
-            if (returnObject.getCode() == 100) {
-
-                String jsonString = returnObject.getReturnValue().toString();
-
-                if (!StringUtils.isEmpty(jsonString)) {
-                    KVObjects kvObjects = JSONDao.toKVObjects(jsonString);
-
-                    XmlHelper helper = new XmlHelper(kvObjects.getItemString("responseXml"));
-
-//                    String signNum = helper.getValue("/transaction/response/sign_num");
-
-                }
-            }
-        }
-
-        return returnObject;
-    }
 
     public int saveReferralCode(String orderId, String referralCode, String userId, Connection conn) throws Exception {
 
