@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+    简介：该文件为系统异常的结果定义文件
+    使用：通过 Config.getExceptionVariable(keyStr) 获取
+    作者：邓超
+    时间：2015-9-13
+
+-->
+
+<config>
+    <variables>
+
+        <!--
+            下列项目为通联接口的异常
+            其中 TX0000 、MOQ00000 格式的字符串为通联的异常代码
+        -->
+
+        <variable key="exception.allinpay.TX10001">不支持的字符编码格式</variable>
+        <variable key="exception.allinpay.TX10002">取货地址和通知地址不能同时为空</variable>
+        <variable key="exception.allinpay.TX10003">取货地址不合法</variable>
+        <variable key="exception.allinpay.TX10004">通知地址不合法</variable>
+        <variable key="exception.allinpay.TX10005">版本号不合法</variable>
+        <variable key="exception.allinpay.TX10006">商户号不合法</variable>
+        <variable key="exception.allinpay.TX10007">付款人名称不合法</variable>
+        <variable key="exception.allinpay.TX10008">付款人的 Email 地址不合法</variable>
+        <variable key="exception.allinpay.TX10009">订单号不合法</variable>
+        <variable key="exception.allinpay.TX10010">订单金额不合法</variable>
+        <variable key="exception.allinpay.TX10011">订单时间不能为空</variable>
+        <variable key="exception.allinpay.TX10012">订单时间不合法</variable>
+        <variable key="exception.allinpay.TX10013">产品名称不合法</variable>
+        <variable key="exception.allinpay.TX10014">产品代码不合法</variable>
+        <variable key="exception.allinpay.TX10015">产品描述信息不合法</variable>
+        <variable key="exception.allinpay.TX10016">扩展参数 1 不合法</variable>
+        <variable key="exception.allinpay.TX10017">扩展参数 2 不合法</variable>
+        <variable key="exception.allinpay.TX10018">支付方式不合法</variable>
+        <variable key="exception.allinpay.TX10019">签名类型不合法</variable>
+        <variable key="exception.allinpay.TX10025">未指定支付方式</variable>
+        <variable key="exception.allinpay.TX10026">付款人证件号不合法</variable>
+        <variable key="exception.allinpay.TX10027">付款人支付卡号不合法</variable>
+        <variable key="exception.allinpay.TX10029">币种非人民币时，贸易类型不能为空</variable>
+        <variable key="exception.allinpay.TX10030">查询时间不合法</variable>
+        <variable key="exception.allinpay.TX10031">查询时间不能为空</variable>
+
+        <variable key="exception.allinpay.MOQ00000">未知错误</variable>
+        <variable key="exception.allinpay.MOQ00001">参数版本号不合法</variable>
+        <variable key="exception.allinpay.MOQ00002">参数商户号不合法</variable>
+        <variable key="exception.allinpay.MOQ00003">参数订单开始时间不合法</variable>
+        <variable key="exception.allinpay.MOQ00004">参数订单结束时间不合法</variable>
+        <variable key="exception.allinpay.MOQ00005">参数页码不合法</variable>
+        <variable key="exception.allinpay.MOQ00006">参数签名方式号不合法</variable>
+        <variable key="exception.allinpay.MOQ00007">参数签名信息不合法</variable>
+        <variable key="exception.allinpay.MOQ00008">验证签名失败</variable>
+        <variable key="exception.allinpay.MOQ00009">签名失败</variable>
+        <variable key="exception.allinpay.MOQ00010">商户订单记录查询失败</variable>
+    </variables>
+</config>

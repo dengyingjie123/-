@@ -1,0 +1,243 @@
+body, html {
+    background: #eee;
+}
+
+body {
+    line-height: 1.6em;
+    color: #666;
+    font-size: 12px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease-in;
+}
+
+a:hover {
+    color: #eb6100;
+    text-decoration: none;
+    transition: all 0.3s ease-in;
+}
+
+.fc-primary, a.fc-primary {
+    color: #532589;
+}
+
+a:hover.fc-primary, .fc-primary:hover {
+    color: #eb6100
+}
+
+.fc-gray, a.fc-gray {
+    color: #999;
+}
+
+a:hover.fc-gray, .fc-gray:hover {
+    color: #eb6100
+}
+
+label {
+    font-weight: normal;
+    color: #666;
+}
+
+.form-control {
+    box-shadow: none;
+    border-radius: 0;
+    font-size: 14px;
+    border-color: #dddddd;
+}
+
+.btns {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    color: #666;
+    border: 1px solid #e5e5e5;
+    background: #eee;
+    border-radius: 4px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+}
+
+
+.btns-code {
+    font-size: 15px;
+    font-weight:bold;
+    border:0px;
+    width:120px;
+    height:30px;
+    color:white;
+    border-radius: 4px;
+}
+
+/*.btns:hover {*/
+    /*color: #666;*/
+    /*border-color: #c0c0c0;*/
+    /*background: #ddd;*/
+    /*transition: all 0.3s ease-in;*/
+/*}*/
+
+
+.btns-warning {
+    border-color: #c9a741;
+    color: #fff;
+    background: #c9a741;
+}
+
+.btns-warning:hover {
+    border-color: #d27b15;
+    color: #fff;
+    background: #d27b15;
+}
+
+.btns-primary {
+    border-color: #341359;
+    color: #fff;
+    background: #3d1b63;
+}
+
+.btns-primary:hover {
+    border-color: #341359;
+    color: #fff;
+    background: #3d1b63;
+}
+
+#header {
+    height: 100px;
+    background: url(../img/ui/bg-menu.jpg) repeat;
+}
+
+#header .logo {
+    float: left;
+    display: block;
+    width: 145px;
+}
+
+#header .logo img {
+    display: block;
+}
+
+#header strong {
+    float: left;
+    display: block;
+    font-size: 20px;
+    height: 38px;
+    margin-left: 30px;
+    padding-left: 30px;
+    border-left: 1px solid #9f88b8;
+    line-height: 38px;
+    color: #fff;
+    font-weight: normal;
+}
+
+#header .r {
+    padding-top: 30px;
+}
+
+#footer {
+    padding-bottom: 30px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.m-wrap {
+    margin-top: 30px;
+    min-height: 460px;
+    margin-bottom: 30px;
+    background: #fff url(../img/ui/member/banner.jpg) no-repeat right bottom;
+    padding: 60px 0;
+    border: 1px solid #e5e5e5;
+}
+
+.m-wrap .form-control {
+    border: 1px solid #e1e1e1;
+    background: #fcfcfc;
+    height: 32px;
+    line-height: 32px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif
+}
+
+.m-wrap .m-tip {
+    height: 32px;
+    line-height: 32px;
+    color: #e74c3c;
+}
+
+.form-group .btns {
+    padding: 5px 30px;
+    margin-right: 10px;
+}
+
+.form-link {
+    margin: 30px 517px 0 102px;
+    padding-top: 10px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.form-group label {
+    font-size: 14px
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.fz12 {
+    font-size: 12px !important;
+}
+/* HopeAlert */
+#HopeAlert_wstatus {
+    position: fixed;
+    left: 200px;
+    top: 400px;
+    width: auto;
+    height: 38px;
+    line-height: 38px;
+    background: #fff;
+    border: solid 4px #e5e5e5;
+    padding: 5px;
+    z-index: 9999
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s {
+    width: 38px;
+    height: 38px;
+    float: left;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s1 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left top;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s2 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left bottom;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s3 {
+    background: url('../img/hopeAlert/loading.gif') no-repeat center;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s4 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left -38px;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_f {
+    padding: 0 6px 0 6px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    font-family: "微软雅黑";
+}
+
+#HopeAlert_bremove {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    z-index: 900;
+    position: fixed;
+    left: 0;
+    top: 0;
+}

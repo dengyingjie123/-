@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DmisWorkFlow_Conf>
+    <DataBase>
+        <Addr>192.168.219.128</Addr>
+        <User>yxdmis</User>
+        <Pwd>yxdmis</Pwd>
+        <Sid>orcl</Sid>
+    </DataBase>
+    <UserTable>
+        <TableName>SYSTEM_USER</TableName>
+        <UserName>ID</UserName>
+        <TrueName>Name</TrueName>
+    </UserTable>
+    <Admin>abc</Admin>
+</DmisWorkFlow_Conf>
+

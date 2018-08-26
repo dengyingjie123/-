@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listPagerOrderDetails">
+SELECT
+	u.name operatorName,
+	d.*
+FROM
+	crm_orderdetail d
+left join system_user u on u.state=0 and u.id=d.operatorId
+WHERE
+	d.state = 0
+<if test="#{orderId}!=null">
+AND d.orderId = #{orderId}
+</if>
+        </select>
+        <select id="getOrdersByCustomerId">
+        
+        
+    select * from crm_order o where o.state=0 
+    <if test="#{customerId} != null">
+    and o.customerId=#{customerId}
+    </if>
+    <if test="#{orderStatus} != null">
+    and o.status=#{orderStatus}
+    </if>
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    
+        </select>
+        <select id="moneyTransfer2Gongda">
+
+select * from crm_order o where o.state=0 and o.`Status`=1 and o.MoneyTransferStatus=0 and o.ProductionId in (
+	select id from crm_production where state=0 and productHomeId in (
+		select id from crm_productionhome where State=0 and ProjectId in (
+			select id from crm_project where state=0 and `Name`='网站销售项目'
+		)
+	)
+) 
+<if test="#{orderId} !=null">
+and o.id=#{orderId}
+</if>
+        </select>
+        
+    </select-sql>
+</sql>

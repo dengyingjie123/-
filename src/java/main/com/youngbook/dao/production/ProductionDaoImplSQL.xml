@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listProductionPO">
+SELECT DISTINCT
+    p.*
+FROM
+    crm_production p
+WHERE
+    p.state = 0
+AND 1 = 1
+AND (
+    <if test="#{productionName} !=null">
+    p.`Name` LIKE #{productionName}
+    </if>
+    <if test="#{productionNO} !=null">
+    OR p.productionNO LIKE #{productionNO}
+    </if>
+)        
+        </select>
+        <select id="getProductByProductionIdAndMoney">
+SELECT
+    p.*, pc.expectedYield ExpectedYield, pc.SizeStart,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (0) and o.ProductionId=p.id) appointmentMoney,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.ProductionId=p.id) saleMoney
+FROM
+    crm_production p,
+    crm_productioncomposition pc
+WHERE 1=1
+and p.state=0
+and pc.state=0
+and p.id = pc.ProductionId
+<if test="#{money} > 0">
+and pc.SizeStart&lt;=#{money}
+</if>
+<if test="#{money} > 0">
+and pc.SizeStop&gt;=#{money}
+</if>
+AND p.state = 0
+AND pc.state = 0
+<if test="#{productionId} !=null">
+AND p.id = #{productionId}
+</if>
+order by p.orders
+        </select>
+        <select id="getProductById4Web">
+SELECT
+    p.*, pc.expectedYield minExpectedYield
+FROM
+    crm_production p,
+    crm_productioncomposition pc
+WHERE
+    p.id = pc.ProductionId
+AND pc.expectedYield IN (
+    SELECT
+        min(c.expectedYield)
+    FROM
+        crm_productioncomposition c
+    WHERE
+        c.ProductionId = p.id
+    AND c.state = 0
+)
+AND p.state = 0
+AND pc.state = 0
+<if test="#{productionId} !=null">
+AND p.id = #{productionId}
+</if>
+        </select>
+    </select-sql>
+</sql>

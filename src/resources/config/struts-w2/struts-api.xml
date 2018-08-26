@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+
+    <!-- 修改package的name和namespace -->
+    <package name="api" extends="json-default" namespace="/api">
+
+        <!-- 必须包含 开始 -->
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name ="login">/modules/system/error/login_error_data.jsp</result>
+            <result name ="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name ="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+        <!-- 必须包含 开始 -->
+
+        <action name="*_*" class="com.youngbook.action.core.{1}Action" method="{2}">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+    </package>
+</struts>

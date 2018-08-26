@@ -1,0 +1,51 @@
+Manifest-Version: 1.0
+Class-Path: . lib\commons-dbcp2-2.1.1.jar lib\batik-css-1.7.jar lib\st
+ ruts2-spring-plugin-2.3.14.jar lib\curvesapi-1.03.jar lib\xercesImpl-
+ 2.11.0.jar lib\httpclient-cache-4.5.2.jar lib\ant-1.8.2.jar lib\bctsp
+ -jdk14-1.38.jar lib\poi-excelant-3.14.jar lib\spring-core-4.2.6.RELEA
+ SE.jar lib\esapi-2.1.0.jar lib\commons-io-2.4.jar lib\httpclient-4.5.
+ 2.jar lib\bsh-core-2.0b4.jar lib\bcmail-jdk14-1.38.jar lib\poi-ooxml-
+ 3.14.jar lib\struts2-junit-plugin-2.1.8.jar lib\dom4j-1.6.1.jar lib\s
+ truts2-core-2.3.14.jar lib\commons-lang3-3.1.jar lib\spring-jdbc-4.2.
+ 6.RELEASE.jar lib\ant-launcher-1.8.2.jar lib\batik-util-1.7.jar lib\h
+ ttpcore-4.4.4.jar lib\commons-httpclient-3.1.jar lib\mysql-connector-
+ java-5.1.35.jar lib\xpp3_min-1.1.4c.jar lib\poi-3.14.jar lib\asm-comm
+ ons-3.3.1.jar lib\xalan-2.7.1.jar lib\bcmail-jdk14-138.jar lib\mybati
+ s-spring-1.2.3.jar lib\commons-beanutils-1.9.2.jar lib\xmlpull-1.1.3.
+ 1.jar lib\spring-beans-4.2.6.RELEASE.jar lib\xml-apis-ext-1.3.04.jar 
+ lib\jaxen-1.1.6.jar lib\commons-logging-1.2.jar lib\bcprov-ext-jdk16-
+ 1.46.jar lib\antisamy-1.4.3.jar lib\bcprov-jdk14-1.38.jar lib\spring-
+ test-4.2.6.RELEASE.jar lib\commons-net-3.3.jar lib\javax.servlet-api-
+ 3.1.0.jar lib\batik-ext-1.7.jar lib\nekohtml-1.9.12.jar lib\ezmorph-1
+ .0.6.jar lib\ognl-3.0.6.jar lib\xml-apis-1.4.01.jar lib\junit-4.11.ja
+ r lib\asm-tree-3.3.1.jar lib\allinpay-security-(2014.11.10).jar lib\a
+ spectjrt.jar lib\aspectjweaver.jar lib\axis-ant.jar lib\axis.jar lib\
+ cglib-nodep-2.1_3.jar lib\common-annotations.jar lib\dsn.jar lib\ejb3
+ -persistence.jar lib\ezmorph-1.0.6.jar lib\fluent-hc-4.2.3.jar lib\ht
+ tpmime-4.2.3.jar lib\imap.jar lib\javax.servlet-5.1.11.jar lib\jaxen-
+ 1.1-beta-6.jar lib\jaxen-core.jar lib\jaxen-jdom.jar lib\jaxrpc.jar l
+ ib\jdom.jar lib\jstl.jar lib\jta-1.1.jar lib\mail.jar lib\mailapi.jar
+  lib\ognl-3.0.6.jar lib\patchca-0.5.0.jar lib\pdsinter-1.0.0-release.
+ jar lib\poi-examples-3.10.1-20140818.jar lib\pop3.jar lib\saaj.jar li
+ b\saxpath.jar lib\signtool-0.0.1-release.jar lib\slf4j-api-1.5.8.jar 
+ lib\slf4j-log4j12-1.5.8.jar lib\smtp.jar lib\sqljdbc4.jar lib\standar
+ d.jar lib\stax-api-1.0.1.jar lib\wsdl4j-1.5.1.jar lib\xerces.jar lib\
+ xml-apis.jar lib\xmlpull-1.1.3.1.jar lib\xpp3_min-1.1.4c.jar lib\comm
+ ons-discovery-0.4.jar lib\poi-scratchpad-3.14.jar lib\c3p0-0.9.1.2.ja
+ r lib\commons-lang-2.6.jar lib\commons-fileupload-1.3.1.jar lib\xom-1
+ .2.5.jar lib\commons-pool2-2.4.2.jar lib\spring-web-3.0.5.RELEASE.jar
+  lib\commons-codec-1.2.jar lib\spring-expression-4.2.6.RELEASE.jar li
+ b\bcprov-jdk14-138.jar lib\commons-collections-3.2.1.jar lib\stax-api
+ -1.0.1.jar lib\jdom-1.0.jar lib\javassist-3.18.1-GA.jar lib\asm-3.3.1
+ .jar lib\commons-digester-1.8.jar lib\struts2-json-plugin-2.3.24.jar 
+ lib\itext-2.1.7.jar lib\itext-rtf-2.1.7.jar lib\log4j-1.2.17.jar lib\
+ poi-ooxml-schemas-3.14.jar lib\xwork-core-2.3.14.jar lib\struts2-conv
+ ention-plugin-2.3.14.jar lib\freemarker-2.3.23.jar lib\commons-config
+ uration-1.5.jar lib\hamcrest-core-1.3.jar lib\xmlbeans-2.6.0.jar lib\
+ json-lib-2.4-jdk15.jar lib\spring-context-4.2.6.RELEASE.jar lib\mybat
+ is-3.3.0.jar lib\commons-beanutils-core-1.7.0.jar lib\spring-tx-4.2.6
+ .RELEASE.jar lib\aopalliance-1.0.jar lib\fuiou-encrypt.jar lib\snowfl
+ ake-1.1.jar lib\xstream-1.4.7.jar lib\serializer-2.7.1.jar lib\spring
+ -aop-4.2.6.RELEASE.jar
+Main-Class: com.youngbook.command.CommandExecutor
+

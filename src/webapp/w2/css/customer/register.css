@@ -1,0 +1,203 @@
+#nav {
+	background: #fafafa;
+	height: 70px;
+	margin: 0 auto;
+}
+
+#nav span {
+	float: right;
+	font-size: 18px;
+	padding: 23px 0px 0px 0px;
+}
+
+#nav span a {
+	text-decoration: none;
+	color: black;
+	padding: 0px 20px 0px 20px;
+}
+
+#nav span a:hover {
+	color: #d28d2a;
+}
+
+#mainArea {
+	height: 649px;
+	background: url(../../img/bg_1.png);
+    width: 100%;
+    min-width: 1200px;
+}
+
+#loginContainer {
+	margin: 0 auto;
+	padding: 60px 0px 0px 0px;
+}
+
+#loginArea {
+	height: 450px;
+	background:rgba(252, 246, 246, 0.6);
+	padding: 40px 0px 0px 105px;
+	color: #d18d2c;
+	filter: alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+}
+
+#loginArea span {
+	font-size: 26px;
+	margin-left: -20px;
+}
+
+.loginTip{
+	width: 400px;
+}
+
+#loginArea table {
+	margin: 30px 0px 0px 0px;
+}
+
+.login-reg{
+	font-size: 12px; text-decoration:none;margin-left:120px;
+}
+#loginArea td {
+	font-size: 14px;
+	padding: 0px 0px 5px 0px;
+	color: #666;
+}
+
+#loginArea .mobile {
+	background: url(../../img/input_phone2.png) ;
+	width: 260px;
+	height:33px;
+	background-size:cover
+
+}
+
+#loginArea .code {
+	background: url(../../img/input_key2.png);
+	height:33px;
+	background-size:cover;
+}
+
+#loginArea .p, .p-again {
+	background: url(../../img/input_password2.png);
+	height:33px;
+	background-size:cover;
+}
+
+#loginArea .referralCode {
+	background: url(../../img/referralCode.png);
+	height:33px;
+	background-size:cover;
+}
+
+
+#footer {
+	background: #e8e8e8;
+	border-top: #ff3f3f 1px solid;
+	margin: 70px 0px 0px 0px;
+}
+
+#footer #footer-content {
+	height: 300px;
+	margin: 0 auto;
+}
+
+#footer-content #content1, #content2 {
+	width: 255px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;
+	float: left;
+}
+
+#footer-content #content3 {
+	width: 200px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;
+	float: left;
+}
+
+#footer-content .footer-text {
+	padding: 5px 0px 5px 64px;
+}
+
+#footer-split {
+	width: 3px;
+	float: left;
+}
+
+#footer a {
+	color: black;
+	text-decoration: none;
+}
+
+#footer #content4 {
+	float: left;
+	padding: 40px 0px 0px 40px;
+	text-align: center;
+}
+
+#footer #content5 {
+	float: right;
+	padding: 40px 20px 0px 0px;
+	text-align: center;
+}
+
+#copyright {
+	float: left;
+	margin: 0px 0px 20px 0px;
+	text-align: center;
+}
+
+
+.login_submit{
+	width:260px;height:36px;margin-left:20px; border:0px;
+	font-size: 18px;
+
+}
+.loginArea1{
+	float: left;
+}
+.loginArea2{
+	float: right;
+	padding-right: 40px;
+}
+.loginArea3{
+	float: right;
+	margin-right: 60px;
+}
+.font-bold-weight{
+	margin-left:20px;margin-top:5px;font-weight:
+		bold;font-size: 12px;
+	width:262px;
+	height:16px;
+}
+
+.font-33px{
+	height:33px; vertical-align: middle
+}
+
+
+.notice_bar_success {
+	float: left;
+	padding: 0 0 0 20px;
+	height: 32px;
+	margin: 0 0 0 10px;
+	background: url(../../img/notice_bar_states.png) 0 0 no-repeat;
+	background-position: 0 0px;
+}
+
+.notice_bar_error {
+	float: left;
+	padding: 0 0 0 20px;
+	height: 32px;
+	margin: 0 0 0 10px;
+	background: url(../../img/notice_bar_states.png) 0 0 no-repeat;
+	border: none;
+	background-position: 0 -300px;
+}
+
+
+
+
+
+

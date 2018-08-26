@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listUser">
+        
+SELECT
+	u.*, kvGName.V genderName,
+	kvPID.V AS positionType,
+	kvStatus.v staffStatus
+FROM
+	system_user u
+LEFT JOIN system_kv kvGName ON kvGName.K = u.gender AND kvGName.GroupName = 'Sex'
+LEFT JOIN system_kv kvPID ON kvPID.k = u.PositionTypeId AND kvPID.GroupName = 'System_PositionType'
+LEFT JOIN system_kv kvStatus ON kvStatus.k = u. STATUS AND kvStatus.GroupName = 'System_UserStatus'
+WHERE
+	1 = 1
+AND u.state = 0
+<if test="#{userType} !=null">
+    and u.userType=#{userType}
+</if>
+ORDER BY
+    u.operateTime desc,
+	u.NAME,
+	u.staffCode ASC
+        </select>
+        <select id="listPagerUserPOs">
+SELECT
+	USER .*
+FROM
+	system_user USER,
+	system_positionuser pu
+WHERE
+	USER .state = 0
+AND pu.userid = USER .id
+<if test="#{positionId} !=null">
+AND pu.positionId = #{positionId}
+</if>
+        </select>
+    </select-sql>
+</sql>

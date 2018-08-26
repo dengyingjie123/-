@@ -1,0 +1,41 @@
+BODY{font-size:10pt;font-family:宋体}
+P{FONT-FAMILY: 宋体; FONT-SIZE: 10pt}
+A:link{text-decoration:none;color:#000000;font-family:宋体}
+A:visited{text-decoration:none;color:#000000;font-family:宋体}
+A:active{text-decoration:none;color:#000000;font-family:宋体}
+A:hover{text-decoration:underline;color:000000}
+TD{FONT-SIZE:10pt;font-family:宋体}
+DIV{FONT-FAMILY: 宋体; FONT-SIZE: 10pt}
+BR{FONT-FAMILY: 宋体; FONT-SIZE: 10pt}
+
+.ButtonStyle{
+	background-image: url(../images/Button.gif);
+	FONT-FAMILY:宋体;
+	FONT-SIZE:10pt;
+	HEIGHT: 22px;
+	border: 1px solid #5A9ADF;
+}
+.TextStyle{font-size:10pt;font-family:宋体;border-width: 1;border:1px solid #5A9ADE;HEIGHT: 25px;}
+.TextReadOnlyStyle{font-size:10pt;font-family:宋体;border-width: 1;border:1px solid #5A9ADE;HEIGHT: 25px;background-color:#DFE9EB;}
+.TabledStyle{
+background-color:#5A9ADE;
+}
+.TableBorderStyle{
+	border: 1px solid #5A9ADE;
+    }
+.TableBgStyle {
+	border: #5A9ADE;
+	background-color: #F0F9FD;
+}
+.TableTdStyle {
+	background:#CCCCE0;
+	border: #0A246A;
+}
+.TableINBgStyle {
+	border: #0A246A;
+	background-color: #5A9ADE;
+}
+.DateListTableHeadStyle{
+    background-image:  url(../images/DataListHeadPic.png);
+    HEIGHT: 22px;
+    }

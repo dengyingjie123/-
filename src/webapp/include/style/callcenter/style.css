@@ -1,0 +1,42 @@
+.div_button{
+    width:95%;
+    text-align:right;
+    padding-right:20px;
+    margin-top:10px;
+    margin-left:10px;
+}
+.button{
+    width:100px;
+    height:28px;
+    vertical-align:middle;
+}
+.a{
+    margin:5px;
+}
+.form_th_title{
+    border-bottom:4px solid #C23434;
+    width:20%;
+    padding:2px;
+    text-align:center;
+}
+
+.form_th_content{
+    border-bottom:4px solid #C23434;
+    width:80%;
+    padding:2px;
+    text-align:left;
+}
+
+.form_td_title{
+    border-bottom:1px solid #C23434;
+    /*width:20%;*/
+    padding:2px;
+    text-align:center;
+}
+
+.form_td_content{
+    border-bottom:1px solid #C23434;
+    /*width:80%;*/
+    padding:2px;
+    text-align:left;
+}

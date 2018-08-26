@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+		<select id="getListProductionArticle">
+SELECT
+	a.*
+FROM
+	cms_article a,
+	crm_production p,
+	crm_productionhome ph
+WHERE
+	1 = 1
+AND a.state = 0
+and p.state=0
+and ph.state=0
+and a.isDisplay=3946
+and p.ProductHomeId=ph.Id
+and ph.Id=a.BizId
+<if test="#{productionId} !=null">
+AND p.id = #{productionId}
+</if>      
+		</select>
+    </select-sql>
+    <select-sql>
+        <select id="listCustomer">
+SELECT
+    c.`name` customerName,
+    o.money money,
+    c.mobile mobile,
+    o.ordernum ordernum,
+    o.payTime payTime,
+    o.paybackTime,
+    o. STATUS orderStatus
+FROM
+    crm_order o,
+    crm_customerpersonal c
+WHERE 1=1
+<if test="#{ProductionId} !=null">
+AND o.ProductionId = #{ProductionId}
+</if>
+AND o.state = '0'
+AND c.state = '0'
+and o.status in (1,5,8,11,23,24)
+AND c.Id = o.CustomerId
+UNION
+    SELECT
+        c.`name` customerName,
+        o.money money,
+        c.mobile mobile,
+        o.ordernum ordernum,
+        o.payTime payTime,
+        o.paybackTime,
+        o.STATUS orderStatus
+    FROM
+        crm_order o,
+        crm_customerinstitution c
+    WHERE 1=1
+    <if test="#{ProductionId} !=null">
+    AND o.ProductionId = #{ProductionId}
+    </if>
+    AND o.state = '0'
+    AND c.state = '0'
+    and o.status in (1,5,8,11,23,24)
+    AND c.Id = o.CustomerId
+        </select>
+
+
+
+
+
+
+
+
+
+    </select-sql>
+
+
+
+
+</sql>

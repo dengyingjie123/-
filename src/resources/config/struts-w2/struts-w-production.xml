@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+
+    <!-- 修改package的name和namespace -->
+    <package name="w_production" extends="json-default" namespace="/w2/production">
+
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <!--<interceptor name ="auth" class ="com.youngbook.common.interceptor.AuthorizationInterceptor" />-->
+            <interceptor name ="transaction" class ="com.youngbook.common.interceptor.TransactionInterceptor" />
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name ="login">/modules/system/error/login_error_data.jsp</result>
+            <result name ="error">/w2/error.jsp</result>
+            <result name ="info">/w2/info.jsp</result>
+            <result name ="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name ="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+
+        <!-- 快速构建支付 -->
+        <action name="fastPay" class="com.youngbook.action.production.Order2Action" method="fastPay">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 获取产品列表 -->
+        <action name="Production_list" class="com.youngbook.action.production.ProductionAction" method="list4W">
+            <result name="success">/w2/index.jsp</result>
+            <result name="error">/w2/error.jsp</result>
+        </action>
+
+        <!-- 获取产品详情（支付界面） -->
+        <action name="productionDetail" class="com.youngbook.action.production.ProductionAction" method="showDetail4W">
+            <interceptor-ref name ="authStack"/>
+            <result name="success">/w2/modules/production/productionDetail.jsp</result>
+            <result name="error">/w2/error.jsp</result>
+            <result name="login">/w2/modules/customer/login.jsp</result>
+        </action>
+
+        <!-- 获取投资计划详情（支付界面） -->
+        <action name="goPay" class="com.youngbook.action.production.ProductionAction" method="goPay4W">
+            <interceptor-ref name ="authStack"/>
+            <result name ="success">/w2/modules/production/productionPay.jsp</result>
+            <result name ="info">/w2/info.jsp</result>
+            <result name="error">/w2/error.jsp</result>
+            <result name="customerError" type="redirect">/w2/customer/getCustomerCertificate</result>
+            <result name="customerErrorPassword">/w2/modules/customer/transPassword.jsp</result>
+            <result name="customerBankCardError">/w2/modules/customer/Redirect_CustomerCertificate.jsp</result>
+        </action>
+
+        <!-- 生成订单 -->
+        <action name="buildOrder" class="com.youngbook.action.production.Order2Action" method="buildOrder4W">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 获取多条件查询的产品列表 -->
+        <action name="mutilQuery" class="com.youngbook.action.production.ProductionAction" method="list4WebMuitiQuery">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 根据产品ID获取订单列表 -->
+        <action name="orderQuery" class="com.youngbook.action.production.ProductionAction" method="list4WebOrderQuery">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+
+        <!-- 获取产品详情界面(产品信息、订单信息、兑付信息 -->
+        <action name="productionCashDetail" class="com.youngbook.action.production.ProductionAction" method="showDetailCash">
+            <interceptor-ref name ="authStack"/>
+            <result name="success">/w2/modules/production/productionCashDetail.jsp</result>
+            <result name="error">/w2/info.jsp</result>
+        </action>
+
+        <!-- 订单未完成的支付跳转 -->
+        <action name="goToPay" class="com.youngbook.action.production.ProductionAction" method="goToPay">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/production/productionPay.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 根据产品ID/客户ID获取订单信息 -->
+        <action name="orderQueryCash" class="com.youngbook.action.production.ProductionAction" method="list4WebOrderQueryCash">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 根据产品ID/客户ID获取订单信息 -->
+        <action name="paymentplanOrder" class="com.youngbook.action.production.ProductionAction" method="paymentplanOrder">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="*_*" class="com.youngbook.action.production.{1}Action" method="{2}">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 根据id查询到法律协议 -->
+        <action name="getLegalAgreement" class="com.youngbook.action.production.ProductionAction" method="getLegalAgreement1">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/article/legalAgreement.jsp</result>
+            <result name="error">/w2/info.jsp</result>
+        </action>
+        <!-- 下载合同协议 -->
+        <action name="getDemoFinancePlanContract" class="com.youngbook.action.production.ProductionAction" method="getDemoFinancePlanContractByPDF4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success" type="stream">
+                <param name="contentType">text/plain</param>
+                <param name="contentDisposition">attachment;fileName="contract.docx"</param>
+                <param name="bufferSize">1024</param>
+                <param name="inputName">is</param>
+            </result>
+        </action>
+
+
+
+
+        <!-- 通宝订单点击支付后跳转到显示打款信息界面 -->
+        <action name="showPayPage" class="com.youngbook.action.production.OrderAction" method="showPayPage">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/production/showPayPage.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!--预约或支付-->
+        <action name="appointmentOrPay4Web" class="com.youngbook.action.production.OrderAction" method="appointmentOrPay4Web">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/info.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+
+
+    </package>
+</struts>

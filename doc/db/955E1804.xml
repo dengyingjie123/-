@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="955E1804">
+            SELECT
+            c.*
+            FROM
+            v_customer_saleman c
+            where 1=1
+            and c.PersonalNumber!=''
+            -- and c.distributionStatus=1
+            <if test="#{customerName} !=null">
+                AND c.name like #{customerName,type='%c%'}
+            </if>
+        </select>
+    </select-sql>
+</sql>

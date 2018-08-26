@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="loadByTagName">
+            select * from cms_tag where state=0 
+            <if test="#{tagName} !=null">
+                and NAME=#{tagName}
+            </if>
+        </select>
+    </select-sql>
+</sql>

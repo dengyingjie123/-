@@ -1,0 +1,26 @@
+.table_bg_black {
+	background-color: #000000;
+}
+.table_bg_white {
+	background-color: #FFFFFF;
+}
+a {
+	text-decoration: none;
+}
+.txt_title_blank {
+	font-size: 24px;
+}
+.txt_12 {
+	font-size: 12px;
+}
+.table_bg_white_12 {
+	font-size: 12px;
+	background-color: #FFFFFF;
+}
+.txt_16 {
+	font-size: 16px;
+}
+.td_blue {
+	background-color: #0099CC;
+	color: #FFFFFF;
+}

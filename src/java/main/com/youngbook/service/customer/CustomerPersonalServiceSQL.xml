@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="reportListPagerCustomerNew">
+SELECT
+    u.`name`, u.referralCode,
+    (select count(*) from crm_customerpersonal c, system_log log where 1=1 and log.state=0 and c.state=0
+        and c.referralCode=u.referralCode and log.Content like CONCAT('%',c.Mobile, ' 登陆成功','%')
+        and date_format(c.CreateTime, '%Y-%m-%d')=date_format(SYSDATE(), '%Y-%m-%d')) D,
+    (select count(*) from crm_customerpersonal c, system_log log where 1=1 and log.state=0 and c.state=0
+        and c.referralCode=u.referralCode and log.Content like CONCAT('%',c.Mobile, ' 登陆成功','%')
+        and date_format(c.CreateTime, '%Y-%m')=date_format(SYSDATE(), '%Y-%m')) M,
+    (select count(*) from crm_customerpersonal c, system_log log where 1=1 and log.state=0 and c.state=0
+        and c.referralCode=u.referralCode and log.Content like CONCAT('%',c.Mobile, ' 登陆成功','%')
+        and date_format(c.CreateTime, '%Y')=date_format(SYSDATE(), '%Y')) Y
+FROM
+    system_user u
+WHERE
+    1 = 1
+AND u.state = 0
+ORDER BY M desc, Y desc;
+        
+        </select>
+        <select id="listCustomrs4DistributionToManagedSaleGroup">
+SELECT
+	c.sid,
+	c.id,
+	c.`Name`,
+    c.customerTypeId,
+	c.PersonalNumber,
+	c.LoginName,
+	c.createTime,
+    c.sex,
+	kvSex.v SexName,
+	c.Mobile,
+	c.Birthday,
+	c.WorkAddress,
+	c.HomeAddress,
+	c.IdentityCardAddress,
+	c.Phone,
+	g.`Name` GroupName,
+	u.`name` SaleManName,
+	u.`id` SaleManId,
+	cd. STATUS DistributionStatus,
+	c.operateTime,
+    c.referralCode,
+    c.customerCatalogId,
+    c.customerChannelTypeId,
+    c.remark
+FROM
+	crm_customerpersonal c,
+	crm_customerdistribution cd,
+	system_user u,
+	CRM_SaleMan sm,
+	crm_saleman_salemangroup sg,
+	CRM_SalemanGroup g,
+	system_kv kvSex
+WHERE
+	1 = 1
+AND c.state = 0
+AND cd.state = 0
+AND u.state = 0
+AND sm.state = 0
+AND g.state = 0
+AND c.Sex = kvSex.k
+and kvSex.GroupName='Sex'
+AND cd.CustomerId = c.id
+AND cd.SaleManId = sm.UserId
+AND sg.saleManGroupId = g.Id
+AND cd.saleGroupId = g.Id
+AND sg.saleManId = u.Id
+AND sm.UserId = u.Id
+AND sm.UserId IN (
+	SELECT
+		saleManId
+	FROM
+		crm_saleman_salemangroup
+	WHERE
+		saleManGroupId IN (
+			SELECT
+				sg.saleManGroupId
+			FROM
+				crm_saleman_salemangroup sg
+			WHERE
+				1 = 1
+			AND sg.SaleManStatus = 2
+			
+		)
+)
+AND g.Id IN (
+	SELECT
+		sg.saleManGroupId
+	FROM
+		crm_saleman_salemangroup sg
+	WHERE
+		1 = 1
+	AND sg.SaleManStatus = 2
+	
+)
+UNION ALL
+	SELECT
+		c.sid,
+		c.id,
+		c.`Name`,
+        c.customerTypeId,
+		c.PersonalNumber,
+		c.LoginName,
+		c.createTime,
+        c.sex,
+        kvSex.v SexName,
+		c.Mobile,
+		c.Birthday,
+		c.WorkAddress,
+		c.HomeAddress,
+		c.IdentityCardAddress,
+		c.Phone,
+		'' GroupName,
+		'' SaleManName,
+		'' SaleManId,
+		3 DistributionStatus,
+		c.operateTime,
+		c.referralCode,
+		c.customerCatalogId,
+		c.customerChannelTypeId,
+        c.remark
+	FROM
+		crm_customerpersonal c,
+		system_kv kvSex
+	WHERE
+		1 = 1
+	AND c.state = 0
+	AND c.Sex = kvSex.k
+	and kvSex.GroupName='Sex'
+	AND c.id NOT IN (
+		SELECT
+			CustomerId
+		FROM
+			crm_customerdistribution
+			WHERE
+			state=0
+	)
+        </select>
+    </select-sql>
+</sql>

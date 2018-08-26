@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <security>
+        <global>
+            <!-- 频率限制 -->
+
+            <frequence-limit>
+                <!-- switch开关 on 或 off -->
+                <switch>on</switch>
+                <!-- 统计次数，在此次数内的操作 -->
+                <times>10000</times>
+                <!-- 限制平均频率的秒数 -->
+                <average>5</average>
+            </frequence-limit>
+        </global>
+        <actions>
+            <action action-url="com.youngbook.action.web.IndexAction.showIndex">
+                <!-- 频率，秒为单位 -->
+                <frequence>5</frequence>
+                <!-- 次数 -->
+                <times>3</times>
+                <!-- 给客户的信息 -->
+                <message>您请求过于频繁，请稍后再试</message>
+                <!-- ReturnObject的返回值编号 -->
+                <error-code></error-code>
+                <!-- 出错以后执行的类型 -->
+                <error-type></error-type>
+            </action>
+        </actions>
+    </security>
+</config>

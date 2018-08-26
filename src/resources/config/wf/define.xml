@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DmisWorkflow_Def>
+    <Workflow ID="1">
+        <Name>配网停电检修申请</Name>
+        <Info>配网停电检修申请</Info>
+        <CreateDate>2005-10-24</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="2">
+        <Name>用户停电检修</Name>
+        <Info>用户停电检修</Info>
+        <CreateDate>2005-10-25</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="3">
+        <Name>报销申请2</Name>
+        <Info>报销申请2</Info>
+        <CreateDate>15-3-28</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="4">
+        <Name>用章申请</Name>
+        <Info>用章申请</Info>
+        <CreateDate>15-6-2</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="5">
+        <Name>(保留)</Name>
+        <Info>(保留)</Info>
+        <CreateDate>15-6-9</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="6">
+        <Name>资金支付</Name>
+        <Info>资金支付</Info>
+        <CreateDate>15-6-13</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="7">
+        <Name>费用报销</Name>
+        <Info>费用报销</Info>
+        <CreateDate>15-6-15</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="8">
+        <Name>差旅费报销</Name>
+        <Info>差旅费报销</Info>
+        <CreateDate>15-6-17</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="9">
+        <Name>固定资产申请</Name>
+        <Info>固定资产申请</Info>
+        <CreateDate>15-6-25</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="10">
+        <Name>信息派送审核</Name>
+        <Info>信息派送审核</Info>
+        <CreateDate>15-6-26</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="11">
+        <Name>请假休假审批</Name>
+        <Info>请假休假审批</Info>
+        <CreateDate>15-6-26</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="12">
+        <Name>出差申请</Name>
+        <Info>出差申请</Info>
+        <CreateDate>15-7-15</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="13">
+        <Name>产品审批</Name>
+        <Info>产品审批</Info>
+        <CreateDate>15-8-31</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="14">
+        <Name>兑付审批</Name>
+        <Info>兑付审批</Info>
+        <CreateDate>15-9-1</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="15">
+        <Name>借款审批</Name>
+        <Info>借款审批</Info>
+        <CreateDate>15-9-22</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="16">
+        <Name>印章管理</Name>
+        <Info>印章管理</Info>
+        <CreateDate>15-12-15</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="17">
+        <Name>对外报送2</Name>
+        <Info>对外报送2</Info>
+        <CreateDate>16-1-25</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="23">
+        <Name>费用报销V2</Name>
+        <Info>费用报销V2</Info>
+        <CreateDate>16-4-3</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="24">
+        <Name>差旅费报销</Name>
+        <Info>差旅费报销</Info>
+        <CreateDate>16-4-15</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="25">
+        <Name>资金支付V2</Name>
+        <Info>资金支付V2</Info>
+        <CreateDate>16-4-17</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+    <Workflow ID="26">
+        <Name>资金准备</Name>
+        <Info>资金准备</Info>
+        <CreateDate>16-6-16</CreateDate>
+        <SaveAction>true</SaveAction>
+        <SaveHistory>true</SaveHistory>
+    </Workflow>
+</DmisWorkflow_Def>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="loadByTagName">
+            select * from cms_tag where state=0 
+            <if test="#{tagName} !=null">
+                and NAME=#{tagName}
+            </if>
+        </select>
+        <select id="loadByArticleIdAndTagName">
+SELECT
+	atag.*
+FROM
+	cms_article_tag atag,
+	cms_tag t
+WHERE
+	1 = 1
+AND atag.state = 0
+AND t.state = 0
+AND atag.tagId = t.id
+<if test="#{tagName} !=null">
+    and t.name=#{tagName}
+</if>
+<if test="#{articleId} !=null">
+    and atag.articleId=#{articleId}
+</if>
+        </select>
+    </select-sql>
+</sql>

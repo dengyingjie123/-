@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getPropertiesByProductId">
+        
+SELECT
+    pp.*, typeKV.V TypeName
+FROM
+    crm_ProductProperty pp
+LEFT JOIN system_kv typeKV ON typeKV.GroupName = 'Production_ProductPropertyType'
+AND pp.TypeId = typeKV.K
+WHERE
+    1 = 1
+AND pp.state = 0
+<if test="#{productId} !=null">
+AND pp.productId = #{productId}
+</if>
+
+
+        </select>
+    </select-sql>
+</sql>

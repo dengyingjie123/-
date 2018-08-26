@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="cancelSignedContract">
+SELECT DISTINCT
+	contract.sid,
+	contract.id,
+	contract.state,
+	contract.operatorId,
+	date_format(contract.operateTime, '%Y-%m-%d %H:%i:%S') AS operateTime,
+	contract.OrgId,
+	contract.ProductionId,
+	contract.ApplicationId,
+	contract.`STATUS`,
+	contract.DetailStatus,
+	contract.ContractNo,
+	contract.ContractDetailNo,
+	contract.ContractDisplayNo,
+	contract.CancelId,
+	contract.CancelName,
+	date_format(contract.CancelTime, '%Y-%m-%d %H:%i:%S') AS CancelTime,
+	contract.`COMMENT`,
+	contract.receiveUserId
+FROM
+	sale_contract AS contract
+WHERE
+	1 = 1
+AND contract.state = 0
+<if test="#{contractNO} !=null">
+AND contract.ContractNO = #{contractNO}
+</if>        
+        </select>
+        <select id="getContractByContractNO">
+        
+SELECT	
+	contract.sid,	contract.id, contract.state,	contract.operatorId,  
+	date_format(contract.operateTime,'%Y-%m-%d %H:%i:%S') as operateTime,	
+	contract.OrgId,	contract.ProductionId,	p.`Name` ProductionName,	contract.ApplicationId,	
+	contract.`STATUS`,	contract.DetailStatus,	contract.ContractNo,	contract.ContractDetailNo,	
+	contract.ContractDisplayNo,	contract.CancelId,	contract.CancelName,  
+	date_format(contract.CancelTime,'%Y-%m-%d %H:%i:%S') as CancelTime,	contract.`COMMENT`,	
+	contract.receiveUserId,	u.`name` receiveUserName, contract.signedStatus
+FROM	sale_contract AS contract
+LEFT JOIN crm_production p on p.state=0 and p.id=contract.ProductionId
+LEFT JOIN system_user u on u.state=0 and u.id=contract.receiveUserId
+WHERE	1=1	
+	AND contract.state=0
+    <if test="#{contractNO} !=null">
+	AND contract.contractNO=#{contractNO}
+    </if>
+        
+        </select>
+        <select id="getLastContractRouteListPO">
+        
+SELECT
+   route.Sid,
+   route.Id,
+   route.State,
+   route.OperatorId,
+   date_format(route.OperateTime, '%Y-%m-%d %H:%i:%S') AS operateTime,
+   route.contractNo,
+   date_format(route.ActionTime,  '%Y-%m-%d %H:%i:%S') AS ActionTime,
+   route.ActionDescription,
+   route.ActionType,
+   route.ActionUserId,
+   route.sendExpress,
+   route.sendExpressId
+FROM
+   sale_contractroutelist AS route
+WHERE
+   1 = 1
+AND route.State = 0
+<if test="#{contractNO} !=null">
+AND route.contractNO = #{contractNO}
+</if>
+AND route.Sid = (
+   SELECT
+      MAX(sid)
+   FROM
+      sale_contractroutelist AS route2
+   WHERE
+      1 = 1
+   AND route2.state = 0
+   AND route2.contractNo = route.contractNo
+)
+        
+        </select>
+        <select id="listContractVOs">
+
+SELECT DISTINCT
+    g.`name` OrgName,
+    production.`Name` ProductionName,
+    contract.`STATUS`,
+    kvStatus.v statusName,
+    contract.ContractNo,
+    u.name receiveUserName,
+    contract.receiveUserId,
+    applicationUser.name ApplicationUserName,
+    o.customerId customerId,
+    o.CustomerName customerName,
+    o.money money,
+    DATE_FORMAT(o.PayTime, '%Y-%m-%d') payTime,
+    salesman.`name` salesmanName,
+    contract.signedStatus,
+    kvSignStatus.v signedStatusName
+FROM
+    sale_contract contract
+left JOIN crm_production production on production.state=0 and contract.ProductionId=production.id
+left join crm_salemangroup g on g.state=0 and g.id=contract.OrgId
+LEFT JOIN system_user u on u.state=0 and u.id=contract.receiveUserId
+LEFT JOIN sale_contractapplication ca on ca.id=contract.ApplicationId
+LEFT JOIN system_user applicationUser on applicationUser.state=0 and applicationUser.id=ca.ApplicationUserId
+left join crm_order o on o.state=0 and o.contractNo=contract.ContractNo
+left join system_user salesman on salesman.state=0 and o.referralCode=salesman.referralCode
+left join system_kv kvSignStatus on kvSignStatus.GroupName='Contract_Signed_Status' and kvSignStatus.k=contract.signedStatus
+LEFT JOIN system_kv kvStatus on kvStatus.GroupName='Contract_Status' and kvStatus.k=contract.`STATUS`
+WHERE
+    1 = 1
+AND contract.state = 0
+order by contract.operateTime DESC
+        
+        </select>
+    </select-sql>
+</sql>

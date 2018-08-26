@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+		<select id="listPagerCustomerFeedback">
+SELECT
+	fb.id,
+	fb.customerId,
+	type.V typeName,
+	fb.customerName,
+	fb.content,
+	u.`name` feedbackManName,
+	fb.time
+FROM
+	CRM_CustomerFeedback fb
+LEFT JOIN system_user u on u.state=0 and u.id=fb.FeedbackManId
+LEFT JOIN system_kv type on type.GroupName = 'CRM_CustomerFeedbackType' AND type.K = fb.typeId
+WHERE
+	1 = 1
+AND fb.state = 0
+<if test="#{customerId} !=null">
+AND fb.CustomerId = #{customerId}
+</if>
+<if test="#{feedbackManId} !=null">
+AND fb.feedbackManId = #{feedbackManId}
+</if>
+<if test="#{startTime} !=null">
+AND fb.time &gt;=#{startTime}
+</if>
+<if test="#{stopTime} !=null">
+AND fb.time &lt;=#{stopTime}
+</if>
+ORDER BY
+	fb.time DESC		
+		</select>
+    </select-sql>
+</sql>

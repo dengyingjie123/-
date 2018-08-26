@@ -1,0 +1,220 @@
+#nav {
+	background: #fafafa;
+	height: 70px;
+	margin: 0 auto;
+}
+
+#nav span {
+	float: right;
+	font-size: 18px;
+	padding: 23px 0px 0px 0px;
+}
+
+#nav span a {
+	text-decoration: none;
+	color: black;
+	padding: 0px 20px 0px 20px;
+}
+
+#nav span a:hover {
+	color: #d28d2a;
+}
+
+#position {
+	margin: 0 auto;
+	padding: 20px 0px 20px 0px;
+	font-size: 16px;
+}
+
+#position a {
+	text-decoration: none;
+	color: black;
+}
+
+#container {
+	margin: 0 auto;
+}
+
+#container #menu {
+	width: 230px;
+	float: left;
+}
+
+/* ul 去掉缩进的办法，margin 针对 ie，padding 针对其他 */
+#container #menu ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+#container #menu li {
+	list-style: none;
+	padding: 16px 0px 17px 55px;
+	font-size: 22px;
+	background: url(../../img/menu.png);
+}
+
+#container #menu li a {
+	text-decoration: none;
+	color: black;
+}
+
+#container #detail {
+	padding: 0px 0px 0px 230px;
+}
+
+#container #detail #customerInfo {
+	background: #fafafa;
+	border: #dcdcdc 1px solid;
+	height: 250px;
+}
+
+#container #detail #customerInfo #flag, #accountInfo, #split, #moneyInfo {
+	float: left;
+}
+
+#container #detail #customerInfo #flag {
+	width: 110px;
+	padding: 30px 0px 0px 30px;
+}
+
+#container #detail #accountInfo {
+	width: 340px;
+	padding: 40px 0px 0px 20px;
+}
+
+#container #detail #accountInfo td {
+	padding: 0px 0px 15px 0px;
+}
+
+#container #detail #split {
+	width: 2px;
+}
+
+#container #detail #moneyInfo {
+	width: 206px;
+	padding: 50px 0px 0px 0px;
+}
+
+#container #detail #moneyInfo table {
+	width: 305px;
+	text-align: center;
+
+}
+
+#container #detail #moneyInfo td {
+	line-height: 35px;
+}
+
+#container #detail #moneyInfo a {
+	color: #fe6363;
+	text-decoration: none;
+}
+
+
+
+
+
+
+
+#productions {
+	margin: 20px auto 0px auto;
+}
+
+#productions #tableTitle {
+	font-size: 15px;
+	margin: 0px 0px 15px 0px;
+}
+
+#tableTitle span {
+	font-size: 14px;
+	float: right;
+}
+
+#tableTitle span a {
+	color: black;
+	text-decoration: none;
+}
+
+#productions #tableDetail {
+	text-align: center;
+	border-top: #ff6900 1px solid;
+}
+
+#productions #tableDetail table {
+	width: 100%;
+}
+
+#tableDetail #firstLine {
+	font-size: 16px;
+	background: white;
+	height: 35px;
+}
+
+#tableDetail td {
+	border-bottom: #dcdcdc 1px solid;
+}
+
+#tableDetail .otherLine {
+	height: 60px;
+	background: white;
+}
+
+.otherLine td {
+	font-size: 20px;
+}
+
+.otherLine .font-14 {
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+#copyright {
+	float: left;
+	margin: 0px 0px 20px 0px;
+	text-align: center;
+}
+
+.btns-over{
+	font-size: 20px;
+	background:#f1f1f1;
+	border:0px;
+	width:118px;
+	height:30px;
+	color:#b3b3b3;
+	border-radius: 4px;
+
+}
+.invesment_submit{
+	font-size: 18px;
+	width:120px;height:32px; border:0px;
+}
+.btn-352pk {
+	width: 103px;
+	border: 1px solid #ff6900;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	height: 30px;
+	line-height: 28px;
+	color: #ff6900;
+	text-align: center;
+	font-size: 18px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all .3s;
+	background-color: snow;
+	display: block;
+	border-radius: 4px
+
+}
+a{text-decoration: none;}
+.btn-352pk:hover {
+	background-color: #ff6900;
+	color: #fff;
+	text-decoration: none
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="sqlId">
+SELECT
+	sum(opt.Score) score
+FROM
+	info_examanswer answer
+LEFT JOIN info_examoption opt ON opt.state = 0
+AND opt.Id = answer.OptionId
+WHERE
+	1 = 1
+AND answer.state = 0;
+<if test="#{answerSessionId} !=null">
+and answer.AnswerSessionId=#{answerSessionId}
+</if>
+        </select>
+    </select-sql>
+</sql>
