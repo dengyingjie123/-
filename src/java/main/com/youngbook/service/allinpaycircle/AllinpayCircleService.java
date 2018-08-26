@@ -300,6 +300,59 @@ public class AllinpayCircleService extends BaseService {
         return returnObject;
     }
 
+    /**
+     * 通联万小宝
+     * 更改手机号
+     * @param customerId
+     * @param accountId
+     * @param mobileNew
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public ReturnObject queryWithOneOrder(String customerId, String accountId, String mobileNew, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+        StringUtils.checkIsEmpty(customerPersonalPO.getAllinpayCircle_SignNum(), "金融圈客户编号");
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String mobileOld = customerAccountPO.getMobile();
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+
+        StringUtils.checkIsEmpty(bankNumber, "银行卡号");
+        StringUtils.checkIsEmpty(mobileNew, "新手机号");
+        StringUtils.checkIsEmpty(mobileOld, "旧手机号");
+
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("1090");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("tel_num", mobileNew);
+        transactionPO.getRequest().addItem("org_tel_num", mobileOld);
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+        XmlHelper helper = getResponseXmlHelper(returnObject);
+
+        String signNum = helper.getValue("/transaction/response/sign_num");
+
+
+
+        return returnObject;
+    }
+
 
     /**
      * 通联万小宝
