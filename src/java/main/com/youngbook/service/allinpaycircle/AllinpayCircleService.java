@@ -338,6 +338,80 @@ public class AllinpayCircleService extends BaseService {
         return returnObject;
     }
 
+
+    /**
+     * 实时取现-机构自付
+     * @param customerId
+     * @param accountId
+     * @param productionId
+     * @param money
+     * @param operatorId
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public ReturnObject withdrawalByInstitution(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+
+        String url = "";
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+
+        CustomerCertificatePO customerCertificatePO = customerCertificateDao.loadByCustomerId(customerId, conn);
+
+        String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
+
+        ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("2290");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("pay_mode", "4");
+        transactionPO.getRequest().addItem("charge_flag", "1");
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("cur_type", "156");
+        transactionPO.getRequest().addItem("hld_name", customerPersonalPO.getName());
+        transactionPO.getRequest().addItem("cer_type", "01");
+        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("advance_flag", "1");
+        transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
+        transactionPO.getRequest().addItem("resp_url", url);
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+
+        XmlHelper helper = getResponseXmlHelper(returnObject);
+
+        String signNum = helper.getValue("/transaction/response/sign_num");
+
+        customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+
+        customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
+
+
+        String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+
+
+
+        customerAccountPO.setAllinpayCircleAcctSubNo(acctSubNo);
+
+        customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+        return null;
+    }
+
     /**
      * 份额赎回
      * @param customerId
@@ -614,7 +688,7 @@ public class AllinpayCircleService extends BaseService {
      * @return
      * @throws Exception
      */
-    public ReturnObject allinpayCircle_CheckMobileCode(String bizId, String mobileCode, Connection conn) throws Exception {
+    public ReturnObject checkMobileCode(String bizId, String mobileCode, Connection conn) throws Exception {
 
         TransactionPO transactionPOCheck = transactionDao.loadByRequestTraceNum(bizId, APICommandDirection.Receive, conn);
 
