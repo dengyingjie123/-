@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+
+    <!-- 修改package的name和namespace -->
+    <package name="w_cms" extends="json-default" namespace="/w2/cms">
+
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name ="auth" class ="com.youngbook.common.interceptor.AuthorizationInterceptor" />
+            <interceptor name ="transaction" class ="com.youngbook.common.interceptor.TransactionInterceptor" />
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultStack"/>
+                <!--<interceptor-ref name="auth"></interceptor-ref>-->
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
+
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name ="login">/modules/system/error/login_error_data.jsp</result>
+            <result name ="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name ="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+
+        <action name="*_*" class="com.youngbook.action.cms.{1}Action" method="{2}">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="loadArticle" class="com.youngbook.action.cms.ArticleAction" method="load4W">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="loadColumn" class="com.youngbook.action.cms.ColumnAction" method="load4W">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="loadNews" class="com.youngbook.action.cms.ArticleAction" method="loadNews">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="loadByColumn" class="com.youngbook.action.cms.ArticleAction" method="loadByColumnId">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="getColumnAll" class="com.youngbook.action.cms.ArticleAction" method="getColumnListArticle">
+            <interceptor-ref name="authStack"/>
+            <result  name="success">/w2/modules/guidance.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <action name="loadArticleVO" class="com.youngbook.action.cms.ArticleAction" method="loadArticleVO">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <action name="loadColumns" class="com.youngbook.action.cms.ColumnAction" method="loadColumnList">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+    </package>
+</struts>

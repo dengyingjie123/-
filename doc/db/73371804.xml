@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="73371804">
+SELECT DISTINCT
+    (select u.`name` ConfirmorName from core_paymentplan pp, system_user u where u.state=0 and pp.state=0 
+		and pp.OrderId=o.id and (pp.ConfirmorId is not NULL) and pp.ConfirmorId=u.Id limit 1) ConfirmorName,
+    ca.bank bankName,
+	ca.number bankNumber,
+    ca.bankBranchName,
+	pj.TypeId ProjectTypeId,
+	o.*
+FROM
+	view_order o
+left join crm_customeraccount ca on ca.state=0 and ca.id=o.accountId
+left join system_user u on u.state=0 and o.referralCode = u.referralCode
+left join crm_production p on p.state=0 and p.id=o.productionId
+left join crm_productionhome phome on phome.state=0 and phome.id=p.ProductHomeId
+left join crm_project pj on pj.state=0 and pj.id=phome.ProjectId
+WHERE
+	1 = 1
+<if test="#{customerId} !=null">
+and o.customerId =#{customerId}
+</if>
+<if test="#{salesmanId} !=null">
+and o.salesmanId =#{salesmanId}
+</if>
+<if test="#{orderStatus} !=null and #{orderStatus}=0">
+and o.status in (0)
+</if>
+<if test="#{orderStatus} !=null and #{orderStatus}=1">
+and o.status in (7,1,8,23,24,25)
+</if>
+<if test="#{orderStatus} !=null and #{orderStatus}=2">
+and o.status in (5)
+</if>
+<if test="#{referralCode} !=null">
+and o.referralCode=#{referralCode}
+</if>
+<if test="#{salesmanName} !=null">
+and o.salesmanName like #{salesmanName,type='%c%'}
+</if>
+<if test="#{payTimeStart} !=null">
+and o.PayTime&gt;=#{payTimeStart}
+</if>
+<if test="#{payTimeEnd} !=null">
+and o.PayTime&lt;=#{payTimeEnd}
+</if>
+ORDER BY o.PayTime DESC
+        </select>
+    </select-sql>
+</sql>

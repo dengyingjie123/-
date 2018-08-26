@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!--api-->
+    <include file="config/struts-w2/struts-fdcg.xml"/>
+    <include file="config/struts-w2/struts-ph.xml"/>
+    <include file="config/struts-w2/struts-api.xml"/>
+    <include file="config/struts-w2/struts-api-production.xml"/>
+    <include file="config/struts-w2/struts-api-customer.xml"/>
+    <include file="config/struts-w2/struts-api-cms.xml"/>
+    <include file="config/struts-w2/struts-api-system.xml"/>
+    <include file="config/struts-w2/struts-api-pay.xml"/>
+    <include file="config/struts-w2/struts-api-sale.xml"/>
+    <include file="config/struts-w2/struts-system.xml"/>
+    <include file="config/struts-w2/struts-system-chart.xml"/>
+    <include file="config/struts-w2/struts-system-file.xml"/>
+    <include file="config/struts-w2/struts-oa.xml"/>
+    <include file="config/struts-w2/struts-pay.xml"/>
+    <include file="config/struts-w2/struts-customer.xml"/>
+    <include file="config/struts-w2/struts-wsi.xml"/>
+    <include file="config/struts-w2/struts-production.xml"/>
+    <include file="config/struts-w2/struts-sale.xml"/>
+    <include file="config/struts-w2/struts-sale-report.xml"/>
+    <include file="config/struts-w2/struts-sale-contract.xml"/>
+    <include file="config/struts-w2/struts-cms.xml"/>
+    <include file="config/struts-w2/struts-report.xml"/>
+    <include file="config/struts-w2/struts-report-sale.xml"/>
+    <include file="config/struts-w2/struts-mobile.xml"/>
+    <include file="config/struts-w2/struts-callcenter.xml"/>
+    <include file="config/struts-w2/struts-wf.xml"/>
+    <include file="config/struts-w2/struts-info.xml"/>
+    <include file="config/struts-w2/struts-oa-administration.xml"/>
+    <include file="config/struts-w2/struts-oa-task.xml"/>
+    <include file="config/struts-w2/struts-oa-expense.xml"/>
+    <include file="config/struts-w2/struts-oa-Information.xml"/>
+    <include file="config/struts-w2/struts-oa-assetInfo.xml"/>
+    <include file="config/struts-w2/struts-web.xml"/>
+    <include file="config/struts-w2/struts-iceland.xml"/>
+    <include file="config/struts-w2/struts-example.xml"/>
+    <include file="config/struts-w2/struts-oa-email.xml"/>
+    <include file="config/struts-w2/struts-oa-business.xml"/>
+    <include file="config/struts-w2/struts-oa-assetFixation.xml"/>
+    <include file="config/struts-w2/struts-oa-hr.xml"/>
+    <include file="config/struts-w2/struts-oa-borrowMoney.xml"/>
+    <include file="config/struts-w2/struts-system-sms.xml"/>
+
+    <!-- 网站 -->
+    <include file="config/struts-w2/struts-w-index.xml"/>
+    <include file="config/struts-w2/struts-w-production.xml"/>
+    <include file="config/struts-w2/struts-w-order.xml"/>
+    <include file="config/struts-w2/struts-w-sale.xml"/>
+    <include file="config/struts-w2/struts-w-customer.xml"/>
+    <include file="config/struts-w2/struts-w-system.xml"/>
+    <include file="config/struts-w2/struts-w-cms.xml"/>
+    <include file="config/struts-w2/struts-w-pay.xml"/>
+
+    <!--移动端-->
+    <include file="config/struts-w2/struts-mobile.xml"/>
+    <include file="config/struts-w2/struts-app.xml"/>
+
+
+    <include file="config/struts-modern/sale-management/struts-system.xml"/>
+    <include file="config/struts-modern/sale-management/struts-production.xml"/>
+
+    <include file="config/struts-modern/sale-management/struts-customer.xml"/>
+    <include file="config/struts-modern/sale-management/struts-share.xml"/>
+    <include file="config/struts-modern/sale-management/struts-cms.xml"/>
+    <include file="config/struts-modern/sale-management/struts-sale.xml"/>
+    <include file="config/struts-modern/sale-management/struts-report.xml"/>
+
+
+    <include file="config/struts-modern/customer-management/struts-production.xml"/>
+    <include file="config/struts-modern/customer-management/struts-customer.xml"/>
+    <include file="config/struts-modern/customer-management/struts-info.xml"/>
+
+    <include file="config/struts-modern/common/struts-system.xml"/>
+
+    <!-- 发布项目记得把开发者模式关掉 -->
+    <constant name="struts.devMode" value="false"/>
+
+    <!--struts文件上传限制大小：64MB-->
+    <constant name="struts.multipart.maxSize" value="67108864"/>
+
+    <package name="Server" extends="json-default" namespace="/">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name="auth" class="com.youngbook.common.interceptor.AuthorizationInterceptor"/>
+            <interceptor name="transaction" class="com.youngbook.common.interceptor.TransactionInterceptor"/>
+            <interceptor name="defaultInterceptor" class="com.youngbook.common.interceptor.DefaultInterceptor"/>
+            <interceptor name="securityInterceptor" class="com.youngbook.common.interceptor.SecurityInterceptor"/>
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor-stack name="TD_Stack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name="login">/modules/system/error/login_error_data.jsp</result>
+            <result name="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+
+        <action name="login_execute" class="com.youngbook.action.system.LoginAction" method="execute">
+            <interceptor-ref name="TD_Stack"/>
+            <result name="error">/login.jsp</result>
+            <result name="success">/index.jsp</result>
+            <result name="info">/index.jsp</result>
+        </action>
+
+        <action name="config_getSystemIcon" class="com.youngbook.action.system.ConfigAction"
+                method="configGetSystemIcon">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+
+        <action name="*_*" class="com.youngbook.action.{1}Action" method="{2}">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+    </package>
+
+</struts>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getListCustomerOrderReview">
+		
+SELECT
+	o.customerId CustomerId,
+	o.CustomerName `Name`,
+	o.id orderId,
+	o.OrderNum,
+	c.mobile,
+	cc.Number idCard,
+	p.`Name` ProductionName,
+	o.PayTime,
+	o.Money
+FROM
+	crm_order o
+LEFT JOIN crm_customerpersonal c on c.state=0 and c.id=o.CustomerId
+left JOIN crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
+left join crm_production p on p.state=0 and p.id=o.ProductionId
+WHERE
+	o.state = 0
+AND o.`Status` IN (1)
+
+        </select>
+    </select-sql>
+</sql>

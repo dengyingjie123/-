@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
+<!--xmlns:log4j="http://jakarta.apache.org/log4j/"-->
+<log4j:configuration>
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <!--指定消息输出路径中的文件。-->
+        <param name="File" value="D:/work/03_deploy/weblogic/log/system.log"/>
+        <!--指定日志信息的最低输出级别，默认为DEBUG。-->
+        <param name="Threshold" value="DEBUG"/>
+        <!--表示所有消息都会被立即输出，默认值是true。-->
+        <param name="ImmediateFlush" value="true"/>
+        <param name="MaxBackupIndex" value="365"/>
+        <!--指定滚动日志的周期，yyyy-MM-dd格式为一天-->
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH'.log'"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- specify the logging level for loggers from other libraries -->
+    <logger name="com.youngbook">
+        <level value="DEBUG" />
+    </logger>
+
+    <logger name="org.apache.struts2">
+        <level value="DEBUG" />
+    </logger>
+
+    <!-- for all other loggers log only debug and above log messages -->
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</log4j:configuration>

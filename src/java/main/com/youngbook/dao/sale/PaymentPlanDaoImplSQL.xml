@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listPaymentPlanVOByDate">
+SELECT
+	DISTINCT
+	c.name customerName,
+	c.saleManName,
+	u.mobile,
+	p.name productionName,
+	plan.TotalPaymentPrincipalMoney,
+	plan.TotalProfitMoney,
+	plan.PaymentTime,
+	plan.id,
+	plan.*
+FROM
+	core_paymentplan plan
+LEFT JOIN v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+left join crm_production p on p.state=0 and p.id=plan.ProductId
+LEFT JOIN crm_order o on o.state=0 and o.id=plan.OrderId
+left join system_user u on u.state=0 and u.referralCode=o.referralCode
+WHERE
+	plan.state = 0
+<if test="#{beginTime} != null">    
+and plan.PaymentTime &gt;=#{beginTime}
+</if>
+<if test="#{endTime}} != null">    
+and plan.PaymentTime &lt;=#{endTime}
+</if>
+        </select>
+        <select id="loadPaymentPlanVO">
+SELECT
+    distinct
+	c.name customerName,
+	p.name productionName,
+	plan.*
+FROM
+	core_paymentplan plan
+LEFT JOIN v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+LEFT JOIN crm_production p on p.state=0 and p.id=plan.ProductId
+WHERE
+	1 = 1
+AND plan.state = 0
+<if test="#{paymentPlanId} != null">
+and plan.id=#{paymentPlanId}
+</if>
+        </select>
+        <select id="listPagePaymentInfo">
+SELECT DISTINCT cp.sid sid ,cp.id id ,cp.type TYPE,cc.loginName,cc.Name customerName,cp.orderId orderId, 
+	cp2.Name productionName,cp.paymentMoney paymentMoney,cp.paymentTime paymentTime,cp.paiedPaymentTime paiedPaymentTime,cp.totalInstallment totalInstallment, 
+	cp.currentInstallment currentInstallment,kv.v statusName ,cp.status search_status ,cp.status STATUS ,cp.totalPaymentMoney totalPaymentMoney, 
+	cp.totalPaymentPrincipalMoney totalPaymentPrincipalMoney , cp.totalProfitMoney totalProfitMoney, cp.paiedPrincipalMoney paiedPrincipalMoney, 
+	cp.paiedProfitMoney paiedProfitMoney,cp.comment, o.orderNum orderName  FROM core_paymentplan cp
+LEFT JOIN v_customer_saleman cc ON cc.State=0 and  cc.id = cp.CustomerId 
+LEFT JOIN crm_production cp2 ON cp2.state=0  and cp2.id=cp.ProductId 
+LEFT JOIN system_kv kv ON  kv.GroupName ='Sale_PaymentPlan_Status' and kv.K=cp.Status 
+LEFT JOIN crm_order o ON o.state = 0 and o.id = cp.orderId 
+WHERE  1=1 
+	and  cp.State=0 
+	and cp.PaymentTime is not null
+    <if test="#{productionId} != null">
+    and cp.id=#{productionId}
+    </if>
+        </select>
+        <select id="listPaymentPlanPO">
+SELECT
+    *
+FROM
+	core_paymentplan pp
+WHERE
+	1 = 1
+AND pp.state = 0
+<if test="#{paymentPlanDate}!=null">
+and DATE_FORMAT(pp.PaymentTime,'%Y-%m')=#{paymentPlanDate}
+</if>
+and pp.`Status` in (0,7,8)
+        </select>
+        <select id="loadPaymentPlanCheckPO">
+SELECT
+	*
+FROM
+	core_paymentplan_check ppc
+WHERE
+	1 = 1
+AND ppc.state = 0
+<if test="#{paymentPlanDate}!=null">
+and DATE_FORMAT(ppc.PaymentPlanDate,'%Y-%m')=#{paymentPlanDate}
+</if>
+        </select>
+        
+        <select id="listPaymentPlanVOByOrderId">
+SELECT
+    u.name confirmorName,
+    pp.*
+FROM
+    core_paymentplan pp
+left join system_user u on u.state=0 and u.Id=pp.confirmorId
+WHERE
+    1 = 1
+AND pp.state = 0
+<if test="#{orderId} !=null">
+and pp.orderId=#{orderId}
+</if>
+ORDER BY
+    pp.PaymentTime
+        </select>
+        <select id="getPaymentPlansVOByDateAndStatus">
+
+SELECT
+	date_format(plan.paymentTime,'%Y-%m-%d') AS paymentTime,
+	count(plan.orderId) AS totalRecord,
+	round(sum(plan.totalpaymentPrincipalMoney),2) AS totalpaymentPrincipalMoney,
+	round(sum(plan.totalProfitMoney),2) AS totalProfitMoney,
+	round(sum(plan.paiedPrincipalMoney),2) AS paiedPrincipalMoney,
+	round(sum(paiedProfitMoney), 2) AS paiedProfitMoney
+FROM
+	core_paymentplan plan,
+	crm_order o,
+	crm_production p
+WHERE
+	1 = 1
+AND o.state = 0
+AND plan.state = 0
+AND p.state = 0
+AND o.`Status` = 1
+AND o.ProductionId = plan.ProductId
+AND plan.OrderId = o.id
+AND plan.productId = p.id
+<if test="#{begin} !=null">
+AND plan.paymentTime <![CDATA[>=]]> #{begin}
+</if>
+<if test="#{end} !=null">
+AND plan.paymentTime <![CDATA[<=]]> #{end}
+</if>
+GROUP BY
+	plan.paymentTime,
+ORDER BY
+	plan.paymentTime
+    
+        </select>
+
+		<select id="listPagerPaymentPlanVO">
+SELECT DISTINCT
+    cp.sid,
+	cp.id id,
+	cp.type TYPE,
+	cp2.id AS productId,
+	cc.id AS CustomerId,
+	cc.loginName,
+	cc.NAME customerName,
+	cp.orderId orderId,
+	cp2.NAME productionName,
+	cp.paymentMoney paymentMoney,
+	cp.paymentTime paymentTime,
+	cp.paiedPaymentTime paiedPaymentTime,
+	cp.totalInstallment totalInstallment,
+	cp.currentInstallment currentInstallment,
+	cp. STATUS search_status,
+	cp. STATUS STATUS,
+	cp.totalPaymentMoney totalPaymentMoney,
+	cp.totalPaymentPrincipalMoney totalPaymentPrincipalMoney,
+	cp.totalProfitMoney totalProfitMoney,
+	u2. NAME confirmorName,
+	u3. NAME auditExecutorId,
+	cp.paiedPrincipalMoney paiedPrincipalMoney,
+	cp.paiedProfitMoney paiedProfitMoney,
+	cp. COMMENT,
+	o.orderNum orderName,
+    ca.bank bankName,
+    ca.number bankNumber,
+    ca.bankBranchName bankBranchName,
+    o.money
+FROM
+	core_paymentplan cp
+LEFT JOIN v_customer_saleman cc ON cc.State = 0 AND cc.id = cp.CustomerId
+LEFT JOIN crm_production cp2 ON cp2.state = 0 AND cp2.id = cp.ProductId
+LEFT JOIN crm_order o ON o.state = 0 AND o.id = cp.orderId
+LEFT JOIN system_user u2 ON u2.id = cp.confirmorId AND u2.state = 0
+LEFT JOIN system_user u3 ON u3.id = cp.auditExecutorId AND u3.state = 0
+left join crm_customeraccount ca on ca.state=0 and ca.id=o.accountId
+WHERE 1 = 1
+AND cp.State = 0
+<if test="#{paymentTimeStart} !=null">
+	and cp.PaymentTime &gt;= #{paymentTimeStart}
+</if>
+<if test="#{paymentTimeEnd} !=null">
+	and cp.PaymentTime &lt;= #{paymentTimeEnd}
+</if>
+order by cp2.NAME, cp.PaymentTime, cc.NAME
+        </select>
+		
+		<select id="listCapitalPre">
+			SELECT
+			date_format(
+			plan.paymentTime,
+			'%Y-%m-%d'
+			) AS paymentTime,
+			count(plan.orderId) AS totalRecord,
+			round(
+			sum(
+			plan.totalpaymentPrincipalMoney
+			),
+			2
+			) AS totalpaymentPrincipalMoney,
+			round(
+			sum(plan.totalProfitMoney),
+			2
+			) AS totalProfitMoney,
+			round(
+			sum(plan.paiedPrincipalMoney),
+			2
+			) AS paiedPrincipalMoney,
+			round(sum(paiedProfitMoney), 2) AS paiedProfitMoney
+			FROM
+			core_paymentplan plan,
+			crm_order o,
+			crm_production proc
+			WHERE
+			1 = 1
+			AND o.state = 0
+			AND plan.state = 0
+			AND proc.state = 0
+			AND o.`Status` = 1
+			<if test="#{paymentPlanStatus} != 2147483647">
+				AND plan.`Status` = #{paymentPlanStatus}
+			</if>
+			<if test="#{productionName} != null">
+				AND proc.`Name` LIKE #{productionName,type='%c%'}
+			</if>
+			<if test="#{startTime} != null">
+				AND plan.PaymentTime &gt;= #{startTime}
+			</if>
+			<if test="#{endTime} != null">
+				AND plan.PaymentTime &lt;= #{endTime}
+			</if>
+			AND o.ProductionId = plan.ProductId
+			AND plan.OrderId = o.id
+			AND plan.productId = proc.id
+			GROUP BY
+			plan.paymentTime
+			ORDER BY
+			plan.paymentTime
+		</select>
+	</select-sql>
+
+
+	<select-sql>
+		<select id="capitalPreDetail">
+SELECT
+	plan.id,
+	date_format(plan.paymentTime,'%Y-%m-%d') AS paymentTime,
+	o.CustomerName,
+	p.name productName,
+	plan.totalpaymentPrincipalMoney AS totalpaymentPrincipalMoney,
+	plan.totalProfitMoney AS totalProfitMoney
+FROM
+	core_paymentplan plan,
+	crm_order o,
+    crm_production p
+WHERE
+	1 = 1
+AND o.state = 0
+AND plan.state = 0
+and p.state=0
+and p.id=o.productionId
+AND o.`Status` = 1
+<if test="#{startTime} != null">
+AND plan.PaymentTime &gt;= #{startTime}
+</if>
+<if test="#{endTime} != null">
+AND plan.PaymentTime &lt;= #{endTime}
+</if>
+AND plan.OrderId = o.id
+ORDER BY
+	plan.paymentTime
+		</select>
+	</select-sql>
+</sql>

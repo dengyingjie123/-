@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listPagerOrderDetails">
+SELECT
+	u.name operatorName,
+	d.*
+FROM
+	crm_orderdetail d
+left join system_user u on u.state=0 and u.id=d.operatorId
+WHERE
+	d.state = 0
+<if test="#{orderId}!=null">
+AND d.orderId = #{orderId}
+</if>
+        </select>
+        <select id="getOrdersByCustomerId">
+        
+        
+    select * from crm_order o where o.state=0 
+    <if test="#{customerId} != null">
+    and o.customerId=#{customerId}
+    </if>
+    <if test="#{orderStatus} != null">
+    and o.status=#{orderStatus}
+    </if>
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    
+        </select>
+        <select id="showListSaleGroup">
+SELECT DISTINCT
+	u.NAME salemanName,
+    p.name productionName,
+    c.LoginName,
+    pc.`Name` productionCompositionName,
+    (select u.`name` ConfirmorName from core_paymentplan pp, system_user u where u.state=0 and pp.state=0 
+		and pp.OrderId=o.id and (pp.ConfirmorId is not NULL) and pp.ConfirmorId=u.Id limit 1) ConfirmorName,
+    ca.bank bankName,
+	ca.number bankNumber,
+    ca.bankBranchName,
+	o.*
+FROM
+	crm_order o
+left join crm_customeraccount ca on ca.state=0 and ca.id=o.accountId    
+left join v_customer_saleman c on c.state = 0 AND c.id = o.CustomerId
+left join system_user u on u.state=0 and o.referralCode = u.referralCode
+left join crm_productioncomposition pc on pc.state=0 and o.ProductionCompositionId=pc.id
+left join crm_production p on p.state=0 and p.id=o.productionId
+WHERE
+	1 = 1
+AND o.state = 0
+and o.`Status` in (1,7,10,11,5,20,8,0,21,22,23,24)
+AND 
+(
+	c.saleGroupId IN (
+		SELECT
+			salegroup.saleManGroupId
+		FROM
+			crm_saleman_salemangroup salegroup
+		WHERE
+			1 = 1
+		AND salegroup.saleManStatus = 2
+        <if test="#{saleManId} != null">
+        AND salegroup.saleManId = #{saleManId}
+        </if>
+	)
+	or c.saleGroupId is null or c.saleGroupId=''
+    <if test="#{referralCode} != null">
+    or o.referralCode=#{referralCode}
+    </if>
+)
+<if test="#{payTimeStart} !=null">
+and o.PayTime&gt;=#{payTimeStart}
+</if>
+<if test="#{payTimeEnd} !=null">
+and o.PayTime&lt;=#{payTimeEnd}
+</if>
+ORDER BY o.PayTime DESC, o.operateTime desc
+        </select>
+        <select id="moneyTransfer2Gongda">
+
+select * from crm_order o where o.state=0 and o.`Status`=1 and o.MoneyTransferStatus=0 and o.ProductionId in (
+	select id from crm_production where state=0 and productHomeId in (
+		select id from crm_productionhome where State=0 and ProjectId in (
+			select id from crm_project where state=0 and `Name`='网站销售项目'
+		)
+	)
+) 
+<if test="#{orderId} !=null">
+and o.id=#{orderId}
+</if>
+        </select>
+        
+    </select-sql>
+</sql>

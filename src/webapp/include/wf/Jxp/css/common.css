@@ -1,0 +1,26 @@
+a:link {
+	font-size: 12px;
+	text-decoration: none;
+}
+a:visited {
+	font-size: 12px;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 12px;
+	text-decoration: underline;
+}
+.tablebg {
+	background-color: #000000;
+}
+.tdbg {
+	background-color: #FFFFFF;
+	font-size: 12px;
+}
+.txt_blue {
+	color: #0000FF;
+}
+.txt_white {
+	font-size: 12px;
+	color: #FFFFFF;
+}

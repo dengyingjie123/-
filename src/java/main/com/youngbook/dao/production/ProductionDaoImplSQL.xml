@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listProductionPO">
+SELECT DISTINCT
+    p.*
+FROM
+    crm_production p
+WHERE
+    p.state = 0
+AND 1 = 1
+AND (
+    <if test="#{productionName} !=null">
+    p.`Name` LIKE #{productionName}
+    </if>
+    <if test="#{productionNO} !=null">
+    OR p.productionNO LIKE #{productionNO}
+    </if>
+)        
+        </select>
+        <select id="listAllProductionVO">
+
+SELECT
+    (select max(pc.ExpectedYield) from crm_productioncomposition pc where pc.state=0 and pc.ProductionId=p.id) maxExpectedYield,
+    (select MIN(pc.SizeStart) from crm_productioncomposition pc where pc.state=0 and pc.ProductionId=p.id) minSizeStart,
+    (select MAX(vpc.commissionRate) from v_sale_productioncommission vpc where vpc.state=0 and vpc.ProductionId=p.id) maxCommissionRate,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.ProductionId=p.id and o.`Status` in (1,8,10,23,24)) saleMoney,
+	kvProductionStatus.V statusName,
+    p.*,
+    project.TypeId ProjectType,
+    kvProject.V ProjectTypeName
+FROM
+    crm_production p
+LEFT JOIN crm_productionhome ph on ph.state=0 and ph.id=p.ProductHomeId
+LEFT JOIN crm_project project on project.state=0 and ph.ProjectId=project.id
+left join system_kv kvProject on kvProject.GroupName='Project_Type' and kvProject.K=project.TypeId
+LEFT JOIN system_kv kvProductionStatus ON kvProductionStatus.GroupName = 'ProductionStatus' AND kvProductionStatus.k = p. STATUS
+WHERE
+    1 = 1
+AND p.state = 0
+order by p.orders, p.name
+        
+        </select>
+        <select id="getProductByProductionIdAndMoney">
+SELECT
+    p.*, pc.expectedYield ExpectedYield, pc.SizeStart,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (0) and o.ProductionId=p.id) appointmentMoney,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.ProductionId=p.id) saleMoney
+FROM
+    crm_production p,
+    crm_productioncomposition pc
+WHERE 1=1
+and p.state=0
+and pc.state=0
+and p.id = pc.ProductionId
+<if test="#{money} > 0">
+and pc.SizeStart&lt;=#{money}
+</if>
+<if test="#{money} > 0">
+and pc.SizeStop&gt;=#{money}
+</if>
+AND p.state = 0
+AND pc.state = 0
+<if test="#{productionId} !=null">
+AND p.id = #{productionId}
+</if>
+order by p.orders
+        </select>
+        <select id="getProductById4Web">
+SELECT
+    p.*, pc.expectedYield minExpectedYield
+FROM
+    crm_production p,
+    crm_productioncomposition pc
+WHERE
+    p.id = pc.ProductionId
+AND pc.expectedYield IN (
+    SELECT
+        min(c.expectedYield)
+    FROM
+        crm_productioncomposition c
+    WHERE
+        c.ProductionId = p.id
+    AND c.state = 0
+)
+AND p.state = 0
+AND pc.state = 0
+<if test="#{productionId} !=null">
+AND p.id = #{productionId}
+</if>
+        </select>
+    </select-sql>
+</sql>

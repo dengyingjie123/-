@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="loadCustomerAgreementPO">
+select * from info_customeragreement where state=0
+<if test="#{customerId} !=null">
+and CustomerId=#{customerId}
+</if>
+<if test="#{agreementId} !=null">
+and AgreementId=#{agreementId}
+</if>
+        </select>
+    </select-sql>
+</sql>

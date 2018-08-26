@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+
+    <web-root>/core</web-root>
+
+
+    <email-server>
+        <account name="default">
+            <pop-host>pop.qq.com</pop-host>
+            <pop-port>110</pop-port>
+            <smtp-host>smtp.qq.com</smtp-host>
+            <smtp-port>25</smtp-port>
+            <user-name>eliyang@yeah.net</user-name>
+            <user-password>8049391</user-password>
+            <email-address>eliyang@yeah.net</email-address>
+            <reply-address>eliyang@yeah.net</reply-address>
+        </account>
+    </email-server>
+
+    <timerunner>
+        <looper-config>
+            <stoptime>2016-1-23 21:01:30</stoptime>
+        </looper-config>
+        <tasks>
+            <task name="SmsSenderTask">
+                <starttime>2010-02-08 00:00:00</starttime>
+                <stoptime>2016-02-09 00:00:00</stoptime>
+                <!-- 重复执行间隔时间 -->
+                <repeattime>10</repeattime>
+            </task>
+        </tasks>
+    </timerunner>
+</config>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql>
+    <select-sql>
+        <select id="listContractRouteListVOs">
+        
+SELECT
+	contractList.Sid,	contractList.Id, contractList.State, contractList.OperatorId,
+	date_format(contractList.OperateTime,'%Y-%m-%d %H:%i:%S') AS OperateTime,
+	contractList.contractNo,date_format(contractList.ActionTime,'%Y-%m-%d %H:%i:%S') AS ActionTime,
+	contractList.ActionDescription,	contractList.ActionType,contractList.ActionUserId,
+	contractList.sendExpress,	contractList.sendExpressId,	actionUser.`name` AS actionUserName,
+	p.`Name` ProductionName
+FROM
+	sale_contractroutelist contractList,
+	system_user AS actionUser,
+	crm_production p
+WHERE
+	1 = 1
+AND contractList.State = 0
+AND actionUser.state = 0
+AND p.state = 0
+<if test="#{contractNO} !=null">
+AND contractList.contractNo = #{contractNO}
+</if>
+AND actionUser.id = contractList.ActionUserId
+AND p.id = (
+	SELECT DISTINCT
+		c.ProductionId
+	FROM
+		sale_contract c
+	WHERE
+		state = 0
+    <if test="#{contractNO} !=null">
+	AND c.ContractNo = #{contractNO}
+    </if>
+)
+ORDER BY
+	operateTime DESC
+        
+        </select>
+        <select id="getContractPOs">
+
+SELECT	
+	contract.sid,	contract.id,	contract.state,	contract.operatorId,  
+	date_format(contract.operateTime,'%Y-%m-%d %H:%i:%S') as operateTime,	
+	contract.OrgId,	contract.ProductionId,	p.`Name` ProductionName,	
+	contract.ApplicationId,	contract.`STATUS`,	contract.DetailStatus,	
+	contract.ContractNo,	contract.ContractDetailNo,	contract.ContractDisplayNo,	
+	contract.CancelId,	contract.CancelName,  
+	date_format(contract.CancelTime,'%Y-%m-%d %H:%i:%S') as CancelTime,	contract.`COMMENT`,	
+	contract.receiveUserId,	u.`name` receiveUserName	
+FROM	sale_contract AS contract
+LEFT JOIN crm_production p on p.state=0 and p.id=contract.ProductionId
+LEFT JOIN system_user u on u.state=0 and u.id=contract.receiveUserId
+WHERE	1=1	AND contract.state=0	AND contract.STATUS=1
+and contract.signedStatus=1
+    <if test="#{productionId} !=null">
+        and contract.ProductionId in (select p.id from crm_production p where p.state=0 and p.ProductHomeId in (select p.ProductHomeId from crm_production p where p.state=0 and p.id=#{productionId}))
+    </if>
+    <if test="#{receiveUserId} !=null">
+	AND contract.receiveUserId=#{receiveUserId}
+    </if>
+GROUP BY contract.ContractNo 	
+ORDER BY contract.ContractNo asc        
+        
+        </select>
+        <select id="getContractCompositeSearchList">
+            SELECT
+            contractOrderInfo.*,
+            salemanUser.name AS salemanName
+            FROM
+            (SELECT
+            d.`name` DepartmentName,
+            contractInfo.*,
+            crmOrder.contractNo,
+            crmOrder.CustomerName,
+            crmOrder.CustomerId,
+            crmOrder.salemanId AS salemanId,
+            date_format(crmOrder.operateTime,'%Y-%m-%d %H:%i:%S') AS sigendTime,
+            crmOrder.Money AS money
+            FROM
+                (SELECT DISTINCT
+                    contract.sid,
+                    contract.id,
+                    contract.state,
+                    contract.operatorId,
+                    date_format(contract.operateTime, '%Y-%m-%d %H:%i:%S') AS operateTime,
+                    contract.OrgId,
+                    contract.ProductionId,
+                    contract.ProductionName,
+                    contract.ApplicationId,
+                    contract.`STATUS`,
+                    contract.DetailStatus,
+                    contract.ContractNo,
+                    contract.ContractDetailNo,
+                    contract.ContractDisplayNo,
+                    <!--contract.CancelId,
+                    contract.CancelName,-->
+                    <!--date_format(contract.CancelTime, '%Y-%m-%d %H:%i:%S') AS CancelTime,-->
+                    contract.`COMMENT`,
+                   <!-- contract.receiveUserId,
+                    contract.receiveUserName,-->
+                   <!-- contractRoute.ActionType,
+                    contractRoute.sendExpress,
+                    contractRoute.sendExpressId,-->
+                   <!-- date_format(application.ApplicationTime, '%Y-%m-%d %H:%i:%S') AS ApplicationTime,
+                    date_format(application.CheckTime, '%Y-%m-%d %H:%i:%S') AS CheckTime,
+                    appuser.`name` AS applicationUserName,
+                    checkuser.`name` AS checkName ,-->
+                    project.name as projectName,
+                    project.id as projectId,
+                    productionhome.id AS productionHomeId,
+                    productionhome.productionName AS productionHomeName
+                FROM
+                    sale_contract AS contract,
+                    crm_production as production ,
+                    crm_project as project,
+                    crm_productionhome as productionhome
+                    <!--sale_contractroutelist AS contractRoute,
+                    sale_contractapplication AS application,-->
+                   <!-- system_user AS appuser,
+                    system_user AS checkuser-->
+                WHERE
+                    1 = 1
+                    AND   production.id=contract.ProductionId
+                    AND   production.productHomeId=productionhome.id
+                    AND   productionhome.ProjectId=project.id
+                    AND   contract.state = 0
+                    AND   productionhome.state = 0
+                    <!--AND appuser.state = 0
+                    AND checkuser.state = 0
+                    AND contractRoute.State = 0
+                    AND application.state = 0-->
+                  <!--  AND contract.contractNo = contractRoute.contractNo
+                    AND appuser.id = application.applicationUserId
+                    AND checkuser.id = application.CheckId
+                    AND contract.ApplicationId=application.id
+                    AND contractRoute.sid =
+                    (SELECT DISTINCT
+                        MAX(contractroute2.sid)
+                    FROM
+                        sale_contractroutelist contractroute2
+                    WHERE
+                        1 = 1
+                        AND contractroute2.state = 0
+                        AND contractroute2.ContractNo = contract.contractNo
+                    )-->
+               <!-- AND
+                    contractRoute.ActionType not in (17,12,13)-->
+                ) AS contractInfo
+            LEFT JOIN crm_order AS crmOrder ON crmOrder.state = 0 AND crmOrder.contractNo = contractInfo.ContractNo
+            LEFT JOIN system_department d ON contractInfo.OrgId = d.id WHERE     1 = 1 GROUP BY     contractInfo.ContractNo) AS contractOrderInfo
+            LEFT JOIN system_user salemanUser ON salemanUser.id = contractOrderInfo.salemanId AND salemanUser.state = 0
+
+        </select>
+    </select-sql>
+
+
+    <select-sql>
+        <select id="getContractAbstractByProduction">
+            SELECT
+            p.`Name` AS productName,
+            p.Size,
+            p.SaleMoney,
+            d.`name` AS orgName,
+            j.`name` AS projectName,
+            h.ProductionName AS productionHomeName,
+            COUNT(DISTINCT(c.ContractNo)) AS allContract,
+            sum(case when c.`STATUS`=0 AND c.ContractDetailNo=1  then 1 else 0 end) AS allSignedConract,
+            sum(case when c.`STATUS`=1 AND c.ContractDetailNo=1  then 1 else 0 end) AS allUnsignConract,
+            sum(case when c.`STATUS`=2 AND c.ContractDetailNo=1  then 1 else 0 end) AS allCanceledConract
+            FROM
+            sale_contract c,
+            crm_production p,
+            system_department d,
+            crm_productionhome h,
+            crm_project j
+            WHERE
+            1=1
+            <if test="#{productionId} !=null">
+                AND p.id = #{productionId}
+            </if>
+            AND d.ID=c.orgid
+            AND c.productionid=p.id
+            and c.state=0
+            AND p.state=0
+            AND h.state=0
+            AND j.state=0
+            AND p.productHomeId=h.id
+            AND j.id=h.ProjectId
+            GROUP BY c.OrgId
+        </select>
+    </select-sql>
+
+
+
+    <select-sql>
+        <select id="getContractAbstractByProductionHome">
+            SELECT
+            p.`Name` AS productName,
+            p.Size,
+            p.SaleMoney,
+            d.`name` AS orgName,
+            j.`name` AS projectName,
+            h.ProductionName AS productionHomeName,
+            COUNT(DISTINCT(c.ContractNo)) AS allContract,
+            sum(case when c.`STATUS`=0 AND c.ContractDetailNo=1  then 1 else 0 end) AS allSignedConract,
+            sum(case when c.`STATUS`=1 AND c.ContractDetailNo=1  then 1 else 0 end) AS allUnsignConract,
+            sum(case when c.`STATUS`=2 AND c.ContractDetailNo=1  then 1 else 0 end) AS allCanceledConract
+            FROM
+            sale_contract c,
+            crm_production p,
+            system_department d,
+            crm_productionhome h,
+            crm_project j
+            WHERE
+            1=1
+            <if test="#{productionHomeId} !=null">
+                AND h.Id = #{productionHomeId}
+            </if>
+            AND d.ID=c.orgid
+            AND c.productionid=p.id
+            and c.state=0
+            AND p.state=0
+            AND h.state=0
+            AND j.state=0
+            AND p.productHomeId=h.id
+            AND j.id=h.ProjectId
+            GROUP BY c.OrgId, p.id
+            ORDER BY p.id, d.id
+        </select>
+    </select-sql>
+
+
+
+</sql>

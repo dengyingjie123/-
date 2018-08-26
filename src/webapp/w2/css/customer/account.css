@@ -1,0 +1,145 @@
+#nav {
+	background: #fafafa;
+	height: 70px;
+	margin: 0 auto;
+}
+
+#nav span {
+	float: right;
+	font-size: 18px;
+	padding: 23px 0px 0px 0px;
+}
+
+#nav span a {
+	text-decoration: none;
+	color: black;
+	padding: 0px 20px 0px 20px;
+}
+
+#nav span a:hover {
+	color: #d28d2a;
+}
+
+#position {
+	margin: 0 auto;
+	padding: 20px 0px 20px 0px;
+	font-size: 16px;
+}
+
+#position a {
+	text-decoration: none;
+	color: black;
+}
+
+#container {
+	margin: 0 auto;	
+}
+
+#container #menu {
+	width: 230px;
+	float: left;
+}
+
+/* ul 去掉缩进的办法，margin 针对 ie，padding 针对其他 */
+#container #menu ul {
+	margin: 0px;
+	padding: 0px;	
+}
+
+#container #menu li {
+	list-style: none;
+	padding: 16px 0px 17px 55px;	
+	font-size: 22px;
+	background: url(../../img/menu.png);
+}
+
+#container #menu li a {
+	text-decoration: none;
+	color: black;
+}
+
+#container #detail {
+	width: 960px;
+	float: left;
+}
+
+#container table {
+	width: 960px;
+}
+
+#container tr {
+	height: 50px;
+}
+
+#container td {
+	text-align: center;	
+	font-size: 14px;
+	background: #fafafa;
+	border-bottom: #dcdcdc 1px solid;
+}
+
+#container #detail #detailTitle {
+	font-size: 20px;
+	margin: 0px 0px 15px 0px;	
+}
+
+#footer {
+	background: #e8e8e8;
+	border-top: #DE9B3B  1px solid;
+	margin: 460px 0px 0px 0px;
+}
+
+#footer #footer-content {
+	height: 300px;
+	margin: 0 auto;
+}
+
+#footer-content #content1, #content2 {
+	width: 255px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;
+	float: left;
+}
+
+#footer-content #content3 {
+	width: 200px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;
+	float: left;
+}
+
+#footer-content .footer-text {
+	padding: 5px 0px 5px 64px;
+}
+
+#footer-split {
+	width: 3px;
+	float: left;
+}
+
+#footer a {
+	color: black;
+	text-decoration: none;
+}
+
+#footer #content4 {
+	float: left;
+	padding: 40px 0px 0px 40px;
+	text-align: center;
+}
+
+#footer #content5 {
+	float: right;
+	padding: 40px 0px 0px 0px;
+	text-align: center;
+}
+
+#copyright {
+	float: left;
+	margin: 0px 0px 20px 0px;
+	text-align: center;
+}
+a{
+    text-decoration: none;
+    color: #000000;
+}

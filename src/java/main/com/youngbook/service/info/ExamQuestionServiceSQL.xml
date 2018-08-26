@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listExamQuestionOptionByExamQuestionId">
+SELECT
+	*
+FROM
+	info_examoption
+WHERE
+	1 = 1
+AND state = 0
+<if test="#{questionId} !=null">
+AND QuestionId = #{questionId}
+</if>       
+        </select>
+        <select id="loadExamQuestionVOByQuestionNO">
+select
+    (select count(*) from info_examquestion where state=0 and PaperId=1) questionCount,
+    exam.*
+from info_examquestion  exam
+where state=0
+<if test="#{paperId} !=null">
+and exam.PaperId=#{paperId}
+</if>
+<if test="#{questionNO} !=null">
+and exam.QuestionNO=#{questionNO}
+</if>      
+        </select>
+        <select id="listExamQuestionVO">
+
+SELECT
+    kvPaper.V paperName,
+    exam.*, u.`name` operatorName, kv_type.V typeName
+FROM
+    Info_ExamQuestion exam
+LEFT JOIN system_user u on u.state = 0 AND exam.OperatorId = u.Id
+left JOIN system_kv kv_type on kv_type.GroupName='INFO_ExamQuestionType' and exam.Type = kv_type.K
+Left JOIN system_kv kvPaper on kvPaper.GroupName='INFO_ExamQuestionPaper' and kvPaper.K=exam.PaperId
+WHERE
+    1 = 1
+AND exam.State = 0        
+        
+        </select>
+    </select-sql>
+</sql>

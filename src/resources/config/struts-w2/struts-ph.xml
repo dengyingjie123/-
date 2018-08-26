@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+
+    <!-- 修改package的name和namespace -->
+    <package name="ph" extends="json-default" namespace="/ph">
+
+        <!-- 必须包含 开始 -->
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name ="login">/modules/system/error/login_error_data.jsp</result>
+            <result name ="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name ="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+        <!-- 必须包含 开始 -->
+
+        <action name="phAddCard" class="com.youngbook.action.customer.CustomerAccountAction" method="phAddCard">
+            <interceptor-ref name ="authStack"/>
+            <result name="success">/ph/mine/card_save.jsp</result>
+            <result name="manyCards">/ph/mine/card_save_fuiou.jsp</result>
+        </action>
+
+        <action name="phGetPageOrderSave" class="com.youngbook.action.production.OrderAction" method="phGetPageOrderSave">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="page_success">/ph/market/order_save.jsp</result>
+        </action>
+
+        <action name="phGetPagePaperInvestment" class="com.youngbook.action.production.OrderAction" method="phGetPagePaperInvestment">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="no_order_info">/ph/market/no_order_info.jsp</result>
+            <result name="order_zxt">/ph/mine/paper_investment.jsp</result>
+            <result name="order_zn">/ph/mine/paper_investment.jsp</result>
+            <result name="fdcg_common_error">/ph/thirdparty/fdcg/common_error.jsp</result>
+            <result name="fdcg_common_success">/ph/thirdparty/fdcg/common_success.jsp</result>
+        </action>
+
+        <action name="loadPage_ph_mine_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_PH_mine_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="mine_list">/ph/mine/mine_list.jsp</result>
+        </action>
+
+
+
+        <action name="loadPage_PH_password_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_PH_password_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="password_list">/ph/mine/password_list.jsp</result>
+        </action>
+
+        <action name="loadPage_PH_card_list" class="com.youngbook.action.customer.CustomerAccountAction" method="loadPage_PH_card_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="card_list">/ph/mine/card_list.jsp</result>
+        </action>
+
+        <action name="loadPage_PH_mobile_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_PH_mobile_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="mobile_list">/ph/mine/mobile_list.jsp</result>
+        </action>
+
+        <action name="loadPage_PH_account_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_PH_account_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="account_list">/ph/mine/account_list.jsp</result>
+        </action>
+
+        <action name="*_*" class="com.youngbook.action.core.{1}Action" method="{2}">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+    </package>
+</struts>

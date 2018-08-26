@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id = "calcLeaderboard">
+
+            SELECT
+            u.name AS salemanName,
+            d.name AS departmentName,
+
+
+            (
+                SELECT SUM( o.money ) / 10000
+                FROM crm_order o, crm_production p
+                WHERE o.state = 0
+                AND p.state = 0
+                AND o.referralCode = u.referralCode
+                AND o.productionId = p.id
+                AND o.status in ( 1, 8, 7, 23, 24 )
+                <if test="#{startDate} !=null">
+                    AND o.payTime &gt; #{startDate}
+                </if>
+                <if test="#{stopDate} !=null">
+                    AND o.payTime &lt; #{stopDate}
+                </if>
+            ) AS totalSalesMoney,
+
+
+            (
+                SELECT SUM( o.money ) / 10000
+                FROM crm_order o, crm_production p
+                WHERE o.state = 0
+                AND p.state = 0
+                AND o.referralCode = u.referralCode
+                AND o.productionId = p.id
+                AND o.status in ( 1, 8, 7, 23, 24 )
+                AND p.incomeType = 0
+                <if test="#{startDate} !=null">
+                    AND o.payTime &gt; #{startDate}
+                </if>
+                <if test="#{stopDate} !=null">
+                    AND o.payTime &lt; #{stopDate}
+                </if>
+            ) AS fixedSalesMoney,
+
+
+            (
+                SELECT SUM( o.money ) / 10000
+                FROM crm_order o, crm_production p
+                WHERE o.state = 0
+                AND p.state = 0
+                AND o.referralCode = u.referralCode
+                AND o.productionId = p.id
+                AND o.status in ( 1, 8, 7, 23, 24 )
+                AND p.incomeType = 1
+                <if test="#{startDate} !=null">
+                    AND o.payTime &gt; #{startDate}
+                </if>
+                <if test="#{stopDate} !=null">
+                    AND o.payTime &lt; #{stopDate}
+                </if>
+            ) AS floatSalesMoney
+
+
+            FROM
+                crm_saleman m,
+                system_user u,
+                crm_salemangroup g,
+                crm_saleman_salemangroup sg,
+                system_department d
+            WHERE m.state = 0
+                AND u.state = 0
+                AND g.state = 0
+                AND m.userId = u.id
+                AND m.userId = sg.salemanId
+                AND g.id = sg.salemanGroupId
+                AND g.departmentId = d.id
+                AND sg.defaultGroup = 1
+            ORDER BY totalSalesMoney DESC, u.referralCode
+            LIMIT 0, 10
+
+        </select>
+    </select-sql>
+</sql>

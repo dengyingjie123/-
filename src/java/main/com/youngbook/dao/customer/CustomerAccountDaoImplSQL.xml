@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getCustomerAccountPO">
+SELECT
+	ca.*
+FROM
+	crm_order o,
+	crm_customeraccount ca
+WHERE
+	1 = 1
+AND o.state = 0
+AND ca.state = 0
+AND o.accountId = ca.id
+<if test="#{orderId}!=null">
+AND o.id = #{orderId}
+</if>
+        </select>
+    </select-sql>
+</sql>

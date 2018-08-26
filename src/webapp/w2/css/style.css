@@ -1,0 +1,1658 @@
+body {
+    line-height: 1.6em;
+    color: #666;
+    font-size: 12px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease-in;
+}
+
+a:hover {
+    color: #eb6100;
+    text-decoration: none;
+    transition: all 0.3s ease-in;
+}
+
+.fc-primary, a.fc-primary {
+    color: #532589;
+}
+
+a:hover.fc-primary, .fc-primary:hover {
+    color: #eb6100
+}
+
+.fc-gray, a.fc-gray {
+    color: #999;
+}
+
+a:hover.fc-gray, .fc-gray:hover {
+    color: #eb6100
+}
+
+label {
+    font-weight: normal;
+    color: #666;
+}
+
+.form-control {
+    box-shadow: none;
+    border-radius: 0;
+    border-color: #dddddd;
+}
+
+#topbar {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #eaeaea
+}
+
+#topbar span {
+    padding: 0 10px;
+    color: #eee;
+}
+
+#header {
+    height: 90px;
+    background: url(../img/ui/bg-header.png) no-repeat right bottom;
+}
+
+#header .logo {
+    padding-top: 26px;
+}
+
+#menu {
+    margin-bottom: 10px;
+    height: 40px;
+    background: url("../img/ui/bg-menu.jpg") repeat-x
+}
+
+#menu li {
+    float: left;
+    width: 150px;
+}
+
+#menu a.item {
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+}
+
+#menu li.current a, #menu li a:hover {
+    background: #3d1b63;
+}
+
+.banner {
+    float: left;
+    width: 870px;
+}
+
+.brief {
+    float: right;
+    width: 299px;
+    height: 298px;
+    border: 1px solid #e5e5e5;
+    border-left: 0;
+    background-color: #f3eef6;
+}
+
+.brief ul {
+    background-color: #fff;
+}
+
+.brief li {
+    height: 65px;
+    padding-left: 85px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.brief li span {
+    color: #666;
+    display: block;
+    padding-top: 12px
+}
+
+.brief li div {
+    color: #999;
+    font-size: 14px;
+}
+
+.brief li strong {
+    font-weight: normal;
+    font-size: 16px;
+    color: #333;
+}
+
+.brief li.c1 {
+    background: url(../img/ui/icon-h-01.png) no-repeat 20px center;
+}
+
+.brief li.c2 {
+    background: url(../img/ui/icon-h-02.png) no-repeat 20px center;
+}
+
+.brief li.c3 {
+    background: url(../img/ui/icon-h-03.png) no-repeat 20px center;
+}
+
+.brief .b-login {
+    padding: 20px 20px 0;
+}
+
+.brief .b-login p {
+    display: block;
+    padding-bottom: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.brief .b-login p span {
+    color: #eb6100;
+}
+
+.brief .b-login .h-btn {
+    padding: 10px 30px;
+    margin-right: 10px;
+    color: #fff;
+    font-size: 13px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+    background: #532589;
+    border-radius: 4px;
+    transition: all 0.3s ease-in;
+}
+
+.brief .b-login .h-btn:hover {
+    background: #6d30b3;
+    transition: all 0.3s ease-in;
+}
+
+.w850 {
+    width: 850px;
+}
+
+.w300 {
+    width: 300px;
+}
+
+.w680 {
+    width: 680px;
+}
+
+.w1050 {
+    width: 1050px;
+}
+
+.w130 {
+    width: 130px;
+}
+
+.mgb20 {
+    margin-bottom: 20px;
+}
+
+/* 首页的投资计划板块 */
+.product-intro {
+    margin-bottom: 20px
+}
+
+.product-intro li.item {
+    width: 272px;
+    height: 226px;
+    float: left;
+    margin-right: 14px;
+    border: 1px solid #e5e5e5;
+    border-top: 2px solid #3d1b63;
+    background: #f9f7fa;
+    transition: background 0.3s ease-in;
+}
+
+.product-intro li.item:hover {
+    background: #fef9f6;
+    border-top-color: #eb6100;
+    transition: background 0.3s ease-in;
+}
+
+.product-intro li.item .ht {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
+    background: url(../img/ui/bg-ht.png) no-repeat right bottom;
+    transition: color 0.2s ease-in;
+}
+
+.product-intro .info {
+    background: #fff;
+}
+
+.product-intro .info li {
+    margin: 8px 0;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+    width: 135px;
+    color: #999;
+    text-align: center;
+}
+
+.product-intro .info li.nobd {
+    border-right: 0;
+}
+
+.product-intro .info strong {
+    display: block;
+    color: #666;
+}
+
+.product-intro .profit {
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    padding: 20px 0 15px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #999;
+    background-color: #fff;
+}
+
+.product-intro .profit div {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+
+.product-intro .profit div strong {
+    font-size: 28px;
+    color: #eb6100;
+}
+
+.product-intro .more {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px 0 30px;
+    position: relative;
+    background: url(../img/ui/icon-h-04.png) no-repeat 10px center;
+}
+
+.product-intro .more a {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #666;
+}
+
+.product-intro .more a:hover {
+    color: #eb6100
+}
+
+.product-intro li.item.nomg {
+    margin: 0;
+    float: right;
+}
+
+.product-intro li.item:hover .ht {
+    color: #eb6100;
+    transition: color 0.2s ease-in;
+}
+
+.product-intro li.item:hover .more {
+    background: url(../img/ui/icon-h-04h.png) no-repeat 10px center;
+}
+
+/* 用户中心-参加计划的板块 */
+.user-investment-intro {
+    margin-bottom: 20px
+}
+
+.user-investment-intro li.item {
+    width: 272px;
+    height: 226px;
+    float: left;
+    margin-right: 17px;
+    border: 1px solid #e5e5e5;
+    border-top: 2px solid #3d1b63;
+    background: #f9f7fa;
+    transition: background 0.3s ease-in;
+}
+
+.user-investment-intro li.item:hover {
+    background: #fef9f6;
+    border-top-color: #eb6100;
+    transition: background 0.3s ease-in;
+}
+
+.user-investment-intro li.item .ht {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
+    background: url(../img/ui/bg-ht.png) no-repeat right bottom;
+    transition: color 0.2s ease-in;
+}
+
+.user-investment-intro .info {
+    background: #fff;
+}
+
+.user-investment-intro .info li {
+    margin: 8px 0;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+    width: 135px;
+    color: #999;
+    text-align: center;
+}
+
+.user-investment-intro .info li.nobd {
+    border-right: 0;
+}
+
+.user-investment-intro .info strong {
+    display: block;
+    color: #666;
+}
+
+.user-investment-intro .profit {
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    padding: 20px 0 15px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #999;
+    background-color: #fff;
+}
+
+.user-investment-intro .profit div {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+
+.user-investment-intro .profit div strong {
+    font-size: 28px;
+    color: #eb6100;
+}
+
+.user-investment-intro .more {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px 0 30px;
+    position: relative;
+    background: url(../img/ui/icon-h-04.png) no-repeat 10px center;
+}
+
+.user-investment-intro .more a {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #666;
+}
+
+.user-investment-intro .more a:hover {
+    color: #eb6100
+}
+
+.user-investment-intro li.item.nomg {
+    margin: 0;
+    float: right;
+}
+
+.user-investment-intro li.item:hover .ht {
+    color: #eb6100;
+    transition: color 0.2s ease-in;
+}
+
+.user-investment-intro li.item:hover .more {
+    background: url(../img/ui/icon-h-04h.png) no-repeat 10px center;
+}
+
+/* 投资计划页面的板块 */
+.investment-intro {
+    margin-bottom: 20px
+}
+
+.investment-intro li.item {
+    width: 323px;
+    height: 226px;
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    border: 1px solid #e5e5e5;
+    border-top: 2px solid #3d1b63;
+    background: #f9f7fa;
+    transition: background 0.3s ease-in;
+}
+
+.investment-intro li.item:hover {
+    background: #fef9f6;
+    border-top-color: #eb6100;
+    transition: background 0.3s ease-in;
+}
+
+.investment-intro li.item .ht {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #333;
+    background: url(../img/ui/bg-ht.png) no-repeat right bottom;
+    transition: color 0.2s ease-in;
+}
+
+.investment-intro .info {
+    background: #fff;
+}
+
+.investment-intro .info li {
+    margin: 8px 0;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+    width: 160px;
+    color: #999;
+    text-align: center;
+}
+
+.investment-intro .info li.nobd {
+    border-right: 0;
+}
+
+.investment-intro .info strong {
+    display: block;
+    color: #666;
+}
+
+.investment-intro .profit {
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+    padding: 20px 0 15px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #999;
+    background-color: #fff;
+}
+
+.investment-intro .profit div {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+
+.investment-intro .profit div strong {
+    font-size: 28px;
+    color: #eb6100;
+}
+
+.investment-intro .more {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px 0 30px;
+    position: relative;
+    background: url(../img/ui/icon-h-04.png) no-repeat 10px center;
+}
+
+.investment-intro .more a {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #666;
+}
+
+.investment-intro .more a:hover {
+    color: #eb6100
+}
+
+.investment-intro li.item.nomg {
+    margin: 0;
+    float: right;
+}
+
+.investment-intro li.item:hover .ht {
+    color: #eb6100;
+    transition: color 0.2s ease-in;
+}
+
+.investment-intro li.item:hover .more {
+    background: url(../img/ui/icon-h-04h.png) no-repeat 10px center;
+}
+
+.hts {
+    position: relative;
+    height: 28px;
+    line-height: 28px;
+    margin-bottom: 10px;
+}
+
+.hts h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.hts a {
+    position: absolute;
+    right: 0;
+    top: 5px;
+}
+
+.product-item {
+}
+
+.product-item table {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    border-top: 2px solid #3d1b63;
+}
+
+.product-item thead {
+    height: 35px;
+    line-height: 35px;
+    color: #999;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f9f7fa
+}
+
+.product-item td {
+    padding: 0 20px;
+}
+
+.product-item tbody {
+    font-size: 14px;
+}
+
+.product-item tbody td {
+    border-bottom: 1px dotted #e5e5e5
+}
+
+.product-item tbody tr {
+    transition: all 0.3s ease-in;
+    background: #fff
+}
+
+.product-item tbody tr:hover {
+    background: #fef9f6;
+    transition: all 0.3s ease-in;
+}
+
+.product-item a.t {
+    display: block;
+    width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-item a:hover.t {
+    color: #eb6100
+}
+
+.product-item .rank {
+    display: block;
+    width: 34px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    background: #999;
+    border-radius: 4px;
+}
+
+.product-item .rank-hr {
+    background: #c5acd2
+}
+
+.product-item .rank-a {
+    background: #b0d562;
+}
+
+.product-item strong {
+    color: #eb6100
+}
+
+.chart {
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+
+.chart .percent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+}
+
+.btns {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    color: #666;
+    border: 1px solid #e5e5e5;
+    background: #eee;
+    border-radius: 4px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif
+}
+
+.btns:hover {
+    color: #666;
+    border-color: #c0c0c0;
+    background: #ddd;
+}
+
+.btns-warning {
+    border-color: #c9a741;
+    color: #fff;
+    background: #c9a741;
+}
+
+.btns-warning:hover {
+    border-color: #d27b15;
+    color: #fff;
+    background: #d27b15;
+}
+
+.btns-primary {
+    border-color: #341359;
+    color: #fff;
+    background: #3d1b63;
+}
+
+.btns-primary:hover {
+    border-color: #d27b15;
+    color: #fff;
+    background: #d27b15;
+}
+
+.btns-disabled {
+    border-color: #341359;
+    color: #fff;
+    background: #D6D6D6;
+}
+
+.btns-disabled:hover {
+    border-color: #d27b15;
+    color: #fff;
+    background: #D6D6D6;
+}
+
+.panels {
+    border: 1px solid #e5e5e5;
+    margin-bottom: 10px;
+}
+
+.panels .ht h4 {
+    padding-left: 15px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f9f7fa;
+}
+
+.panels .tabs {
+    height: 36px;
+    background: #f9f7fa;
+}
+
+.panels .tabs a {
+    display: block;
+    height: 36px;
+    line-height: 36px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 14px;
+    float: left;
+    width: 148px;
+    text-align: center;
+}
+
+.panels .tabs a.current {
+    border-bottom: 0;
+    background: #fff;
+}
+
+.panels .tabs a.bdr {
+    border-right: 1px solid #e5e5e5
+}
+
+.panels .content {
+    padding: 15px;
+}
+
+.u-list {
+}
+
+.u-list li {
+    height: 32px;
+    line-height: 32px;
+    padding-left: 15px;
+    background: url(../img/ui/icon-aro.png) no-repeat 0 13px;
+}
+
+.u-list li a {
+    color: #666
+}
+
+.u-list li a:hover {
+    color: #eb6100
+}
+
+.rbanner {
+    margin-bottom: 10px
+}
+
+.rbanner img {
+    display: block;
+}
+
+#footer {
+    margin: 20px 0;
+    padding: 40px 0 50px;
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    background: #e8e8e8;
+}
+
+#footer dl {
+    float: left;
+    padding-right: 80px;
+    padding-left: 48px;
+}
+
+#footer dt {
+    padding: 10px 0 15px;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+#footer li {
+    height: 25px;
+    line-height: 25px;
+}
+
+#footer li a {
+    color: #666;
+}
+
+#footer li a:hover {
+    color: #eb6100
+}
+
+#footer dl.c1 {
+    margin-left: 120px;
+    background: url(../img/ui/icon-f-01.png) no-repeat 0 0;
+}
+
+.wd #footer dl.c1 {
+    margin-left: 0;
+}
+
+#footer dl.c2 {
+    background: url(../img/ui/icon-f-02.png) no-repeat 0 0;
+}
+
+#footer dl.c3 {
+    margin-right: 80px;
+    border-right: 1px solid #e5e5e5;
+    background: url(../img/ui/icon-f-03.png) no-repeat 0 0;
+}
+
+#footer .qr {
+    padding-top: 15px;
+    float: left;
+    margin-right: 50px;
+    text-align: center;
+}
+
+#footer .qr img {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.copyright {
+    margin: 10px 0 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.copyright p {
+    line-height: 25px;
+}
+
+.position {
+    padding: 10px 0 15px
+}
+
+/*detail*/
+.h-intro {
+    margin-bottom: 20px;
+    border: 1px solid #e5e5e5;
+    font-size: 14px;
+    color: #333;
+}
+
+.h-intro .ht {
+    height: 36px;
+    line-height: 36px;
+    padding-left: 15px;
+    background-color: #f9f7fa;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.h-intro .content {
+    padding: 35px 0px 35px 35px;
+}
+
+.h-intro .content li {
+    float: left;
+    padding-right: 35px;
+    margin-right: 35px;
+    border-right: 1px solid #e5e5e5
+}
+
+.h-intro .content li span {
+    display: block;
+    padding-bottom: 10px;
+    color: #999;
+}
+
+.h-intro .content li strong {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.h-intro .content li.c2 span, .h-intro .content li.c3 span {
+    text-align: center;
+}
+
+.h-intro .content li.c2 strong {
+    font-size: 24px;
+    color: #eb6100;
+}
+
+.h-intro .content li div {
+    text-align: center;
+}
+
+.h-intro .content li.c4 {
+    border-right: 0;
+}
+
+.h-intro .h-foot {
+    padding: 12px 35px;
+    border-top: 1px solid #e5e5e5;
+    color: #999;
+}
+
+.h-intro .h-foot div.progress {
+    margin: 0 10px;
+    display: inline-block;
+    width: 100px;
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
+}
+
+.h-intro .h-foot div.progress span {
+    display: block;
+    height: 10px;
+    background: #c9a741;
+    border-radius: 5px;
+}
+
+.u-tabs {
+    margin-bottom: 20px;
+    height: 36px;
+    line-height: 36px;
+    background: #f9f7fa;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.u-tabs a {
+    display: block;
+    float: left;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid #e5e5e5;
+    transition: color 0.3s ease-in;
+}
+
+.u-tabs a.current {
+    font-weight: bold;
+    color: #ff6900;
+    border-top: 2px solid #ff6900;
+    background-color: #fff;
+    transition: color 0.3s ease-in;
+    font-weight: bold;
+    color: #333;
+    border-top: 2px solid #ff6900;
+    background-color: #fff;
+    transition: color 0.3s ease-in;
+}
+
+.u-tabs a.c1 {
+    border-left: 1px solid #e5e5e5;
+}
+
+.tabs-wrap {
+    line-height: 25px;
+    color: #666;
+}
+
+.tabs-wrap .item {
+    display: none
+}
+
+.tabs-wrap p {
+    margin-bottom: 20px;
+}
+
+.detail {
+    margin-bottom: 20px;
+}
+
+.detail .tabs-wrap .bt {
+    margin-bottom: 15px
+}
+
+.detail .tabs-wrap .bt strong {
+    color: #333;
+}
+
+.user-investment {
+    border: 1px solid #e5e5e5;
+    margin-bottom: 10px
+}
+
+.user-investment .ht {
+    padding: 17px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f9f7fa url(../img/ui/bg-investment.png) no-repeat right top;
+}
+
+.user-investment .ht strong {
+    margin-bottom: 15px;
+    display: block;
+    font-size: 20px;
+    color: #333;
+    font-weight: normal;
+}
+
+.user-investment .ht li {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.user-investment .investment {
+    padding: 10px 20px;
+}
+
+.user-investment .investment span {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.user-investment .ui-txt {
+    margin-right: 10px;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #e5e5e5;
+}
+
+.user-investment .ui-btn {
+    width: 90px;
+    height: 32px;
+    line-height: 32px;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+    background: #532589;
+    border-radius: 4px;
+    transition: all 0.3s ease-in;
+}
+
+.user-investment .ui-btn:hover {
+    background: #6d30b3;
+    transition: all 0.3s ease-in;
+}
+
+.subs-wrap {
+    width: 998px !important;
+    border: 1px solid #e5e5e5;
+    margin-bottom: 20px;
+}
+
+.subs-wrap .subs-item {
+    border-bottom: 1px dotted #e5e5e5;
+    font-size: 14px;
+}
+
+.subs-wrap .subs-item dt {
+    display: block;
+    padding: 12px 0;
+    margin-right: 10px;
+    width: 110px;
+    float: left;
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.subs-wrap .subs-item dd {
+    padding: 12px 0;
+}
+
+.subs-wrap .subs-item dd a {
+    margin-right: 18px;
+    padding: 2px 8px;
+    font-size: 13px;
+}
+
+.subs-wrap .subs-item dd a:hover {
+    background: #ddd;
+    border-radius: 3px;
+    color: #333;
+}
+
+.subs-wrap .subs-item dd a.current {
+    background: #c9a741;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.subs-wrap .subs-item.nobd {
+    border: none;
+}
+
+.pagelist {
+    padding: 20px 0 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #333;
+}
+
+.pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+    color: #333;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    color: #333;
+    font-weight: bold;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-radius: 0
+}
+
+/*用户中心*/
+.a-sub {
+    padding-bottom: 20px;
+    border: 1px solid #e5e5e5;
+}
+
+.a-sub li {
+    padding-left: 25px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+}
+
+.a-sub li:hover {
+    background: #eee;
+}
+
+.a-sub li a {
+    display: block;
+}
+
+.a-sub li.current {
+    background: #3d1b63;
+    position: relative;
+}
+
+.a-sub li.current a {
+    color: #fff;
+}
+
+.a-sub li.current:after {
+    position: absolute;
+    display: block;
+    content: "";
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+    top: 0;
+    right: -32px;
+    border-color: transparent transparent transparent #3d1b63;
+    border-style: solid;
+    border-width: 16px;
+    z-index: 1000;
+}
+
+.rec-product {
+    margin-bottom: 20px;
+}
+
+.rec-product table {
+    border: 1px solid #e5e5e5;
+}
+
+.rec-product thead td {
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+}
+
+.rec-product tbody td {
+    height: 50px;
+}
+
+.user-info {
+    border: 1px solid #e5e5e5;
+    color: #333;
+    font-size: 14px;
+    position: relative;
+    margin-bottom: 15px;
+    padding: 30px 30px 30px 145px;
+}
+
+.user-info .imgs {
+    display: block;
+    position: absolute;
+    left: 30px;
+    top: 25px;
+    width: 90px;
+    height: 90px;
+}
+
+.user-info .imgs img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%
+}
+
+.user-info .c1 {
+}
+
+.user-info .name {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.user-info .name strong {
+    color: #3d1b63;
+}
+
+.user-info .safe-lv {
+    margin-bottom: 5px;
+}
+
+.safe-lv div.progress {
+    margin: 0 10px 0 0;
+    display: inline-block;
+    width: 100px;
+    height: 10px;
+    background: #eee;
+    border-radius: 3px;
+}
+
+.safe-lv div.progress span {
+    display: block;
+    height: 10px;
+    background: #71b247;
+    border-radius: 3px;
+}
+
+.safe-lv .fc-primary {
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.user-info .last-time {
+    margin-bottom: 10px;
+}
+
+.user-info .c2 {
+    position: absolute;
+    padding: 30px 45px;
+    right: 30px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #e5e5e5;
+}
+
+.user-info .c2 .property {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.user-info .c2 .property strong {
+    font-weight: bold;
+    font-size: 22px;
+    color: #eb6100;
+}
+
+.user-info .c2 ul {
+    margin-bottom: 10px;
+}
+
+.user-info .c2 li {
+    line-height: 25px;
+}
+
+.user-info .c2 .a-btn a {
+    padding: 3px 25px;
+    margin-right: 8px
+}
+
+.user-info label {
+    color: #666;
+    font-weight: normal;
+}
+
+.user-info .icon-account {
+    float: left;
+}
+
+.icon-account {
+    margin-right: 5px;
+    display: block;
+    height: 24px;
+    overflow: hidden;
+    background: url(../img/ui/icon-account.png) no-repeat;
+}
+
+.icon-a-vip {
+    width: 50px;
+    background-position: 0 -24px
+}
+
+.icon-a-vip.has {
+    background-position: 0 0
+}
+
+.icon-a-mob {
+    width: 24px;
+    background-position: -50px -24px
+}
+
+.icon-a-mob.has {
+    background-position: -50px 0
+}
+
+.icon-a-user {
+    width: 24px;
+    background-position: -74px -24px
+}
+
+.icon-a-user.has {
+    background-position: -74px 0
+}
+
+.icon-a-email {
+    width: 24px;
+    background-position: -98px -24px
+}
+
+.icon-a-email.has {
+    background-position: -98px 0
+}
+
+.pay-intro {
+    margin-bottom: 20px;
+    border: 1px solid #e5e5e5;
+    color: #333;
+    text-align: center;
+}
+
+.pay-intro .ht {
+    height: 36px;
+    line-height: 36px;
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    padding-left: 15px;
+    background-color: #f9f7fa;
+    font-weight: bold;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.pay-intro .content {
+    padding: 35px 0 35px 20px;
+    font-size: 14px;
+}
+
+.pay-intro .content li {
+    float: left;
+    padding-right: 20px;
+    margin-right: 20px;
+    border-right: 1px solid #e5e5e5
+}
+
+.pay-intro .content li.c1 {
+    width: 280px;
+}
+
+.pay-intro .content li.c1 p {
+    font-size: 14px;
+}
+
+.pay-intro .content li.c2 {
+    width: 120px;
+}
+
+.pay-intro .content li.c3 {
+    width: 140px;
+}
+
+.pay-intro .content li.c4 {
+    width: 150px;
+}
+
+.pay-intro .content li.c5 {
+    width: 200px;
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.pay-intro .content li span {
+    display: block;
+    padding-bottom: 10px;
+    font-size: 12px;
+    color: #999;
+}
+
+.pay-intro .content li strong {
+    font-weight: bold;
+}
+
+.pay-intro .content li.c2 strong, .pay-intro .content li.c5 strong {
+    font-size: 18px;
+    font-weight: normal;
+    color: #eb6100;
+}
+
+.pay-intro .content li div {
+    text-align: center;
+}
+
+.pay-intro .content li.c5 {
+    border-right: 0;
+}
+
+.pay-tab {
+    margin-bottom: 20px;
+}
+
+.pay-tab .u-tabs {
+    margin-bottom: 2px;
+}
+
+.pay-tab .u-tabs a {
+    font-size: 14px;
+    color: #666;
+}
+
+.pay-tab .tabs-wrap {
+    padding: 25px 35px;
+    border: 1px solid #e5e5e5;
+    border-top: 0;
+    height: 360px;
+    overflow-y: scroll;
+}
+
+.pay-pass {
+    margin-bottom: 40px;
+    border: 1px solid #e5e5e5;
+    color: #333;
+}
+
+.pay-pass .ht {
+    height: 36px;
+    line-height: 36px;
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    padding-left: 15px;
+    background-color: #f9f7fa;
+    font-weight: bold;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.pay-pass .content {
+    padding: 30px;
+}
+
+.pay-pass .btns-primary {
+    font-size: 16px;
+    padding: 3px 35px;
+}
+
+.m-wrap {
+    position: relative;
+    border: 1px solid #e5e5e5;
+    background: #f8f8f8;
+    padding-left: 165px;
+}
+
+.m-wrap-no-nav {
+    position: relative;
+    border: 1px solid #e5e5e5;
+    background: #f8f8f8;
+    padding-left: 0px;
+}
+
+.m-nav {
+    padding: 10px 0;
+    width: 165px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.m-nav h2 {
+    height: 40px;
+    padding-left: 15px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    line-height: 40px;
+    background: #eee;
+}
+
+.m-nav h2 i {
+    font-size: 10px;
+    color: #999;
+}
+
+.m-nav li {
+    height: 45px;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #fff;
+}
+
+.m-nav li a {
+    display: block;
+    height: 45px;
+    padding-left: 33px;
+    line-height: 45px;
+}
+
+.m-nav li.current a {
+    font-weight: bold;
+    color: #eb6100;
+}
+
+.m-detail {
+    padding: 20px;
+    min-height: 500px;
+    border-left: 1px solid #e5e5e5;
+    background: #fff;
+}
+
+.m-detail .m-header {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 10px 10px;
+}
+
+.m-detail h1.title {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.m-detail .info {
+    padding-top: 10px;
+    color: #999;
+    text-align: center;
+}
+
+.m-body {
+    padding: 0 10px;
+    line-height: 25px;
+    color: #333;
+    font-size: 14px;
+}
+
+.m-body img {
+    margin: 25px auto;
+    display: block;
+    max-width: 600px;
+}
+
+.m-body p {
+    margin: 15px 0;
+}
+
+.relnews {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.relnews dt {
+    padding: 10px;
+    color: #333;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.relnews dd {
+    padding: 10px;
+}
+
+.relnews dd li {
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    color: #c5acd2;
+}
+
+.relnews dd li a {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.relnews dd li span {
+    color: #999;
+}
+
+.bdsharebuttonbox {
+    margin: 10px;
+}
+
+.bbg {
+    background: #fff;
+}
+
+/* HopeAlert */
+#HopeAlert_wstatus {
+    position: fixed;
+    left: 200px;
+    top: 400px;
+    width: auto;
+    height: 55px;
+    line-height: 38px;
+    background: #fff;
+    border: solid 4px #e5e5e5;
+    padding: 5px;
+    z-index: 9999
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s {
+    width: 38px;
+    height: 38px;
+    float: left;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s1 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left top;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s2 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left bottom;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s3 {
+    background: url('../img/hopeAlert/loading.gif') no-repeat center;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_s4 {
+    background: url('../img/hopeAlert/ico.png') no-repeat left -38px;
+}
+
+#HopeAlert_wstatus .HopeAlert_wstatus_f {
+    padding: 0 6px 0 6px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    font-family: "微软雅黑";
+}
+
+#HopeAlert_bremove {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    z-index: 900;
+    position: fixed;
+    left: 0;
+    top: 0;
+}

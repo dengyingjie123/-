@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="reportMonth">
+
+SELECT
+    DISTINCT 
+    plan.id,
+    c.`Name` customerName,
+    p.name productionName,
+    o.PayTime,
+    o.money,
+    plan.CurrentInstallment,
+    plan.PaymentTime,
+    plan.TotalPaymentPrincipalMoney,
+    plan.TotalProfitMoney,
+    p.interestCycle,
+	p.interestTimes,
+	p.interestUnit
+FROM
+    core_paymentplan plan
+LEFT JOIN v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+LEFT JOIN crm_production p on p.state=0 and plan.ProductId=p.id
+LEFT JOIN crm_order o on o.state=0 and o.id=plan.OrderId
+WHERE 1=1
+    And plan.state = 0
+<if test="#{paymentTime} !=null">    
+    and DATE_FORMAT(PaymentTime, '%Y-%m')=#{paymentTime}        
+</if>
+order by plan.PaymentTime
+        
+        </select>
+        
+        <select id="getCustomerPaymentPlanInfo">
+
+SELECT
+	sum(TotalPaymentPrincipalMoney) TotalPaymentPrincipalMoney,
+	sum(TotalProfitMoney) TotalProfitMoney,
+	sum(totalPaymentMoney) totalPaymentMoney
+FROM
+	core_paymentplan
+WHERE
+	state = 0
+AND `Status` = 0
+<if test="#{customerId} != null">
+AND CustomerId = #{customerId}
+</if>
+        
+        </select>
+        
+        <select id="getReport01">
+SELECT
+    plan.id,
+    date_format(plan.paymentTime, '%Y-%m-%d') AS paymentTime,
+    count(plan.orderId) AS totalRecord,
+    round(sum(plan.totalpaymentPrincipalMoney),2) AS totalpaymentPrincipalMoney,
+    round(sum(plan.totalProfitMoney),2) AS totalProfitMoney,
+    round(sum(plan.paiedPrincipalMoney),2) AS paiedPrincipalMoney,
+    round(sum(paiedProfitMoney),2) AS paiedProfitMoney,
+    ppc.checkName,
+    ppc.checkTime,
+    ppc.checkName2,
+    ppc.checkTime2
+FROM
+    core_paymentplan plan
+left join crm_order o on o.state = 0 and o.`Status` in (1,8) AND o.ProductionId = plan.ProductId AND plan.OrderId = o.id
+left join crm_production proc on proc.state = 0 AND plan.productId = proc.id
+left join core_paymentplan_check ppc on ppc.state=0 and DATE_FORMAT(plan.PaymentTime,'%Y-%m')=DATE_FORMAT(ppc.PaymentPlanDate,'%Y-%m')
+where
+    1 = 1
+AND plan.state = 0
+<if test="#{paymentPlanStatus} != 2147483647">
+    AND plan.`Status` = #{paymentPlanStatus}
+</if>
+<if test="#{productionName} != null">
+    AND proc.`Name` LIKE #{productionName,type='%c%'}
+</if>
+<if test="#{startTime} != null">
+    AND plan.PaymentTime &gt;= #{startTime}
+</if>
+<if test="#{endTime} != null">
+    AND plan.PaymentTime &lt;= #{endTime}
+</if>
+GROUP BY
+	plan.paymentTime
+ORDER BY
+    plan.paymentTime
+        </select>
+    </select-sql>
+</sql>

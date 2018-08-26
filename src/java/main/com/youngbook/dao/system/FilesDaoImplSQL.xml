@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="loadByModuleBizId">
+SELECT
+	*
+FROM
+	system_files
+WHERE
+	state = 0
+<if test="#{moduleId} != null">    
+AND ModuleId = #{moduleId}
+</if>
+<if test="#{bizId} != null">
+AND BizId = #{bizId}
+</if>
+ORDER BY
+	operateTime DESC
+LIMIT 1;        
+        </select>
+        <select id="getListFiles">
+SELECT
+	*
+FROM
+	System_Files f
+WHERE
+	1 = 1
+AND f.state = 0
+<if test="#{moduleId} != null">
+AND f.moduleId = #{moduleId}
+</if>
+<if test="#{bizId} != null">
+AND f.bizId = #{bizId}
+</if>     
+        </select>
+    </select-sql>
+</sql>

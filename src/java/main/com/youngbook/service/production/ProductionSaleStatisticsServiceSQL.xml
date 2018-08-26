@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getProductionSaleStatistics">
+        
+-- 查询客户，订单，产品当前的销量，转让和兑付情况
+select 
+    customerId, -- 客户编号
+    c.`Name` customerName,
+    productionId, -- 产品编号
+    p.`Name` productionName,
+    totalSaleMoney, -- 总销售金额
+    totalTransferMoney, -- 总转让金额
+    totalPaybackMoney, -- 总兑付金额
+    (totalSaleMoney - totalTransferMoney - totalPaybackMoney) totalRemainMoney, -- 当前余额
+    orderId  -- 订单编号
+    from (
+    select sum(Pay_Money) totalSaleMoney, sum(Transfer_Money) totalTransferMoney, sum(Payback_Money) totalPaybackMoney, orderId, productionId, customerId
+    from (
+        -- 所有状态 1, 8, 5, 12, 20
+        -- 转让部分 12, 20
+        select 0 Pay_Money, sum(d.Money) Transfer_Money, 0 Payback_Money, o.id orderId, o.ProductionId productionId, o.CustomerId customerId
+        from crm_order o, crm_orderdetail d 
+        where o.state=0 and d.state=0 and o.id=d.OrderId and d.`status` in (12,20)
+        GROUP BY d.`status`, o.id, o.ProductionId, o.CustomerId
+        union all
+        -- 兑付 5,8
+        select 0 Pay_Money, 0 Transfer_Money,sum(d.Money) Payback_Money, o.id orderId, o.ProductionId productionId, o.CustomerId customerId
+        from crm_order o, crm_orderdetail d 
+        where o.state=0 and d.state=0 and o.id=d.OrderId and d.`status` in (5,8)
+        GROUP BY d.`status`, o.id, o.ProductionId, o.CustomerId
+        union all
+        -- 投资 1
+        select sum(d.Money) Pay_Money, 0 Transfer_Money,0 Payback_Money, o.id orderId, o.ProductionId productionId, o.CustomerId customerId
+        from crm_order o, crm_orderdetail d 
+        where o.state=0 and d.state=0 and o.id=d.OrderId and d.`status` in (1)
+        GROUP BY d.`status`, o.id, o.ProductionId, o.CustomerId
+    ) t GROUP BY orderId, productionId
+) tt 
+    LEFT JOIN crm_customerpersonal c on c.state=0 and tt.customerId=c.id
+    LEFT JOIN crm_production p on p.state=0 and p.id=tt.productionId
+where 1=1 
+    <if test="#{customerId} !=null">
+    and tt.customerId=#{customerId} 
+    </if>
+    
+    <if test="#{productionId} !=null">
+    and tt.productionId=#{productionId}
+    </if>
+    
+    <if test="#{orderId} !=null">
+    and tt.orderId=#{orderId}
+    </if>
+        </select>
+        
+    </select-sql>
+</sql>
