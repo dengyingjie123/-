@@ -93,10 +93,29 @@ public class CustomerPersonalService extends BaseService {
     ISalemanGroupDao salemanGroupDao;
 
     @Autowired
-    ITokenDao tokenDao;
+    ICustomerAccountDao customerAccountDao;
 
     @Autowired
-    IOrderDao orderDao;
+    IAllinpayCircleDao allinpayCircleDao;
+
+    @Autowired
+    IProductionDao productionDao;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public FdcgCustomerQueryInfoPO fdcgQueryCustomerQueryInfoPO(String customerPersonalId, Connection conn) throws Exception {
 
@@ -242,8 +261,15 @@ public class CustomerPersonalService extends BaseService {
     }
 
     public boolean isCustomerCatalogConfirmed(CustomerPersonalPO customerPersonalPO) {
+        if (customerPersonalPO != null && customerPersonalPO.getCustomerCatalogId() != null && customerPersonalPO.getCustomerCatalogId().equals(CustomerCatalog.Confirmed)) {
+            return true;
+        }
 
-        return customerPersonalDao.isCustomerCatalogConfirmed(customerPersonalPO);
+        if (customerPersonalPO != null && customerPersonalPO.getCustomerCatalogId() == null) {
+            return true;
+        }
+
+        return false;
     }
 
     public CustomerPersonalPO loadByCustomerPersonalId(String customerPersonalId, Connection conn) throws Exception {

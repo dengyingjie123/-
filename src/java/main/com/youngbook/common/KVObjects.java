@@ -1,5 +1,6 @@
 package com.youngbook.common;
 
+import com.youngbook.common.utils.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -11,6 +12,10 @@ import java.util.List;
  */
 public class KVObjects {
     private List<KVObject> objects = null;
+
+    public KVObjects() {
+
+    }
 
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
@@ -42,9 +47,10 @@ public class KVObjects {
         return false;
     }
 
-    public void addItem(Object key, Object value) {
+    public KVObjects addItem(Object key, Object value) {
         KVObject o = new KVObject(key, value);
         add(o);
+        return this;
     }
 
     public Object getItem(Object key) {

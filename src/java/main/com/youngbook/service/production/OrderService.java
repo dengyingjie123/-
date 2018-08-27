@@ -4,9 +4,12 @@ import com.youngbook.common.*;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.Config4Status;
+import com.youngbook.common.config.XmlHelper;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.*;
+import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.*;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IOrderDetailDao;
@@ -19,6 +22,7 @@ import com.youngbook.dao.system.IDepartmentDao;
 import com.youngbook.dao.system.ILogDao;
 import com.youngbook.dao.system.IUserDao;
 import com.youngbook.entity.po.UserPO;
+import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.common.TimePO;
 import com.youngbook.entity.po.core.TransferPO;
 import com.youngbook.entity.po.core.TransferTargetType;
@@ -27,6 +31,8 @@ import com.youngbook.entity.po.production.*;
 import com.youngbook.entity.po.sale.*;
 import com.youngbook.entity.po.sale.contract.ContractPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
+import com.youngbook.entity.vo.Sale.PaymentPlanVO;
+import com.youngbook.entity.vo.production.OrderDetailVO;
 import com.youngbook.entity.vo.production.OrderDetailVO;
 import com.youngbook.entity.vo.production.OrderReportWeeklyVO;
 import com.youngbook.entity.vo.production.OrderVO;
@@ -103,7 +109,13 @@ public class OrderService extends BaseService {
     IDepartmentDao departmentDao;
 
     @Autowired
+    IAllinpayCircleDao allinpayCircleDao;
+
+    @Autowired
     ILogDao logDao;
+
+
+
 
     public int saveReferralCode(String orderId, String referralCode, String userId, Connection conn) throws Exception {
 

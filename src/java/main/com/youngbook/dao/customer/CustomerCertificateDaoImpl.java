@@ -1,5 +1,6 @@
 package com.youngbook.dao.customer;
 
+import com.youngbook.common.MyException;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.utils.TimeUtils;
@@ -80,6 +81,11 @@ public class CustomerCertificateDaoImpl implements ICustomerCertificateDao {
         customerCertificate.setCustomerId(customerId);
         customerCertificate.setState(Config.STATE_CURRENT);
         customerCertificate = MySQLDao.load(customerCertificate, CustomerCertificatePO.class, conn);
+
+        if (customerCertificate == null) {
+            MyException.newInstance("无法获得客户证件信息", "customerId=" + customerId).throwException();
+        }
+
         return customerCertificate;
     }
 }

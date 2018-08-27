@@ -63,7 +63,9 @@ var CustomerAccountClass = function(token) {
                 { field: 'number', title: '账号'},
                 { field: 'bankBranchName', title: '开户支行名称'},
                 { field: 'bankCode', title: '银行代码'},
-                { field: 'cityCode', title: '城市代码'}
+                { field: 'mobile', title: '银行预留手机号'},
+                { field: 'cityCode', title: '城市代码'},
+                { field: 'allinpayCircle_AcctSubNo', title: '通联金融圈交易子账号'}
             ]],
             toolbar: [{
                 id:'btnCustomerAccountAdd'+token,
@@ -77,11 +79,16 @@ var CustomerAccountClass = function(token) {
                 id:'btnCustomerAccountDelete'+token,
                 text:'删除',
                 iconCls: 'icon-remove'
+            },{
+                id:'btnAllinpayCircleOpenAccount'+token,
+                text:'通联金融圈开户',
+                iconCls: 'icon-add'
             }],
             onLoadSuccess:function() {
                 onClickCustomerAccountAdd(obj);
                 onClickCustomerAccountDelete();
                 onClickCustomerAccountEdit(obj);
+                onClickCustomerAccount_AllinpayCircle_OpenAccount();
             }
         });
     }
@@ -224,6 +231,27 @@ var CustomerAccountClass = function(token) {
             fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
                 var sid = selected.sid;
                 var url = WEB_ROOT + "/customer/CustomerAccount_load.action?customerAccount.sid="+sid;
+                fw.post(url, null, function(data){
+                    initWindowCustomerAccountWindow(data,obj);
+                }, null);
+            })
+
+        });
+    }
+
+
+    function onClickCustomerAccount_AllinpayCircle_OpenAccount() {
+        var buttonId = "btnAllinpayCircleOpenAccount" + token;
+        fw.bindOnClick(buttonId, function(process) {
+            fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
+
+                if (!fw.checkIsTextEmpty(selected['allinpayCircle_AcctSubNo'])) {
+                    fw.alert('提示', '该账号已注册过通联金融圈账户');
+                    return;
+                }
+
+                var id = selected.id;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_openAccountPersonalByTrust?customerAccountId="+id;
                 fw.post(url, null, function(data){
                     initWindowCustomerAccountWindow(data,obj);
                 }, null);

@@ -114,6 +114,14 @@
                         <td align="right">备注</td>
                         <td><textarea rows="1" type="text" id="remark<%=token %>" name="personal.remark" validtype="maxLength[200]" style="width:180px"/></td>
                     </tr>
+                    <tr>
+                        <td align="right">通联金融圈编号</td>
+                        <td><input type="text" class="easyui-validatebox" id="allinpayCircle_SignNum<%=token %>" name="personal.allinpayCircle_SignNum" style="width:180px" readonly/></td>
+                        <td align="right">客户编号</td>
+                        <td><input type="text" class="easyui-validatebox" id="id<%=token %>" name="personal.id" style="width:180px" readonly/></td>
+                        <td align="right">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
                 </table>
 
 
@@ -126,7 +134,6 @@
                 <input type="hidden" id="email5<%=token %>" name="personal.email5" style="width:180px"/>
                 <input type="hidden" id="operatorId<%=token %>" name="personal.operatorId" style="width:180px"/>
                 <input type="hidden" id="sid<%=token %>" name="personal.sid" style="width:180px"/>
-                <input type="hidden" id="id<%=token %>" name="personal.id" style="width:180px"/>
                 <input type="hidden" id="operateTime<%=token %>" name="personal.operateTime" style="width:180px"/>
                 <input type="hidden" id="state<%=token %>" name="personal.state" style="width:180px"/>
                 <input type="hidden" id="password<%=token%>" name="personal.password" style="width:180px"/>

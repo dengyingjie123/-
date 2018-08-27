@@ -39,4 +39,5 @@ public interface ICustomerPersonalDao {
     public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception;
     public CustomerPersonalPO loadByCustomerPersonalId(String customerPersonalId, Connection conn) throws Exception;
     public Integer updateCustomerRealName(String id, String realName, Connection conn) throws Exception;
+    public CustomerPersonalPO insertOrUpdate(CustomerPersonalPO customerPersonalPO, String userId, Connection conn) throws Exception;
 }

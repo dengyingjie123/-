@@ -15,7 +15,7 @@ public class TransactionPO extends BasePO {
      * head部分
      */
     private String processing_code = "";
-    private String inst_id = "79020000";
+    private String inst_id = "79040000";
     private String trans_date = "";
     private String trans_time = "";
     private String sign_code = "";

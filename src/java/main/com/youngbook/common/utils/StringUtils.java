@@ -6,6 +6,8 @@ import com.youngbook.common.MyException;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.binary.Hex;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;

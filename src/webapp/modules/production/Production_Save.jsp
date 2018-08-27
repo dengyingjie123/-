@@ -16,7 +16,10 @@
             <table width="100%" border="0" cellspacing="5" cellpadding="0">
                 <tr>
                     <td align="right">所属产品</td>
-                    <td colspan="5"><input type="text" id="productHomeId<%=token %>" class="easyui-combotree" required="true" missingmessage="必须填写" editable="false" name="production.productHomeId" style="width:500px"/>
+                    <td colspan="3"><input type="text" id="productHomeId<%=token %>" class="easyui-combotree" required="true" missingmessage="必须填写" editable="false" name="production.productHomeId" style="width:500px"/>
+                    </td>
+                    <td align="right">产品编号</td>
+                    <td><input type="text" id="id<%=token %>" class="easyui-validatebox" name="production.id"  readonly="readonly"/>
                     </td>
                 </tr>
                 <tr>
@@ -81,8 +84,8 @@
                     <td align="right">总成本</td>
                     <td><input type="text" class="easyui-validatebox" id="totalCost<%=token %>" data-options="required:true,validType:'number'" invalidMessage="请输入大于零的整数" name="production.totalCost" style="width:120px"/>&nbsp;%
                     </td>
-                    <td align="right">&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td align="right">通联金融圈账户代码</td>
+                    <td><input type="text" class="easyui-validatebox" id="allinpayCircle_ProductCodeCashAcct<%=token %>" data-options="validType:'number'" invalidMessage="请输入大于零的整数" name="production.allinpayCircle_ProductCodeCashAcct" style="width:120px"/></td>
                     <td align="right">&nbsp;</td>
                     <td>&nbsp;</td>
                     <td align="right">&nbsp;</td>
@@ -109,7 +112,6 @@
             </table>
       <input type="hidden" id="operatorId<%=token %>" name="production.operatorId" />
             <input type="hidden" id="sid<%=token %>" name="production.sid" />
-            <input type="hidden" id="id<%=token %>" name="production.id" />
             <input type="hidden" id="operateTime<%=token %>" name="production.operateTime" />
             <input type="hidden" id="state<%=token %>" name="production.state"/>
 

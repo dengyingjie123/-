@@ -42,6 +42,60 @@ public class CustomerInstitutionService extends BaseService {
     @Autowired
     ICustomerInstitutionDao customerInstitutionDao;
 
+    @Autowired
+    IAllinpayCircleDao allinpayCircleDao;
+
+    @Autowired
+    ICustomerPersonalDao customerPersonalDao;
+
+    /**
+     * 通联万小宝
+     * 充值-机构自付
+     * @param customerPersonalId
+     * @param customerInstitutionAccountId
+     * @param customerInstitutionId
+     * @param money
+     * @param productCodeCashAcct
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public ReturnObject allinpayCircle_Pay(String customerPersonalId, String customerInstitutionAccountId, String customerInstitutionId, double money, String productCodeCashAcct, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerPersonalId, conn);
+
+        CustomerAccountPO customerInstitutionAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(customerInstitutionAccountId, conn);
+
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(customerInstitutionAccountId, "allinpayCircleBankCode", conn);
+
+        CustomerInstitutionPO customerInstitutionPO = customerInstitutionDao.loadByCustomerInstitutionId(customerInstitutionId, conn);
+
+        String url = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("2080");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("pay_mode", "4");
+        transactionPO.getRequest().addItem("charge_flag", "1");
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", customerInstitutionAccountPO.getNumber());
+        transactionPO.getRequest().addItem("tel_num", customerInstitutionPO.getMobile());
+        transactionPO.getRequest().addItem("cur_type", "156");
+        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("product_code_cash_acct", productCodeCashAcct);
+        transactionPO.getRequest().addItem("resp_url", url);
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+        return returnObject;
+    }
+
 
     /**
      * 销售负责人查询所属销售组的机构客户

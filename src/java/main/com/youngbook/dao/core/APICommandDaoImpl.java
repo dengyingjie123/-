@@ -1,5 +1,6 @@
 package com.youngbook.dao.core;
 
+import com.youngbook.common.Database;
 import com.youngbook.common.MyException;
 import com.youngbook.common.config.Config;
 import com.youngbook.dao.MySQLDao;
@@ -24,6 +25,44 @@ public class APICommandDaoImpl implements IAPICommandDao {
         List<APICommandPO> list = MySQLDao.search(apiCommandPO, APICommandPO.class, conn);
 
         return list;
+    }
+
+
+    public APICommandPO saveCommand(String apiType, String apiName, String bizId, String commands, int commandType, String url, String callbackCode, String callbackMessage, Connection conn) throws Exception {
+        APICommandPO apiCommandPO = new APICommandPO();
+
+        apiCommandPO.setAPIURL(url);
+        apiCommandPO.setAPIType(apiType);
+        apiCommandPO.setAPIName(apiName);
+
+        apiCommandPO.setBizId(bizId);
+        apiCommandPO.setCommands(commands);
+        apiCommandPO.setCommandType(commandType);
+        apiCommandPO.setCallbackCode(callbackCode);
+        apiCommandPO.setCallbackMessage(callbackMessage);
+
+        MySQLDao.insertOrUpdate(apiCommandPO, conn);
+
+        return apiCommandPO;
+    }
+
+    public APICommandPO saveCommand(String apiType, String apiName, String bizId, String commands, int commandType, String url, String callbackCode, String callbackMessage) throws Exception {
+
+        Connection conn = Config.getConnection();
+
+        try {
+
+            APICommandPO apiCommandPO = saveCommand(apiType, apiName, bizId, commands, commandType, url, callbackCode, callbackMessage, conn);
+
+            return apiCommandPO;
+
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
+            Database.close(conn);
+        }
     }
 
 

@@ -44,6 +44,14 @@
                     <td align="right">城市代码</td>
                     <td><input type="text" id="cityCode<%=token %>"  class="easyui-validatebox"   name="customerAccount.cityCode"  style="width:200px"/></td>
                 </tr>
+                <tr>
+                    <td align="right">银行预留手机号</td>
+                    <td><input type="text" id="mobile<%=token %>"  class="easyui-validatebox"   name="customerAccount.mobile"  style="width:200px"/></td>
+                </tr>
+                <tr>
+                    <td align="right">通联金融圈交易子账号</td>
+                    <td><input type="text" id="allinpayCircle_AcctSubNo<%=token %>"  class="easyui-validatebox"   name="customerAccount.allinpayCircle_AcctSubNo"  style="width:200px" readonly/></td>
+                </tr>
             </table>
             <input type="hidden" id="bankCode<%=token %>"  class="easyui-validatebox"  name="customerAccount.bankCode"  style="width:200px"/>
             <input type="hidden" id="customerId<%=token %>"  class="easyui-validatebox" name="customerAccount.customerId"  style="width:200px"/>
