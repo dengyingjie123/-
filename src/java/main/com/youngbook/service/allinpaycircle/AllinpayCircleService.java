@@ -503,7 +503,7 @@ public class AllinpayCircleService extends BaseService {
 
 
 
-        customerAccountPO.setAllinpayCircleAcctSubNo(acctSubNo);
+        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
 
         customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
 
@@ -573,7 +573,7 @@ public class AllinpayCircleService extends BaseService {
 
 
 
-        customerAccountPO.setAllinpayCircleAcctSubNo(acctSubNo);
+        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
 
         customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
 
@@ -657,7 +657,7 @@ public class AllinpayCircleService extends BaseService {
         customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
 
         String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
-        customerAccountPO.setAllinpayCircleAcctSubNo(acctSubNo);
+        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
 
         customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
 

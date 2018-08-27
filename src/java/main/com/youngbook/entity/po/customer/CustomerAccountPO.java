@@ -60,7 +60,7 @@ public class CustomerAccountPO extends BasePO {
     /**
      * 通联万小宝交易子账号
      */
-    private String allinpayCircleAcctSubNo = "";
+    private String allinpayCircle_AcctSubNo = "";
 
     /**
      * 银行预留手机号
@@ -75,12 +75,12 @@ public class CustomerAccountPO extends BasePO {
         this.mobile = mobile;
     }
 
-    public String getAllinpayCircleAcctSubNo() {
-        return allinpayCircleAcctSubNo;
+    public String getAllinpayCircle_AcctSubNo() {
+        return allinpayCircle_AcctSubNo;
     }
 
-    public void setAllinpayCircleAcctSubNo(String allinpayCircleAcctSubNo) {
-        this.allinpayCircleAcctSubNo = allinpayCircleAcctSubNo;
+    public void setAllinpayCircle_AcctSubNo(String allinpayCircle_AcctSubNo) {
+        this.allinpayCircle_AcctSubNo = allinpayCircle_AcctSubNo;
     }
 
     public String getCityCode() {
