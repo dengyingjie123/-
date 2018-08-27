@@ -5,10 +5,12 @@ import com.mind.platform.system.base.DataRow;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.KVObjects;
+import com.youngbook.common.ReturnObject;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinPayUtils;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
+import com.youngbook.service.allinpaycircle.AllinpayCircleService;
 import encryption.DataGramB2cUtil;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
@@ -17,6 +19,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,20 @@ import java.util.List;
  * Created by leevits on 5/15/2018.
  */
 public class AllinpayCircleAction extends BaseAction {
+
+    @Autowired
+    AllinpayCircleService allinpayCircleService;
+
+    public String openAccountPersonalByTrust() throws Exception {
+
+        String customerAccountId = getHttpRequestParameter("customerAccountId");
+
+        ReturnObject returnObject = allinpayCircleService.openAccountPersonalByTrust(customerAccountId, getLoginUser().getId(), getConnection());
+
+        getResult().setMessage(returnObject.getMessage());
+
+        return SUCCESS;
+    }
 
     public String getMessage() throws Exception {
 

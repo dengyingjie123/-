@@ -116,7 +116,7 @@
                     </tr>
                     <tr>
                         <td align="right">通联金融圈编号</td>
-                        <td><input type="text" class="easyui-validatebox" id="allinpayCircleSignNum<%=token %>" name="personal.allinpayCircleSignNum" style="width:180px" readonly/></td>
+                        <td><input type="text" class="easyui-validatebox" id="allinpayCircle_SignNum<%=token %>" name="personal.allinpayCircle_SignNum" style="width:180px" readonly/></td>
                         <td align="right">客户编号</td>
                         <td><input type="text" class="easyui-validatebox" id="id<%=token %>" name="personal.id" style="width:180px" readonly/></td>
                         <td align="right">&nbsp;</td>

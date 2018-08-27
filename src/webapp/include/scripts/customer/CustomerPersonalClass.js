@@ -581,6 +581,7 @@ var CustomerPersonalClass = function (token) {
     }
 
 
+
     /**
      * 短信发送事件
      */

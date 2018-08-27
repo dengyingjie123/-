@@ -656,26 +656,27 @@ public class AllinpayCircleService extends BaseService {
 
     /**
      * 单笔信任开户
-     * @param customerId
      * @param accountId
      * @param operatorId
      * @param conn
      * @throws Exception
      */
-    public ReturnObject openAccountPersonalByTrust(String customerId, String accountId, String operatorId, Connection conn) throws Exception {
-
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
-
+    public ReturnObject openAccountPersonalByTrust(String accountId, String operatorId, Connection conn) throws Exception {
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccountPO.getCustomerId(), conn);
+
+
+
 
         String allinpayCircleMobile = customerAccountPO.getMobile();
 
         String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
 
-        CustomerCertificatePO customerCertificatePO = customerCertificateDao.loadByCustomerId(customerId, conn);
+        CustomerCertificatePO customerCertificatePO = customerCertificateDao.loadByCustomerId(customerAccountPO.getCustomerId(), conn);
 
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 

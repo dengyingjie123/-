@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <td align="right">通联金融圈交易子账号</td>
-                    <td><input type="text" id="allinpayCircleAcctSubNo<%=token %>"  class="easyui-validatebox"   name="customerAccount.allinpayCircleAcctSubNo"  style="width:200px" readonly/></td>
+                    <td><input type="text" id="allinpayCircle_AcctSubNo<%=token %>"  class="easyui-validatebox"   name="customerAccount.allinpayCircle_AcctSubNo"  style="width:200px" readonly/></td>
                 </tr>
             </table>
             <input type="hidden" id="bankCode<%=token %>"  class="easyui-validatebox"  name="customerAccount.bankCode"  style="width:200px"/>
