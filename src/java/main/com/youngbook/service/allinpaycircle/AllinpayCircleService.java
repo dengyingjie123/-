@@ -87,6 +87,10 @@ public class AllinpayCircleService extends BaseService {
 
     @Autowired
     IOrderDao orderDao;
+
+    private static final String callbackUrl = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
+
+
     /**
      * 解析返回值
      * @param returnObject
@@ -114,6 +118,48 @@ public class AllinpayCircleService extends BaseService {
         }
 
         return helper;
+    }
+
+
+    /**
+     * 文件联机下载
+     * @param fileType
+     * @return
+     * @throws Exception
+     */
+    public String buildDownloadFileUrl(String fileType) throws Exception {
+        StringBuffer sbUrl = new StringBuffer();
+
+        sbUrl.append("http://服务器地址/AppStsWeb/service/orgDownloadReconFile.action?");
+
+        TransactionPO transactionPO = new TransactionPO();
+        transactionPO.setTrans_date(TimeUtils.getNowDateYYYYMMDD());
+        transactionPO.setTrans_time(TimeUtils.getNowTimeHH24MMSS());
+
+        KVObjects parameters = new KVObjects();
+
+        parameters.addItem("inst_id", transactionPO.getInst_id());
+        parameters.addItem("trans_date", transactionPO.getTrans_date());
+        parameters.addItem("file_type", fileType);
+        parameters.addItem("batch_no", "");
+
+        String signCode = DataGramB2cUtil.signature(parameters.getItemString("inst_id")
+                + parameters.getItemString("trans_date")
+                + parameters.getItemString("file_type")
+                + parameters.getItemString("batch_no"));
+
+        parameters.addItem("sign_code", signCode);
+
+
+        for (int i = 0; i < parameters.size(); i++) {
+            String key = parameters.get(i).getKeyStringValue();
+            String value = parameters.get(i).getValueStringValue();
+            sbUrl.append(key).append("=").append(value).append("&");
+        }
+
+        sbUrl = StringUtils.removeLastLetters(sbUrl, "&");
+
+        return sbUrl.toString();
     }
 
 

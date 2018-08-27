@@ -6,6 +6,8 @@ import com.youngbook.common.MyException;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import net.sf.json.JSONObject;
+import org.apache.commons.codec.binary.Hex;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +16,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
