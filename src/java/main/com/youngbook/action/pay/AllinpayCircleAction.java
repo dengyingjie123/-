@@ -21,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.mail.Quota;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,17 @@ public class AllinpayCircleAction extends BaseAction {
 
     @Autowired
     AllinpayCircleService allinpayCircleService;
+
+    public String depositByInstitution() throws Exception {
+
+        String orderId = getHttpRequestParameter("orderId");
+
+        ReturnObject returnObject = allinpayCircleService.depositByInstitution(orderId, getLoginUser().getId(), getConnection());
+
+        getResult().setReturnValue(returnObject.getMessage());
+
+        return SUCCESS;
+    }
 
     public String openAccountPersonalByTrust() throws Exception {
 

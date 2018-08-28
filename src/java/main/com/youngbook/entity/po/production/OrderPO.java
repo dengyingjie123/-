@@ -47,6 +47,17 @@ public class OrderPO extends BasePO {
     private String description = new String();
     // 订单属性状态
     private int status = Integer.MAX_VALUE;
+
+    /**
+     * 充值状态
+     * 0：未充值
+     * 1：已充值
+     * 2：充值待系统确认
+     * 3：充值失败
+     */
+    private int depositStatus = Integer.MAX_VALUE;
+
+
     // 创建时间
     @DataAdapter(fieldType = FieldType.DATE)
     private String createTime = new String();
@@ -140,6 +151,14 @@ public class OrderPO extends BasePO {
     @DataAdapter(fieldType = FieldType.DATE)
     private String financeMoneyConfirmTime = new String();
 
+
+    public int getDepositStatus() {
+        return depositStatus;
+    }
+
+    public void setDepositStatus(int depositStatus) {
+        this.depositStatus = depositStatus;
+    }
 
     public String getFinanceMoneyConfirmUserId() {
         return financeMoneyConfirmUserId;

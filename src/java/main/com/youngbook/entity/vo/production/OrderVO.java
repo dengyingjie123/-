@@ -67,6 +67,13 @@ public class OrderVO extends BaseVO {
     private int status = Integer.MAX_VALUE;
 
     /**
+     * 充值状态
+     * 0：未充值
+     * 1：已充值
+     */
+    private int depositStatus = Integer.MAX_VALUE;
+
+    /**
      * 1：未兑付，5：已全部兑付，8：部分兑付
      * 在view_order视图里定义
      */
@@ -256,6 +263,14 @@ public class OrderVO extends BaseVO {
 
     public void setFinanceMoneyConfirmUserName(String financeMoneyConfirmUserName) {
         this.financeMoneyConfirmUserName = financeMoneyConfirmUserName;
+    }
+
+    public int getDepositStatus() {
+        return depositStatus;
+    }
+
+    public void setDepositStatus(int depositStatus) {
+        this.depositStatus = depositStatus;
     }
 
     public String getFinanceMoneyConfirmUserId() {

@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 
+import java.net.ConnectException;
 import java.security.Key;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -438,9 +439,23 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
+    public ReturnObject depositByInstitution(String orderId, String operatorId, Connection conn) throws Exception {
+
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        String accountId = orderPO.getAccountId();
+        String productionId = orderPO.getProductionId();
+
+        double money = orderPO.getMoney();
+
+        ReturnObject returnObject = depositByInstitution(accountId, productionId, money, operatorId, conn);
+
+        return returnObject;
+    }
+
+
     /**
      * 充值-机构自付
-     * @param customerId
      * @param accountId
      * @param productionId
      * @param money
@@ -449,13 +464,15 @@ public class AllinpayCircleService extends BaseService {
      * @return
      * @throws Exception
      */
-    public ReturnObject depositByInstitution(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject depositByInstitution(String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
 
         String url = "";
 
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
-
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String customerId = customerAccountPO.getCustomerId();
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
         String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
