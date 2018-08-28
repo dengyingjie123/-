@@ -183,6 +183,7 @@ public class MyException extends Exception {
     public static MyException newInstance(String peopleMessage, String machineMessage) {
         MyException myException = new MyException();
         myException.setPeopleMessage(peopleMessage);
+        myException.setMessage(peopleMessage);
         myException.setMachineMessage(machineMessage);
         return myException;
     }

@@ -347,7 +347,10 @@ var OrderClass = function (token) {
                 fw.confirm('确认', '是否确认给<br>客户【'+customerName+'】<br>充值【' + moneyString + '】', function () {
                     var url = WEB_ROOT + '/pay/AllinpayCircle_depositByInstitution?orderId=' + orderId;
                     fw.post(url, null, function(data){
-                        fw.alert('提示', data);
+
+                        if (!fw.checkIsTextEmpty(data)) {
+                            fw.alert('提示', data);
+                        }
                     }, null);
 
                 }, null);

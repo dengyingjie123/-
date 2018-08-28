@@ -39,7 +39,7 @@ public class AllinpayCircleAction extends BaseAction {
 
         ReturnObject returnObject = allinpayCircleService.depositByInstitution(orderId, getLoginUser().getId(), getConnection());
 
-        getResult().setReturnValue(returnObject.getMessage());
+        setResult(returnObject);
 
         return SUCCESS;
     }

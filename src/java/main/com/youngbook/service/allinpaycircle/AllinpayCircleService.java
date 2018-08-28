@@ -103,7 +103,7 @@ public class AllinpayCircleService extends BaseService {
         XmlHelper helper = null;
 
         if (returnObject == null || returnObject.getCode() != 100) {
-            MyException.newInstance("返回值解析异常", returnObject.getMessage()).throwException();
+            MyException.newInstance("返回值解析异常，【"+returnObject.getMessage()+"】", returnObject.getMessage()).throwException();
         }
 
         String jsonString = returnObject.getReturnValue().toString();
@@ -502,28 +502,37 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("resp_url", url);
 
 
-        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+        ReturnObject returnObject = new ReturnObject();
+
+        try {
+
+            returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+            XmlHelper helper = getResponseXmlHelper(returnObject);
+
+            String signNum = helper.getValue("/transaction/response/sign_num");
+
+            customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+
+            customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
 
 
-        XmlHelper helper = getResponseXmlHelper(returnObject);
-
-        String signNum = helper.getValue("/transaction/response/sign_num");
-
-        customerPersonalPO.setAllinpayCircle_SignNum(signNum);
-
-        customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
-
-
-        String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+            String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
 
 
 
-        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
+            customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
 
-        customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+            customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+        }
+        catch (Exception e) {
+            returnObject.setCode(-1);
+            returnObject.setMessage(e.getMessage());
+        }
 
 
-        return null;
+
+        return returnObject;
     }
 
 
