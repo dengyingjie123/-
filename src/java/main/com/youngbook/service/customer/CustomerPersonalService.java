@@ -19,9 +19,11 @@ import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.bank.TranxServiceImpl;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.*;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IOrderDetailDao;
+import com.youngbook.dao.production.IProductionDao;
 import com.youngbook.dao.sale.IPaymentPlanDao;
 import com.youngbook.dao.sale.ISalemanGroupDao;
 import com.youngbook.dao.system.IDepartmentDao;
@@ -101,19 +103,11 @@ public class CustomerPersonalService extends BaseService {
     @Autowired
     IProductionDao productionDao;
 
+    @Autowired
+    IOrderDao orderDao;
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @Autowired
+    ITokenDao tokenDao;
 
 
 

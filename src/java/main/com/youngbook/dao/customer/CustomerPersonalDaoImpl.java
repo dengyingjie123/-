@@ -27,6 +27,16 @@ import java.util.List;
 @Component("customerPersonalDao")
 public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
 
+    public CustomerPersonalPO insertOrUpdate(CustomerPersonalPO customerPersonalPO, String userId, Connection conn) throws Exception {
+
+        MySQLDao.insertOrUpdate(customerPersonalPO, userId, conn);
+
+        return customerPersonalPO;
+
+    }
+
+
+
     public FdcgCustomerPO fdcgLoadFdcgCustomerPOByCrmCustomerPersonalId(String customerPersonalId, Connection conn) throws Exception {
 
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("A9991803");

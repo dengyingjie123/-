@@ -108,4 +108,40 @@ public class KVObjects {
         }
         return objects.size();
     }
+
+    /**
+     * 判断是否包含为空的值，任意为空，则返回真
+     * @param keys
+     * @return
+     */
+    public boolean isContainsAnyEmptyValue(String ... keys) {
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];
+            if (isContainsEmptyValue(key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 检测key对应的value是否为空
+     * @param key
+     * @return
+     */
+    public boolean isContainsEmptyValue(String key) {
+        if (StringUtils.isEmpty(key)) {
+            return true;
+        }
+
+        for (int i = 0; i < size(); i++) {
+            KVObject kvObject = get(i);
+            if (kvObject.getKeyStringValue().equals(key) && !StringUtils.isEmpty(kvObject.getValueStringValue())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
