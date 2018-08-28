@@ -466,7 +466,6 @@ public class AllinpayCircleService extends BaseService {
      */
     public ReturnObject depositByInstitution(String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
 
-        String url = "";
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
 
@@ -495,11 +494,11 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
-        transactionPO.getRequest().addItem("tel_num", customerPersonalPO.getMobile());
+        transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
         transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
-        transactionPO.getRequest().addItem("resp_url", url);
+        transactionPO.getRequest().addItem("resp_url", callbackUrl);
 
 
         ReturnObject returnObject = new ReturnObject();
