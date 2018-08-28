@@ -427,7 +427,7 @@ public class FuiouService extends BaseService {
      */
     public String buildMobilePayOrder(OrderPO order, Connection conn) throws Exception {
 
-        CustomerAccountPO customerAccountPO = customerAccountDao.getCustomerAccountPO(order.getId(), conn);
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByOrderId(order.getId(), conn);
         if (customerAccountPO == null) {
             MyException.newInstance("无法获得客户账号信息", "customerId=" + order.getCustomerId()).throwException();
         }
