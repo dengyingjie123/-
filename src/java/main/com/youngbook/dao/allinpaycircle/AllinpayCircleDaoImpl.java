@@ -14,6 +14,7 @@ import com.youngbook.dao.core.IAPICommandDao;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandType;
 import encryption.DataGramB2cUtil;
+import encryption.STSTxData;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -45,8 +46,15 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     private String getSignedXml(TransactionPO transactionPO) throws Exception {
 
 
+        /**
+         *
+         * String signformat = e.format("MSGVERIFY", sts, (new CMData()).put("code", "0001"));
+         * signformat = signformat.trim();
+         * String signMsg = STSTxData.signMsgPriKey(signformat, STSTxData.getPrivateKeyB2c());
+         */
 
-        String signCode = SecurityUtil.getSignMsg(transactionPO.toXmlString());
+        // String signCode = SecurityUtil.getSignMsg(transactionPO.toXmlString());
+        String signCode = STSTxData.signMsgPriKey(transactionPO.toXmlString(), STSTxData.getPrivateKeyB2c());
 
         transactionPO.setSign_code(signCode);
 
@@ -68,7 +76,11 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                 "<KeyInfo>"+
                 "</STSPackage>";
 
+        System.out.println("待发送组装好的数据 min 未编码 === " + xml);
+
         String signformat = encoder.encode(xml.getBytes("UTF-8"));
+
+        System.out.println("待发送组装好的数据 min 已编码 === " + signformat);
         return signformat;
     }
 
@@ -102,10 +114,10 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         String xml = DataGramB2cUtil.createRequestMsgVerifyCryptoMsg(transactionDataRow);
 
         System.out.println("待发送加密前的xml ===" + transactionPO.toXmlString());
-        System.out.println("待发送加密后的xml ===" + xml);
+        System.out.println("待发送加密后的xml ===" + decode(xml));
 
         String signedXml = getSignedXml(transactionPO);
-        System.out.println(signedXml);
+        System.out.println("待发送加密后的xml mine ===" + signedXml);
 
 
         String unsignXml = decode(signedXml);
