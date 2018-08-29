@@ -45,15 +45,6 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
     private String getSignedXml(TransactionPO transactionPO) throws Exception {
 
-
-        /**
-         *
-         * String signformat = e.format("MSGVERIFY", sts, (new CMData()).put("code", "0001"));
-         * signformat = signformat.trim();
-         * String signMsg = STSTxData.signMsgPriKey(signformat, STSTxData.getPrivateKeyB2c());
-         */
-
-        // String signCode = SecurityUtil.getSignMsg(transactionPO.toXmlString());
         String signCode = STSTxData.signMsgPriKey(transactionPO.toXmlString(), STSTxData.getPrivateKeyB2c());
 
         transactionPO.setSign_code(signCode);
@@ -76,11 +67,11 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                 "<KeyInfo>"+
                 "</STSPackage>";
 
-        System.out.println("待发送组装好的数据 min 未编码 === " + xml);
+//        System.out.println("待发送组装好的数据 min 未编码 === " + xml);
 
         String signformat = encoder.encode(xml.getBytes("UTF-8"));
 
-        System.out.println("待发送组装好的数据 min 已编码 === " + signformat);
+//        System.out.println("待发送组装好的数据 min 已编码 === " + signformat);
         return signformat;
     }
 
@@ -90,38 +81,14 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         transactionPO.setTrans_date(TimeUtils.getNowDateYYYYMMDD());
         transactionPO.setTrans_time(TimeUtils.getNowTimeHH24MMSS());
 
-
-        DataRow transactionDataRow = new CMData();
-        DataRow headListRow = new CMData(), requestListRow = new CMData();
-
-        headListRow.put("processing_code", transactionPO.getProcessing_code());
-        headListRow.put("inst_id", transactionPO.getInst_id());
-        headListRow.put("trans_date", transactionPO.getTrans_date());
-        headListRow.put("trans_time", transactionPO.getTrans_time());
-        headListRow.put("ver_num", transactionPO.getVer_num());
-
-        for (int i = 0; i < transactionPO.getRequest().size(); i++) {
-            String key = transactionPO.getRequest().get(i).getKeyStringValue();
-            String value = transactionPO.getRequest().get(i).getValueStringValue();
-            requestListRow.put(key, value);
-        }
-
-
-        transactionDataRow.put("head", headListRow);
-        transactionDataRow.put("request", requestListRow);
-
-
-        String xml = DataGramB2cUtil.createRequestMsgVerifyCryptoMsg(transactionDataRow);
-
-        System.out.println("待发送加密前的xml ===" + transactionPO.toXmlString());
-        System.out.println("待发送加密后的xml ===" + decode(xml));
+//        System.out.println("待发送加密前的xml ===" + transactionPO.toXmlString());
 
         String signedXml = getSignedXml(transactionPO);
-        System.out.println("待发送加密后的xml mine ===" + signedXml);
+//        System.out.println("待发送加密后的xml mine ===" + signedXml);
 
 
         String unsignXml = decode(signedXml);
-        System.out.println("解密待发送的xml====" + unsignXml);
+//        System.out.println("解密待发送的xml====" + unsignXml);
 
 
         List<NameValuePair> paramList = new ArrayList<NameValuePair>();
@@ -135,34 +102,32 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String apiName = AllinpayCircleUtils.getAPIName(transactionPO.getProcessing_code());
 
-        apiCommandDao.saveCommand("通联支付万小宝", "通联支付万小宝-" + apiName + "-发送", bizId, transactionPO.toXmlString(), APICommandType.Xml, url, "", "");
-
-
-
+        apiCommandDao.saveCommand("通联支付万小宝", "通联支付万小宝-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");
 
         HttpPost httpPost = new HttpPost(url);
 
         httpPost.setEntity(new UrlEncodedFormEntity(paramList, Consts.UTF_8));
         HttpResponse response = httpClient.execute(httpPost);
-        System.out.println("反馈 ==" + response);
+//        System.out.println("反馈 ==" + response);
 
 
         HttpEntity entity = response.getEntity();
 
         String resultHtml = EntityUtils.toString(entity, "UTF-8");
-        System.out.println(" resultHtml111  === " + resultHtml);
+//        System.out.println(" resultHtml111  === " + resultHtml);
 
         BASE64Decoder base64 = new BASE64Decoder();
         resultHtml = new String(base64.decodeBuffer(resultHtml), Consts.UTF_8);
-        System.out.println(" resultHtml222  === " + resultHtml);
+//        System.out.println(" resultHtml222  === " + resultHtml);
 
 
 
-        String encryptedText = PaymentGatewayService.getNodeValue(resultHtml, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
+        String encryptedText = PaymentGatewayService.getNodeValue(resultHtml, "EncryptedText");
 
 
-        String receiverX509CertSN = PaymentGatewayService.getNodeValue(resultHtml, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
-        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
+        String receiverX509CertSN = PaymentGatewayService.getNodeValue(resultHtml, "ReceiverX509CertSN");
+
+//        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
 
 
         String encryptedKey = PaymentGatewayService.getNodeValue(resultHtml, "EncryptedKey");
@@ -172,17 +137,17 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
 
-        System.out.println("加密后的 ==" + encryptedText);
+//        System.out.println("加密后的 ==" + encryptedText);
 
-        String signMsg = PaymentGatewayService.getNodeValue(encryptedText, "sign_code");// encryptedText.substring(encryptedText.indexOf("<sign_code>")+"<sign_code>".length(),encryptedText.indexOf("</sign_code>"));
+        String signMsg = PaymentGatewayService.getNodeValue(encryptedText, "sign_code");
         String respMsg = encryptedText.substring(0, encryptedText.indexOf("<sign_code>"))
                 + encryptedText.substring(encryptedText.indexOf("</sign_code>") + "</sign_code>".length());
 
-        System.out.println("signMsg ==" + signMsg);
-        System.out.println("respMsg ==" + respMsg);
-        System.out.println("String length ==" + respMsg.trim().length());
-        boolean flag = SecurityUtil.verifySign(signMsg, respMsg.trim());
-        System.out.println("verifySign == " + flag);
+//        System.out.println("signMsg ==" + signMsg);
+//        System.out.println("respMsg ==" + respMsg);
+//        System.out.println("String length ==" + respMsg.trim().length());
+//        boolean flag = SecurityUtil.verifySign(signMsg, respMsg.trim());
+//        System.out.println("verifySign == " + flag);
 
 
         String responseCode = PaymentGatewayService.getNodeValue(encryptedText, "resp_code");
