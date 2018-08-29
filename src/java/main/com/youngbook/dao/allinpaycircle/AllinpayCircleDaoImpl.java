@@ -5,6 +5,7 @@ import com.emulator.paymentgateway.util.PaymentGatewayService;
 import com.emulator.paymentgateway.util.SecurityUtil;
 import com.mind.platform.system.base.CMData;
 import com.mind.platform.system.base.DataRow;
+import com.youngbook.action.api.dehecircle.DeheCircleAction;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.utils.TimeUtils;
@@ -25,20 +26,51 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import java.security.Key;
+import java.security.cert.X509Certificate;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by leevits on 7/19/2018.
- */
+
 @Component("allinpayCircleDao")
 public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
     @Autowired
     IAPICommandDao apiCommandDao;
+
+
+    private String getSignedXml(TransactionPO transactionPO) throws Exception {
+
+
+
+        String signCode = SecurityUtil.getSignMsg(transactionPO.toXmlString());
+
+        transactionPO.setSign_code(signCode);
+
+        String signedXml = transactionPO.toXmlString();
+
+        //对称加密
+        Key key = SecurityUtil.generateSymmetricKey();
+        byte[] encryptedText = SecurityUtil.encryptSymmetry(signedXml, key);
+
+        X509Certificate cert = SecurityUtil.getCer();
+        byte[] encryptedKey = SecurityUtil.encryptSymmetricKey(key, cert.getPublicKey());
+        BASE64Encoder encoder = new BASE64Encoder();
+
+        String xml = "<STSPackage>"+
+                "<EncryptedText>"+encoder.encode(encryptedText)+"</EncryptedText>"+
+                "<KeyInfo>"+
+                "<ReceiverX509CertSN>"+cert.getSerialNumber().toString(10)+"</ReceiverX509CertSN>" +
+                "<EncryptedKey>"+encoder.encode(encryptedKey)+"</EncryptedKey>" +
+                "<KeyInfo>"+
+                "</STSPackage>";
+
+        String signformat = encoder.encode(xml.getBytes("UTF-8"));
+        return signformat;
+    }
 
     public ReturnObject sendTransaction(TransactionPO transactionPO, Connection conn) throws Exception {
 
@@ -67,18 +99,25 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         transactionDataRow.put("request", requestListRow);
 
 
-        String xml = DataGramB2cUtil.createRequestJrQianyueCryptoMsg(transactionDataRow);
+        String xml = DataGramB2cUtil.createRequestMsgVerifyCryptoMsg(transactionDataRow);
 
         System.out.println("待发送加密前的xml ===" + transactionPO.toXmlString());
         System.out.println("待发送加密后的xml ===" + xml);
 
+        String signedXml = getSignedXml(transactionPO);
+        System.out.println(signedXml);
+
+
+        String unsignXml = decode(signedXml);
+        System.out.println("解密待发送的xml====" + unsignXml);
+
+
         List<NameValuePair> paramList = new ArrayList<NameValuePair>();
-        paramList.add(new BasicNameValuePair("msgPlain", xml));
+        paramList.add(new BasicNameValuePair("msgPlain", signedXml));
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
         String url = "http://116.228.64.55:28082/AppStsWeb/service/acquireAction.action";
-        // XmlHelper helper = new XmlHelper();
 
         String bizId = transactionPO.getRequest().getItemString("req_trace_num");
 
@@ -159,4 +198,30 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         return returnObject;
     }
 
+
+    private String decode(String code) throws Exception {
+
+        BASE64Decoder base64 = new BASE64Decoder();
+        String xmlDecode = new String(base64.decodeBuffer(code), Consts.UTF_8);
+        System.out.println(" xmlDecode  === " + xmlDecode);
+
+
+        String encryptedText = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
+
+
+        String receiverX509CertSN = PaymentGatewayService.getNodeValue(xmlDecode, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
+        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
+
+
+        String encryptedKey = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedKey");
+
+        Key pfxKey = SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(encryptedKey),
+                SecurityUtil.getPrivateKey());
+
+        encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
+
+        System.out.println("加密后的 ==" + encryptedText);
+
+        return encryptedText;
+    }
 }

@@ -45,9 +45,9 @@ public class SecurityUtil
 	  
 	private static final String SIGNMODE = "PKCS12";//
 	
-	private static String certPath = "R:\\work\\00_dev\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps-111111.pfx";
+	private static String certPath = "R:\\work\\01_github\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps-111111.pfx";
 	
-	private static String certPathcer = "R:\\work\\00_dev\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps.cer";
+	private static String certPathcer = "R:\\work\\01_github\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps.cer";
 	
 	private static final String FORMAT = "X.509";//֤���ʽ��׼
 	
