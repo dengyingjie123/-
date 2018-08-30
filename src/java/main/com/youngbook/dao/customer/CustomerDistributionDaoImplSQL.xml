@@ -9,26 +9,5 @@ and cd.status in (0,1)
 and cd.CustomerId=#{CustomerId}
 </if>
         </select>
-        <select id="remove">
-select * from crm_customerdistribution cd where 1=1 
-and cd.state=0 
-<if test="#{customerId} !=null">
-and cd.CustomerId=#{customerId}
-</if>
-<if test="#{saleManId} !=null">
-and cd.SaleManId=#{saleManId}
-</if>
-        </select>
-        <select id="saveCheck">
-select * from crm_customerdistribution cd where 1=1 
-and cd.state=0
-and cd.status in (0,1)
-<if test="#{customerId} !=null">
-and cd.CustomerId=#{customerId}
-</if>
-<if test="#{saleManId} !=null">
-and cd.SaleManId=#{saleManId}
-</if>
-        </select>
     </select-sql>
 </sql>

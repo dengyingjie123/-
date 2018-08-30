@@ -186,7 +186,7 @@ public class CommandExecutor {
             conn.setAutoCommit(false);
 
             UserPO formUserPO = userService.loadUserByMobile(fromSalesmanMobile, conn);
-            UserPO toUserPO = userService.loadUserByUserId(toSalesmanMobile, conn);
+            UserPO toUserPO = userService.loadUserByMobile(toSalesmanMobile, conn);
 
             if (!CommandExecutor.getConsoleInput( "是否将【"+formUserPO.getName()+"】的客户分配给【"+toUserPO.getName()+"】？ y/n").equalsIgnoreCase("y")) {
                 MyException.newInstance("手动取消").throwException();

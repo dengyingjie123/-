@@ -52,8 +52,7 @@ public class CustomerDistributionDaoImpl implements ICustomerDistributionDao {
         /**
          * 检查原有分配方案，如果存在已通过的分配，则无需新建
          */
-        DatabaseSQL dbSQLCheck = new DatabaseSQL();
-        dbSQLCheck.newSQL("saveCheck", "CustomerDistributionDaoImplSQL", CustomerDistributionDaoImpl.class);
+        DatabaseSQL dbSQLCheck = DatabaseSQL.newInstance("0FF31808");
         dbSQLCheck.addParameter4All("customerId", customerDistribution.getCustomerId());
         dbSQLCheck.addParameter4All("saleManId", customerDistribution.getSaleManId());
         dbSQLCheck.initSQL();
@@ -76,8 +75,7 @@ public class CustomerDistributionDaoImpl implements ICustomerDistributionDao {
         /**
          * 检查原有分配方案，如果存在已通过的分配，则无需新建
          */
-        DatabaseSQL dbSQLCheck = new DatabaseSQL();
-        dbSQLCheck.newSQL("saveCheck", "CustomerDistributionDaoImplSQL", CustomerDistributionDaoImpl.class);
+        DatabaseSQL dbSQLCheck = DatabaseSQL.newInstance("0FF31808");
         dbSQLCheck.addParameter4All("customerId", customerId);
         dbSQLCheck.initSQL();
 
@@ -108,8 +106,7 @@ public class CustomerDistributionDaoImpl implements ICustomerDistributionDao {
          * 执行删除分配操作
          */
 
-        DatabaseSQL dbSQL = new DatabaseSQL();
-        dbSQL.newSQL("remove", "CustomerDistributionDaoImplSQL", CustomerDistributionDaoImpl.class);
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("58861808");
         dbSQL.addParameter4All("customerId", customerPersonalId);
         dbSQL.addParameter4All("saleManId", userId);
         dbSQL.initSQL();
