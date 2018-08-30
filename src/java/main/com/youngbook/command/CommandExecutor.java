@@ -11,6 +11,7 @@ import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.runner.TimeRunner;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.production.IOrderDao;
+import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.po.production.OrderStatus;
@@ -24,6 +25,7 @@ import com.youngbook.service.sale.PaymentPlanService;
 import com.youngbook.service.sale.contract.ContractService;
 import com.youngbook.service.system.LogService;
 import com.youngbook.service.system.UserService;
+import com.youngbook.service.task.CustomerTask;
 import com.youngbook.service.task.FuiouOrderQueryBatchTask;
 import com.youngbook.service.task.FuiouOrderQueryTask;
 import com.youngbook.service.task.MergeTask;
@@ -53,9 +55,11 @@ public class CommandExecutor {
 
     IcelandService icelandService = Config.getBeanByName("icelandService", IcelandService.class);
 
+    UserService userService = Config.getBeanByName("userService", UserService.class);
+
     public static void main(String [] args) {
 
-        String [] commandNames = new String[] {"OrderBuildAndPayManually", "CancelContract", "ExecutePaymentPlan", "distributeCustomerTask","TimeRunner", "Test", "FuiouPCOrderScanAndUpdateTask","FuiouOrderQueryTask", "CustomerTask","icelandCustomerImportTask", "customerMergeTask"};
+        String [] commandNames = new String[] {"OrderBuildAndPayManually", "CancelContract", "ExecutePaymentPlan", "distributeCustomerTask","TimeRunner", "Test", "FuiouPCOrderScanAndUpdateTask","FuiouOrderQueryTask", "CustomerTask","icelandCustomerImportTask", "customerMergeTask", "transferCustomer"};
 
         try {
 
@@ -142,6 +146,13 @@ public class CommandExecutor {
                 return;
             }
 
+            // transferCustomer
+
+            if (command.equals("transferCustomer")) {
+                executor.transferCustomer();
+                return;
+            }
+
             if(command.equals("FuiouPCOrderScanAndUpdateTask")) {
                 executor.fuiouPCOrderScanAndUpdateTask();
                 return ;
@@ -163,6 +174,41 @@ public class CommandExecutor {
             MyException.newInstance("手动取消").throwException();
         }
         icelandService.importCustomer("d:/icelandCustomerImportTask.xls");
+    }
+
+    public void transferCustomer() throws Exception {
+        String fromSalesmanId = getConsoleInput("请输入原理财经理编号");
+        String toSalesmanId = getConsoleInput("请输入新理财经理编号");
+
+        Connection conn = Config.getConnection();
+        try {
+
+            conn.setAutoCommit(false);
+
+            UserPO formUserPO = userService.loadUserByUserId(fromSalesmanId, conn);
+            UserPO toUserPO = userService.loadUserByUserId(toSalesmanId, conn);
+
+            if (!CommandExecutor.getConsoleInput( "是否将【"+formUserPO.getName()+"】的客户分配给【"+toUserPO.getName()+"】？ y/n").equalsIgnoreCase("y")) {
+                MyException.newInstance("手动取消").throwException();
+            }
+
+            CustomerTask customerTask = new CustomerTask();
+
+            customerTask.transferCustomer(formUserPO.getId(), toUserPO.getId(), conn);
+
+            conn.commit();
+
+        }
+        catch (Exception e) {
+
+            conn.rollback();
+
+            throw e;
+        }
+        finally {
+            Database.close(conn);
+        }
+
     }
 
 
