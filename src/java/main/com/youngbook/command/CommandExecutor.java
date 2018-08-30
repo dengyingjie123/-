@@ -177,16 +177,16 @@ public class CommandExecutor {
     }
 
     public void transferCustomer() throws Exception {
-        String fromSalesmanId = getConsoleInput("请输入原理财经理编号");
-        String toSalesmanId = getConsoleInput("请输入新理财经理编号");
+        String fromSalesmanMobile = getConsoleInput("请输入原理财经理手机号");
+        String toSalesmanMobile = getConsoleInput("请输入新理财经理手机号");
 
         Connection conn = Config.getConnection();
         try {
 
             conn.setAutoCommit(false);
 
-            UserPO formUserPO = userService.loadUserByUserId(fromSalesmanId, conn);
-            UserPO toUserPO = userService.loadUserByUserId(toSalesmanId, conn);
+            UserPO formUserPO = userService.loadUserByMobile(fromSalesmanMobile, conn);
+            UserPO toUserPO = userService.loadUserByUserId(toSalesmanMobile, conn);
 
             if (!CommandExecutor.getConsoleInput( "是否将【"+formUserPO.getName()+"】的客户分配给【"+toUserPO.getName()+"】？ y/n").equalsIgnoreCase("y")) {
                 MyException.newInstance("手动取消").throwException();
