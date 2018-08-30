@@ -221,18 +221,8 @@ public class UserService extends BaseService {
 
     public UserPositionInfoPO getUserPositionInfoByUserId(String userId, Connection conn) throws Exception {
 
-        UserPO user = this.loadUserByUserId(userId, conn);
 
-        DepartmentPO department = Config.getDefaultDepartmentByUserId(userId, conn);
-
-        UserPositionInfoPO userPositionInfo = new UserPositionInfoPO();
-
-        userPositionInfo.setUserName(user.getName());
-        userPositionInfo.setUserId(userId);
-        userPositionInfo.setDepartmentId(department.getId());
-        userPositionInfo.setDepartmentName(department.getName());
-
-        return userPositionInfo;
+        return userDao.getUserPositionInfoByUserId(userId, conn);
     }
 
     public List<UserPO> searchReferralCode(String code, Connection conn) throws Exception {

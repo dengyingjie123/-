@@ -17,7 +17,9 @@ import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerDistributionPO;
 import com.youngbook.entity.po.customer.CustomerInstitutionPO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
+import com.youngbook.entity.po.sale.SalemanGroupPO;
 import com.youngbook.entity.po.system.LogPO;
+import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.customer.CustomerInstitutionAuditVO;
 import com.youngbook.entity.vo.customer.CustomerPersonalAuditVO;
 import com.youngbook.service.BaseService;
@@ -79,6 +81,59 @@ public class CustomerDistributionService extends BaseService {
         return MySQLDao.insertOrUpdate(customerDistribution, operatorId, conn);
     }
 
+
+    public void transferCustomer(String fromSalesmanId, String toSalesmanId, String operatorId, Connection conn) throws Exception {
+
+        UserPO fromUserPO = userDao.loadUserByUserId(fromSalesmanId, conn);
+        UserPO toUserPO = userDao.loadUserByUserId(toSalesmanId, conn);
+
+        List<CustomerPersonalPO> fromCustomerPersonalPO = customerPersonalDao.getCustomerPersonalAssignedByUserId(fromSalesmanId, conn);
+
+        for (int i = 0; fromCustomerPersonalPO != null && i < fromCustomerPersonalPO.size(); i++) {
+            CustomerPersonalPO customerPersonalPO = fromCustomerPersonalPO.get(i);
+
+            distributeToOneSalesman(customerPersonalPO.getId(), toSalesmanId, operatorId, conn);
+
+            logDao.save("客户归属批量转移", "客户【"+customerPersonalPO.getName()+"】【"+customerPersonalPO.getId()+"】由【"+fromUserPO.getName()+"】分配给【"+toUserPO.getName()+"】", "", conn);
+        }
+
+    }
+
+
+    public int distributeToOneSalesman(String customerId, String salesmanId, String operatorId, Connection conn) throws Exception {
+
+
+        StringUtils.checkIsEmpty(customerId, "客户编号为空");
+
+        /**
+         * 如果已有分配，则删除原来的分配记录，保证只分配给一个销售
+         */
+        List<CustomerDistributionPO> customerDistributionPOs = getCustomerDistributionsByCustomerId(customerId, conn);
+
+        for (int i = 0; customerDistributionPOs != null && i < customerDistributionPOs.size(); i++) {
+            CustomerDistributionPO customerDistributionPO = customerDistributionPOs.get(i);
+
+            remove(customerDistributionPO.getCustomerId(), customerDistributionPO.getSaleManId(), conn);
+
+        }
+
+
+        UserPositionInfoPO userPositionInfoPO = userDao.getUserPositionInfoByUserId(salesmanId, conn);
+
+        SalemanGroupPO salemanGroupPO = salemanGroupDao.getDefaultSalemanGroupByUserId(salesmanId, conn);
+
+
+        CustomerDistributionPO customerDistributionPO = new CustomerDistributionPO();
+
+        customerDistributionPO.setCustomerId(customerId);
+        customerDistributionPO.setSaleManId(salesmanId);
+        customerDistributionPO.setDepartmentId(userPositionInfoPO.getDepartmentId());
+        customerDistributionPO.setSaleGroupId(salemanGroupPO.getId());
+        customerDistributionPO.setStatus(1);
+        customerDistributionPO.setRemark(0);
+
+        return customerDistributionDao.distributeToSalesman(customerDistributionPO, operatorId, conn);
+    }
 
     /**
      * 只分配给一个销售人员

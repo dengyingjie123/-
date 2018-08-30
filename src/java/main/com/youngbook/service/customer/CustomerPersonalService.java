@@ -111,6 +111,7 @@ public class CustomerPersonalService extends BaseService {
 
 
 
+
     public FdcgCustomerQueryInfoPO fdcgQueryCustomerQueryInfoPO(String customerPersonalId, Connection conn) throws Exception {
 
         FdcgCustomerPO fdcgCustomerPO = fdcgLoadCustomerPOByCrmCustomerPersonalId(customerPersonalId, conn);

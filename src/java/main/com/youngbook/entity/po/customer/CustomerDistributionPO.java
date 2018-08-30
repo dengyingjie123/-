@@ -31,7 +31,11 @@ public class CustomerDistributionPO extends BasePO{
     //销售员ID
     private String saleManId = new String();
 
-    //状态
+    /**
+     * 状态
+     * 0：未通过
+     * 1：通过
+     */
     private int status = Integer.MAX_VALUE;
 
 
