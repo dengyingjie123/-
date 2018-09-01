@@ -22,6 +22,7 @@ import com.youngbook.dao.customer.ICustomerCertificateDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IProductionDao;
+import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandDirection;
 import com.youngbook.entity.po.core.APICommandType;
@@ -89,8 +90,14 @@ public class AllinpayCircleService extends BaseService {
     @Autowired
     IOrderDao orderDao;
 
-    private static final String callbackUrl = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
+    private static final String callbackUrl = "http://118.126.103.58:8574/core/pay/allinpayCircleReceiveRawData";
 
+
+
+    public AllinpayCircleReceiveRawDataPO saveReceiveRawData(AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO, Connection conn) throws Exception {
+
+        return allinpayCircleDao.saveReceiveRawData(allinpayCircleReceiveRawDataPO, conn);
+    }
 
     /**
      * 解析返回值
