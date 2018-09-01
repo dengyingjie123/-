@@ -43,6 +43,17 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     IAPICommandDao apiCommandDao;
 
 
+    public static void main(String [] args) throws Exception {
+
+        AllinpayCircleDaoImpl allinpayCircleDao = new AllinpayCircleDaoImpl();
+
+        String decode = allinpayCircleDao.decode("PFNUU1BhY2thZ2U+PEVuY3J5cHRlZFRleHQ+Rmw5VUpzaURYU2FCajVKRnByTzV0RmJQa0RUMzVBN2h1VU9rV3RrdGovd3JjbTlRU0JZUzNISU53UkhyM09NNnp5SlJFOFpua1BMeEt2MkZQSUhLNnkwN2cxTzIvZ0I3YW93YkxzelJJalFFaCt1SXd4Y3U4a0t6cmRCL1NIekxsY0Z6NTl5K085bUZKYzFEQkdOUHlYckRpMldTdG5KaGNaRTJ5RGMrd0NKV2Z4UWN3NmJ5eW96dWMwaExJTGVmaDNNQzBaZEdrajlhaWJ0TTdER202V1p3a0RGOU5nN1N1Umw4bUZpbmRUQlFXSm1RWHFzYjlXcWtHQXlxQ3FmTmdkcUcvcU1rM2xwaVNqdjJacGpGR1ZDc014eDVTZkdndElZcGR5azBmck1Ma3dWeThaS2l3aExpcnNwaUtZVjc4TVlRbExXU0xvcXdrNUFKT2pEeTdvOEdSbXVQWUJqdnBtV1NQMmNoT01BWUFJbE5BMUYwTG0rMlZsamZyZm1uN3RxWFVkMmluMWp2WW5XWHdGZEx4ZEtLTzVpclhGUVV2U1NiUEZIUjdyekRrOEQxWlVrMGh5MnAwc2xFZWJoOEh0NEIybFI2RXpSRkR3NC84NFVJZ3pxU2o2eEtXblhGalpCQXd2cTAzcU9qL0NVN0dCekswOGwvTzBNQVNDL2VXZHNjbGQ4dXROSG1FSWFCcDcwQ1c3Zk54R1pXVnAwc2Q0WWwreUtjMytQVzVIWEhhNlpYQzVxNXZleUdqZ0QyalJwUGNjTzJ0OWNEbHA3QnVsTGo0K2NFZHFzbStOUGJnYmg4VGFXUVNRdzRSN1hzaGV4ZDJTUTNiYmlFdDc3T2Z3QlYvd1RVeGJYZkUwYkRNNTN2ZTBrSkI5TkJ1cjVpWEtTaVMvbTA4UTNoRUpLbEhEZjVJWUZYWWhQdFVoQ2JkWGx3Z3Qxa1JqQ05IY");
+
+        System.out.println(decode);
+
+    }
+
+
     private String getSignedXml(TransactionPO transactionPO) throws Exception {
 
         String signCode = STSTxData.signMsgPriKey(transactionPO.toXmlString(), STSTxData.getPrivateKeyB2c());

@@ -720,7 +720,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sub_merchant_id", "");
         transactionPO.getRequest().addItem("sign_type", "3");
-        transactionPO.getRequest().addItem("prod_flag", "0");
+        transactionPO.getRequest().addItem("prod_flag", "2");
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
@@ -728,7 +728,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cer_type", "01");
         transactionPO.getRequest().addItem("cer_num", customerCertificateNumber);
         transactionPO.getRequest().addItem("tel_num", allinpayCircleMobile);
-        transactionPO.getRequest().addItem("supply_inst_code", "");
+        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
         transactionPO.getRequest().addItem("is_send_msg", "");
         transactionPO.getRequest().addItem("ms_signature", "");
         transactionPO.getRequest().addItem("reqs_url", "");
