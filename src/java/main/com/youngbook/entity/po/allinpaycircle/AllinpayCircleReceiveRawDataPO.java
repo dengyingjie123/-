@@ -29,6 +29,7 @@ public class AllinpayCircleReceiveRawDataPO extends BasePO {
      * 数据状态
      * 未处理：0
      * 已处理：1
+     * 已处理，但有异常：2
      */
     private String status = "";
 

@@ -94,6 +94,12 @@ public class AllinpayCircleService extends BaseService {
 
 
 
+    public void dealRawData(Connection conn) throws Exception {
+
+        allinpayCircleDao.dealRawData(conn);
+    }
+
+
     public AllinpayCircleReceiveRawDataPO saveReceiveRawData(AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO, Connection conn) throws Exception {
 
         return allinpayCircleDao.saveReceiveRawData(allinpayCircleReceiveRawDataPO, conn);
@@ -182,7 +188,6 @@ public class AllinpayCircleService extends BaseService {
      */
     public ReturnObject accountCheck(String customerId, String accountId, Connection conn) throws Exception {
 
-        String url = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 

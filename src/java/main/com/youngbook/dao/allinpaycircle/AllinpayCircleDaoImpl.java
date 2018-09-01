@@ -6,13 +6,21 @@ import com.emulator.paymentgateway.util.SecurityUtil;
 import com.mind.platform.system.base.CMData;
 import com.mind.platform.system.base.DataRow;
 import com.youngbook.action.api.dehecircle.DeheCircleAction;
+import com.youngbook.common.Database;
+import com.youngbook.common.KVObjects;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.config.XmlHelper;
+import com.youngbook.common.database.DatabaseSQL;
+import com.youngbook.common.utils.HttpUtils;
+import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinpayCircleUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.core.IAPICommandDao;
+import com.youngbook.dao.system.ILogDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
+import com.youngbook.entity.po.allinpaycircle.AllinpayCircleResponseDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandType;
 import encryption.DataGramB2cUtil;
@@ -44,14 +52,112 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     @Autowired
     IAPICommandDao apiCommandDao;
 
+    @Autowired
+    ILogDao logDao;
+
 
     public static void main(String [] args) throws Exception {
 
         AllinpayCircleDaoImpl allinpayCircleDao = new AllinpayCircleDaoImpl();
 
-        String decode = allinpayCircleDao.decode("PFNUU1BhY2thZ2U+PEVuY3J5cHRlZFRleHQ+bEQ5SnBHdTl6a0pqVEJWakFtRmRuVlpsSGtFU1EwWXVVVElQbHRaUHdIN1JxK0ZvUnZPRmw3NDJ3UkRPMTZyYXE2ZGFYUkI5MzMyaXVLMTV5YUdmbTB3dWFaYmV3QnIyb2lyZTQzRUdXV3V1R3JLaC92M1plR3Y3My9DVUNOdUNCWkVwTHhDazJVZjd2d3YvUzFOWEs2UWVhWEhpZ3NLRkcrK0VxcHZkVVdaZlg1MlYzTkpKY1VFd3ZuRS9PTkQrdHdWNUhZVTZKK3V0OUNQWVVKMEZ5VTZIMEJmbzNRc2ZZMmZjcW5YT2NVdVI4bDJnWFRzYjU0L295cy9oZWZKVEpWTXNsV2xib0t1WG9nNlppdmtIQmtTcHN4VWRWVktjVUVJTTNhWEtxZkFmSGwzc0JlMHJTUHpEckZHYWJ3c3B0dlZJYXdMcFVhYVVKenV0VU1mcnoxYi9iMzFQd3Y3QU5lUFNMTGo1QzJ2WmY1SjZ3U3JWa2lUYkN1dTRvNHRSalFSTmtBbjR0UVQyYjFKZmcvcTVXYTR4QjF5K241WmZhbXYyeHBSc28wa0c2citUbmZDWEFPN3ZQMmZ2MGJYZWY4UURWUjgvaUdUb1UyZEhVd1JrbjZCSUp4aS9MVmhQVVQ1Y3Z5YzBsWENqSjhuSFQzRjNMdURXVWU5RkUvckdqS284MFhIaTJ5dVJvQm9sK3hBSHlmUkYvb2txdnM1NVovSFpSUXdWa1orNHpTUUExSFBZV2JRQTdDc0pXV0pJaytlKzd3V1F4Zy8xRDJ1WUViVzZzVy9NZ0N4YitwMmIvaEtjSTBmNm52WitTcU50cVI5dWJyWmdvd2dMcXZWM20vZEVyQ241bGtEQm5jNlJSbE5GeFdkRFFxOGhXa0Y4eE9HNEpyT2ZmR3pad3M2eTVGNDBHWUZHTy9pZGRqMzkyK3drN3ZCamE2UE84ZlVSbkF5L3FMc3d0MmtuRnJ1Sm0rcng1NU9VTURKZ1hFL0hFTW8xY0QxZVdrZ2pGR0JhQVhYSFEzS1p1M2dVRXpKdkFaM0VGV09acldIY083aHEyRmsyZVluYmpTK3BXYmJGWXdUVVREeG9QRzU4SXZYUDhXbVhMU0ZmNHBJMnpJT3ZGTHZsVHJFS0lFNDgrVm94OUxJZ2UzQmkzcUJuOTJPNEtQdWhiY3g2TCthWFZoVStZTW5SMnZCbVZlQUZiT0hEckpnY3Z5aGtsNjg3NmZaelNDVGlBQTU3RmxpRlA5ZFAvMWVSTVRadnpCWEZWdmVzMU9JOHYydmYvY1JTQnl6bjdWY09XR3ZMWWRKb2s4QjUrS1c3VzBsWWdLTWdqeG5HajZpRTFacFZDY3FNbDI1eFRRNzMxQ01NcDlXdW8xMWkrVlJ3dFFLV04zcmRtcytlTjVOeThIMnVRb3VvblZmMHN5VnBjcGtGMThTK1ZUYk1QbndPTnJYK0J0Qjh2ejFGRzlGRjhqdXJwWlNMN2NoRG1qUHpKV2tlY2YrUThXbXcybldwVkNWVGZsZjhwSUcwZ29zcjR4Um5NWjlrSTNhbUd4bjkvSGhlUFVkMmdaTEg1T1laM1lPUU40aHRQZHkyVEdxSWtzZFQraHp0TmErSWRVbzdFSE0zVk9TclIzd21CdWpYdTBPQU1BZk03OGlqM3l2QTJMTE5yTm4rWUhQTjhrOWI5Tk01eFFENUcwRzV4VEhOV2o3djhmNDBjL2wwaW5mS3BQSHQ2WUZpMEE1TjFJZUMzZ2lrRjhlL05HZUwreGErMVRaMWJUUjFXb3p4ZW5YUTdmdmwxMndVMUJlTmdlSTdyR3Ruc1RRbXdDRllDNDU3SFdHMDF1UjNscmJqckpLbkJwOXdNL0F2ZWNIUk0zUTNVWlFHZ3l4d3pOWDdVRkFaWUFpYm5Femk5SHhzMjRUUlJic2dXWW5TdWZTODNWazFqaGVxSEdUSDJnVi9OQktuY0piVFpIeUlOanRXSEhlWFZERVpXbzEyaWpBZjB1TE1WVzFJMzBPZmNEUHdMM25CMFhLZnBheUVxWnBwUkdPMGxPMUltTjVpak9rWDJUaVJpR2NWZ1AybGhXbE48L0VuY3J5cHRlZFRleHQ+PEtleUluZm8+PFJlY2VpdmVyWDUwOUNlcnRTTj45MDg1MzM3NjYzNDc2NjI3OTM2OTQxNjA3MDc0Mjk0NDcxNzA0PC9SZWNlaXZlclg1MDlDZXJ0U04+PEVuY3J5cHRlZEtleT5TZitSVncrcVcrSFhqOVRQOXJ2c3Q3ZTZaRDJSRzJuK1IyMnAraDFCaU1ZS3VZQ2Zla0EvV01mQkRrQXRxZjdJcU5acStPOExGcjl0aUduYkZoMS9jUzBOMVdyNzZsdnk2d25XVDUxTVpOYi9GTUI1Rnd2b0luRGxtT2hhTEFVNHU4cnFPYWhaS0s5OGtDbGx0RWVxMTdNWTVQMEt0ZXUxdSt5Q2RQR3dWT1E9PC9FbmNyeXB0ZWRLZXk+PC9LZXlJbmZvPjwvU1RTUGFja2FnZT4=");
+        String message = "repMsg=PFNUU1BhY2thZ2U+PEVuY3J5cHRlZFRleHQ+c21GZEtBd1Q1OXNjMHhpTi9vcUpEK05sYm1SWndJN3ZCUWJjU3lxcXZkTDFMZ09iekpNZUQ5NFQyOGlFRVM5SGI5N1VrYklnd1lTb1NUb2o3TjN3MjJ2dDJTcHZXbnlFdzA2Tm0yUlN3NG9OOVU3SEMyZjVaYXlnL3VtVlhOSTFjYzJGdUFSbTU1Tnp5Y1BadjdwQWFtOVI3WmZNdDl4RGNUd3VpNFBadXBOUUM0bk9UOXorTlVUdCtkYTBFM3duSDlMcDNPNUdILytXczltTHVxK3ZuUzQ0THVqcnltNkorQlRxUkY2S2dsZ1lTbzQwNFloamk4dHZTY3RtRkZhNlVFc2NkYWJ0R0FuWEMwaHNtU1pQOHo2WHZtOVdzUFNzT21QQ3hCMTd6eW85ak8rdGZrRXlKWUhCWFZQcDBoM1JCSjdCdS80Q2ZqQ3Q4RzRjTERwN3pnTThZTHhGQjcvNkhQVWhqZldOZnE4a2pNazJESlJuNkZiSStUZnl1UFNycjVOczhhZi9qQjF5NXR4V0FEZm9nQ3g0cUx4S1F1dWZrOUtodHU5Sm5BVUsyV3d6NzY2SEp6NkxYMGo4YkR1Y1UveVRvdXZkbDJjeFpsQzFQVmxsaytmbDdPc2cxdWZaNFp4QUZxeWt6eEsrZWd0R0FYQzdmNUhGMmdZeTdya1ZMSUpZQ0xYT0llZjlYb3MzdGltemI5THZiY0QvVnFZUUZHMjBJdHIzd0Z4VGpVTGhMMUUwdmV2SzJGOHdMVFhwZStMK25OclJ3Ui9xSzZCNXNWL01uWEw5Tmx2bEpqazBqc1YzMlJ3Z0M1U09FVndweC9PY3EwZW13bHZYbE1XTG4zNFZiQzQrYm4rZFlRYnA4UHM5RWZLUWNxaGhzMUJMYTZSZWJTdTJvWjdlZXFveFBUQnhHK09vNEpacUIyZVdudC9rSC8yeGFSTVd2TE1BeHcxOSttekRFSDFwQVAvK2tLY2pscUxhbGVrUVp1NkVhWXpqdUR4NmczUEE1WVlVbG9kdmlrZm16TzYrMjVzNVlUOW5XTjN4Wi82NS9tWEloRmZmRlpPeCtnRFl3M3NTYjVtOWd3Y1ovQklkOGJPRmhwdEhZYUhaWC81Q3Uzc1draTZleEZvQkpyV1ZmaFFHSmxXb3ZxbDNDT1hLNzBWR0pUQWRqckZDRThSNjlRZ0xTOURjRTNNbjFwcW81YW8vL0tGVHR6aVdKcEh4dXpNZS9KbDJ0L0dvaGFOZnFYUXF0ZzQ5UnBYRE1PRmhDVnlEbnplaGxzZkEyajhpbFNOZHhpMEF4NFFyd1JNR05GTXU4QlJoZVJYd1F6SXlkd09JbWNIakxGcVdidmQ2SHJsMmZTbzJqc1dHS3l0MUgxcFpMcUZMQXNVOHpwU3ZzMkNzYURSbVJVK0dzN3o5T2QxT0prS1drclJONVVhbWkwYWE4dmxjN2lhdjN1eUQxNS9OYVhMRExKVnRpUkRDNko5TEM2ck5DMDYyM0JUM05EL3hBaTVyRUVzbXFnUFVzWUtJc2ZIbkVsU0xtSUorbGJCbEQyY3FGSTd1eUhSUGtVYTF2NzIrRmFCV3lRNnFCMEx6QUI5ODFvQmtxZG9rUHBBaXhKQThhU0FWaUNjY1BmUkFOTGR5NkxLWWZpdlozN3lZTFJkTlVNb3Z2c3NBdnRIU1plcVNCRDJwcHpVOFpBTkI2R3lXOXdNU201L0o5VzFqbFkwMzY3aSsxdG5FTU1ka01xQ3hTUmszUWx1aHlnb2hORzNHeDl1UFhuRzJUNkF5S1VLUjc5V0JQNjNSejEwK01YL2pDbzhyMGpvcHpPRFM0Z1BCZDdjRkpIdEdWa1NHSmNVbzF2RFU3Mmd2dTdkWVZ3Z3VWN1dta2VNRXdvVENSUzFuc0pFTjJHZzBDTHdxUC9zRkErWmcrUkR1bVpLU3hKek9GOXlCdkYrb2hZNjVOaEh2RDgxc1M3M2dvVS9VQkhWeHJ4QlUwQW5XWFk0SlZEM05xbldSUERYdzFPOW9MN3UzV01za3o3d3dxUGdJY3ZucTFSMWV4YTNKd3FmeEhPZWZiaTZsMGc0L0FDQys8L0VuY3J5cHRlZFRleHQ+PEtleUluZm8+PFJlY2VpdmVyWDUwOUNlcnRTTj45MDg1MzM3NjYzNDc2NjI3OTM2OTQxNjA3MDc0Mjk0NDcxNzA0PC9SZWNlaXZlclg1MDlDZXJ0U04+PEVuY3J5cHRlZEtleT5GQnpFMlpWZzV1QnRJdGJRYnh2MVNUTE91Mnh4VncycU1tTXhlZG9oTHFrcDdUaUVNTzVFRit0SHNIbVFPUVpKTUQ0VEpWMW9FbnJ2YVllcHlxTlBGQzlrYnlINUtSYmF2amIxUUNHOURxWmhCbGwzWkJIOGNpUzhEQ29YaXJyaFZuay9ZUWtueEJBWUFKSkkxeStDRjJjbVRFaWJ5bjdnZTBETzhRWnRSZE09PC9FbmNyeXB0ZWRLZXk+PC9LZXlJbmZvPjwvU1RTUGFja2FnZT4=";
+        message = message.substring(7);
+
+        String decode = allinpayCircleDao.decode(message);
 
         System.out.println(decode);
+
+    }
+
+
+    public void dealRawData(Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL =  DatabaseSQL.newInstance("B3391809");
+        dbSQL.initSQL();
+
+        List<AllinpayCircleReceiveRawDataPO> listRawDataPO = MySQLDao.search(dbSQL, AllinpayCircleReceiveRawDataPO.class, conn);
+
+        for (int i = 0; listRawDataPO != null && i < listRawDataPO.size(); i++) {
+
+            AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO = listRawDataPO.get(i);
+
+            try {
+                String message = allinpayCircleReceiveRawDataPO.getMessage();
+
+                message = message.substring(7);
+
+                String responseXml = decode(message);
+
+                XmlHelper helper = new XmlHelper(responseXml);
+
+
+                String processing_code = helper.getValue("/transaction/head/processing_code");
+                String trans_date = helper.getValue("/transaction/head/trans_date");
+                String trans_time = helper.getValue("/transaction/head/trans_time");
+                String req_trace_num = helper.getValue("/transaction/response/req_trace_num");
+                String resp_code = helper.getValue("/transaction/response/resp_code");
+                String resp_msg = helper.getValue("/transaction/response/resp_msg");
+                String resp_trace_num = helper.getValue("/transaction/response/resp_trace_num");
+
+                AllinpayCircleResponseDataPO allinpayCircleResponseDataPO = new AllinpayCircleResponseDataPO();
+
+                StringBuffer sbTime = new StringBuffer();
+                sbTime.append(trans_date).append(" ").append(trans_time);
+                sbTime.insert(4, "-").insert(7, "-").insert(13, ":").insert(16, ":");
+
+                allinpayCircleResponseDataPO.setProcessing_code(processing_code);
+                allinpayCircleResponseDataPO.setTrans_time(sbTime.toString());
+                allinpayCircleResponseDataPO.setReq_trace_num(req_trace_num);
+                allinpayCircleResponseDataPO.setResp_code(resp_code);
+                allinpayCircleResponseDataPO.setResp_msg(resp_msg);
+                allinpayCircleResponseDataPO.setResp_trace_num(resp_trace_num);
+                allinpayCircleResponseDataPO.setXml(responseXml);
+                allinpayCircleResponseDataPO.setStatus("0");
+
+                MySQLDao.insertOrUpdate(allinpayCircleResponseDataPO, conn);
+
+
+
+                allinpayCircleReceiveRawDataPO.setStatus("1");
+
+                MySQLDao.insertOrUpdate(allinpayCircleReceiveRawDataPO, conn);
+
+
+                String apiName = AllinpayCircleUtils.getAPIName(allinpayCircleResponseDataPO.getProcessing_code());
+                logDao.save("通联支付金融生态圈", "处理【"+apiName+"】【"+allinpayCircleResponseDataPO.getResp_code()+"】【"+allinpayCircleResponseDataPO.getResp_msg()+"】", "RawDataId=" + allinpayCircleResponseDataPO.getId(), conn);
+            }
+            catch (Exception e) {
+
+                /**
+                 * 处理异常
+                 *
+                 */
+                Connection conn2 = Config.getConnection();
+
+                try {
+
+                    allinpayCircleReceiveRawDataPO.setStatus("2");
+                    MySQLDao.insertOrUpdate(allinpayCircleReceiveRawDataPO, conn2);
+
+                    logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】", "", conn2);
+                }
+                catch (Exception ex) {
+
+                }
+                finally {
+                    Database.close(conn2);
+                }
+
+
+
+            }
+            finally {
+            }
+
+
+
+
+        }
 
     }
 
@@ -123,7 +229,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String apiName = AllinpayCircleUtils.getAPIName(transactionPO.getProcessing_code());
 
-        apiCommandDao.saveCommand("通联支付万小宝", "通联支付万小宝-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");
+        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");
 
         HttpPost httpPost = new HttpPost(url);
 
@@ -191,7 +297,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         returnObject.setReturnValue(jsonObject.toJSONString());
 
-        apiCommandDao.saveCommand("通联支付万小宝", "通联支付万小宝-" + apiName + "-接收", bizId, respMsg, APICommandType.Xml, url, responseCode, responseMessage);
+        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-接收", bizId, respMsg, APICommandType.Xml, url, responseCode, responseMessage);
 
         return returnObject;
     }
