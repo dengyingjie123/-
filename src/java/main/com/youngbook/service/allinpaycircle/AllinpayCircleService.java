@@ -826,12 +826,13 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(orderPO.getMoney()));
         transactionPO.getRequest().addItem("prod_import_flag", "0");
         transactionPO.getRequest().addItem("supply_inst_code", "000000324");
         transactionPO.getRequest().addItem("product_num", "KPL555");
-        transactionPO.getRequest().addItem("product_code_cash_acct", "000000324");
+        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
         transactionPO.getRequest().addItem("resp_url", callbackUrl);
 
