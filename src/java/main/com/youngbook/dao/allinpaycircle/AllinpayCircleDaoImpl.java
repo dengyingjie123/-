@@ -19,6 +19,7 @@ import com.youngbook.common.utils.allinpay.AllinpayCircleUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.core.IAPICommandDao;
 import com.youngbook.dao.production.IOrderDao;
+import com.youngbook.dao.production.IOrderDetailDao;
 import com.youngbook.dao.system.ILogDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleResponseDataPO;
@@ -59,6 +60,9 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
     @Autowired
     IOrderDao orderDao;
+
+    @Autowired
+    IOrderDetailDao orderDetailDao;
 
     public static void main(String [] args) throws Exception {
 
@@ -121,16 +125,20 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         try {
             OrderPO orderPO = orderDao.loadOrderPOBy_allinpayCircle_req_trace_num(allinpayCircleResponseDataPO.getResp_trace_num(), conn);
 
+            String comment = "通联金融生态圈充值成功";
             if (allinpayCircleResponseDataPO.getResp_code().equals("0000")) {
                 // 成功
                 orderPO.setAllinpayCircle_deposit_status("1");
             }
             else {
                 // 失败
+                comment = "通联金融生态圈充值失败";
                 orderPO.setAllinpayCircle_deposit_status("3");
             }
 
             orderDao.insertOrUpdate(orderPO, Config.getDefaultOperatorId(), conn);
+
+            orderDetailDao.saveOrderDetail(orderPO, orderPO.getMoney(), TimeUtils.getNow(), comment, Config.getDefaultOperatorId(), conn);
         }
         catch (Exception e) {
             throw e;

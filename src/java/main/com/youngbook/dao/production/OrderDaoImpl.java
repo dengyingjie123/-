@@ -203,8 +203,6 @@ public class OrderDaoImpl implements IOrderDao {
 
     public OrderPO insertOrUpdate(OrderPO orderPO, String userId, Connection conn) throws Exception {
 
-
-
         MySQLDao.insertOrUpdate(orderPO, userId, conn);
 
         return orderPO;
