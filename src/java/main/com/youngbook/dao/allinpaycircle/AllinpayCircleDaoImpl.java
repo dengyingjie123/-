@@ -37,6 +37,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.poi.util.XMLHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
@@ -91,6 +92,70 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         }
 
         return null;
+    }
+
+
+    public void dealPayByShare(Connection conn) throws Exception {
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("32DC1809");
+        dbSQL.addParameter4All("processing_code", "2085");
+        dbSQL.initSQL();
+
+        List<AllinpayCircleResponseDataPO> list = MySQLDao.search(dbSQL, AllinpayCircleResponseDataPO.class, conn);
+
+        for (int i = 0; list != null && i < list.size(); i++) {
+            AllinpayCircleResponseDataPO allinpayCircleResponseDataPO = list.get(i);
+
+            String responseDataStatus = "1";
+
+            try {
+                dealPayByShareDo(allinpayCircleResponseDataPO);
+            }
+            catch (Exception e) {
+                responseDataStatus = "2";
+            }
+
+
+            allinpayCircleResponseDataPO.setStatus(responseDataStatus);
+            MySQLDao.insertOrUpdate(allinpayCircleResponseDataPO, conn);
+
+        }
+    }
+
+    private void dealPayByShareDo(AllinpayCircleResponseDataPO allinpayCircleResponseDataPO) throws Exception {
+        XmlHelper helper = new XmlHelper(allinpayCircleResponseDataPO.getXml());
+
+        String orderId = helper.getValue("/transaction/response/order_num");
+
+
+        Connection conn = Config.getConnection();
+        try {
+            OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+            String comment = "通联金融生态圈份额支付成功";
+            if (allinpayCircleResponseDataPO.getResp_code().equals("0000")) {
+                // 成功
+                orderPO.setAllinpayCircle_payByShare_status("1");
+                orderPO.setAllinpayCircle_payByShare_time(TimeUtils.getNow());
+            }
+            else {
+                // 失败
+                comment = "通联金融生态圈份额支付失败";
+                orderPO.setAllinpayCircle_payByShare_status("3");
+                orderPO.setAllinpayCircle_payByShare_time(TimeUtils.getNow());
+            }
+
+            orderDao.insertOrUpdate(orderPO, Config.getDefaultOperatorId(), conn);
+
+            orderDetailDao.saveOrderDetail(orderPO, orderPO.getMoney(), TimeUtils.getNow(), comment, Config.getDefaultOperatorId(), conn);
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
+            Database.close(conn);
+        }
+
+
     }
 
     public void dealDepositByInstitution(Connection conn) throws Exception {

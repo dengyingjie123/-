@@ -5,6 +5,7 @@ import com.youngbook.service.task.FdcgCustomerAccountBindTask;
 import com.youngbook.service.task.FdcgCustomerAccountUnbindTask;
 import com.youngbook.service.task.SmsSenderTask;
 import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealDepositByInstitutionTask;
+import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealPayByShareTask;
 import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealRawDataTask;
 import com.youngbook.service.task.fdcg.FdcgCustomerChangeMobileTask;
 import com.youngbook.service.task.fdcg.FdcgCustomerTask;
@@ -210,6 +211,9 @@ public class TimeRunner {
 
             AllinpayCircleDealDepositByInstitutionTask allinpayCircleDealDepositByInstitutionTask = new AllinpayCircleDealDepositByInstitutionTask();
             TimeRunner.addTask(allinpayCircleDealDepositByInstitutionTask);
+
+            AllinpayCircleDealPayByShareTask allinpayCircleDealPayByShareTask  = new AllinpayCircleDealPayByShareTask();
+            TimeRunner.addTask(allinpayCircleDealPayByShareTask);
 
             /**
              * 富友手机支付反馈任务
