@@ -13,6 +13,7 @@ import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.customer.CustomerAccountStatus;
+import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.fdcg.FdcgCustomerAccountPO;
 import com.youngbook.entity.po.production.OrderPO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
 
     @Autowired
     IKVDao kvDao;
+
+    @Autowired
+    ICustomerPersonalDao customerPersonalDao;
 
     public FdcgCustomerAccountPO fdcgGetCustomerAccountPO(String crmCustomerPersonalId, String bindStatus, Connection conn) throws Exception {
 
@@ -95,8 +99,20 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
 
     public CustomerAccountPO inertOrUpdate(CustomerAccountPO customerAccountPO, String operatorId, Connection conn) throws Exception {
 
+//aes加密银行账号
+        if(customerAccountPO != null && !StringUtils.isEmpty(customerAccountPO.getNumber())) {
+            customerAccountPO.setNumber(AesEncrypt.encrypt(customerAccountPO.getNumber()));
+        }
+
+
+        // 保存账号名称
+        if (StringUtils.isEmpty(customerAccountPO.getName()) && !StringUtils.isEmpty(customerAccountPO.getCustomerId())) {
+            CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccountPO.getCustomerId(), conn);
+            customerAccountPO.setName(customerPersonalPO.getName());
+        }
 
         MySQLDao.insertOrUpdate(customerAccountPO, operatorId, conn);
+
 
         return customerAccountPO;
     }
@@ -113,9 +129,16 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
 
         CustomerAccountPO customerAccountPO = loadCustomerAccountPOByAccountId(accountId, conn);
 
-        KVPO kvpo = kvDao.loadKVPO(customerAccountPO.getBankCode(), "Bank", conn);
+        String bankCode = getBankCodeInKVParameterWithBankCode(customerAccountPO.getBankCode(), parameterKey, conn);
 
-        String bankCode = StringUtils.getUrlParameters(kvpo.getParameter()).getItemString(parameterKey);
+        return bankCode;
+    }
+
+    public String getBankCodeInKVParameterWithBankCode(String bankCode, String parameterKey, Connection conn) throws Exception {
+
+        KVPO kvpo = kvDao.loadKVPO(bankCode, "Bank", conn);
+
+        bankCode = StringUtils.getUrlParameters(kvpo.getParameter()).getItemString(parameterKey);
 
         return bankCode;
     }

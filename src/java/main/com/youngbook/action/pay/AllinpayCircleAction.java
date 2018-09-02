@@ -39,6 +39,24 @@ public class AllinpayCircleAction extends BaseAction {
     @Autowired
     ILogDao logDao;
 
+    public String changeBankCard() throws Exception {
+
+        String bankCode = getHttpRequestParameter("customerAccount.bank");
+        String number = getHttpRequestParameter("customerAccount.number");
+        String mobile = getHttpRequestParameter("customerAccount.mobile");
+        String accountId = getHttpRequestParameter("customerAccount.id");
+
+
+        ReturnObject returnObject = allinpayCircleService.changeBankNumber(accountId, bankCode, number, mobile, getConnection());
+
+        if (returnObject.getCode() != 100) {
+            getResult().setCode(-1);
+            getResult().setMessage(returnObject.getMessage());
+        }
+
+        return SUCCESS;
+    }
+
     public String receiveRawData() throws Exception {
 
         String parametersStringValue = HttpUtils.getParametersStringValue(getRequest());

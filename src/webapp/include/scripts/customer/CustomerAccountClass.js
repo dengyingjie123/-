@@ -65,7 +65,23 @@ var CustomerAccountClass = function(token) {
                 { field: 'bankCode', title: '银行代码'},
                 { field: 'mobile', title: '银行预留手机号'},
                 { field: 'cityCode', title: '城市代码'},
-                { field: 'allinpayCircle_AcctSubNo', title: '通联金融圈交易子账号'}
+                { field: 'allinpayCircle_AcctSubNo', title: '通联-交易子账号'},
+                {field: 'allinpayCircle_ChangeStatus', title: '通联-换卡状态',
+                    formatter: function(value,row,index){
+                        if (row['allinpayCircle_ChangeStatus']=='0') {
+                            return '无需换卡';
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='1') {
+                            return '已换卡';
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='2') {
+                            return '换卡受理';
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='3') {
+                            return '换卡失败';
+                        }
+                    }
+                },
             ]],
             toolbar: [{
                 id:'btnCustomerAccountAdd'+token,
@@ -150,10 +166,11 @@ var CustomerAccountClass = function(token) {
 
         var url =  WEB_ROOT + "/modules/customer/CustomerAccount_Save.jsp?token="+token;
         var windowId = "CustomerAccountWindow" + token;
-        fw.window(windowId, '账户信息', 360, 300, url, function() {
+        fw.window(windowId, '账户信息', 500, 300, url, function() {
 
             // 初始化表单提交事件
             onClickCustomerAccountSubmit();
+            onClickCustomerAccountSubmit_AllinpayCircle();
 
             // 银行列表
             var URL = WEB_ROOT + "/customer/CustomerAccount_getBankList.action";
@@ -275,6 +292,28 @@ var CustomerAccountClass = function(token) {
                 process.afterClick();
                 fw.datagridReload("CustomerAccountTable"+token);
                 fw.windowClose('CustomerAccountWindow'+token);
+            }, function() {
+                process.afterClick();
+            });
+        });
+    }
+
+
+    function onClickCustomerAccountSubmit_AllinpayCircle() {
+        var buttonId = "btnCustomerAccountSubmit_AllinpayCircle" + token;
+        fw.bindOnClick(buttonId, function(process){
+            var formId = "formCustomerAccount" + token;
+            var url = WEB_ROOT + "/pay/AllinpayCircle_changeBankCard";
+
+            // fw.alertReturnValue(url);
+            fw.bindOnSubmitForm(formId, url, function(){
+                process.beforeClick();
+            }, function(data) {
+                //alert('done');
+                // fw.alertReturnValue(data);
+                process.afterClick();
+                fw.datagridReload("CustomerAccountTable"+token);
+                // fw.windowClose('CustomerAccountWindow'+token);
             }, function() {
                 process.afterClick();
             });

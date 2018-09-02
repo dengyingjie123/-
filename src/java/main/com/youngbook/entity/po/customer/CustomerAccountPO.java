@@ -62,6 +62,17 @@ public class CustomerAccountPO extends BasePO {
      */
     private String allinpayCircle_AcctSubNo = "";
 
+
+    private String allinpayCircle_ChangeStatus = "";
+
+    public String getAllinpayCircle_ChangeStatus() {
+        return allinpayCircle_ChangeStatus;
+    }
+
+    public void setAllinpayCircle_ChangeStatus(String allinpayCircle_ChangeStatus) {
+        this.allinpayCircle_ChangeStatus = allinpayCircle_ChangeStatus;
+    }
+
     /**
      * 银行预留手机号
      */

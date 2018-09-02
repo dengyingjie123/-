@@ -235,26 +235,24 @@ public class AllinpayCircleService extends BaseService {
     /**
      * 通联万小宝
      * 换卡方法
-     * @param customerId
      * @param accountId
-     * @param accountIdOld
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject changeBankNumber(String customerId, String accountId, String accountIdOld, Connection conn) throws Exception {
+    public ReturnObject changeBankNumber(String accountId, String bankCode_New, String bankNumber_New, String mobile_New, Connection conn) throws Exception {
+
+        CustomerAccountPO customerAccountPO_Old = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String customerId = customerAccountPO_Old.getCustomerId();
 
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
         String allinpayCircleSignNum = customerPersonalPO.getAllinpayCircle_SignNum();
 
-        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
 
-        String mobileNew = customerAccountPO.getMobile();
-
-        String bankNumberNew = AesEncrypt.decrypt(customerAccountPO.getNumber());
-        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameterWithBankCode(bankCode_New, "allinpayCircleBankCode", conn);
 
         CustomerCertificatePO customerCertificatePO = customerCertificateDao.loadByCustomerId(customerId, conn);
 
@@ -262,18 +260,16 @@ public class AllinpayCircleService extends BaseService {
 
 
 
-        CustomerAccountPO customerAccountPOOld = customerAccountDao.loadCustomerAccountPOByAccountId(accountIdOld, conn);
-
-        String bankNumberOld = AesEncrypt.decrypt(customerAccountPOOld.getNumber());
-        String mobileOld = customerAccountPOOld.getMobile();
+        String bankNumberOld = AesEncrypt.decrypt(customerAccountPO_Old.getNumber());
+        String mobileOld = customerAccountPO_Old.getMobile();
         String allinpayCircleBankCodeOld = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
 
 
         StringUtils.checkIsEmpty(allinpayCircleSignNum, "金融圈客户号");
-        StringUtils.checkIsEmpty(bankNumberNew, "银行卡号");
+        StringUtils.checkIsEmpty(bankNumber_New, "银行卡号");
         StringUtils.checkIsEmpty(allinpayCircleBankCode, "银行代码");
         StringUtils.checkIsEmpty(customerCertificateNumber, "证件号码");
-        StringUtils.checkIsEmpty(mobileNew, "金融圈手机号");
+        StringUtils.checkIsEmpty(mobile_New, "金融圈手机号");
         StringUtils.checkIsEmpty(mobileOld, "原金融圈手机号");
 
 
@@ -288,11 +284,11 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("prod_flag", "0");
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", bankNumberNew);
+        transactionPO.getRequest().addItem("acct_num", bankNumber_New);
         transactionPO.getRequest().addItem("hld_name", customerPersonalPO.getName());
         transactionPO.getRequest().addItem("cer_type", "01");
         transactionPO.getRequest().addItem("cer_num", customerCertificateNumber);
-        transactionPO.getRequest().addItem("tel_num", mobileNew);
+        transactionPO.getRequest().addItem("tel_num", mobile_New);
 
 
         transactionPO.getRequest().addItem("org_acct_type", "1");
@@ -302,6 +298,17 @@ public class AllinpayCircleService extends BaseService {
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
 
+
+        if (returnObject.getCode() == 100) {
+            customerAccountPO_Old.setBankCode(bankCode_New);
+            customerAccountPO_Old.setNumber(bankNumber_New);
+            customerAccountPO_Old.setMobile(mobile_New);
+
+            customerAccountPO_Old.setAllinpayCircle_ChangeStatus("2");
+
+            customerAccountDao.inertOrUpdate(customerAccountPO_Old, Config.getDefaultOperatorId(), conn);
+        }
+
         return returnObject;
     }
 
@@ -309,20 +316,21 @@ public class AllinpayCircleService extends BaseService {
     /**
      * 通联万小宝
      * 更改手机号
-     * @param customerId
      * @param accountId
      * @param mobileNew
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject changeMobile(String customerId, String accountId, String mobileNew, Connection conn) throws Exception {
+    public ReturnObject changeMobile(String accountId, String mobileNew, Connection conn) throws Exception {
 
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccountPO.getCustomerId(), conn);
 
         StringUtils.checkIsEmpty(customerPersonalPO.getAllinpayCircle_SignNum(), "金融圈客户编号");
 
-        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
 
         String mobileOld = customerAccountPO.getMobile();
 
