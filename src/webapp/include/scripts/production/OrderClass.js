@@ -223,7 +223,24 @@ var OrderClass = function (token) {
                                 return '充值失败';
                             }
                         }
-                    }
+                    },
+                    {field: 'allinpayCircle_payByShare_status', title: '通联-份额支付状态',
+                        formatter: function(value,row,index){
+                            if (row['allinpayCircle_deposit_status']=='0') {
+                                return '未支付';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='1') {
+                                return '已支付';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='2') {
+                                return '支付受理';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='3') {
+                                return '支付失败';
+                            }
+                        }
+                    },
+                    {field: 'allinpayCircle_payByShare_time', title: '通联-份额支付时间'}
                 ]
             ],
             onLoadSuccess: function () {
