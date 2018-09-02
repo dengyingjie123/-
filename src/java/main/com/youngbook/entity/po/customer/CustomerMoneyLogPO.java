@@ -28,14 +28,33 @@ public class CustomerMoneyLogPO extends BasePO{
     @DataAdapter(fieldType = FieldType.DATE)
     private String operateTime = new String();
 
-    // 类型
+    /**
+     * 购买、兑付、充值、提现
+     */
     private String type = new String();
 
     // 内容
     private String content = new String();
 
-    // 状态
+    /**
+     * 成功、受理、失败
+     */
     private String status = new String();
+
+    /**
+     * 本金
+     */
+    private double principalMoney = Double.MAX_VALUE;
+
+    /**
+     * 收益
+     */
+    private double profitMoney = Double.MAX_VALUE;
+
+    /**
+     * 手续费
+     */
+    private double feeMoney = Double.MAX_VALUE;
 
     // 模块编号 : 用于确定是哪个模块对此表的操作
     private String moduleId = new String();
@@ -45,6 +64,31 @@ public class CustomerMoneyLogPO extends BasePO{
 
     // 客户编号
     private String customerId = new String();
+
+
+    public double getPrincipalMoney() {
+        return principalMoney;
+    }
+
+    public void setPrincipalMoney(double principalMoney) {
+        this.principalMoney = principalMoney;
+    }
+
+    public double getProfitMoney() {
+        return profitMoney;
+    }
+
+    public void setProfitMoney(double profitMoney) {
+        this.profitMoney = profitMoney;
+    }
+
+    public double getFeeMoney() {
+        return feeMoney;
+    }
+
+    public void setFeeMoney(double feeMoney) {
+        this.feeMoney = feeMoney;
+    }
 
     public int getSid() {
         return sid;

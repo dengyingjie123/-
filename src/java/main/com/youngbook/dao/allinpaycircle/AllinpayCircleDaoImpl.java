@@ -70,6 +70,21 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     }
 
 
+    public AllinpayCircleResponseDataPO loadAllinpayCircleResponseDataPOBy_resp_trace_num(String resp_trace_num, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("073C1809");
+        dbSQL.addParameter4All("resp_trace_num", resp_trace_num);
+        dbSQL.initSQL();
+
+        List<AllinpayCircleResponseDataPO> list = MySQLDao.search(dbSQL, AllinpayCircleResponseDataPO.class, conn);
+
+        if (list != null && list.size() == 1) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
     public void dealRawData(Connection conn) throws Exception {
 
         DatabaseSQL dbSQL =  DatabaseSQL.newInstance("B3391809");
@@ -99,32 +114,44 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                 String resp_msg = helper.getValue("/transaction/response/resp_msg");
                 String resp_trace_num = helper.getValue("/transaction/response/resp_trace_num");
 
-                AllinpayCircleResponseDataPO allinpayCircleResponseDataPO = new AllinpayCircleResponseDataPO();
+                String apiName = AllinpayCircleUtils.getAPIName(processing_code);
 
-                StringBuffer sbTime = new StringBuffer();
-                sbTime.append(trans_date).append(" ").append(trans_time);
-                sbTime.insert(4, "-").insert(7, "-").insert(13, ":").insert(16, ":");
 
-                allinpayCircleResponseDataPO.setProcessing_code(processing_code);
-                allinpayCircleResponseDataPO.setTrans_time(sbTime.toString());
-                allinpayCircleResponseDataPO.setReq_trace_num(req_trace_num);
-                allinpayCircleResponseDataPO.setResp_code(resp_code);
-                allinpayCircleResponseDataPO.setResp_msg(resp_msg);
-                allinpayCircleResponseDataPO.setResp_trace_num(resp_trace_num);
-                allinpayCircleResponseDataPO.setXml(responseXml);
-                allinpayCircleResponseDataPO.setStatus("0");
+                AllinpayCircleResponseDataPO allinpayCircleResponseDataPO = loadAllinpayCircleResponseDataPOBy_resp_trace_num(resp_trace_num, conn);
 
-                MySQLDao.insertOrUpdate(allinpayCircleResponseDataPO, conn);
+                if (allinpayCircleResponseDataPO != null) {
 
+                    logDao.save("通联支付金融生态圈", "处理【"+apiName+"】【忽略处理】【"+allinpayCircleResponseDataPO.getResp_code()+"】【"+allinpayCircleResponseDataPO.getResp_msg()+"】", "RawDataId=" + allinpayCircleResponseDataPO.getId(), conn);
+
+                }
+                else {
+                    allinpayCircleResponseDataPO = new AllinpayCircleResponseDataPO();
+
+
+                    StringBuffer sbTime = new StringBuffer();
+                    sbTime.append(trans_date).append(" ").append(trans_time);
+                    sbTime.insert(4, "-").insert(7, "-").insert(13, ":").insert(16, ":");
+
+                    allinpayCircleResponseDataPO.setProcessing_code(processing_code);
+                    allinpayCircleResponseDataPO.setTrans_time(sbTime.toString());
+                    allinpayCircleResponseDataPO.setReq_trace_num(req_trace_num);
+                    allinpayCircleResponseDataPO.setResp_code(resp_code);
+                    allinpayCircleResponseDataPO.setResp_msg(resp_msg);
+                    allinpayCircleResponseDataPO.setResp_trace_num(resp_trace_num);
+                    allinpayCircleResponseDataPO.setXml(responseXml);
+                    allinpayCircleResponseDataPO.setStatus("0");
+
+                    MySQLDao.insertOrUpdate(allinpayCircleResponseDataPO, conn);
+
+                    logDao.save("通联支付金融生态圈", "处理【"+apiName+"】【"+allinpayCircleResponseDataPO.getResp_code()+"】【"+allinpayCircleResponseDataPO.getResp_msg()+"】", "RawDataId=" + allinpayCircleResponseDataPO.getId(), conn);
+
+                }
 
 
                 allinpayCircleReceiveRawDataPO.setStatus("1");
 
                 MySQLDao.insertOrUpdate(allinpayCircleReceiveRawDataPO, conn);
 
-
-                String apiName = AllinpayCircleUtils.getAPIName(allinpayCircleResponseDataPO.getProcessing_code());
-                logDao.save("通联支付金融生态圈", "处理【"+apiName+"】【"+allinpayCircleResponseDataPO.getResp_code()+"】【"+allinpayCircleResponseDataPO.getResp_msg()+"】", "RawDataId=" + allinpayCircleResponseDataPO.getId(), conn);
             }
             catch (Exception e) {
 
@@ -142,20 +169,15 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                     logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】", "", conn2);
                 }
                 catch (Exception ex) {
-
+                    logDao.save("异常", "AllinpayCircleDao.dealRawData", "RawDataId=" + allinpayCircleReceiveRawDataPO.getId(), conn2);
                 }
                 finally {
                     Database.close(conn2);
                 }
 
-
-
             }
             finally {
             }
-
-
-
 
         }
 
