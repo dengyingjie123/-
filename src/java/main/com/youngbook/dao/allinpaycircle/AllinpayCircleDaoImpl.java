@@ -18,11 +18,13 @@ import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinpayCircleUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.core.IAPICommandDao;
+import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.system.ILogDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleResponseDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandType;
+import com.youngbook.entity.po.production.OrderPO;
 import encryption.DataGramB2cUtil;
 import encryption.STSTxData;
 import org.apache.http.Consts;
@@ -55,6 +57,8 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     @Autowired
     ILogDao logDao;
 
+    @Autowired
+    IOrderDao orderDao;
 
     public static void main(String [] args) throws Exception {
 
@@ -83,6 +87,59 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         }
 
         return null;
+    }
+
+    public void dealDepositByInstitution(Connection conn) throws Exception {
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("32DC1809");
+        dbSQL.addParameter4All("processing_code", "2080");
+        dbSQL.initSQL();
+
+        List<AllinpayCircleResponseDataPO> list = MySQLDao.search(dbSQL, AllinpayCircleResponseDataPO.class, conn);
+
+        for (int i = 0; list != null && i < list.size(); i++) {
+            AllinpayCircleResponseDataPO allinpayCircleResponseDataPO = list.get(i);
+
+            String responseDataStatus = "1";
+
+            try {
+                dealDepositByInstitutionDo(allinpayCircleResponseDataPO);
+            }
+            catch (Exception e) {
+                responseDataStatus = "2";
+            }
+
+
+            allinpayCircleResponseDataPO.setStatus(responseDataStatus);
+            MySQLDao.insertOrUpdate(allinpayCircleResponseDataPO, conn);
+
+        }
+    }
+
+    private void dealDepositByInstitutionDo(AllinpayCircleResponseDataPO allinpayCircleResponseDataPO) throws Exception {
+
+        Connection conn = Config.getConnection();
+        try {
+            OrderPO orderPO = orderDao.loadOrderPOBy_allinpayCircle_req_trace_num(allinpayCircleResponseDataPO.getResp_trace_num(), conn);
+
+            if (allinpayCircleResponseDataPO.getResp_code().equals("0000")) {
+                // 成功
+                orderPO.setAllinpayCircle_deposit_status("1");
+            }
+            else {
+                // 失败
+                orderPO.setAllinpayCircle_deposit_status("3");
+            }
+
+            orderDao.insertOrUpdate(orderPO, Config.getDefaultOperatorId(), conn);
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        finally {
+            Database.close(conn);
+        }
+
+
     }
 
     public void dealRawData(Connection conn) throws Exception {

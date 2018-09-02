@@ -58,6 +58,7 @@ public class MySQLDao {
     }
 
 
+
     private static void close(ResultSet rs) throws Exception {
         if (rs != null) {
             rs.close();
@@ -91,7 +92,6 @@ public class MySQLDao {
         close(prestmt);
         close(conn);
     }
-
 
 
     /**

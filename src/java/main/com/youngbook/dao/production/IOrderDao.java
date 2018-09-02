@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Lee on 2016/5/28.
  */
 public interface IOrderDao {
-
+    public OrderPO loadOrderPOBy_allinpayCircle_req_trace_num(String allinpayCircle_req_trace_num, Connection conn) throws Exception;
     public OrderPO insertOrUpdate(OrderPO orderPO, String userId, Connection conn) throws Exception;
     public List<OrderVO> getListOrderVO (OrderVO orderVO, TimePO payTimeTimePO, Connection conn) throws Exception;
     public OrderPO loadByLikeOrderId(String orderId, Connection conn) throws Exception;

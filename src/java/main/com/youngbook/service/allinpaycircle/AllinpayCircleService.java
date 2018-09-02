@@ -460,23 +460,28 @@ public class AllinpayCircleService extends BaseService {
 
         double money = orderPO.getMoney();
 
-        ReturnObject returnObject = depositByInstitution(accountId, productionId, money, operatorId, conn);
+        ReturnObject returnObject = depositByInstitution(accountId, productionId, orderId, operatorId, conn);
 
         return returnObject;
     }
 
+    public void dealDepositByInstitution(Connection conn) throws Exception {
+
+        allinpayCircleDao.dealDepositByInstitution(conn);
+
+    }
 
     /**
      * 充值-机构自付
      * @param accountId
      * @param productionId
-     * @param money
+     * @param orderId
      * @param operatorId
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject depositByInstitution(String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject depositByInstitution(String accountId, String productionId, String orderId, String operatorId, Connection conn) throws Exception {
 
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
@@ -493,6 +498,10 @@ public class AllinpayCircleService extends BaseService {
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 
         ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+
+
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+        double money = orderPO.getMoney();
 
         TransactionPO transactionPO = new TransactionPO();
 
@@ -531,10 +540,14 @@ public class AllinpayCircleService extends BaseService {
             String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
 
 
-
             customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
 
             customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+            orderPO.setAllinpayCircle_req_trace_num(transactionPO.getRequest().getItemString("req_trace_num"));
+            orderDao.insertOrUpdate(orderPO, operatorId, conn);
+
         }
         catch (Exception e) {
             returnObject.setCode(-1);

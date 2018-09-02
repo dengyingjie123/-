@@ -243,6 +243,21 @@ public class OrderDaoImpl implements IOrderDao {
         return null;
     }
 
+
+    public OrderPO loadOrderPOBy_allinpayCircle_req_trace_num(String allinpayCircle_req_trace_num, Connection conn) throws Exception {
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
+        dbSQL.addParameter4All("allinpayCircle_req_trace_num", allinpayCircle_req_trace_num);
+        dbSQL.initSQL();
+
+        List<OrderPO> orders = MySQLDao.search(dbSQL, OrderPO.class, conn);
+
+        if (orders != null && orders.size() == 1) {
+            return orders.get(0);
+        }
+
+        return null;
+    }
+
     public OrderVO getOrderVOByOrderId(String orderId, Connection conn) throws Exception {
 
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("A2ED1805");
