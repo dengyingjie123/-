@@ -6,9 +6,12 @@ import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.KVObjects;
 import com.youngbook.common.ReturnObject;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinPayUtils;
+import com.youngbook.dao.system.ILogDao;
+import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.service.allinpaycircle.AllinpayCircleService;
 import encryption.DataGramB2cUtil;
@@ -21,6 +24,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.mail.Quota;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,33 @@ public class AllinpayCircleAction extends BaseAction {
 
     @Autowired
     AllinpayCircleService allinpayCircleService;
+
+    @Autowired
+    ILogDao logDao;
+
+    public String receiveRawData() throws Exception {
+
+        String parametersStringValue = HttpUtils.getParametersStringValue(getRequest());
+
+        AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO = new AllinpayCircleReceiveRawDataPO();
+        allinpayCircleReceiveRawDataPO.setMessage(parametersStringValue);
+        allinpayCircleReceiveRawDataPO.setStatus("0");
+
+        allinpayCircleService.saveReceiveRawData(allinpayCircleReceiveRawDataPO, getConnection());
+
+        return SUCCESS;
+    }
+
+    public String depositByInstitution() throws Exception {
+
+        String orderId = getHttpRequestParameter("orderId");
+
+        ReturnObject returnObject = allinpayCircleService.depositByInstitution(orderId, getLoginUser().getId(), getConnection());
+
+        setResult(returnObject);
+
+        return SUCCESS;
+    }
 
     public String openAccountPersonalByTrust() throws Exception {
 

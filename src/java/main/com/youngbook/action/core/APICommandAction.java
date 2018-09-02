@@ -22,15 +22,15 @@ public class APICommandAction extends BaseAction {
     ILogDao logDao;
 
     /**
-     * 接收通联支付万小宝反馈
+     * 接受任何消息
      * @return
      * @throws Exception
      */
-    public String receiveAllinpayCircle() throws Exception {
+    public String receiveAnyData() throws Exception {
 
         String parametersStringValue = HttpUtils.getParametersStringValue(getRequest());
 
-        logDao.save("receiveAllinpayCircle", "收到反馈信息", parametersStringValue, getConnection());
+        logDao.save("receiveAnyData", "收到信息", parametersStringValue, getConnection());
 
         return SUCCESS;
     }

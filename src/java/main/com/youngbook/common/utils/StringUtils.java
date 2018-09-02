@@ -32,7 +32,8 @@ public class StringUtils {
 
     public static void main(String [] args) throws Exception {
 
-
+        String trans_date = "20180901";
+        String trans_time = "173136";
 
 
         System.out.println(AesEncrypt.encrypt("800019374406012"));

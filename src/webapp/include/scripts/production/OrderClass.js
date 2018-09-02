@@ -242,6 +242,8 @@ var OrderClass = function (token) {
                 onClickOrderFinanceMoneyConfirmCancel();
 
                 onClickExportExcel();
+
+                onClickOrder_AllinpayCircle_DepositByInstitution();
             },
             onClickCell:function(index,field,value){
                 var data = $('#OrderTable'+token).datagrid('getData');
@@ -324,6 +326,32 @@ var OrderClass = function (token) {
                         fw.datagridReload("OrderTable"+token);
                     },null);
 
+
+                }, null);
+
+            });
+        });
+
+    }
+
+
+    function onClickOrder_AllinpayCircle_DepositByInstitution() {
+        var buttonId = "btnAllinpayCircle_DepositByInstitution" + token;
+
+        fw.bindOnClick4Any(buttonId, function () {
+
+            fw.datagridGetSelected('OrderTable' + token, function (selected) {
+                var customerName = selected['customerName'];
+                var orderId = selected['id'];
+                var moneyString = fw.formatMoney(selected['money']);
+                fw.confirm('确认', '是否确认给<br>客户【'+customerName+'】<br>充值【' + moneyString + '】', function () {
+                    var url = WEB_ROOT + '/pay/AllinpayCircle_depositByInstitution?orderId=' + orderId;
+                    fw.post(url, null, function(data){
+
+                        if (!fw.checkIsTextEmpty(data)) {
+                            fw.alert('提示', data);
+                        }
+                    }, null);
 
                 }, null);
 

@@ -203,8 +203,6 @@ public class OrderDaoImpl implements IOrderDao {
 
     public OrderPO insertOrUpdate(OrderPO orderPO, String userId, Connection conn) throws Exception {
 
-
-
         MySQLDao.insertOrUpdate(orderPO, userId, conn);
 
         return orderPO;
@@ -232,6 +230,21 @@ public class OrderDaoImpl implements IOrderDao {
     public OrderPO loadByLikeOrderId(String orderId, Connection conn) throws Exception {
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
         dbSQL.addParameter4All("orderId", orderId);
+        dbSQL.initSQL();
+
+        List<OrderPO> orders = MySQLDao.search(dbSQL, OrderPO.class, conn);
+
+        if (orders != null && orders.size() == 1) {
+            return orders.get(0);
+        }
+
+        return null;
+    }
+
+
+    public OrderPO loadOrderPOBy_allinpayCircle_req_trace_num(String allinpayCircle_req_trace_num, Connection conn) throws Exception {
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
+        dbSQL.addParameter4All("allinpayCircle_req_trace_num", allinpayCircle_req_trace_num);
         dbSQL.initSQL();
 
         List<OrderPO> orders = MySQLDao.search(dbSQL, OrderPO.class, conn);

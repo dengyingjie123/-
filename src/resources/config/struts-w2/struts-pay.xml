@@ -19,11 +19,15 @@
             <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
             <interceptor-stack name="authStack">
                 <interceptor-ref name="defaultStack"/>
-                <!--<interceptor-ref name="auth"></interceptor-ref>-->
+                <interceptor-ref name="auth"></interceptor-ref>
                 <interceptor-ref name="defaultInterceptor"></interceptor-ref>
                 <interceptor-ref name="securityInterceptor"></interceptor-ref>
                 <interceptor-ref name="transaction"></interceptor-ref>
 
+            </interceptor-stack>
+            <interceptor-stack name="baseStack">
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
             </interceptor-stack>
             <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
         </interceptors>
@@ -36,6 +40,17 @@
         </global-results>
 
 
+        <action name="allinpayCircleReceiveRawData" class="com.youngbook.action.pay.AllinpayCircleAction" method="receiveRawData">
+            <interceptor-ref name ="baseStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
         <action name="*_*" class="com.youngbook.action.pay.{1}Action" method="{2}">
             <interceptor-ref name ="authStack"/>
             <result type="json">
@@ -46,6 +61,8 @@
                 <param name="ignoreHierarchy">true</param>
             </result>
         </action>
+
+
 
     </package>
 </struts>

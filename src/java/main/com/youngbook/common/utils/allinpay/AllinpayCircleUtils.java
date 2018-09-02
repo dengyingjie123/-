@@ -20,6 +20,7 @@ public class AllinpayCircleUtils {
             APINames.addItem("1088", "更换银行卡");
             APINames.addItem("1090", "更换手机号");
             APINames.addItem("1087", "单笔信任开户");
+            APINames.addItem("2080", "充值机构自付");
         }
 
         String name = APINames.getItemString(processingCode);

@@ -11,6 +11,8 @@ import java.sql.Connection;
  */
 @Component("customerMoneyLogDao")
 public class CustomerMoneyLogDaoImpl implements ICustomerMoneyLogDao {
+
+
     /**
      * 插入新的客户资金日志
      * @param type

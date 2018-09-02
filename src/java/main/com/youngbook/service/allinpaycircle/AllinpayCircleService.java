@@ -22,6 +22,7 @@ import com.youngbook.dao.customer.ICustomerCertificateDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IProductionDao;
+import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandDirection;
 import com.youngbook.entity.po.core.APICommandType;
@@ -50,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 
+import java.net.ConnectException;
 import java.security.Key;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -88,8 +90,20 @@ public class AllinpayCircleService extends BaseService {
     @Autowired
     IOrderDao orderDao;
 
-    private static final String callbackUrl = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
+    private static final String callbackUrl = "http://118.126.103.58:8574/core/pay/allinpayCircleReceiveRawData";
 
+
+
+    public void dealRawData(Connection conn) throws Exception {
+
+        allinpayCircleDao.dealRawData(conn);
+    }
+
+
+    public AllinpayCircleReceiveRawDataPO saveReceiveRawData(AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO, Connection conn) throws Exception {
+
+        return allinpayCircleDao.saveReceiveRawData(allinpayCircleReceiveRawDataPO, conn);
+    }
 
     /**
      * 解析返回值
@@ -102,7 +116,7 @@ public class AllinpayCircleService extends BaseService {
         XmlHelper helper = null;
 
         if (returnObject == null || returnObject.getCode() != 100) {
-            MyException.newInstance("返回值解析异常", returnObject.getMessage()).throwException();
+            MyException.newInstance("返回值解析异常，【"+returnObject.getMessage()+"】", returnObject.getMessage()).throwException();
         }
 
         String jsonString = returnObject.getReturnValue().toString();
@@ -174,7 +188,6 @@ public class AllinpayCircleService extends BaseService {
      */
     public ReturnObject accountCheck(String customerId, String accountId, Connection conn) throws Exception {
 
-        String url = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
@@ -438,24 +451,44 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
+    public ReturnObject depositByInstitution(String orderId, String operatorId, Connection conn) throws Exception {
+
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        String accountId = orderPO.getAccountId();
+        String productionId = orderPO.getProductionId();
+
+        double money = orderPO.getMoney();
+
+        ReturnObject returnObject = depositByInstitution(accountId, productionId, orderId, operatorId, conn);
+
+        return returnObject;
+    }
+
+    public void dealDepositByInstitution(Connection conn) throws Exception {
+
+        allinpayCircleDao.dealDepositByInstitution(conn);
+
+    }
+
     /**
      * 充值-机构自付
-     * @param customerId
      * @param accountId
      * @param productionId
-     * @param money
+     * @param orderId
      * @param operatorId
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject depositByInstitution(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject depositByInstitution(String accountId, String productionId, String orderId, String operatorId, Connection conn) throws Exception {
 
-        String url = "";
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String customerId = customerAccountPO.getCustomerId();
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
         String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
@@ -465,6 +498,10 @@ public class AllinpayCircleService extends BaseService {
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 
         ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+
+
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+        double money = orderPO.getMoney();
 
         TransactionPO transactionPO = new TransactionPO();
 
@@ -478,35 +515,48 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
-        transactionPO.getRequest().addItem("tel_num", customerPersonalPO.getMobile());
+        transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
         transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
-        transactionPO.getRequest().addItem("resp_url", url);
+        transactionPO.getRequest().addItem("resp_url", callbackUrl);
 
 
-        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+        ReturnObject returnObject = new ReturnObject();
+
+        try {
+
+            returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+            XmlHelper helper = getResponseXmlHelper(returnObject);
+
+            String signNum = helper.getValue("/transaction/response/sign_num");
+
+            customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+
+            customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
 
 
-        XmlHelper helper = getResponseXmlHelper(returnObject);
-
-        String signNum = helper.getValue("/transaction/response/sign_num");
-
-        customerPersonalPO.setAllinpayCircle_SignNum(signNum);
-
-        customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
+            String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
 
 
-        String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+            customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
+
+            customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+            orderPO.setAllinpayCircle_req_trace_num(transactionPO.getRequest().getItemString("req_trace_num"));
+            orderDao.insertOrUpdate(orderPO, operatorId, conn);
+
+        }
+        catch (Exception e) {
+            returnObject.setCode(-1);
+            returnObject.setMessage(e.getMessage());
+        }
 
 
 
-        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
-
-        customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
-
-
-        return null;
+        return returnObject;
     }
 
 
@@ -695,7 +745,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sub_merchant_id", "");
         transactionPO.getRequest().addItem("sign_type", "3");
-        transactionPO.getRequest().addItem("prod_flag", "0");
+        transactionPO.getRequest().addItem("prod_flag", "2");
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
@@ -703,7 +753,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cer_type", "01");
         transactionPO.getRequest().addItem("cer_num", customerCertificateNumber);
         transactionPO.getRequest().addItem("tel_num", allinpayCircleMobile);
-        transactionPO.getRequest().addItem("supply_inst_code", "");
+        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
         transactionPO.getRequest().addItem("is_send_msg", "");
         transactionPO.getRequest().addItem("ms_signature", "");
         transactionPO.getRequest().addItem("reqs_url", "");
