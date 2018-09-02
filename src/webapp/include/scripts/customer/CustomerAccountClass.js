@@ -302,21 +302,26 @@ var CustomerAccountClass = function(token) {
     function onClickCustomerAccountSubmit_AllinpayCircle() {
         var buttonId = "btnCustomerAccountSubmit_AllinpayCircle" + token;
         fw.bindOnClick(buttonId, function(process){
-            var formId = "formCustomerAccount" + token;
-            var url = WEB_ROOT + "/pay/AllinpayCircle_changeBankCard";
 
-            // fw.alertReturnValue(url);
-            fw.bindOnSubmitForm(formId, url, function(){
-                process.beforeClick();
-            }, function(data) {
-                //alert('done');
-                // fw.alertReturnValue(data);
-                process.afterClick();
-                fw.datagridReload("CustomerAccountTable"+token);
-                // fw.windowClose('CustomerAccountWindow'+token);
-            }, function() {
-                process.afterClick();
-            });
+            fw.confirm('提示', '是否确认进行通联金融圈账号修改？', function() {
+                var formId = "formCustomerAccount" + token;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_changeBankCard";
+
+                // fw.alertReturnValue(url);
+                fw.bindOnSubmitForm(formId, url, function(){
+                    process.beforeClick();
+                }, function(data) {
+                    //alert('done');
+                    // fw.alertReturnValue(data);
+                    process.afterClick();
+                    fw.datagridReload("CustomerAccountTable"+token);
+                    fw.windowClose('CustomerAccountWindow'+token);
+                }, function() {
+                    process.afterClick();
+                });
+            },null);
+
+
         });
     }
 
