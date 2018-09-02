@@ -164,6 +164,35 @@ public class OrderPO extends BasePO {
      */
     private String allinpayCircle_deposit_status = "";
 
+
+    /**
+     * 通联金融生态圈-份额支付
+     * 0：未支付
+     * 1：已支付
+     * 2：待确认
+     * 3：支付失败
+     */
+    private String allinpayCircle_payByShare_status = "";
+
+    @DataAdapter(fieldType = FieldType.DATE)
+    private String allinpayCircle_payByShare_time = "";
+
+    public String getAllinpayCircle_payByShare_time() {
+        return allinpayCircle_payByShare_time;
+    }
+
+    public void setAllinpayCircle_payByShare_time(String allinpayCircle_payByShare_time) {
+        this.allinpayCircle_payByShare_time = allinpayCircle_payByShare_time;
+    }
+
+    public String getAllinpayCircle_payByShare_status() {
+        return allinpayCircle_payByShare_status;
+    }
+
+    public void setAllinpayCircle_payByShare_status(String allinpayCircle_payByShare_status) {
+        this.allinpayCircle_payByShare_status = allinpayCircle_payByShare_status;
+    }
+
     public String getAllinpayCircle_deposit_status() {
         return allinpayCircle_deposit_status;
     }

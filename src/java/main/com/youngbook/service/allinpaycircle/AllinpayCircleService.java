@@ -788,6 +788,9 @@ public class AllinpayCircleService extends BaseService {
         return returnObject;
     }
 
+    public void dealPayByShare(Connection conn) throws Exception {
+        allinpayCircleDao.dealPayByShare(conn);
+    }
 
     /**
      * 通联万小宝

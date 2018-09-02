@@ -10,6 +10,7 @@ import java.sql.Connection;
  * Created by leevits on 7/19/2018.
  */
 public interface IAllinpayCircleDao {
+    public void dealPayByShare(Connection conn) throws Exception;
     public void dealDepositByInstitution(Connection conn) throws Exception;
     public void dealRawData(Connection conn) throws Exception;
     public AllinpayCircleReceiveRawDataPO saveReceiveRawData(AllinpayCircleReceiveRawDataPO allinpayCircleReceiveRawDataPO, Connection conn) throws Exception;
