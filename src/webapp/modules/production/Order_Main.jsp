@@ -60,7 +60,8 @@
      */
     int allinpayCircleButtonIndex = 1;
     menuToolbar.newMenuButton("allinpayCircle"+token,  "通联金融生态圈", IconStyle.ICON_001, menuToolbarIndex++)
-            .addButton("btnAllinpayCircle_DepositByInstitution" + token, "确认充值", IconStyle.BLANK, allinpayCircleButtonIndex++, "");
+            .addButton("btnAllinpayCircle_DepositByInstitution" + token, "确认充值", IconStyle.BLANK, allinpayCircleButtonIndex++, "")
+            .addButton("btnAllinpayCircle_payByShare" + token, "份额支付", IconStyle.BLANK, allinpayCircleButtonIndex++, "");
 %>
 <html>
 <head>

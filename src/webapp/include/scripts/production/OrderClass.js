@@ -244,6 +244,7 @@ var OrderClass = function (token) {
                 onClickExportExcel();
 
                 onClickOrder_AllinpayCircle_DepositByInstitution();
+                onClickOrder_AllinpayCircle_payByShare();
             },
             onClickCell:function(index,field,value){
                 var data = $('#OrderTable'+token).datagrid('getData');
@@ -346,6 +347,35 @@ var OrderClass = function (token) {
                 var moneyString = fw.formatMoney(selected['money']);
                 fw.confirm('确认', '是否确认给<br>客户【'+customerName+'】<br>充值【' + moneyString + '】', function () {
                     var url = WEB_ROOT + '/pay/AllinpayCircle_depositByInstitution?orderId=' + orderId;
+                    fw.post(url, null, function(data){
+
+                        if (!fw.checkIsTextEmpty(data)) {
+                            fw.alert('提示', data);
+                        }
+                    }, null);
+
+                }, null);
+
+            });
+        });
+
+    }
+
+
+    /**
+     * 份额支付
+     */
+    function onClickOrder_AllinpayCircle_payByShare() {
+        var buttonId = "btnAllinpayCircle_payByShare" + token;
+
+        fw.bindOnClick4Any(buttonId, function () {
+
+            fw.datagridGetSelected('OrderTable' + token, function (selected) {
+                var customerName = selected['customerName'];
+                var orderId = selected['id'];
+                var moneyString = fw.formatMoney(selected['money']);
+                fw.confirm('确认', '是否确认使用<br>客户【'+customerName+'】<br>的份额进行支付，<br>支付金额为【' + moneyString + '】', function () {
+                    var url = WEB_ROOT + '/pay/AllinpayCircle_payByShare?orderId=' + orderId;
                     fw.post(url, null, function(data){
 
                         if (!fw.checkIsTextEmpty(data)) {

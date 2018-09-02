@@ -792,27 +792,25 @@ public class AllinpayCircleService extends BaseService {
     /**
      * 通联万小宝
      * 单笔购买交易，份额支付
-     * @param customerId
-     * @param accountId
      * @param orderId
      * @param operatorId
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject payByShare(String customerId, String accountId, String orderId, String operatorId, Connection conn) throws Exception {
-
-        String url = "";
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
-
-        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
-
-        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
-        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
-
+    public ReturnObject payByShare(String orderId, String operatorId, Connection conn) throws Exception {
 
         OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(orderPO.getCustomerId(), conn);
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(orderPO.getAccountId(), conn);
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(orderPO.getAccountId(), "allinpayCircleBankCode", conn);
+
+
+
 
         ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
 
@@ -828,14 +826,14 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
-        transactionPO.getRequest().addItem("cer_type", "01");
+        transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(orderPO.getMoney()));
         transactionPO.getRequest().addItem("prod_import_flag", "0");
-        transactionPO.getRequest().addItem("supply_inst_code", productionPO.getAllinpayCircle_SupplyInstCode());
-        transactionPO.getRequest().addItem("product_num", productionPO.getAllinpayCircle_ProductNum());
-        transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
+        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
+        transactionPO.getRequest().addItem("product_num", "KPL555");
+        transactionPO.getRequest().addItem("product_code_cash_acct", "000000324");
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
-        transactionPO.getRequest().addItem("resp_url", url);
+        transactionPO.getRequest().addItem("resp_url", callbackUrl);
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);

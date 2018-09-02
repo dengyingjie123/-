@@ -63,6 +63,17 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String payByShare() throws Exception {
+
+        String orderId = getHttpRequestParameter("orderId");
+
+        ReturnObject returnObject = allinpayCircleService.payByShare(orderId, getLoginUser().getId(), getConnection());
+
+        setResult(returnObject);
+
+        return SUCCESS;
+    }
+
     public String openAccountPersonalByTrust() throws Exception {
 
         String customerAccountId = getHttpRequestParameter("customerAccountId");
