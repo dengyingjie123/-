@@ -208,6 +208,22 @@ var OrderClass = function (token) {
                         var url = "down.jsp?zipName="+zipName+"&moduleId=18833&bizId=" + row['id'];
                         return "<a href='"+url+"' target='_blank'>下载</a>";
                     }},
+                    {field: 'allinpayCircle_deposit_status', title: '通联-充值状态',
+                        formatter: function(value,row,index){
+                            if (row['allinpayCircle_deposit_status']=='0') {
+                                return '未充值';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='1') {
+                                return '充值成功';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='2') {
+                                return '充值已受理';
+                            }
+                            else if (row['allinpayCircle_deposit_status']=='3') {
+                                return '充值失败';
+                            }
+                        }
+                    }
                 ]
             ],
             onLoadSuccess: function () {

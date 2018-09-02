@@ -241,6 +241,62 @@ public class OrderVO extends BaseVO {
     @DataAdapter(fieldType = FieldType.DATE)
     private String financeMoneyConfirmTime = new String();
 
+    private String allinpayCircle_req_trace_num = "";
+
+    /**
+     * 通联金融生态圈-充值状态
+     * 0：未充值
+     * 1：已充值
+     * 2：充值待系统确认
+     * 3：充值失败
+     */
+    private String allinpayCircle_deposit_status = "";
+
+
+    /**
+     * 通联金融生态圈-份额支付
+     * 0：未支付
+     * 1：已支付
+     * 2：待确认
+     * 3：支付失败
+     */
+    private String allinpayCircle_payByShare_status = "";
+
+    @DataAdapter(fieldType = FieldType.DATE)
+    private String allinpayCircle_payByShare_time = "";
+
+    public String getAllinpayCircle_payByShare_time() {
+        return allinpayCircle_payByShare_time;
+    }
+
+    public String getAllinpayCircle_req_trace_num() {
+        return allinpayCircle_req_trace_num;
+    }
+
+    public void setAllinpayCircle_req_trace_num(String allinpayCircle_req_trace_num) {
+        this.allinpayCircle_req_trace_num = allinpayCircle_req_trace_num;
+    }
+
+    public String getAllinpayCircle_deposit_status() {
+        return allinpayCircle_deposit_status;
+    }
+
+    public void setAllinpayCircle_deposit_status(String allinpayCircle_deposit_status) {
+        this.allinpayCircle_deposit_status = allinpayCircle_deposit_status;
+    }
+
+    public String getAllinpayCircle_payByShare_status() {
+        return allinpayCircle_payByShare_status;
+    }
+
+    public void setAllinpayCircle_payByShare_status(String allinpayCircle_payByShare_status) {
+        this.allinpayCircle_payByShare_status = allinpayCircle_payByShare_status;
+    }
+
+    public void setAllinpayCircle_payByShare_time(String allinpayCircle_payByShare_time) {
+        this.allinpayCircle_payByShare_time = allinpayCircle_payByShare_time;
+    }
+
     public String getGroupName() {
         return groupName;
     }
