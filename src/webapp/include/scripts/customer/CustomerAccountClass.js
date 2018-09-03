@@ -312,7 +312,21 @@ var CustomerAccountClass = function(token) {
                     process.beforeClick();
                 }, function(data) {
                     //alert('done');
-                    // fw.alertReturnValue(data);
+                    fw.alertReturnValue(data);
+
+                    var mobileCodeCheckUrl = WEB_ROOT + '/modules/customer/CustomerAccount_Save_AllinpayCircle.jsp';
+                    fw.window('MobileCodeCheckWindow' + token, '验证码', 500, 400, mobileCodeCheckUrl, function(){
+                        fw.bindOnClick4Any('btnCustomerAccountMobileCheckSubmit_AllinpayCircle' + token,
+                            function() {
+                                fw.formLoad('formCustomerAccountMobileCodeCheck' + token, data);
+
+                                var mobileCheckButtonId = 'btnCustomerAccountSubmit_AllinpayCircle_MobileCodeCheck' + token;
+                                fw.bindOnClick4Any(mobileCheckButtonId, function () {
+                                    alert('提交数据');
+                                });
+                            });
+                    }, null);
+
                     process.afterClick();
                     fw.datagridReload("CustomerAccountTable"+token);
                     fw.windowClose('CustomerAccountWindow'+token);

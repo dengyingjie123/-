@@ -6,6 +6,7 @@ import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.KVObjects;
 import com.youngbook.common.ReturnObject;
+import com.youngbook.common.config.XmlHelper;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.TimeUtils;
@@ -52,6 +53,21 @@ public class AllinpayCircleAction extends BaseAction {
         if (returnObject.getCode() != 100) {
             getResult().setCode(-1);
             getResult().setMessage(returnObject.getMessage());
+        }
+        else {
+            XmlHelper helper = new XmlHelper(returnObject.getReturnValue().toString());
+
+            String org_processing_code = helper.getValue("/transaction/head/processing_code");
+            String org_trans_date = helper.getValue("/transaction/head/trans_date");
+            String org_req_trace_num = helper.getValue("/transaction/response/req_trace_num");
+
+
+            KVObjects kvObjects = new KVObjects();
+            kvObjects.addItem("org_processing_code", org_processing_code);
+            kvObjects.addItem("org_trans_date", org_trans_date);
+            kvObjects.addItem("org_req_trace_num", org_req_trace_num);
+
+            getResult().setReturnValue(kvObjects.toJSONObject());
         }
 
         return SUCCESS;
