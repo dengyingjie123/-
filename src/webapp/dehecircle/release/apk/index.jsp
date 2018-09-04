@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 </head>
 
-
+欢迎下载德合汇安卓版本，请点击右上角三个点的按钮，选择从浏览器打开。
 <div style="margin: 0 auto; width:100%; text-align: center"><img src="<%=Config.getWebDehecircle()%>/include/img/open_with_browser.png" style="width: 100%;" /></div>
 <br><br>
 <br>
