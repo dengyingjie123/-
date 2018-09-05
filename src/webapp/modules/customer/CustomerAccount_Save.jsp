@@ -63,7 +63,8 @@
         </form>
     </div>
     <div region="south" border="false" style="text-align:right;padding:5px;background:#F4F4F4">
-        <a id="btnCustomerAccountSubmit<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >确定</a>
+        <a id="btnCustomerAccountSubmit_AllinpayCircle<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >通联金融生态圈换卡</a>
+        <a id="btnCustomerAccountSubmit<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >正常保存</a>
         <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('CustomerAccountWindow<%=token%>')">取消</a>
     </div>
 </div>

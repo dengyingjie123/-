@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Lee on 2016/5/31.
  */
 public interface ICustomerAccountDao {
-
+    public String getBankCodeInKVParameterWithBankCode(String bankCode, String parameterKey, Connection conn) throws Exception;
     public FdcgCustomerAccountPO fdcgGetCustomerAccountPO(String crmCustomerPersonalId, String bindStatus, Connection conn) throws Exception;
     public CustomerAccountPO getCustomerAccount(String customerId, Connection conn) throws Exception;
     public List<CustomerAccountPO> getCustomerAccounts(String customerId, Connection conn) throws Exception;
