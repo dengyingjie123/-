@@ -569,7 +569,7 @@ public class AllinpayCircleService extends BaseService {
 
 
     /**
-     * 实时取现-机构自付
+     * 实时取现-银行卡支付
      * @param customerId
      * @param accountId
      * @param productionId
@@ -579,7 +579,7 @@ public class AllinpayCircleService extends BaseService {
      * @return
      * @throws Exception
      */
-    public ReturnObject withdrawalByInstitution(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject withdrawalByBank(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
 
         String url = "";
 
@@ -603,18 +603,16 @@ public class AllinpayCircleService extends BaseService {
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
-        transactionPO.getRequest().addItem("pay_mode", "4");
+        transactionPO.getRequest().addItem("pay_mode", "1");
         transactionPO.getRequest().addItem("charge_flag", "1");
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("hld_name", customerPersonalPO.getName());
-        transactionPO.getRequest().addItem("cer_type", "01");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("advance_flag", "1");
-        transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
-        transactionPO.getRequest().addItem("resp_url", url);
+        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("resp_url", callbackUrl);
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
@@ -846,6 +844,9 @@ public class AllinpayCircleService extends BaseService {
 
         return returnObject;
     }
+
+
+
 
     public static void main(String[] args) throws Exception {
 
