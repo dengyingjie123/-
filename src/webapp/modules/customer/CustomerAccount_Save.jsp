@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Ivan
-  Date: 10/18/14
-  Time: 2:47 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""
          import="com.youngbook.common.config.*" %>
 <%
