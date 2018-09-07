@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+构建hopewealth工程
+
+参考：85FC1605
+当前版本：1.0
+
+//// 使用方法  ///////////////////////////////////////////////
+安装tomcat 8 命令
+ant -buildfile build-hopewealth_master.xml install-tomcat
+
+
+//// 定义  ///////////////////////////////////////////////
+project: 项目
+src: 源文件
+build: 构建，最终编译后的文件存放目录等
+
+
+
+//// 命名约定 ///////////////////////////////////////////////
+ant配置文件的命名
+build-【项目名称】_【项目目标名称】.xml
+
+
+
+//// 简称约定 ///////////////////////////////////////////////
+m:yes 需要根据实际情况修改
+m:no 不需要修改
+
+
+
+修改历史：
+-->
+<project name="hwbanks_master-ci" basedir="." default="help">
+
+
+
+    <!-- /////////////////   基础配置  ////////////////////////////////////////-->
+
+    <property name="ftp.host" value="10.2.20.131"/>
+    <property name="ftp.user" value="test"/>
+    <property name="ftp.password" value="test"/>
+    <property name="ftp.temp.dir" value="d:\temp\ftp"/>
+
+    <!--
+    项目名称 m:yes
+
+    以后的各类配置会基于此来完成
+    -->
+    <property name="project.name" value="hwbanks"/>
+    <property name="tomcat.context" value="hopewealth"/>
+
+
+    <!-- 当前时间 -->
+    <tstamp>
+        <format property="deploy.time" pattern="yyyyMMdd-HHmm-ss"/>
+    </tstamp>
+
+
+    <!--
+    项目所在的文件目录 m:yes
+
+    这里存放git管理下的java源文件
+    -->
+    <property name="project.dir" value="D:\workspace\hopewealth"/>
+
+
+    <!--
+    项目的目标名称 m:yes
+    这个数值将与project.name一起，初始化各种文件夹和命名，例如 hopewealth_master，他们之间用【_】连接
+
+    取值
+    master: 生产环境
+    test: 测试环境
+    dev: 开发环境
+    -->
+    <property name="project.target" value="master"/>
+
+
+    <!--
+    备份目录
+    -->
+    <property name="backup.base.dir" value="D:\work\10_backup\webapp\${project.name}_${project.target}" />
+    <property name="backup.dir" value="${backup.base.dir}\${deploy.time}\"/>
+
+
+
+    <!--
+    项目部署的位置所在的目录 m:yes
+
+    作为tomcat的启动目录
+    -->
+    <property name="build.dir.prefix" value="D:\work\03_deploy\webapp"/>
+
+
+    <!--
+    项目部署的实际的工程目录 m:no
+    -->
+    <property name="build.dir" value="${build.dir.prefix}\${project.name}_${project.target}\${tomcat.context}"/>
+
+
+    <!--
+    源文件目录 m:no
+    -->
+    <property name="src.dir" value="${project.dir}/src/java/main"/>
+
+
+    <!--
+    源文件包所在目录 m:no
+    从SVN管理下的所有jar包，包含了maven管理的包
+    -->
+    <property name="src.lib.dir" value="D:/workspace/hopewealth_lib"/>
+
+    <!--
+    编译后的classes文件夹
+    -->
+    <property name="build.classes.dir" value="${build.dir}/WEB-INF/classes"/>
+
+    <!--
+    编译后的lib文件夹
+    -->
+    <property name="build.classes.lib" value="${build.dir}/WEB-INF/lib"/>
+
+
+
+    <!--
+    需要忽略的文件
+    -->
+    <patternset id="ignored.files">
+        <exclude name="**/.svn/**"/>
+    </patternset>
+
+
+
+    <!--
+    编译器的配置
+    -->
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="2000m"/>
+
+
+    <!--
+    lib包的环境变量
+    -->
+    <path id="library.lib.classpath">
+        <pathelement path="${build.dir}" />
+        <fileset dir="${build.classes.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+
+
+    <!-- /////////////////   任务定义  ////////////////////////////////////////-->
+
+
+    <target name="help">
+        <echo message="[ant deploy] for do the porcess of deploy project." />
+        <echo message="[ant deploy-without-backup] for do the porcess of deploy project without backup anything." />
+        <echo message="[ant config] for just copy the runtime config of the given project. You have to chang he setting of build.xml file." />
+    </target>
+
+    <!--
+    任务启动
+    -->
+    <target name="deploy" depends="start,backup,clean,compile,config,backup-zip"/>
+
+    <target name="deploy-without-backup" depends="start,clean,compile,config,backup-zip"/>
+
+
+    <target name="start" depends="check">
+        <input message="是否全部参数正确？" addproperty="do.confirm"  validargs="y,n" />
+        <condition property="do.abort">
+            <equals arg1="n" arg2="${do.confirm}"></equals>
+        </condition>
+        <fail if="do.abort">Build aborted by user.</fail>
+
+
+        <input message="是否确认部署 ${project.name}_${project.target} ？" addproperty="do.confirm.project"  validargs="${project.name}_${project.target},n" />
+        <condition property="do.abort">
+            <equals arg1="n" arg2="${do.confirm.project}"></equals>
+        </condition>
+        <fail if="do.abort">Build aborted by user.</fail>
+    </target>
+
+
+    <!--
+    准备tomcat服务器
+    -->
+    <property name="tomcat.file.name" value="apache-tomcat-7.0.69"/>
+    <property name="tomcat.install.dir" value="D:\work\02_server\tomcat"/>
+    <target name="install-tomcat">
+
+        <!-- 从ftp获取tomcat文件 -->
+        <mkdir dir="${ftp.temp.dir}" />
+        <ftp action="get"
+             server="${ftp.host}"
+             userid="${ftp.user}"
+             password="${ftp.password}">
+            <fileset dir="${ftp.temp.dir}">
+                <include name="tomcat\${tomcat.file.name}.zip"/>
+            </fileset>
+        </ftp>
+
+
+        <delete dir="${tomcat.install.dir}\${tomcat.file.name}"/>
+        <delete dir="${tomcat.install.dir}\${tomcat.file.name}_${project.name}_${project.target}"/>
+        <unzip src="${ftp.temp.dir}\tomcat\${tomcat.file.name}.zip" dest="${tomcat.install.dir}"/>
+        <move file="${tomcat.install.dir}\${tomcat.file.name}" tofile="${tomcat.install.dir}\${tomcat.file.name}_${project.name}_${project.target}"/>
+
+        <!-- 清除ftp临时文件夹 -->
+        <delete dir="${ftp.temp.dir}"/>
+    </target>
+
+    <target name="check">
+
+        <echo message="请确认【项目目录】是否正确" />
+        <echo message="${project.dir}" />
+
+        <echo message="请确认【构建目录】是否正确" />
+        <echo message="${build.dir}" />
+
+        <echo message="请确认【包含的所有jar包】是否正确？此处受SVN管理" />
+        <echo message="${src.lib.dir}" />
+
+        <echo message="请确认【Tomcat Context】是否正确" />
+        <echo message="${tomcat.context}" />
+
+        <echo message="请确认【备份目录】是否正确" />
+        <echo message="${backup.dir}" />
+
+    </target>
+
+
+    <target name="backup">
+        <mkdir dir="${backup.dir}"/>
+        <copy todir="${backup.dir}">
+            <fileset dir="${build.dir}"/>
+        </copy>
+    </target>
+
+    <!--
+    任务： 清除
+    -->
+    <target name="clean" depends="check">
+        <!-- 删除编译文件夹 -->
+        <delete dir="${build.dir}"/>
+        <delete dir="${ftp.temp.dir}"/>
+    </target>
+
+
+    <!--
+    任务： 初始化
+
+    步骤：
+    复制jsp, xml等不需要编译的文件到目标文件夹
+    复制需要用到的lib包
+    -->
+    <target name="init">
+        <copy todir="${build.dir}">
+            <fileset dir="${project.dir}/src/webapp"/>
+        </copy>
+
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**"/>
+
+                <exclude name="**.properties" />
+                <exclude name="**/*.properties" />
+
+                <exclude name="**.java" />
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>
+        <copy todir="${build.dir}/WEB-INF/lib">
+            <fileset dir="${project.dir}/src/resources/thrid-party-lib"/>
+        </copy>
+
+
+        <echo message="复制资源文件" />
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${project.dir}/src/resources"/>
+        </copy>
+
+
+        <echo message="开始所有包含的jar文件" />
+        <copy todir="${build.dir.prefix}\${project.name}_${project.target}\${tomcat.context}\WEB-INF\lib">
+            <fileset dir="${src.lib.dir}"/>
+        </copy>
+    </target>
+
+
+    <!--
+    任务： 编译
+    -->
+    <target name="compile" depends="init">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac fork="true" srcdir="${src.dir}" destdir="${build.classes.dir}" target="1.8" source="1.8" encoding="UTF-8" includeantruntime="false">
+            <classpath refid="library.lib.classpath" />
+        </javac>
+    </target>
+
+
+    <!--
+    任务： 配置
+    将svn的配置复制到目标文件夹
+    -->
+    <target name="config">
+        <!--<echo message="开始复制配置文件" />-->
+
+        <!--<mkdir dir="${ftp.temp.dir}" />-->
+        <!--<ftp action="get"-->
+             <!--server="${ftp.host}"-->
+             <!--userid="${ftp.user}"-->
+             <!--password="${ftp.password}">-->
+            <!--<fileset dir="${ftp.temp.dir}"></fileset>-->
+        <!--</ftp>-->
+
+
+        <!--<copy todir="${build.dir.prefix}\${project.name}_${project.target}">-->
+            <!--<fileset dir="${ftp.temp.dir}\${project.name}_${project.target}\03.app"/>-->
+        <!--</copy>-->
+
+        <!--<delete dir="${ftp.temp.dir}"></delete>-->
+    </target>
+
+
+    <target name="backup-zip">
+        <zip destfile="${backup.base.dir}/${deploy.time}.zip"
+             basedir="${backup.dir}"
+             excludes="**/*.lib" />
+        <delete dir="${backup.dir}"></delete>
+    </target>
+
+
+
+</project>

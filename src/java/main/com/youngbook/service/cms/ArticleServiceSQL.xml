@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getCircle">
+SELECT
+	*
+FROM
+	cms_article
+WHERE
+	state = 0
+<if test="#{bizId} !=null">    
+and BizId=#{bizId}
+</if>
+<if test="#{columnId} !=null">
+and ColumnId=#{columnId}
+</if>
+ORDER BY
+	operateTime desc;        
+        </select>
+    </select-sql>
+</sql>

@@ -1,0 +1,210 @@
+#nav {
+	background: #fafafa;
+	height: 70px;
+	margin: 0 auto;
+}
+
+#nav span {
+	float: right;
+	font-size: 18px;
+	padding: 23px 0px 0px 0px;
+}
+
+#nav span a {
+	text-decoration: none;
+	color: black;
+	padding: 0px 20px 0px 20px;
+}
+
+#nav span a:hover {
+	color: #d28d2a;
+}
+
+#position {
+	margin: 0 auto;
+	padding: 20px 0px 20px 0px;
+	font-size: 16px;
+}
+
+#position a {
+	text-decoration: none;
+	color: black;
+}
+
+.container {
+	margin: 0 auto;
+}
+.container-item {
+    width: 1200px;
+    margin-top: 30px;
+}
+
+.container #title {
+	height: 32px;
+	font-size: 18px;
+	background: url(../../img/projectDetailTitle.png);
+	border-bottom: #dcdcdc 1px solid;
+	padding: 8px 0px 0px 15px;
+}
+
+.container #content {
+	border-bottom: #dcdcdc 1px solid;
+	padding: 30px 0px 30px 120px;
+}
+
+.container td {
+	font-size: 16px;
+	height: 50px;	
+}
+
+
+#content .customer {
+	width: 300px;
+	height: 32px;
+	background: url(../../img/input_bankcard2.png);
+	border: 0px;	
+}
+
+#content .banks {
+	width: 300px;
+	height: 34px;
+	background: url(../../img/input_bankcard.png);
+	border: 0px;
+}
+
+#content .bankCardNum {
+	width: 300px;
+	height: 32px;
+	background: url(../../img/input_bankcard.png);
+	border: 0px;
+}
+
+#footer {
+	background: #e8e8e8;
+	border-top: #ff3f3f 1px solid;
+	margin: 50px 0px 0px 0px;	
+}
+
+#footer #footer-content {
+	height: 300px;
+	margin: 0 auto;
+}
+
+#footer-content #content1, #content2 {
+	width: 255px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;	
+	float: left;
+}
+
+#footer-content #content3 {
+	width: 200px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;	
+	float: left;
+}
+
+#footer-content .footer-text {
+	padding: 5px 0px 5px 64px;	
+}
+
+#footer-split {
+	width: 3px;
+	float: left;
+}
+
+#footer a {
+	color: black;
+	text-decoration: none;	
+}
+
+#footer #content4 {
+	float: left;
+	padding: 40px 0px 0px 40px;	
+	text-align: center;
+}
+
+#footer #content5 {
+	float: right;
+	padding: 40px 0px 0px 0px;	
+	text-align: center;
+}
+
+#copyright {
+	float: left;
+	margin: 0px 0px 20px 0px;
+	text-align: center;
+}
+
+.btn-cardAuth{
+     background:url("../../img/btn_2auth.png");
+     width:120px;
+    height:30px;
+    border: 0px;
+}
+.m-tip {
+    height: 34px;
+    line-height: 34px;
+    font-size: 12px;
+    color: #e74c3c;
+}
+
+
+
+.btns-bank {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    color: #666;
+    border: 1px solid #e5e5e5;
+    background: #eee;
+    border-radius: 4px;
+    font-family: 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+width:100px;
+    height: 30px;
+}
+
+.btns-bank:hover {
+    color: #666;
+    border-color: #c0c0c0;
+    background: #ddd;
+
+}
+.btns-bankCard {
+    border-color: #ff9000;
+    color: #fff;
+    background: #ff9000;
+}
+
+.btns-bankCard:hover {
+    border-color: #d27b15;
+    color: #fff;
+    background: #d27b15;
+}
+
+
+.hts-h3 {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 10px;
+
+}
+
+.container table {
+    width: 1200px;
+}
+
+.container tr {
+    height: 50px;
+}
+
+.container td {
+    text-align: center;
+    font-size: 16px;
+    background: #fafafa;
+    border-bottom: #dcdcdc 1px solid;
+}
+.container-table{
+    background: #fafafa;
+    margin-top: 10px;
+}

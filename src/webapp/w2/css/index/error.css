@@ -1,0 +1,112 @@
+#nav {
+	background: #fafafa;
+	height: 70px;
+	margin: 0 auto;
+}
+
+#nav span {
+	float: right;
+	font-size: 18px;
+	padding: 23px 0px 0px 0px;
+}
+
+#nav span a {
+	text-decoration: none;
+	color: black;
+	padding: 0px 20px 0px 20px;
+}
+
+#nav span a:hover {
+	color: #d28d2a;
+}
+
+#position {
+	margin: 0 auto;
+	padding: 20px 0px 20px 0px;
+	font-size: 16px;
+}
+
+#position a {
+	text-decoration: none;
+	color: black;
+}
+
+#container {
+	margin: 0 auto;
+	background: #fafafa;
+	padding: 80px 30px 200px 30px;
+	width: 940px;
+	border: #dcdcdc 1px solid;
+	text-align: center;
+	height: 100px;
+}
+
+#container #errorMessage {
+	padding: 20px 0px 20px 0px;
+	font-size: 12px;	
+}
+
+#container a {
+	font-size: 14px;
+	padding: 10px 0px 10px 0px;	
+	color: #d28d2a;
+	text-decoration: none;
+}
+
+#footer {
+	background: #e8e8e8;
+	border-top: #ff3f3f 1px solid;
+	margin: 50px 0px 0px 0px;	
+}
+
+#footer #footer-content {
+	height: 300px;
+	margin: 0 auto;
+}
+
+#footer-content #content1, #content2 {
+	width: 255px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;	
+	float: left;
+}
+
+#footer-content #content3 {
+	width: 200px;
+	height: 185px;
+	padding: 30px 0px 0px 0px;	
+	float: left;
+}
+
+#footer-content .footer-text {
+	padding: 5px 0px 5px 64px;	
+}
+
+#footer-split {
+	width: 3px;
+	float: left;
+}
+
+#footer a {
+	color: black;
+	text-decoration: none;	
+}
+
+#footer #content4 {
+	float: left;
+	padding: 40px 0px 0px 40px;	
+	text-align: center;
+}
+
+#footer #content5 {
+	float: right;
+	padding: 40px 0px 0px 0px;	
+	text-align: center;
+}
+
+#copyright {
+	float: left;
+	margin: 0px 0px 20px 0px;
+	text-align: center;
+}
+

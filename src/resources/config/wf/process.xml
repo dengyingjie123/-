@@ -1,0 +1,2435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DmisWorkflow_Proce>
+    <WorkflowProcess WorkflowID="1">
+        <Node ID="2" Name="配电所批复" Statu="配电所批复" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="3" Name="方式批复" Statu="方式批复" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="4" Name="方式批复校核" Statu="方式批复校核" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="5" Name="继电批复" Statu="继电批复" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="6" Name="继电批复校核" Statu="继电批复校核" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="7" Name="调度所批复" Statu="调度所批复" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="8" Name="调度组批复" Statu="调度组批复" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="9" Name="预告" Statu="预告" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="10" Name="下令" Statu="下令" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="11" Name="停电" Statu="停电" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="12" Name="开工" Statu="开工" Type="1">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="13" Name="完工" Statu="完工" Type="0">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="14" Name="复电" Statu="复电" Type="2">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+        <Node ID="1" Name="停电检修申请" Statu="停电检修申请" Type="0">
+            <Transition To="2" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu />
+        </Node>
+    </WorkflowProcess>
+    <WorkflowProcess WorkflowID="3">
+        <Node ID="1" Name="申请" Statu="申请" Type="0">
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID" Statu="0" />
+                <Field Name="EXPENSEID" Statu="0" />
+                <Field Name="TIME" Statu="0" />
+                <Field Name="MONEY" Statu="0" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="EXECUTIVEDIRECTORTIME" Statu="0" />
+                <Field Name="EXECUTIVEDIRECTORSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="结束" Statu="结束" Type="2">
+            <Transition To="2" />
+            <Condition_In />
+            <Condition_Out>ChargeLeaderContent is not null</Condition_Out>
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERTIME" Statu="0" />
+                <Field Name="CHARGELEADERSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="老大签字" Statu="老大签字" Type="1">
+            <Transition To="3" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="TIME" Statu="0" />
+                <Field Name="MONEY" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="审批" Statu="审批" Type="0">
+            <Transition To="1" />
+            <Transition To="4" />
+            <Condition_In>EXECUTIVEDIRECTORCONTENT is not null</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERTIME" Statu="0" />
+                <Field Name="CHARGELEADERSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--用章-->
+    <WorkflowProcess WorkflowID="4">
+        <Node ID="1" Name="用章申请" Statu="用章申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Transition To="2" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="2">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="2" Attribute="Up" />
+            <Transition To="4" Attribute="Up" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <WorkflowProcess WorkflowID="5">
+        <Node ID="5" Name="保留" Statu="财务总监审批" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="3" />
+            <Transition To="4" />
+            <Transition To="6" />
+            <Condition_In>FINANCEDIRECTORID IS NOT NULL</Condition_In>
+            <Condition_Out>FINANCEDIRECTORCONTENT IS NOT NULL AND FINANCEDIRECTORTIME IS NOT NULL</Condition_Out>
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+                <Field Name="FINANCEDIRECTORSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="3" />
+            <Transition To="4" />
+            <Transition To="5" />
+            <Transition To="7" />
+            <Condition_In>GENERALMANAGERID IS NOT NULL</Condition_In>
+            <Condition_Out>GENERALMANAGERCONTENT IS NOT NULL AND GENERALMANAGERTIME IS NOT NULL</Condition_Out>
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="GENERALMANAGERSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="3" />
+            <Transition To="4" />
+            <Transition To="5" />
+            <Transition To="6" />
+            <Condition_In>EXECUTIVEDIRECTORID IS NOT NULL</Condition_In>
+            <Condition_Out>EXECUTIVEDIRECTORCONTENT IS NOT NULL AND EXECUTIVEDIRECTORTIME IS NOT NULL</Condition_Out>
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="EXECUTIVEDIRECTORSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="最终审核" Statu="最终审核" Type="2">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="3" />
+            <Transition To="4" />
+            <Transition To="5" />
+            <Transition To="6" />
+            <Transition To="7" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="STATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审批" Statu="部门负责人" Type="1">
+            <Transition To="1" />
+            <Transition To="3" />
+            <Transition To="4" />
+            <Condition_In>DEPARTMENTLEADERID IS NOT NULL</Condition_In>
+            <Condition_Out>DEPARTMENTLEADERCONTENT IS NOT NULL AND DEPARTMENTLEADERTIME IS NOT NULL</Condition_Out>
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="DEPARTMENTLEADERSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导审批" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="4" />
+            <Transition To="5" />
+            <Condition_In>CHARGELEADERID IS NOT NULL</Condition_In>
+            <Condition_Out>CHARGELEADERCONTENT IS NOT NULL AND CHARGELEADERTIME IS NOT NULL</Condition_Out>
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERSTATUS" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="1" Name="申请" Statu="申请" Type="0">
+            <Transition To="4" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="SID" Statu="0" />
+                <Field Name="ID" Statu="0" />
+                <Field Name="EXPENSEID" Statu="0" />
+                <Field Name="STATUS" Statu="0" />
+                <Field Name="TIME" Statu="0" />
+                <Field Name="MONEY" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="会计意见" Statu="会计意见" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="SID" Statu="0" />
+                <Field Name="ID" Statu="0" />
+                <Field Name="EXPENSEID" Statu="0" />
+                <Field Name="STATUS" Statu="0" />
+                <Field Name="TIME" Statu="0" />
+                <Field Name="MONEY" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGSTATUS" Statu="0" />
+                <Field Name="ACCOUNTINGID" Statu="0" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--资金-->
+    <WorkflowProcess WorkflowID="6">
+        <Node ID="1" Name="资金支付申请" Statu="资金支付申请" Type="0">
+            <Transition To="2" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="4"   Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Condition_In ></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="6" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In >select * from OA_FinancePayWFA where 1=1 and state=0 and money >= 10000 and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >SELECT * FROM oa_bizroute ob,OA_FinancePayWFA oa WHERE oa.state = 0 AND ( ExecutiveDirectorStatus = 1 Or oa.Money  &lt;  10000) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--费用报销-->
+    <WorkflowProcess WorkflowID="7">
+        <Node ID="1" Name="费用报销申请" Statu="费用报销申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw" />
+            <Condition_In ></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="6" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In >select * from WorkflowAction_FinanceExpense where 1=1 and state=0 and money >10000 and id={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <!--
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" />
+            <Transition To="5" />
+            <Transition To="7" />
+            <Transition To="8" />
+            <Transition To="1" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                &lt;!&ndash;
+                使特殊业务的文本框消失
+                &ndash;&gt;
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>-->
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >SELECT * FROM oa_bizroute ob, WorkflowAction_FinanceExpense oa WHERE oa.state = 0 AND ( ob.ExecutiveDirectorStatus = 1 Or oa.Money &lt;=  10000 ) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+
+
+
+    <!--差旅费-->
+    <WorkflowProcess WorkflowID="8">
+        <Node ID="1" Name="差旅费报销申请" Statu="差旅费报销申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw" />
+            <Transition To="5" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up" />
+            <Transition To="7" Attribute="Up" />
+            <Transition To="6" Attribute="Up" />
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In >select * from OA_FinanceBizTripExpenseWFA where 1=1 and state=0 and money >10000 and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >
+                SELECT * FROM oa_bizroute ob,OA_FinanceBizTripExpenseWFA oa WHERE oa.state = 0 AND ( ob.ExecutiveDirectorStatus = 1 Or oa.Money  &lt;=  10000) and oa.id=ob.id_ywid  and id ={YWID}
+            </Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <!--
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="5" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Up"/>
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                &lt;!&ndash;
+                使特殊业务的文本框消失
+                &ndash;&gt;
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>-->
+    </WorkflowProcess>
+
+    <!--固定资产-->
+    <WorkflowProcess WorkflowID="9">
+        <Node ID="1" Name="固定资产申请" Statu="固定资产申请" Type="0">
+            <Transition To="9" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <!--
+                使特殊业务的无关文本框消失
+                -->
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" />
+            <Transition To="2" />
+            <Transition To="4" />
+            <Transition To="6" />
+            <Transition To="8" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" />
+            <Transition To="7" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" />
+            <Transition To="3" />
+            <Transition To="7" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" />
+            <Transition To="6" />
+            <Transition To="7" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Transition To="10" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <!--
+                使特殊业务的无关文本框消失
+                -->
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Transition To="10" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <!--
+                使特殊业务的无关文本框消失
+                -->
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CASHIERCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <!--特殊业务-->
+        <Node ID="9" Name="使用部门负责人" Statu="使用部门负责人" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="10" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <!--
+                使特殊业务的无关文本框消失
+                -->
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="10" Name="采购部门负责人" Statu="采购部门负责人" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT2" Statu="0" />
+                <!--
+                使特殊业务的无关文本框消失
+                -->
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--信息保送-->
+    <WorkflowProcess WorkflowID="10">
+        <Node ID="1" Name="信息派送申请" Statu="信息派送申请" Type="0">
+            <Transition To="2" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--请假-->
+    <WorkflowProcess WorkflowID="11">
+        <Node ID="1" Name="请假休假申请" Statu="请假休假申请" Type="0">
+            <Transition To="2" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="9" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="2">
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="2">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up" />
+            <Transition To="9" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="2" />
+            <Transition To="1" />
+            <Transition To="4" />
+            <Transition To="6" />
+            <Transition To="8" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" />
+            <Transition To="3" />
+            <Transition To="7" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="1">
+            <Transition To="1" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CASHIERCONTENT" Statu="0" />
+            </FieldStatu>
+        </Node>
+        <!--特殊业务-->
+        <Node ID="9" Name="人力行政" Statu="人力行政" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+               使特殊业务的无关文本框消失
+               -->
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--出差-->
+    <WorkflowProcess WorkflowID="12">
+        <Node ID="1" Name="出差申请" Statu="出差申请" Type="0">
+            <Transition To="2" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="9" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Transition To="2" Attribute="Up"/>
+            <Condition_In >select * from OA_BusinessTripApplication where 1=1 and state=0 and expenseActual >= 10000 and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In >select * from OA_BusinessTripApplication oa , oa_bizroute ob where 1=1 and state=0 and ob.ChargeLeaderStatus = 1   and oa.expenseActual>=50000 and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Condition_In >SELECT * FROM oa_bizroute ob,OA_BusinessTripApplication oa WHERE oa.state = 0 AND  ( oa.expenseActual &lt; 10000 OR ( ob.ExecutiveDirectorStatus = 1 AND oa.expenseActual >= 50000 ) 	OR (ob.ChargeLeaderStatus = 1 and oa.expenseActual >=10000 and oa.expenseActual &lt;50000)) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="8"  Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1"  Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CASHIERCONTENT" Statu="0" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <!--特殊业务-->
+        <Node ID="9" Name="人力行政" Statu="人力行政" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <!--
+               使特殊业务的无关文本框消失
+               -->
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--产品-->
+    <WorkflowProcess WorkflowID="13">
+        <Node ID="1" Name="产品申请" Statu="产品申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In /><Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导审批" Type="2">
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In />   <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--兑付-->
+    <WorkflowProcess WorkflowID="14">
+        <Node ID="1" Name="兑付申请" Statu="兑付申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In>
+                SELECT * FROM oa_bizroute WHERE id_ywid ={YWID} AND ( DepartmentLeaderId != '' AND DepartmentLeaderStatus = 2 OR ChargeLeaderId != '' AND ChargeLeaderStatus = 2 )</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In >SELECT * FROM oa_bizroute WHERE id_ywid ={YWID} AND (ChargeLeaderId ='' or ChargeLeaderStatus = '2')</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导审批" Type="2">
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In > SELECT * FROM oa_bizroute WHERE id_ywid = {YWID} AND DepartmentLeaderId !='' and DepartmentLeaderStatus !=2</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--借款申请-->
+    <WorkflowProcess WorkflowID="15">
+        <Node ID="1" Name="借款申请" Statu="借款申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="9" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <!--<Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="5" Attribute="Up"/>
+            <Transition To="7" Attribute="Up"/>
+            <Transition To="8" Attribute="Up"/>
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                &lt;!&ndash;
+                使特殊业务的文本框消失
+                &ndash;&gt;
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>-->
+        <Node ID="4" Name="所属总经理审批" Statu="所属总经理审批" Type="1">
+            <Transition To="7" Attribute="Dw"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu >
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="7" Attribute="Dw"/>
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Condition_In >select * from OA_BorrowMoney where state=0 and id={YWID}  and money >= 50000 </Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Condition_In  >SELECT * FROM oa_bizroute ob,OA_BorrowMoney oa WHERE oa.state = 0 AND  ( oa.money &lt; 50000 OR ob.ExecutiveDirectorStatus = 1 ) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <!--特殊业务-->
+        <Node ID="9" Name="人力行政" Statu="人力行政" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <!--
+               使特殊业务的无关文本框消失
+               -->
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--印章管理2 -->
+    <WorkflowProcess WorkflowID="16">
+        <Node ID="1" Name="印章申请" Statu="印章申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up" />
+            <Transition To="3" Attribute="Up" />
+            <Transition To="4" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="印章保管人" Statu="印章保管人" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--资料报送-->
+    <WorkflowProcess WorkflowID="17">
+        <Node ID="1" Name="资料申请" Statu="资料申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="分管领导审批" Statu="分管领导" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up" />
+            <Transition To="3" Attribute="Up" />
+            <Transition To="4" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CHARGELEADERCONTENT" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="资料保管人" Statu="资料保管人" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CONTENT1" Statu="0" />
+                <Field Name="ACCOUNTINGCONTENT" Statu="2" />
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="2" />
+                <Field Name="GENERALMANAGERCONTENT" Statu="2" />
+                <Field Name="CASHIERCONTENT" Statu="2" />
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--HOPEWEALTH-1360 begin-->
+    <WorkflowProcess WorkflowID="23">
+        <Node ID="1" Name="费用报销申请" Statu="费用报销申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw" />
+            <Condition_In ></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="财务总监审批" Statu="财务总监" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="副总裁审批" Statu="副总裁审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In>select * from WorkflowAction_FinanceExpense where 1=1 and state=0 and money >2000 and id={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <!--注意，暂时使用这个content做副总裁的记录-->
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="4" Attribute="Up"/>
+            <Transition To="5" Attribute="Up"/>
+            <Transition To="7" Attribute="Dw"/>
+            <Condition_In >select * from WorkflowAction_FinanceExpense where 1 = 1 and state = 0 and money > 20000 and id={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >SELECT * FROM oa_bizroute ob, WorkflowAction_FinanceExpense oa WHERE oa.state = 0 AND ( ob.ExecutiveDirectorStatus = 1 or (ob.GeneralManagerStatus = 1 and oa.Money &lt;=  20000) or oa.Money &lt;=  2000) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--HOPEWEALTH-1360 end-->
+
+    <!--HOPEWEALTH-1360 begin-->
+    <WorkflowProcess WorkflowID="24">
+        <Node ID="1" Name="差旅费报销申请" Statu="差旅费报销申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="6" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="9" Attribute="Dw"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="9" Name="副总裁审批" Statu="副总裁审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="6" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In>select * from OA_FinanceBizTripExpenseWFA where 1=1 and state=0 and money >2000 and id={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="6" Attribute="Up" />
+            <Transition To="9" Attribute="Up" />
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In >select * from OA_FinanceBizTripExpenseWFA where 1 = 1 and state = 0 and money > 20000 and id={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >SELECT * FROM oa_bizroute ob, OA_FinanceBizTripExpenseWFA oa WHERE oa.state = 0 AND ( ob.ExecutiveDirectorStatus = 1 or (ob.GeneralManagerStatus = 1 and oa.Money &lt;=  20000) or oa.Money &lt;=  2000) and oa.id=ob.id_ywid  and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+    <!--HOPEWEALTH-1360 end-->
+
+    <WorkflowProcess WorkflowID="25">
+        <Node ID="1" Name="资金支付申请" Statu="资金支付申请" Type="0">
+            <Transition To="2" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="部门负责人审核" Statu="部门负责人审核" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="7"   Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="7" Name="会计审核" Statu="会计审核" Type="1">
+            <Transition To="2" Attribute="Up" />
+            <Transition To="6"   Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ACCOUNTINGCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="6" Name="财务总监审批" Statu="财务总监审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="9" Attribute="Dw"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="9" Name="副总裁审批" Statu="副总裁审批" Type="1">
+            <Transition To="1" Attribute="Up" />
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="6" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In>
+                select * from OA_FinancePayWFA where 1=1 and state=0 and money >2000 and id={YWID}
+            </Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+
+        <Node ID="5" Name="执行董事审批" Statu="执行董事审批" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="6" Attribute="Up"/>
+            <Transition To="9" Attribute="Up"/>
+            <Transition To="8" Attribute="Dw"/>
+            <Condition_In >select * from OA_FinancePayWFA where 1=1 and state=0 and money > 20000 and id ={YWID}</Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="EXECUTIVEDIRECTORCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="8" Name="出纳审批" Statu="出纳审批" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In >
+                SELECT * FROM oa_bizroute ob, OA_FinancePayWFA oa WHERE oa.state = 0 AND ( ob.ExecutiveDirectorStatus = 1 or (ob.GeneralManagerStatus = 1 and oa.Money &lt;=  20000) or oa.Money &lt;=  2000) and oa.id=ob.id_ywid  and id ={YWID}
+            </Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+
+                <Field Name="CASHIERCONTENT" Statu="0" />
+
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+    <!--资金准备-->
+    <WorkflowProcess WorkflowID="26">
+        <Node ID="1" Name="资金准备申请" Statu="资金准备申请" Type="0">
+            <Transition To="2" Attribute="Dw" />
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="ID_YWID" Statu="0" />
+                <Field Name="WORKFLOWID" Statu="0" />
+                <Field Name="APPLICANTID" Statu="0" />
+                <Field Name="APPLICANTCOMMENT" Statu="0" />
+                <Field Name="APPLICANTTIME" Statu="0" />
+                <Field Name="SUBMITTERID" Statu="0" />
+                <Field Name="SUBMITTERTIME" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="2" Name="资金准备负责人审核" Statu="资金准备负责人审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="3" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="DEPARTMENTLEADERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="3" Name="资金准备财务部审核" Statu="资金准备财务部审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="4" Attribute="Dw"/>
+            <Condition_In />
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="FINANCEDIRECTORCONTENT" Statu="0" />
+
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+        <Node ID="4" Name="资金准备副总裁审核" Statu="资金准备副总裁审核" Type="1">
+            <Transition To="1" Attribute="Up"/>
+            <Transition To="2" Attribute="Up"/>
+            <Transition To="3" Attribute="Up"/>
+            <Transition To="5" Attribute="Dw" />
+            <Condition_In ></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="GENERALMANAGERCONTENT" Statu="0" />
+                <!--
+                使特殊业务的文本框消失
+                -->
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+
+        <Node ID="5" Name="资金准备出纳审核" Statu="资金准备出纳审核" Type="2">
+            <Transition To="1" Attribute="Up"/>
+            <Condition_In ></Condition_In>
+            <Condition_Out />
+            <FieldStatu>
+                <Field Name="CASHIERCONTENT" Statu="0" />
+                <Field Name="CHARGELEADERCONTENT" Statu="2" />
+                <Field Name="CONTENT1" Statu="2" />
+                <Field Name="CONTENT2" Statu="2" />
+                <Field Name="CONTENT3" Statu="2" />
+                <Field Name="CONTENT4" Statu="2" />
+                <Field Name="CONTENT5" Statu="2" />
+            </FieldStatu>
+        </Node>
+    </WorkflowProcess>
+
+</DmisWorkflow_Proce>
+

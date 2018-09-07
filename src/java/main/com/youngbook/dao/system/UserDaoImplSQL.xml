@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listUserPO">
+SELECT
+  u.*
+FROM
+	v_customer_saleman c,
+	system_user u
+WHERE
+	1 = 1
+and c.state=0
+and u.state=0
+and u.id=c.saleManId
+<if test="#{customerId} != null">
+and c.linkCustomerId=#{customerId}
+</if>
+        </select>
+        <select id="sqlId">
+        select * from customer c where 1=1
+        <if test="#{userId} !=null">
+            AND c.id = #{userId}
+        </if>
+        <if test="#{userId} != null and #{ageValue} > 18">
+            AND c.id = #{userId} and c.age > #{ageValue}
+        </if>
+        </select>
+    </select-sql>
+</sql>

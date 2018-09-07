@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="false"/>
+
+    <package name="w_customer" extends="json-default" namespace="/w2/customer">
+
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name ="auth" class ="com.youngbook.common.interceptor.AuthorizationInterceptor" />
+            <interceptor name ="transaction" class ="com.youngbook.common.interceptor.TransactionInterceptor" />
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultStack"/>
+                <!--<interceptor-ref name="auth"></interceptor-ref>-->
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
+
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name="login">/w2/modules/customer/login.jsp</result>
+            <result name="error">/w2/error.jsp</result>
+            <result name="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name="transaction_error">/modules/system/error/transaction_error.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </global-results>
+
+        <!-- 跳转到手机注册页面 -->
+        <action name="MobileRegisterRequest" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="mobileRequestRegister4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/register.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳转到用户名自定义注册页面 -->
+        <action name="RegisterRequest" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="requestRegister4W">
+            <result name="success">/w2/modules/customer/register.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 注册时检测用户名 -->
+        <action name="RegisterCheckLoginName" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="checkUserName4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 执行手机注册 -->
+        <action name="mobileRegister" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="register4W">
+            <interceptor-ref name="authStack"/>
+            <!--<result name="success">/w2/modules/customer/registerCertification.jsp</result>-->
+            <result name="success">/w2/goto.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+
+        <action name="autoLogin" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="autoLogin">
+            <interceptor-ref name="authStack"/>
+            <!--<result name="success">/w2/modules/customer/registerCertification.jsp</result>-->
+            <result name="success">/w2/goto.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 执行普通注册 -->
+        <action name="registerToDo" class="com.youngbook.action.customer.CustomerPersonalAction" method="register4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/home.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳转到登录页面 -->
+        <action name="LoginRequest" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="requestLogin4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/login.jsp</result>
+        </action>
+
+        <!-- 执行登录 -->
+        <action name="LoginDo" class="com.youngbook.action.customer.CustomerPersonalAction" method="login4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 跳转到首页 -->
+        <action name="IndexShow" class="com.youngbook.action.customer.CustomerPersonalAction" method="indexShow4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/index.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <action name="forgetPassword" class="com.youngbook.action.customer.CustomerPersonalAction" method="forgetPassword">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/forgetPassword.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!-- 客户充值 -->
+        <action name="recharge" class="com.youngbook.action.pay.CustomerPayAction" method="customerDeposit4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="sendTransaction">/w2/modules/customer/transPassword.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 客户提现 -->
+        <action name="withdrawal" class="com.youngbook.action.customer.CustomerWithdrawAction"
+                method="customerWithdrawForWeb">
+            <interceptor-ref name="authStack"/>
+            <result name="sendTransaction">/w2/modules/customer/transPassword.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 执行注销 -->
+        <action name="RemoveUser" class="com.youngbook.action.customer.CustomerPersonalAction" method="RemoveUser">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/index.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取客户信息 -->
+        <action name="info" class="com.youngbook.action.customer.CustomerPersonalAction" method="getInfo4Web">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 安全地获取客户信息 -->
+        <action name="infoSafly" class="com.youngbook.action.customer.CustomerPersonalAction" method="getInfo4WebSafly">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 列出客户购买的产品 -->
+        <action name="listProduction" class="com.youngbook.action.customer.CustomerProductionAction" method="list4Web">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 列出客户的资金日志 -->
+        <action name="listMoneyLog" class="com.youngbook.action.customer.CustomerMoneyLogAction" method="list4Web">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 执行邮箱验证 -->
+        <action name="emailValidateDo" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="insertEmailValidate4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/emailAuthMsg.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!-- 判断手机是否有被认证 -->
+        <action name="getMobilesStatus" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getMobilesStatus">
+            <interceptor-ref name="authStack"/>
+
+            <result name="success">/w2/index.jsp</result>
+            <result name="checkout">/w2/modules/customer/mobileValidate.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!-- 验证客户邮箱回执 -->
+        <action name="validateEmailCallback" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="validateEmailCallback4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/account.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 执行真实身份验证 -->
+        <action name="realAuthenticationDo" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="realAuthentication4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/realAuthSuccess.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取实名认证和银行卡信息 -->
+        <action name="getCustomerCertificate" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getCustomerCertificate4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/customerCertificateSuccess.jsp</result>
+            <result name="reinstallBankCard">/w2/modules/customer/setCustomerAuthenticationStatus.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 设置交易密码提交 -->
+        <action name="transPasswordDo" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="transPassword4W">
+            <interceptor-ref name="authStack"/>
+
+            <result name="success">/w2/modules/customer/transPasswordSuccess.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+
+        </action>
+        <!--便签设置交易密码与-->
+        <action name="transPasswordDo_2" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="transPassword4W_2">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/registerCertification.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+
+        <!--判断银行卡是否绑定 -->
+        <action name="getBankCard" class="com.youngbook.action.customer.CustomerPersonalAction" method="getBankCard">
+        <interceptor-ref name="authStack"/>
+            <result  name="success">/w2/modules/customer/verifyBankCardSuccess.jsp</result>
+            <result  name="backSetBankCard" type="chain">toBankCard</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!--设置银行卡账号 -->
+        <action name="authenticationindCard" class="com.youngbook.action.customer.CustomerAccountAction" method="bind">
+            <interceptor-ref name="authStack"/>
+
+            <result name="success">/w2/modules/customer/account.jsp</result>
+
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!--设置客户实名认证和银行卡 -->
+        <action name="verifyRealNameAndBindingBankCard" class="com.youngbook.action.customer.CustomerAccountAction" method="verifyRealNameAndBindingBankCard">
+            <interceptor-ref name="authStack"/>
+
+            <result name="success">/w2/modules/customer/account.jsp</result>
+
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!--检测银行卡认证资金 -->
+        <action name="checkBankCardMoney" class="com.youngbook.action.customer.CustomerPersonalAction" method="checkBankCardMoney">
+            <interceptor-ref name="authStack"/>
+            <result  name="success">/w2/modules/customer/verifyBankCardSuccess.jsp</result>
+            <result  name="verifyFailed" type="chain">isBindBankCard</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <action name="goCheckMoneyBankCard" class="com.youngbook.action.customer.CustomerPersonalAction" method="goCheckMoneyBankCard4W">
+            <interceptor-ref name="authStack"/>
+            <result  name="success">/w2/modules/customer/checkBankCardMoney.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <action name="isBindBankCard" class="com.youngbook.action.customer.CustomerAccountAction" method="isBinded">
+            <interceptor-ref name="authStack"/>
+
+            <result  name="success">/w2/modules/customer/notDoBankCard.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+
+        </action>
+
+        <action name="goChangeBankCard" class="com.youngbook.action.customer.CustomerPersonalAction" method="goChangeBankCard4W">
+            <interceptor-ref name="authStack"/>
+            <result  name="success" type="chain">toBankCard</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!--解绑银行卡 -->
+        <action name="unBindBankCard" class="com.youngbook.action.customer.CustomerPersonalAction" method="unBindBankCard">
+            <interceptor-ref name="authStack"/>
+            <result  name="success" type="chain">toBankCard</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!--解绑银行卡 -->
+        <action name="unBindBankCardDo" class="com.youngbook.action.customer.CustomerPersonalAction" method="unBindBankCard">
+            <interceptor-ref name="authStack"/>
+            <result  name="success" type="chain">getCustomerCertificate</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!--重新认证银行卡 -->
+        <action name="againBindBankCard" class="com.youngbook.action.customer.CustomerPersonalAction" method="againBindBankCard">
+            <interceptor-ref name="authStack"/>
+            <result  name="success" type="chain">toBankCard</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+
+        <!-- 获取手机动态码 -->
+        <action name="getMobiAuthCode" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="insertMobiValidate4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取安全密保问题 -->
+        <action name="getProtectionQuestion" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getProtectionQuestion">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/safeQA.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 保存设置的安全问题 -->
+        <action name="saveProtectionQuestion" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="saveProtectionQuestion">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/account.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 验证手机动态码 -->
+        <action name="validateMobileCode" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="validateMobileCode4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/account.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取客户认证信息 -->
+        <action name="getAuthStatus" class="com.youngbook.action.customer.CustomerAuthenticationStatusAction"
+                method="getStatus4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 检测是否已经设置了安全密保问题 -->
+        <action name="checkHasQuestions" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="checkHasQuestionAuth">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- web检测是否添加银行卡 -->
+        <action name="checkHasBankCard" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="checkBackCard">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳转绑定银行界面，跳转的时候验证是否已经实名认证了 -->
+        <action name="toBankCard" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="setBankCardForCustomer">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/setBankCard.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳转绑定实名和银行认证界面，跳转的时候验证是否已经实名认证和银行卡认证了 -->
+        <action name="getAuthenticationAndBankCardStatus" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getAuthenticationAndBankCardStatus4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取最后一次登录时间 -->
+        <action name="getLastLoginTime" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getLastLoginTime">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳入设置交易密码页面 -->
+        <action name="changeTransPassword" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="toTransPassword">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/transPassword.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 跳入设置安全问题页面 -->
+        <action name="requestProtectionQuestion" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="toProtectionQuestion">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/safeQA4Update.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 验证旧的手机号码 -->
+        <action name="validateOldMobile" class="com.youngbook.action.customer.CustomerPersonalAction" method="validateOldMobile">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/mobileValidateSecond.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 修改手机的认证信息，包括手机号和认证状态 -->
+        <action name="saveMobileAuth" class="com.youngbook.action.customer.CustomerPersonalAction" method="saveMobile">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/mobileValiSuccess.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 修改密码 -->
+        <action name="changePassword" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="changePassword4web">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/account.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 输入手机号码后跳转通过校验码验证 -->
+        <action name="resetPassword4Mobile4W" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="resetPassword4Mobile4W">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/forGetPasswordVerifyMobile.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+            <result name="forgetPassword">/w2/modules/customer/forgetPassword.jsp</result>
+        </action>
+
+        <!-- 验证手机号码成功过就放回页面重置密码 -->
+        <action name="resetPS4VerifyMobileCode" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="resetPS4VerifyMobileCode">
+            <interceptor-ref name="authStack"/>
+            <result name="success">/w2/modules/customer/resetPassword.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+            <result name="forgetPassword">/w2/modules/customer/forgetPassword.jsp</result>
+        </action>
+
+        <!-- 重置密码 -->
+        <action name="resetPassword" class="com.youngbook.action.customer.CustomerPersonalAction" method="resetPassword">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+            <result name="forgetPassword">/w2/modules/customer/forgetPassword.jsp</result>
+        </action>
+
+        <!-- 找回密码验证手机号码 -->
+        <action name="verifyMobile" class="com.youngbook.action.customer.CustomerPersonalAction" method="verifyMobile">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 找回密码验证身份证 -->
+        <action name="verifyIDCardToNext" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="verifyIDCard">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取手机动态码 -->
+        <action name="getMobileCode" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="insertMobileCode4W">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <action name="getMobileRegisterCode" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="mobileRegisterCode">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <action name="getMobileCode4ForgetPwd" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getMobileCode4ForgetPwd">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 提现验证交易密码 -->
+        <action name="authenticationTtransactionPassword" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="authenticationTransactionPW4Web">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 前台通用获取客户手机号码action -->
+        <action name="getMobile" class="com.youngbook.action.customer.CustomerPersonalAction" method="getMobile">
+            <interceptor-ref name="authStack"></interceptor-ref>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+        <!-- 客户通用获取资金 -->
+        <action name="getCustomerMoney" class="com.youngbook.action.customer.CustomerPersonalAction" method="getTotalCustomerMoney">
+            <interceptor-ref name="authStack"></interceptor-ref>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 获取客户总预期收益 -->
+        <action name="getCustomerProfit" class="com.youngbook.action.customer.CustomerPersonalAction" method="getCustomerProfit">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 通用KV银行列表集合 -->
+        <action name="getBankOption" class="com.youngbook.action.customer.CustomerPersonalAction"
+                method="getBankKVOption">
+            <interceptor-ref name="authStack"></interceptor-ref>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info">/w2/info.jsp</result>
+        </action>
+
+        <!-- 验证手机动态码是否正确 -->
+        <action name="verificationMobileCode" class="com.youngbook.action.customer.CustomerPersonalAction" method="verificationMobileCode">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <!-- 跳转到充值页面 -->
+        <action name="gotorecharge" class="com.youngbook.action.customer.CustomerPersonalAction" method="gotorecharge">
+            <interceptor-ref name="authStack"/>
+            <result name="customerError">/w2/modules/customer/registerCertification.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+            <result name="success">/w2/modules/customer/recharge.jsp</result>
+        </action>
+        <!-- 跳转到体现页面 -->
+        <action name="gotowithdrawal" class="com.youngbook.action.customer.CustomerPersonalAction" method="gotowithdrawal">
+            <interceptor-ref name="authStack"/>
+            <result name="customerError">/w2/modules/customer/registerCertification.jsp</result>
+            <result name="info">/w2/info.jsp</result>
+            <result name="success">/w2/modules/customer/withdrawal.jsp</result>
+            <!--添加银行卡-->
+            <result name="HasBankCard">/w2/modules/customer/setBankCard.jsp</result>
+        </action>
+
+        <!-- 获取银行卡列表 -->
+        <action name="getBankList" class="com.youngbook.action.customer.CustomerAccountAction" method="getBankList">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+        <!-- 验证是否是老客户 -->
+        <action name="isOldCustomer" class="com.youngbook.action.customer.CustomerPersonalAction" method="isOldCustomer">
+            <interceptor-ref name="authStack"/>
+            <result type="json">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+    </package>
+</struts>

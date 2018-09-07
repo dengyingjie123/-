@@ -1,0 +1,28 @@
+/* CSS Document */
+
+.pagelist {
+    padding: 20px 0 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+#container .pagination {
+    margin: 30px auto 0px auto;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7
+}
+
+.pager .previous > a, .pager .previous > span {
+    float: left
+}
+

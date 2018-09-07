@@ -1,0 +1,120 @@
+<%@ page contentType="text/html;charset=UTF-8" import="com.youngbook.common.config.*"
+         language="java" %>
+<%@ page import="com.youngbook.common.Permission" %>
+<%
+    String isUpdatePassword = (String) request.getAttribute("isUpdatePassword");
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title><%=Config.APP_NAME%></title>
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/themes/gray/easyui.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/default.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/buttons.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.print.css" media='print'>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/third-party/accounting.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/easyloader.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/system/ConfigClass.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/boot.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/hashMap.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/frameworkplus.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/treeplus.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/md5.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/validator.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/highcharts4/js/highcharts.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/lib/moment.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/lang/zh-cn.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/callcenter/callcenter.js"></script>
+
+
+    <%--呼叫中心--%>
+    <link href="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/css/pages.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/js/icallcenter/global.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/hojo/hojo.js" djConfig="isDebug:false, parseOnLoad:false"></script>
+
+    <script type="text/javascript">
+        var hmMenu = null;
+        $(document).ready(function() {
+            //alert('Hello');
+            hmMenu = new Map();
+            initSystem();
+            //call("13888888888");
+            onUpdatePassword(<%=isUpdatePassword%>,null);
+        });
+        function onUpdatePassword(isUpdate,token){
+            var SCRIPTS_ROOT = "../scripts";
+            var url =  WEB_ROOT + "/modules/system/PersonalInfo_Main.jsp?token="+token;
+            var windowId = "personalInfoWindow";
+// TODO：2015-9-7 | 去掉最新的用户需重置密码的提示
+//            if (isUpdate) {
+//                fw.window(windowId, "重置密码", 350, 180, url, function () {
+//                    if(token==null) {
+//                        $(".panel-tool").empty();
+//                    }
+//                    using(SCRIPTS_ROOT + '/system/PersonalInfoClass.js', function () {
+//                        var personalInfo = new PersonalInfoClass(token);
+//                        personalInfo.initModule();
+//                    });
+//                }, null)
+//            }
+        }
+    </script>
+</head>
+<body class="easyui-layout">
+
+<!-- header area begin -->
+<div region="north" split="false" style="height:52px;padding:2px;vertical-align:text-top;background-image: url('include/images/headerbg.jpg')">
+    <div id="header">
+        <table width="100%">
+            <tr>
+                <td><img src="include/images/system_name.png" width="150" height="40" /></td>
+                <td align="right">
+                    <table>
+                        <tr>
+                        	<td>部门：</td>
+                        	<td><a href="javascript:void(0)" id="btnLoginDepartment" class="easyui-menubutton" data-options="menu:'#loginDepartmentMenu'">正在加载</a><div id="loginDepartmentMenu" style="width:300px;"></div></td>
+                            <td> | </td>
+                            <td>当前用户：</td>
+                            <td>
+                                <a href="javascript:void(0)" id="btnLoginUser" class="easyui-menubutton" data-options="menu:'#mm'">正在加载</a>
+                                <div id="mm" style="width:100px;">
+                                    <div id="btnLoginUserLogout" data-options="iconCls:'icon-ok'" onClick="onClickLogoutUser()">注销</div>
+                                    <!-- <div id="btnUpdatePassword" data-options="iconCls:'icon-ok'" onClick="onUpdatePassword(true,'')">修改密码</div> -->
+                                </div>
+                            </td>
+                            <td>推荐码：</td>
+                            <td id="referralCode">正在加载</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- header area end -->
+
+<!-- menu area begin -->
+<div id="menubar" region="west" split="true" title="系统菜单" style="width:200px;padding:5px;">
+    <ul id="systemMenu">正在加载，请稍候……</ul>
+</div>
+<!-- menu area end -->
+
+
+<!-- workspace begin -->
+<div id="content" region="center" style="overflow:auto;padding:0px;">
+        <div id="contentTabs" class="easyui-tabs" fit="true" border="false" style="overflow:auto;">
+        </div>
+</div>
+<!-- workspace end -->
+
+<div id="windowsArea"></div>
+</body>
+
+
+</html>

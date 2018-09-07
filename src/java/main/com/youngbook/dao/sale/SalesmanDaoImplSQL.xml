@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listPagerSalesmanGroup">
+
+SELECT
+	saleman.id userId,
+	saleman.name userName,
+	g.name groupName,
+    g.id groupId,
+	d.`name` departmentName,
+	k.v groupAreaName
+FROM
+	crm_saleman_salemangroup sg
+LEFT JOIN system_user saleman ON saleman.state = 0 AND saleman.id = sg.saleManId
+Left JOIN crm_salemangroup g on g.state=0 and g.Id=sg.saleManGroupId
+left join system_department d on g.DepartmentId=d.id
+left join system_kv k on k.GroupName='salesgroup_area' and k.k=g.AreaId
+where 1=1
+
+        
+        </select>
+    </select-sql>
+</sql>

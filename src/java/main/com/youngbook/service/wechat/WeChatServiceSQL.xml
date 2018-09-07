@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getCustomerPersonalPO">
+SELECT
+	c.*
+FROM
+	WeChat_UserInfo ui,
+	crm_customerpersonal c
+WHERE
+	1 = 1
+and c.state=0
+AND ui.state = 0
+and c.id=ui.customerOrUserId
+<if test="#{userInfoId} !=null">
+and ui.id=#{userInfoId}
+</if>
+        </select>
+        <select id="getUserPO">
+SELECT
+	u.*
+FROM
+	WeChat_UserInfo ui,
+	system_user u 
+WHERE
+	1 = 1
+and u.state=0
+AND ui.state = 0
+and u.id=ui.customerOrUserId
+<if test="#{userInfoId} !=null">
+and ui.id=#{userInfoId}
+</if>
+        </select>
+        <select id="insertOrUpdate">
+select * from WeChat_UserInfo ui where 1=1 and ui.state=0 
+<if test="#{openid} !=null">
+and ui.openid=#{openid}
+</if>
+<if test="#{customerOrUserType} !=null">
+and ui.customerOrUserType=#{customerOrUserType}
+</if>
+        </select>
+        <select id="bindCustomer">
+select * from WeChat_UserInfo ui where 1=1 and ui.state=0 
+<if test="#{userInfoId} !=null">
+and ui.id=#{userInfoId}
+</if>
+        </select>
+    </select-sql>
+</sql>

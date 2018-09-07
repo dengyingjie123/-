@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="loadKVPO">
+SELECT
+	*
+FROM
+	system_kv
+WHERE
+	1 = 1
+<if test="#{k}!=null">
+and k=#{k}
+</if>
+<if test="#{groupName}!=null">
+AND GroupName = #{groupName}
+</if>
+        </select>
+    </select-sql>
+</sql>

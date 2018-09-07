@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="A2ED1805">
+SELECT
+	DISTINCT
+	o.*
+FROM
+	view_order o
+WHERE
+	1=1
+<if test="#{orderId} !=null">  
+and o.id=#{orderId}
+</if>
+        </select>
+    </select-sql>
+</sql>

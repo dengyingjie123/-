@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="listPagerLogPO">
+SELECT
+    log.*
+FROM
+    system_log log
+WHERE
+    1 = 1
+AND log.state = 0
+order by log.operateTime desc
+        </select>
+    </select-sql>
+</sql>

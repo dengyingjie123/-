@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <!-- 配置系统显示的文字内容 -->
+    <display-words-config>
+        <!-- 通用 -->
+        <text key="common.money.unit">元</text>
+
+
+        <!-- 模块相关 开始 -->
+
+        <!-- 客户取现模块 -->
+        <text key="customer.withdraw.failed">提现失败</text>
+
+        <!-- 模块相关 结束 -->
+
+        <text key="customer.account.band.mutilCards">您已绑定过银行卡，请勿重复绑定，请与我们的客服联系，客服热线：0755-85024000</text>
+        <text key="customer.account.band.nocard">您尚未绑定银行卡，请首先绑定银行卡</text>
+
+
+        <!-- 网站相关 开始 -->
+        <!-- 通用 -->
+        <!-- 错误 -->
+        <text key="w.gloabl.error.unknown">系统繁忙，请稍候再试！</text>
+        <text key="w.gloabl.error.login">登录数据失效，请重新登录！</text>
+        <text key="w.gloabl.error.webcode">您输入的验证码有误，请重新输入！</text>
+        <text key="w.gloabl.error.frequence.limit">您操作过于频繁，请稍候再试！</text>
+
+
+
+        <!-- 支付相关 -->
+        <text key="w.pay.production.stopOrMoneyError">您输入的投资金额有误，或者产品募集期已经结束，请检查后重新输入！</text>
+        <text key="w.pay.production.soldout">所选产品已售罄，请选择其他产品</text>
+        <text key="w.pay.production.error">支付接口异常，造成产品购买失败</text>
+
+        <!-- 产品相关 -->
+        <text key="w.production.unknown">所选产品已售罄或者没有在售，请选择其他产品</text>
+        <text key="w.production.nomoresize">所选产品额度不足或已售罄，请选择其他产品</text>
+
+        <!-- 客户相关-->
+        <text key="w.customer.auth.bank.missingdata.error">请输入需要验证的银行卡号和持卡人姓名</text>
+        <text key="w.customer.auth.realname.error">您的账号没实名认证，请实名认证后再添加或者管理银行卡</text>
+        <text key="w.customer.auth.bank.notrealname.error">您申请认证的银行持卡人与实名认证的姓名不匹配，请重新填写</text>
+        <text key="w.customer.auth.bank.nocard.error">您填写的信息有误，无此账户，请重新填写</text>
+        <text key="w.customer.auth.bank.accountname.error">您申请认证的银行持卡人与实名认证的姓名不匹配，请重新填写</text>
+
+        <!--协议相关-->
+        <text key="w.pay.identity.message">请确认投资者的身份</text>
+        <!-- 网站相关 结束 -->
+    </display-words-config>
+</config>

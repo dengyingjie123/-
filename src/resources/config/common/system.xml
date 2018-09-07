@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <variables>
+        <!--初始化密码MD5字符串-->
+        <variable key="default.Password.Md5">8543e494bc94d33aca1a97d9c099ba61</variable>
+
+        <!-- 提示模板 -->
+        <variable key="web.code.view.subject">获取动态码</variable>
+
+        <variable key="system.font">D:/work/03_deploy/weblogic/config/simsun.ttc,1</variable>
+
+        <!-- 动态公告的列 ID -->
+        <variable key="announcementColumnId">0AF1BE125EB84FEEA4D2BDB0452DC494</variable>
+
+        <!-- 厚币销客公告栏目 ID -->
+        <variable key="salesAppAnnouncementColumnId">D23E82623E524C89AEDCE53C856DB8E9</variable>
+
+        <!--订单超时时间-->
+        <variable key="web.order.appointment.timeout.minute">30</variable>
+
+        <!-- 产品即将到期临界值（单位：月） -->
+        <variable key="web.production.preExpire.value">1</variable>
+        
+        <!-- 网站销售组 -->
+        <variable key="web.default.saleGroupId">CC9A951FAAAE456CAA913C76595CE538</variable>
+        <!-- 网站注册客户默认分配部门编号 -->
+        <variable key="web.default.distributeDepartmentid">6627F956-461F-4B89-A166-2134F50F262A</variable>
+        <!-- 网站客户注册默认来源 -->
+        <variable key="web.customer.source.kv.v">133</variable>
+        <!-- 网站客户银行卡绑定默认开户行 -->
+        <variable key="web.customer.account.bank.kv.v">88</variable>
+        <!-- 身份证KV值 -->
+        <variable key="web.customer.certificate.idcard.kv.v">98</variable>
+
+        <!-- 网站客户登录失败等待时间 -->
+        <variable key="web.default.bet_minute">5</variable>
+
+        <!-- 网站客户登录错误次数 -->
+        <variable key="web.default.failed">5</variable>
+
+        <!-- 注册的法律协议id -->
+        <variable key="web.register.lawId">5A82F242D61E495DB09BE78BB185FBCC</variable>
+
+        <!-- 投资管理的法律协议id -->
+        <variable key="web.investment.lawId">Z382F242D61E495DB09BE98BB185FBCC</variable>
+
+        <variable key="web.customer.source.kv.v">133</variable>
+
+        <!--未兑付状态的K值-->
+        <variable key="production.payment.notpaid.kv.v">0</variable>
+
+        <!--============================  通联支付 ============================-->
+
+        <!--  网关 充值购买部分 ==============================-->
+
+
+        <!--订单数据验证证书-->
+        <!--合同状态开始-->
+        <!--作废-->
+        <variable key="ContractRoute.status.NO">501</variable>
+        <!---以签约-->
+        <variable key="ContractRoute.status.OK">500</variable>
+
+
+        <!--============================  通联支付 结束 ============================-->
+
+
+        <!--============================  兑付计划 开始 ============================-->
+
+        <!-- 用来判断兑付计划在当前节点应该获取的状态值-->
+        <!-- 参看知识库： pages/viewpage.action?pageId=31719444 -->
+        <!-- 申请的节点-->
+        <variable  key="paymentPlan.Apply.CurrentNode">1</variable>
+        <!--业务流结束状态-->
+        <variable  key="paymentPlan.Route.intStatus.Over">5</variable>
+        <!--业务流数据中止-->
+        <variable  key="paymentPlan.Route.intStatus.Cancel">3</variable>
+        <!--审批提交的意见为不同意的状态的值-->
+        <variable  key="paymentPlan.status.Examine.Status">2</variable>
+        <!--兑付计划审批完成需要更新的数据状态 为kv表的k键 组名：Sale_PaymentPlan_Status-->
+
+        <!--未兑付-->
+        <variable key="paymentPlan.status.unpaied">0</variable>
+        <!--兑付成功-->
+        <variable key="paymentPlan.status.paied">1</variable>
+        <!--兑付申请-->
+        <variable  key="paymentPlan.status.Apply">7</variable>
+        <!-- 审批中-->
+        <variable  key="paymentPlan.status.Examine.wait">18363</variable>
+        <!--兑付失败-->
+        <variable  key="paymentPlan.status.Examine.cancel">18364</variable>
+        <!--等待兑付-->
+        <variable  key="paymentPlan.status.Examine.over">18365</variable>
+
+        <!--等待审核-->
+        <variable  key="paymentPlan.status.Audit.wait">22038</variable>
+        <!--审核成功-->
+        <variable  key="paymentPlan.status.Audit.success">8</variable>
+        <!--审核失败-->
+        <variable  key="paymentPlan.status.Audit.failed">22042</variable>
+
+        <!--产品兑付列表的兑付时间间隔数-->
+        <variable  key="PaymentPlan.TimeNumber">10</variable>
+        <!--间隔是以什么单位间隔：String YEAR:年 MONTH：月 DATE：日 HOUR：时 MINUTE：分 SECOND：秒-->
+        <variable  key="PaymentPlan.TimeString">DATE</variable>
+
+
+        <!--============================  兑付计划 结束 ============================-->
+        <!--============================  自动转发需要得到的节点 的Attrubute 开始 ============================-->
+        <variable  key="AutomForward.Transition.Attribute.Dw">Dw</variable>
+        <variable  key="AutomForward.Transition.Attribute.Up">Up</variable>
+        <!--============================  自动转发需要得到的节点 的Attrubute 结束============================-->
+
+       <!-- 资金支付业务编号-->
+        <variable  key="WORKFLOWID.Finance.FinancePayWFA">6</variable>
+        <!--印章管理-->
+        <variable  key="WORKFLOWID.Administation.SealUsageWFA">4</variable>
+        <!--费用管理-->
+        <variable  key="WORKFLOWID.Finance.FinanceExpende">7</variable>
+        <!--费用报销-->
+        <!--HOPEWEALTH-1360 begin-->
+        <variable  key="WORKFLOWID.Finance.FinanceExpense">23</variable>
+        <variable  key="WORKFLOWID.Finance.FinanceTripExpense">24</variable>
+        <!--HOPEWEALTH-1360 end-->
+
+         <!--差旅费报销-->
+        <variable  key="WORKDLOWID.Expense.FinanceBizTripExpenseWFA">8</variable>
+
+         <!--固定资产申请-->
+        <variable  key="WORKFLOWID.AssetFixation.AsserApplication">9</variable>
+         <!--对外资料报送-->
+        <variable  key="WORKFLOWID.Information.Information">10</variable>
+        <!--请假休假业务编号-->
+        <variable  key="WORKFLOWID.HR.Leave">11</variable>
+        <!--HOPEWEALTH-1360-->
+        <!--请假休假业务编号_新-->
+        <variable  key="WORKFLOWID.HR.Leave">26</variable>
+         <!--出差审批-->
+       <variable  key="WORKFLOWID.Business.Business">12</variable>
+         <!--产品-->
+        <variable  key="WORKFLOWID.Product.Check">13</variable>
+         <!--兑付计划-->
+        <variable  key="WORKFLOWID.PaymentPlam.Check">14</variable>
+        <!--借款申请-->
+        <variable  key="WORKFLOWID.BorrowMoney.Check">15</variable>
+
+        <!--印章管理2-->
+        <variable  key="WORKFLOWID.Administation.SealUsageWFA2">16</variable>
+        <variable  key="WORKFLOWID.Administation.SealUsageWFA2.overNote">4</variable>
+        <!--资料报送2-->
+        <variable  key="WORKFLOWID.Information.InformationSubmitted2">17</variable>
+        <variable  key="WORKFLOWID.Information.InformationSubmitted2.overNote">4</variable>
+        <!--判断是否强制添加数据-->
+        <variable  key="insertOrUpdateBizRoute">true</variable>
+
+        <!--短信相关-->
+        <!--验证码短信网址-->
+        <variable key="system.oa.sms.identityCode.unitId"></variable>
+        <variable key="system.oa.sms.identityCode.userName">18688998239</variable>
+        <variable key="system.oa.sms.identityCode.password"></variable>
+
+        <variable key="system.oa.sms.identityCode.subject">短信验证码</variable>
+        <variable key="system.oa.sms.identityCode.content">厚币通宝验证码：</variable>
+
+        <!--安全保障开始-->
+        <!--合法合规-->
+        <variable key="article.LegalCompliance">8CA135D1B6964E7F8E03F6311F5A65DF</variable>
+        <!--投资安全-->
+        <variable key="article.InvestmentSecurity">7D068C5D60F942DEA17ECB1C1B724D4F</variable>
+        <!--资金安全-->
+        <variable key="article.MoneySafe">1082E8DCE68F48B8A77CB97DC7633E3A</variable>
+        <!--技术安全-->
+        <variable key="article.TechnologySecurity">2F0EE63C8A9E4E23B4CBFCCD819D4E01</variable>
+        <!--安全保障结束-->
+        
+
+        <!--产品是否需要兑付查询组名-->
+        <variable key="product.is.paymentplan.OK">19618</variable>
+        <variable key="product.is.paymentplan.NO">19619</variable>
+
+
+        <variable key="system.kv.is_avaliable.yes">3946</variable>
+        <variable key="system.kv.is_avaliable.no">3949</variable>
+
+
+
+
+
+
+
+        <!-- 支付接口类型定义 -->
+        <variable key="api.type.allinpay">通联支付</variable>
+        <variable key="api.type.fuiou">富友支付</variable>
+        <variable key="api.type.yibao">易宝支付</variable>
+        <!-- 支付参数的类型定义 -->
+        <variable key="pay.param.string.type.xml">1</variable>
+        <variable key="pay.param.string.type.json">2</variable>
+        <variable key="pay.param.string.type.http">3</variable>
+        <!-- 支付途径定义 -->
+        <variable key="api.pay.type.internet">1</variable>
+        <variable key="api.pay.type.pos">2</variable>
+        <!-- 支付来源定义 -->
+        <variable key="api.pay.source.web">WEB</variable>
+        <variable key="api.pay.source.app">APP</variable>
+        <!-- 移动广告的目录 -->
+        <variable key="mobi.adv.dir">mobile/images/index/adv/</variable>
+
+
+
+        <!-- 富友支付查询回调网页地址 -->
+        <variable key="fuiou.pay.search.callback.web.addr">回调网页地址</variable>
+        <!-- 富友支付查询回调服务地址 -->
+        <variable key="fuiou.pay.search.callback.service.addr">回调服务地址</variable>
+
+
+    </variables>
+</config>

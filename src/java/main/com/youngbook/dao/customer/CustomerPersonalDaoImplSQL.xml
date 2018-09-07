@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="getCustomerPersonalsByNameMobile">
+select * from crm_customerpersonal where state=0 
+<if test="#{mobile}!=null">
+ and mobile=#{mobile}
+</if>
+
+        </select>
+        <select id="loadCustomerVO">
+SELECT
+	c.id,
+	c.`Name`,
+	c.linkCustomerId customerId
+FROM
+	v_customer_saleman c
+WHERE
+	1 = 1
+and c.state=0
+<if test="#{customerId}!=null">
+AND c.linkCustomerId = #{customerId}
+</if>
+        </select>
+        <select id="listCustomerPersonalVO">
+        
+select
+    (select count(*) from crm_order o where o.state=0 and o.`Status` in (0) and o.customerId=c.id
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    ) appointmentOrderCount,
+    (select count(*) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.customerId=c.id
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    ) soldOrderCount,
+    (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.customerId=c.id
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    ) totalPaymentPrincipalMoney,
+    (select sum(TotalProfitMoney) from core_paymentplan p, crm_order o where o.state=0 and p.state=0 and p.CustomerId=c.id 
+    and p.status=0 and p.orderId=o.id
+    <if test="#{referralCode} != null">
+    and o.referralCode=#{referralCode}
+    </if>
+    ) totalProfitMoney,
+    cp.remark,
+    cp.birthday,
+    cp.sex,
+    c.* 
+from v_customer_saleman c
+left join crm_customerpersonal cp on cp.state=0 and cp.id=c.id
+where 
+    1=1 
+and c.state=0
+<if test="#{userId} != null">
+and c.saleManId=#{userId}
+</if>
+<if test="#{customerId} != null">
+and c.id=#{customerId}
+</if>
+order by cp.lastLoginTime
+
+        </select>
+        <select id="loadCustomerVOByCustomerPersonalId">
+
+SELECT
+  (select count(*) from crm_order o where o.state=0 and o.`Status` in (0) and o.customerId=c.id) appointmentOrderCount,
+  (select count(*) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.customerId=c.id) soldOrderCount,
+  (select sum(o.Money) from crm_order o where o.state=0 and o.`Status` in (1,5,8,23,24) and o.customerId=c.id) totalPaymentPrincipalMoney,
+  (select sum(TotalProfitMoney) from core_paymentplan p where p.state=0 and p.CustomerId=c.id and p.status=0) totalProfitMoney,
+	c.*
+FROM
+	crm_customerpersonal c
+WHERE
+	1 = 1
+AND c.state = 0
+<if test="#{customerPersonalId} != null">
+AND c.id = #{customerPersonalId};
+</if>    
+       
+        </select>
+    </select-sql>
+</sql>

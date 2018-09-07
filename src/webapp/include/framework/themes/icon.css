@@ -1,0 +1,174 @@
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat center center;
+}
+.icon-add{
+	background:url('icons/edit_add.png') no-repeat center center;
+}
+.icon-edit{
+	background:url('icons/pencil.png') no-repeat center center;
+}
+.icon-remove{
+	background:url('icons/edit_remove.png') no-repeat center center;
+}
+.icon-save{
+	background:url('icons/filesave.png') no-repeat center center;
+}
+.icon-cut{
+	background:url('icons/cut.png') no-repeat center center;
+}
+.icon-ok{
+	background:url('icons/ok.png') no-repeat center center;
+}
+.icon-no{
+	background:url('icons/no.png') no-repeat center center;
+}
+.icon-cancel{
+	background:url('icons/cancel.png') no-repeat center center;
+}
+.icon-reload{
+	background:url('icons/reload.png') no-repeat center center;
+}
+.icon-search{
+	background:url('icons/search.png') no-repeat center center;
+}
+.icon-print{
+	background:url('icons/print.png') no-repeat center center;
+}
+.icon-help{
+	background:url('icons/help.png') no-repeat center center;
+}
+.icon-undo{
+	background:url('icons/undo.png') no-repeat center center;
+}
+.icon-redo{
+	background:url('icons/redo.png') no-repeat center center;
+}
+.icon-back{
+	background:url('icons/back.png') no-repeat center center;
+}
+.icon-sum{
+	background:url('icons/sum.png') no-repeat center center;
+}
+.icon-tip{
+	background:url('icons/tip.png') no-repeat center center;
+}
+.icon-filter{
+	background:url('icons/filter.png') no-repeat center center;
+}
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh{
+	 background:url('icons/mini_refresh.png') no-repeat center center;
+ }
+
+.theme01-icon-001{background:url('icons/theme01/icon_001.gif') no-repeat;}
+.theme01-icon-002{background:url('icons/theme01/icon_002.gif') no-repeat;}
+.theme01-icon-003{background:url('icons/theme01/icon_003.gif') no-repeat;}
+.theme01-icon-004{background:url('icons/theme01/icon_004.gif') no-repeat;}
+.theme01-icon-005{background:url('icons/theme01/icon_005.gif') no-repeat;}
+.theme01-icon-006{background:url('icons/theme01/icon_006.gif') no-repeat;}
+.theme01-icon-007{background:url('icons/theme01/icon_007.gif') no-repeat;}
+.theme01-icon-008{background:url('icons/theme01/icon_008.gif') no-repeat;}
+.theme01-icon-009{background:url('icons/theme01/icon_009.gif') no-repeat;}
+.theme01-icon-010{background:url('icons/theme01/icon_010.gif') no-repeat;}
+.theme01-icon-011{background:url('icons/theme01/icon_011.gif') no-repeat;}
+.theme01-icon-012{background:url('icons/theme01/icon_012.gif') no-repeat;}
+.theme01-icon-013{background:url('icons/theme01/icon_013.gif') no-repeat;}
+.theme01-icon-014{background:url('icons/theme01/icon_014.gif') no-repeat;}
+.theme01-icon-015{background:url('icons/theme01/icon_015.gif') no-repeat;}
+.theme01-icon-016{background:url('icons/theme01/icon_016.gif') no-repeat;}
+.theme01-icon-017{background:url('icons/theme01/icon_017.gif') no-repeat;}
+.theme01-icon-018{background:url('icons/theme01/icon_018.gif') no-repeat;}
+.theme01-icon-019{background:url('icons/theme01/icon_019.gif') no-repeat;}
+.theme01-icon-020{background:url('icons/theme01/icon_020.gif') no-repeat;}
+.theme01-icon-021{background:url('icons/theme01/icon_021.gif') no-repeat;}
+.theme01-icon-022{background:url('icons/theme01/icon_022.gif') no-repeat;}
+.theme01-icon-023{background:url('icons/theme01/icon_023.gif') no-repeat;}
+.theme01-icon-024{background:url('icons/theme01/icon_024.gif') no-repeat;}
+.theme01-icon-025{background:url('icons/theme01/icon_025.gif') no-repeat;}
+.theme01-icon-026{background:url('icons/theme01/icon_026.gif') no-repeat;}
+.theme01-icon-027{background:url('icons/theme01/icon_027.gif') no-repeat;}
+.theme01-icon-028{background:url('icons/theme01/icon_028.gif') no-repeat;}
+.theme01-icon-029{background:url('icons/theme01/icon_029.gif') no-repeat;}
+.theme01-icon-030{background:url('icons/theme01/icon_030.gif') no-repeat;}
+.theme01-icon-031{background:url('icons/theme01/icon_031.gif') no-repeat;}
+.theme01-icon-032{background:url('icons/theme01/icon_032.gif') no-repeat;}
+.theme01-icon-033{background:url('icons/theme01/icon_033.gif') no-repeat;}
+.theme01-icon-034{background:url('icons/theme01/icon_034.gif') no-repeat;}
+.theme01-icon-035{background:url('icons/theme01/icon_035.gif') no-repeat;}
+.theme01-icon-036{background:url('icons/theme01/icon_036.gif') no-repeat;}
+.theme01-icon-037{background:url('icons/theme01/icon_037.gif') no-repeat;}
+.theme01-icon-038{background:url('icons/theme01/icon_038.gif') no-repeat;}
+.theme01-icon-039{background:url('icons/theme01/icon_039.gif') no-repeat;}
+.theme01-icon-040{background:url('icons/theme01/icon_040.gif') no-repeat;}
+.theme01-icon-041{background:url('icons/theme01/icon_041.gif') no-repeat;}
+.theme01-icon-042{background:url('icons/theme01/icon_042.gif') no-repeat;}
+.theme01-icon-043{background:url('icons/theme01/icon_043.gif') no-repeat;}
+.theme01-icon-044{background:url('icons/theme01/icon_044.gif') no-repeat;}
+.theme01-icon-045{background:url('icons/theme01/icon_045.gif') no-repeat;}
+.theme01-icon-046{background:url('icons/theme01/icon_046.gif') no-repeat;}
+.theme01-icon-047{background:url('icons/theme01/icon_047.gif') no-repeat;}
+.theme01-icon-048{background:url('icons/theme01/icon_048.gif') no-repeat;}
+.theme01-icon-049{background:url('icons/theme01/icon_049.gif') no-repeat;}
+.theme01-icon-050{background:url('icons/theme01/icon_050.gif') no-repeat;}
+.theme01-icon-051{background:url('icons/theme01/icon_051.gif') no-repeat;}
+.theme01-icon-052{background:url('icons/theme01/icon_052.gif') no-repeat;}
+.theme01-icon-053{background:url('icons/theme01/icon_053.gif') no-repeat;}
+.theme01-icon-054{background:url('icons/theme01/icon_054.gif') no-repeat;}
+.theme01-icon-055{background:url('icons/theme01/icon_055.gif') no-repeat;}
+.theme01-icon-056{background:url('icons/theme01/icon_056.gif') no-repeat;}
+.theme01-icon-057{background:url('icons/theme01/icon_057.gif') no-repeat;}
+.theme01-icon-058{background:url('icons/theme01/icon_058.gif') no-repeat;}
+.theme01-icon-059{background:url('icons/theme01/icon_059.gif') no-repeat;}
+.theme01-icon-060{background:url('icons/theme01/icon_060.gif') no-repeat;}
+.theme01-icon-061{background:url('icons/theme01/icon_061.gif') no-repeat;}
+.theme01-icon-062{background:url('icons/theme01/icon_062.gif') no-repeat;}
+.theme01-icon-063{background:url('icons/theme01/icon_063.gif') no-repeat;}
+.theme01-icon-064{background:url('icons/theme01/icon_064.gif') no-repeat;}
+.theme01-icon-065{background:url('icons/theme01/icon_065.gif') no-repeat;}
+.theme01-icon-066{background:url('icons/theme01/icon_066.gif') no-repeat;}
+.theme01-icon-067{background:url('icons/theme01/icon_067.gif') no-repeat;}
+.theme01-icon-068{background:url('icons/theme01/icon_068.gif') no-repeat;}
+.theme01-icon-069{background:url('icons/theme01/icon_069.gif') no-repeat;}
+.theme01-icon-070{background:url('icons/theme01/icon_070.gif') no-repeat;}
+.theme01-icon-071{background:url('icons/theme01/icon_071.gif') no-repeat;}
+.theme01-icon-072{background:url('icons/theme01/icon_072.gif') no-repeat;}
+.theme01-icon-073{background:url('icons/theme01/icon_073.gif') no-repeat;}
+.theme01-icon-074{background:url('icons/theme01/icon_074.gif') no-repeat;}
+.theme01-icon-075{background:url('icons/theme01/icon_075.gif') no-repeat;}
+.theme01-icon-076{background:url('icons/theme01/icon_076.gif') no-repeat;}
+.theme01-icon-077{background:url('icons/theme01/icon_077.gif') no-repeat;}
+.theme01-icon-078{background:url('icons/theme01/icon_078.gif') no-repeat;}
+.theme01-icon-079{background:url('icons/theme01/icon_079.gif') no-repeat;}
+.theme01-icon-080{background:url('icons/theme01/icon_080.gif') no-repeat;}
+.theme01-icon-081{background:url('icons/theme01/icon_081.gif') no-repeat;}
+.theme01-icon-082{background:url('icons/theme01/icon_082.gif') no-repeat;}
+.theme01-icon-083{background:url('icons/theme01/icon_083.gif') no-repeat;}
+.theme01-icon-084{background:url('icons/theme01/icon_084.gif') no-repeat;}
+.theme01-icon-085{background:url('icons/theme01/icon_085.gif') no-repeat;}
+.theme01-icon-086{background:url('icons/theme01/icon_086.gif') no-repeat;}
+.theme01-icon-087{background:url('icons/theme01/icon_087.gif') no-repeat;}
+.theme01-icon-088{background:url('icons/theme01/icon_088.gif') no-repeat;}
+.theme01-icon-089{background:url('icons/theme01/icon_089.gif') no-repeat;}
+.theme01-icon-090{background:url('icons/theme01/icon_090.gif') no-repeat;}
+.theme01-icon-091{background:url('icons/theme01/icon_091.gif') no-repeat;}
+.theme01-icon-092{background:url('icons/theme01/icon_092.gif') no-repeat;}
+.theme01-icon-093{background:url('icons/theme01/icon_093.gif') no-repeat;}
+.theme01-icon-094{background:url('icons/theme01/icon_094.gif') no-repeat;}
+.theme01-icon-095{background:url('icons/theme01/icon_095.gif') no-repeat;}
+.theme01-icon-096{background:url('icons/theme01/icon_096.gif') no-repeat;}
+.theme01-icon-097{background:url('icons/theme01/icon_097.gif') no-repeat;}
+.theme01-icon-098{background:url('icons/theme01/icon_098.gif') no-repeat;}
+.theme01-icon-099{background:url('icons/theme01/icon_099.gif') no-repeat;}
+.theme01-icon-100{background:url('icons/theme01/icon_100.gif') no-repeat;}
+.theme01-icon-101{background:url('icons/theme01/icon_101.gif') no-repeat;}
+.theme01-icon-102{background:url('icons/theme01/icon_102.gif') no-repeat;}
+.theme01-icon-103{background:url('icons/theme01/icon_103.gif') no-repeat;}
+.theme01-icon-104{background:url('icons/theme01/icon_104.gif') no-repeat;}
+.theme01-icon-105{background:url('icons/theme01/icon_105.gif') no-repeat;}
+.theme01-icon-106{background:url('icons/theme01/icon_106.gif') no-repeat;}

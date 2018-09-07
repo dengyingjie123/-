@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="participantList">
+        
+SELECT
+	*
+FROM
+	(
+		SELECT
+			rl.CURRENTNODE currentNodeId,
+			rl.id routeListId,
+			rl.STATU currentStatus,
+			u. NAME submitterName,
+			ob.DepartmentLeaderId,
+			ob.DepartmentLeaderName,
+			ob.DepartmentLeaderContent,
+			ob.DepartmentLeaderTime,
+			ob.DepartmentLeaderStatus,
+			ob.GeneralManagerId,
+			ob.GeneralManagerName,
+			ob.GeneralManagerContent,
+			ob.GeneralManagerTime,
+			ob.GeneralManagerStatus,
+			ob.AccountingId,
+			ob.AccountingName,
+			ob.AccountingContent,
+			ob.AccountingTime,
+			ob.AccountingStatus,
+			ob.FinanceDirectorId,
+			ob.FinanceDirectorName,
+			ob.FinanceDirectorContent,
+			ob.FinanceDirectorTime,
+			ob.FinanceDirectorStatus,
+			ob.ChargeLeaderId,
+			ob.ChargeLeaderName,
+			ob.ChargeLeaderContent,
+			ob.ChargeLeaderTime,
+			ob.ChargeLeaderStatus,
+			ob.ExecutiveDirectorId,
+			ob.ExecutiveDirectorName,
+			ob.ExecutiveDirectorContent,
+			ob.ExecutiveDirectorTime,
+			ob.ExecutiveDirectorStatus,
+			ob.CashierId,
+			ob.CashierName,
+			ob.CashierContent,
+			ob.CashierTime,
+			ob.CashierStatus,
+			ob.Id5,
+			ob.Name5,
+			ob.Content5,
+			ob.Time5,
+			ob.Status5,
+			ob.Id4,
+			ob.Name4,
+			ob.Content4,
+			ob.Time4,
+			ob.Status4,
+			ob.Id3,
+			ob.Name3,
+			ob.Content3,
+			ob.Time3,
+			ob.Status3,
+			ob.Id2,
+			ob.Name2,
+			ob.Content2,
+			ob.Time2,
+			ob.Status2,
+			ob.Id1,
+			ob.Name1,
+			ob.Content1,
+			ob.Time1,
+			ob.Status1,
+			ob.controlString3,
+			sd1.fromName AS controlString1,
+			sd2. NAME AS controlString2,
+			sd1.id AS controlString1Id,
+			sd2.id AS controlString2Id,
+			af.*
+		FROM
+			OA_FinancePayWFA af,
+			system_user u,
+			workflow_routelist rl,
+			system_department sd1,
+			system_department sd2,
+			oa_bizroute ob
+		WHERE
+			1 = 1
+		AND u.state = 0
+		AND af.state = 0
+        <if test="#{workflowId}!=null">
+		AND rl.WORKFLOWID = #{workflowId}
+        </if>
+		AND af.ApplicantId = u.Id
+		AND rl.YWID = af.Id
+		AND ob.Id_YWID = af.Id
+		AND sd1.id = ob.controlString1
+		AND sd2.id = ob.controlString2
+		AND rl.STATU IN (1)
+		UNION
+			SELECT DISTINCT
+				- 1 currentNodeId,
+				- 1 routeListId,
+				rl.STATU currentStatus,
+				u. NAME submitterName,
+				ob.DepartmentLeaderId,
+				ob.DepartmentLeaderName,
+				ob.DepartmentLeaderContent,
+				ob.DepartmentLeaderTime,
+				ob.DepartmentLeaderStatus,
+				ob.GeneralManagerId,
+				ob.GeneralManagerName,
+				ob.GeneralManagerContent,
+				ob.GeneralManagerTime,
+				ob.GeneralManagerStatus,
+				ob.AccountingId,
+				ob.AccountingName,
+				ob.AccountingContent,
+				ob.AccountingTime,
+				ob.AccountingStatus,
+				ob.FinanceDirectorId,
+				ob.FinanceDirectorName,
+				ob.FinanceDirectorContent,
+				ob.FinanceDirectorTime,
+				ob.FinanceDirectorStatus,
+				ob.ChargeLeaderId,
+				ob.ChargeLeaderName,
+				ob.ChargeLeaderContent,
+				ob.ChargeLeaderTime,
+				ob.ChargeLeaderStatus,
+				ob.ExecutiveDirectorId,
+				ob.ExecutiveDirectorName,
+				ob.ExecutiveDirectorContent,
+				ob.ExecutiveDirectorTime,
+				ob.ExecutiveDirectorStatus,
+				ob.CashierId,
+				ob.CashierName,
+				ob.CashierContent,
+				ob.CashierTime,
+				ob.CashierStatus,
+				ob.Id5,
+				ob.Name5,
+				ob.Content5,
+				ob.Time5,
+				ob.Status5,
+				ob.Id4,
+				ob.Name4,
+				ob.Content4,
+				ob.Time4,
+				ob.Status4,
+				ob.Id3,
+				ob.Name3,
+				ob.Content3,
+				ob.Time3,
+				ob.Status3,
+				ob.Id2,
+				ob.Name2,
+				ob.Content2,
+				ob.Time2,
+				ob.Status2,
+				ob.Id1,
+				ob.Name1,
+				ob.Content1,
+				ob.Time1,
+				ob.Status1,
+				ob.controlString3,
+				sd1.fromName AS controlString1,
+				sd2. NAME AS controlString2,
+				sd1.id AS controlString1Id,
+				sd2.id AS controlString2Id,
+				af.*
+			FROM
+				OA_FinancePayWFA af,
+				system_user u,
+				system_department sd1,
+				system_department sd2,
+				workflow_routelist rl,
+				oa_bizroute ob
+			WHERE
+				1 = 1
+			AND u.state = 0
+			AND af.state = 0
+            <if test="#{workflowId}!=null">
+			AND rl.WORKFLOWID = #{workflowId}
+            </if>
+			AND rl.STATU IN (3, 5)
+			AND af.ApplicantId = u.Id
+			AND rl.YWID = af.Id
+			AND ob.Id_YWID = af.Id
+			AND sd1.id = ob.controlString1
+			AND sd2.id = ob.controlString2
+	) t
+WHERE
+	1 = 1
+AND t.Id IN (
+	SELECT DISTINCT
+		YWID
+	FROM
+		workflow_action
+	WHERE
+		1 = 1
+    <if test="#{workflowId}!=null">
+	AND WORKFLOWID = #{workflowId}
+    </if>
+    <if test="#{userId}!=null">
+	AND PARTICIPANT = #{userId}
+    </if>
+)
+        
+        </select>
+        <select id="waitList">
+SELECT
+	rl.CURRENTNODE currentNodeId,
+	rl.id routeListId,
+	rl.STATU currentStatus,
+	u. NAME submitterName,
+	ob.DepartmentLeaderId,
+	ob.DepartmentLeaderName,
+	ob.DepartmentLeaderContent,
+	ob.DepartmentLeaderTime,
+	ob.DepartmentLeaderStatus,
+	ob.GeneralManagerId,
+	ob.GeneralManagerName,
+	ob.GeneralManagerContent,
+	ob.GeneralManagerTime,
+	ob.GeneralManagerStatus,
+	ob.AccountingId,
+	ob.AccountingName,
+	ob.AccountingContent,
+	ob.AccountingTime,
+	ob.AccountingStatus,
+	ob.FinanceDirectorId,
+	ob.FinanceDirectorName,
+	ob.FinanceDirectorContent,
+	ob.FinanceDirectorTime,
+	ob.FinanceDirectorStatus,
+	ob.ChargeLeaderId,
+	ob.ChargeLeaderName,
+	ob.ChargeLeaderContent,
+	ob.ChargeLeaderTime,
+	ob.ChargeLeaderStatus,
+	ob.ExecutiveDirectorId,
+	ob.ExecutiveDirectorName,
+	ob.ExecutiveDirectorContent,
+	ob.ExecutiveDirectorTime,
+	ob.ExecutiveDirectorStatus,
+	ob.CashierId,
+	ob.CashierName,
+	ob.CashierContent,
+	ob.CashierTime,
+	ob.CashierStatus,
+	ob.Id5,
+	ob.Name5,
+	ob.Content5,
+	ob.Time5,
+	ob.Status5,
+	ob.Id4,
+	ob.Name4,
+	ob.Content4,
+	ob.Time4,
+	ob.Status4,
+	ob.Id3,
+	ob.Name3,
+	ob.Content3,
+	ob.Time3,
+	ob.Status3,
+	ob.Id2,
+	ob.Name2,
+	ob.Content2,
+	ob.Time2,
+	ob.Status2,
+	ob.Id1,
+	ob.Name1,
+	ob.Content1,
+	ob.Time1,
+	ob.Status1,
+	ob.controlString3,
+	sd1.fromName AS controlString1,
+	sd2. NAME AS controlString2,
+	sd1.id AS controlString1Id,
+	sd2.id AS controlString2Id,
+	ob.SubmitterId,
+	af.*
+FROM
+	OA_FinancePayWFA af,
+	system_user u,
+	workflow_routelist rl,
+	system_department sd1,
+	system_department sd2,
+	oa_bizroute ob
+WHERE
+	1 = 1
+AND u.state = 0
+AND af.state = 0
+AND af.ApplicantId = u.Id
+AND rl.YWID = af.Id
+AND ob.Id_YWID = af.Id
+AND sd1.id = ob.controlString1
+AND sd2.id = ob.controlString2
+AND ob.controlString1 IN (
+	SELECT
+		id
+	FROM
+		system_department
+	WHERE
+		id IN (
+			SELECT
+				department.parentId
+			FROM
+				system_positionuser Puser,
+				system_department department,
+				system_position positon
+			WHERE
+				1 = 1
+			AND Puser.positionId = positon.Id
+			AND positon.DepartmentId = department.ID
+			AND department.id != '9B882D7E-8BF0-41F0-8DDA-16E813A6AE4B'
+            <if test="#{userId}!=null">
+			AND Puser.userId = #{userId}
+            </if>
+		)
+)
+AND rl.STATU IN (1)
+<if test="#{workflowId}!=null">
+AND rl.WORKFLOWID = #{workflowId}
+</if>
+AND rl.CURRENTNODE IN (
+	SELECT
+		NODEID
+	FROM
+		workflow_participant p,
+		workflow_role r
+	WHERE 1=1
+    <if test="#{workflowId}!=null">
+    and p.WORKFLOWID = #{workflowId}
+    </if>
+	AND p.ROLEID LIKE CONCAT('%|', r.ID, '%|')
+    <if test="#{userList}!=null">
+	AND r.USERLIST LIKE #{userList,type='%c%'}
+    </if>
+)
+        
+        </select>
+        <select id="list">
+SELECT
+	rl.CURRENTNODE currentNodeId,
+	rl.id routeListId,
+	rl.STATU currentStatus,
+	u. NAME submitterName,
+	ob.DepartmentLeaderId,
+    ob.DepartmentLeaderName,
+    ob.DepartmentLeaderContent,
+    ob.DepartmentLeaderTime,
+    ob.DepartmentLeaderStatus,
+    ob.GeneralManagerId,
+    ob.GeneralManagerName,
+    ob.GeneralManagerContent,
+    ob.GeneralManagerTime,
+    ob.GeneralManagerStatus,
+    ob.AccountingId,
+    ob.AccountingName,
+    ob.AccountingContent,
+    ob.AccountingTime,
+    ob.AccountingStatus,
+    ob.FinanceDirectorId,
+    ob.FinanceDirectorName,
+    ob.FinanceDirectorContent,
+    ob.FinanceDirectorTime,
+    ob.FinanceDirectorStatus,
+    ob.ChargeLeaderId,
+    ob.ChargeLeaderName,
+    ob.ChargeLeaderContent,
+    ob.ChargeLeaderTime,
+    ob.ChargeLeaderStatus,
+    ob.ExecutiveDirectorId,
+    ob.ExecutiveDirectorName,
+    ob.ExecutiveDirectorContent,
+    ob.ExecutiveDirectorTime,
+    ob.ExecutiveDirectorStatus,
+    ob.CashierId,
+    ob.CashierName,
+    ob.CashierContent,
+    ob.CashierTime,
+    ob.CashierStatus,
+    ob.Id5,
+    ob.Name5,
+    ob.Content5,
+    ob.Time5,
+    ob.Status5,
+    ob.Id4,
+    ob.Name4,
+    ob.Content4,
+    ob.Time4,
+    ob.Status4,
+    ob.Id3,
+    ob.Name3,
+    ob.Content3,
+    ob.Time3,
+    ob.Status3,
+    ob.Id2,
+    ob.Name2,
+    ob.Content2,
+    ob.Time2,
+    ob.Status2,
+    ob.Id1,
+    ob.Name1,
+    ob.Content1,
+    ob.Time1,
+    ob.Status1,
+    ob.controlString3,
+    sd1.fromName AS controlString1,
+	sd2. NAME AS controlString2,
+	sd1.id AS controlString1Id,
+	sd2.id AS controlString2Id,
+	ob.SubmitterId,
+	af.*
+FROM
+	OA_FinancePayWFA af,
+	system_user u,
+	workflow_routelist rl,
+	system_department sd1,
+	system_department sd2,
+	oa_bizroute ob
+WHERE
+	1 = 1
+AND u.state = 0
+AND af.state = 0
+<if test="#{workflowId}!=null">
+and rl.workflowid=#{workflowId}
+</if>
+<if test="#{userId}!=null">
+AND u.Id = #{userId}
+</if>
+AND af.ApplicantId = u.Id
+AND rl.YWID = af.Id
+AND ob.Id_YWID = af.Id
+AND sd1.id = ob.controlString1
+AND sd2.id = ob.controlString2
+AND rl.STATU IN (1)
+UNION
+	SELECT DISTINCT
+		- 1 currentNodeId,
+		- 1 routeListId,
+		rl.STATU currentStatus,
+		u. NAME submitterName,
+		ob.DepartmentLeaderId,
+        ob.DepartmentLeaderName,
+        ob.DepartmentLeaderContent,
+        ob.DepartmentLeaderTime,
+        ob.DepartmentLeaderStatus,
+        ob.GeneralManagerId,
+        ob.GeneralManagerName,
+        ob.GeneralManagerContent,
+        ob.GeneralManagerTime,
+        ob.GeneralManagerStatus,
+        ob.AccountingId,
+        ob.AccountingName,
+        ob.AccountingContent,
+        ob.AccountingTime,
+        ob.AccountingStatus,
+        ob.FinanceDirectorId,
+        ob.FinanceDirectorName,
+        ob.FinanceDirectorContent,
+        ob.FinanceDirectorTime,
+        ob.FinanceDirectorStatus,
+        ob.ChargeLeaderId,
+        ob.ChargeLeaderName,
+        ob.ChargeLeaderContent,
+        ob.ChargeLeaderTime,
+        ob.ChargeLeaderStatus,
+        ob.ExecutiveDirectorId,
+        ob.ExecutiveDirectorName,
+        ob.ExecutiveDirectorContent,
+        ob.ExecutiveDirectorTime,
+        ob.ExecutiveDirectorStatus,
+        ob.CashierId,
+        ob.CashierName,
+        ob.CashierContent,
+        ob.CashierTime,
+        ob.CashierStatus,
+        ob.Id5,
+        ob.Name5,
+        ob.Content5,
+        ob.Time5,
+        ob.Status5,
+        ob.Id4,
+        ob.Name4,
+        ob.Content4,
+        ob.Time4,
+        ob.Status4,
+        ob.Id3,
+        ob.Name3,
+        ob.Content3,
+        ob.Time3,
+        ob.Status3,
+        ob.Id2,
+        ob.Name2,
+        ob.Content2,
+        ob.Time2,
+        ob.Status2,
+        ob.Id1,
+        ob.Name1,
+        ob.Content1,
+        ob.Time1,
+        ob.Status1,
+        ob.controlString3,
+        sd1.fromName AS controlString1,
+		sd2. NAME AS controlString2,
+		sd1.id AS controlString1Id,
+		sd2.id AS controlString2Id,
+		ob.SubmitterId,
+		af.*
+	FROM
+		OA_FinancePayWFA af,
+		system_user u,
+		system_department sd1,
+		system_department sd2,
+		workflow_routelist rl,
+		oa_bizroute ob
+	WHERE
+		1 = 1
+	AND u.state = 0
+	AND af.state = 0
+    <if test="#{userId}!=null">
+	AND u.Id = #{userId}
+    </if>
+    <if test="#{workflowId}!=null">
+    and rl.workflowid=#{workflowId}
+    </if>
+	AND af.ApplicantId = u.Id
+	AND rl.YWID = af.Id
+	AND ob.Id_YWID = af.Id
+	AND sd1.id = ob.controlString1
+	AND sd2.id = ob.controlString2
+	AND rl.STATU IN (5)
+	UNION
+		SELECT DISTINCT
+			1 currentNodeId,
+			0 routeListId,
+			- 1 currentStatus,
+			u. NAME submitterName,
+			ob.DepartmentLeaderId,
+            ob.DepartmentLeaderName,
+            ob.DepartmentLeaderContent,
+            ob.DepartmentLeaderTime,
+            ob.DepartmentLeaderStatus,
+            ob.GeneralManagerId,
+            ob.GeneralManagerName,
+            ob.GeneralManagerContent,
+            ob.GeneralManagerTime,
+            ob.GeneralManagerStatus,
+            ob.AccountingId,
+            ob.AccountingName,
+            ob.AccountingContent,
+            ob.AccountingTime,
+            ob.AccountingStatus,
+            ob.FinanceDirectorId,
+            ob.FinanceDirectorName,
+            ob.FinanceDirectorContent,
+            ob.FinanceDirectorTime,
+            ob.FinanceDirectorStatus,
+            ob.ChargeLeaderId,
+            ob.ChargeLeaderName,
+            ob.ChargeLeaderContent,
+            ob.ChargeLeaderTime,
+            ob.ChargeLeaderStatus,
+            ob.ExecutiveDirectorId,
+            ob.ExecutiveDirectorName,
+            ob.ExecutiveDirectorContent,
+            ob.ExecutiveDirectorTime,
+            ob.ExecutiveDirectorStatus,
+            ob.CashierId,
+            ob.CashierName,
+            ob.CashierContent,
+            ob.CashierTime,
+            ob.CashierStatus,
+            ob.Id5,
+            ob.Name5,
+            ob.Content5,
+            ob.Time5,
+            ob.Status5,
+            ob.Id4,
+            ob.Name4,
+            ob.Content4,
+            ob.Time4,
+            ob.Status4,
+            ob.Id3,
+            ob.Name3,
+            ob.Content3,
+            ob.Time3,
+            ob.Status3,
+            ob.Id2,
+            ob.Name2,
+            ob.Content2,
+            ob.Time2,
+            ob.Status2,
+            ob.Id1,
+            ob.Name1,
+            ob.Content1,
+            ob.Time1,
+            ob.Status1,
+            ob.controlString3,
+            sd1.fromName AS controlString1,
+			sd2. NAME AS controlString2,
+			sd1.id AS controlString1Id,
+			sd2.id AS controlString2Id,
+			ob.SubmitterId,
+			af.*
+		FROM
+			OA_FinancePayWFA af,
+			system_user u,
+			system_department sd1,
+			system_department sd2,
+			oa_bizroute ob
+		WHERE
+			1 = 1
+		AND u.state = 0
+		AND af.state = 0
+        <if test="#{userId}!=null">
+		AND u.Id = #{userId}
+        </if>
+		AND af.ApplicantId = u.Id
+		AND ob.Id_YWID = af.Id
+		AND sd1.id = ob.controlString1
+		AND sd2.id = ob.controlString2
+		AND af.id NOT IN (
+			SELECT
+				YWID
+			FROM
+				workflow_routelist rl
+			WHERE
+				1 = 1
+		)       
+        </select>
+    </select-sql>
+</sql>

@@ -1,0 +1,27 @@
+.FieldBlank {
+	border: 1px solid #FFFFFF;
+}
+.TableStyle {
+	background-color: #000000;
+}
+td {
+	background-color: #FFFFFF;
+}
+body {
+	font-size: 12px;
+}
+.TitleStyle {
+	font-size: 24px;
+	font-weight: bold;
+}
+.BoldStyle {
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.InputeStyle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.SmallTitleStyle {
+	font-size: 14px;
+	font-weight: bold;
+}

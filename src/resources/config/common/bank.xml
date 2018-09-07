@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+    简介：该文件为银行代码的定义文件
+    使用：通过 Config4Bank.getBanks() 获取
+    作者：邓超
+    时间：2015-11-12
+
+-->
+
+<config>
+    <banks>
+
+        <!-- 中国大陆 -->
+        <variable key="104">中国银行</variable>
+        <variable key="102">中国工商银行</variable>
+        <variable key="103">中国农业银行</variable>
+        <variable key="303">中国光大银行</variable>
+        <variable key="305">中国民生银行</variable>
+        <variable key="105">中国建设银行</variable>
+        <variable key="403">中国邮政储蓄银行</variable>
+        <variable key="310">上海浦东发展银行</variable>
+        <variable key="308">招商银行</variable>
+        <variable key="301">交通银行</variable>
+        <variable key="302">中信银行</variable>
+        <variable key="309">兴业银行</variable>
+        <variable key="304">华夏银行</variable>
+        <variable key="04105840">平安银行</variable>
+        <variable key="306">广东发展银行</variable>
+        <variable key="307">深圳发展银行</variable>
+        <variable key="04012900">上海银行</variable>
+        <!--<variable key="03133310">杭州银行</variable>-->
+        <!--<variable key="318">渤海银行</variable>-->
+        <!--<variable key="201">国家开发银行</variable>-->
+        <!--<variable key="202">中国进出口银行</variable>-->
+        <!--<variable key="203">中国农业发展银行</variable>-->
+        <!--<variable key="313">城市商业银行</variable>-->
+        <!--<variable key="03131610">晋商银行</variable>-->
+        <!--<variable key="03132210">盛京银行</variable>-->
+        <!--<variable key="03133010">江苏银行</variable>-->
+        <!--<variable key="03133120">江苏银行</variable>-->
+        <!--<variable key="03133450">浙江泰隆商业银行</variable>-->
+        <!--<variable key="03134510">齐鲁银行</variable>-->
+        <!--<variable key="03134530">齐商银行</variable>-->
+        <!--<variable key="03134580">潍坊银行</variable>-->
+        <!--<variable key="03134680">德州银行</variable>-->
+        <!--<variable key="03135210">汉口银行</variable>-->
+        <!--<variable key="03135220">黄石银行</variable>-->
+        <!--<variable key="03136110">广西北部湾银行</variable>-->
+        <!--<variable key="03136620">遂宁银行</variable>-->
+        <!--<variable key="03136730">南充银行</variable>-->
+        <!--<variable key="314">农村商业银行（江苏）</variable>-->
+        <!--<variable key="03143020">江苏锡州农村商业银行</variable>-->
+        <!--<variable key="03143040">江苏江南农村商业银行</variable>-->
+        <!--<variable key="03143055">江苏常熟农村商业银行</variable>-->
+        <!--<variable key="315">恒丰银行</variable>-->
+        <!--<variable key="316">浙商银行</variable>-->
+        <!--<variable key="317">农村合作银行</variable>-->
+
+        <!--<variable key="319">徽商银行</variable>-->
+        <!--<variable key="320">镇银行有限责任公司</variable>-->
+        <!--<variable key="401">城市信用社</variable>-->
+        <!--<variable key="402">农村信用社（含北京农村商业银行）</variable>-->
+        <!--<variable key="04021000">北京农商行</variable>-->
+        <!--<variable key="04021770">尧都农信社</variable>-->
+        <!--<variable key="04023010">南京市区农村信用社</variable>-->
+        <!--<variable key="04023310">杭州联合银行</variable>-->
+        <!--<variable key="04023320">宁波市农村合作信用联社</variable>-->
+        <!--<variable key="04023610">合肥科技农村商业银行</variable>-->
+        <!--<variable key="04023620">芜湖扬子农村商业银行</variable>-->
+        <!--<variable key="04024210">江西农信社</variable>-->
+        <!--<variable key="04024211">南昌洪都农村商业银行营业部</variable>-->
+        <!--<variable key="04024560">烟台市芝罘区农村信用社</variable>-->
+        <!--<variable key="04024750">菏泽市牡丹区城区农村信用社</variable>-->
+        <!--<variable key="04025210">武汉农村商业银行</variable>-->
+        <!--<variable key="04025840">深圳农村商业银行</variable>-->
+        <!--<variable key="04025880">顺德农村商业银行</variable>-->
+        <!--<variable key="04026530">重庆农商行</variable>-->
+        <!--<variable key="04031000">北京银行</variable>-->
+        <!--<variable key="04035810">广东邮政储蓄银行</variable>-->
+        <!--<variable key="04053910">福州银行</variable>-->
+        <!--<variable key="04083320">宁波银行</variable>-->
+        <!--<variable key="04123330">温州银行</variable>-->
+        <!--<variable key="04135810">广州银行</variable>-->
+        <!--<variable key="04202220">大连银行</variable>-->
+        <!--<variable key="04243010">南京银行</variable>-->
+        <!--<variable key="04256020">东莞银行</variable>-->
+        <!--<variable key="04296510">成都银行</variable>-->
+        <!--<variable key="04422610">哈尔滨银行</variable>-->
+        <!--<variable key="04447910">西安银行</variable>-->
+        <!--<variable key="04484220">南昌银行</variable>-->
+        <!--<variable key="04504520">青岛银行</variable>-->
+        <!--<variable key="04554732">日照银行</variable>-->
+        <!--<variable key="04615510">长沙银行</variable>-->
+        <!--<variable key="04643970">泉州银行</variable>-->
+        <!--<variable key="04652280">营口银行</variable>-->
+        <!--<variable key="04814650">威海商业银行</variable>-->
+        <!--<variable key="14055810">广州市农村信用社</variable>-->
+        <!--<variable key="14075882">南海市农村信用社</variable>-->
+        <!--<variable key="14105210">武汉农商银行</variable>-->
+        <!--<variable key="14156020">东莞农商银行</variable>-->
+        <!--<variable key="40258801">佛山市禅城区农村信用社</variable>-->
+        <variable key="000000">富滇银行</variable>
+        <variable key="100001">云南省农村信用社</variable>
+
+        <!-- 其他地区 -->
+        <!--<variable key="501">汇丰银行</variable>-->
+        <!--<variable key="502">东亚银行</variable>-->
+        <!--<variable key="503">南洋商业银行</variable>-->
+        <!--<variable key="504">恒生银行（中国）有限公司</variable>-->
+        <!--<variable key="505">中国银行（香港）有限公司</variable>-->
+        <!--<variable key="506">集友银行有限公司</variable>-->
+        <!--<variable key="507">创兴银行有限公司</variable>-->
+        <!--<variable key="509">星展银行（中国）有限公司</variable>-->
+        <!--<variable key="510">永亨银行（中国）有限公司</variable>-->
+        <!--<variable key="512">永隆银行</variable>-->
+        <!--<variable key="531">花旗银行（中国）有限公司</variable>-->
+        <!--<variable key="532">美国银行有限公司</variable>-->
+        <!--<variable key="533">摩根大通银行（中国）有限公司</variable>-->
+        <!--<variable key="561">三菱东京日联银行（中国）有限公司</variable>-->
+        <!--<variable key="563">日本三井住友银行股份有限公司</variable>-->
+        <!--<variable key="564">瑞穗实业银行（中国）有限公司</variable>-->
+        <!--<variable key="565">日本山口银行股份有限公司</variable>-->
+        <!--<variable key="591">韩国外换银行股份有限公司</variable>-->
+        <!--<variable key="593">友利银行（中国）有限公司</variable>-->
+        <!--<variable key="594">韩国产业银行</variable>-->
+        <!--<variable key="595">新韩银行（中国）有限公司</variable>-->
+        <!--<variable key="596">韩国中小企业银行有限公司</variable>-->
+        <!--<variable key="597">韩亚银行（中国）有限公司</variable>-->
+        <!--<variable key="621">华侨银行（中国）有限公司</variable>-->
+        <!--<variable key="622">大华银行（中国）有限公司</variable>-->
+        <!--<variable key="623">星展银行（中国）有限公司</variable>-->
+        <!--<variable key="631">泰国盘谷银行（大众有限公司）</variable>-->
+        <!--<variable key="641">奥地利中央合作银行股份有限公司</variable>-->
+        <!--<variable key="651">比利时联合银行股份有限公司</variable>-->
+        <!--<variable key="652">比利时富通银行有限公司</variable>-->
+        <!--<variable key="661">荷兰银行</variable>-->
+        <!--<variable key="662">荷兰安智银行股份有限公司</variable>-->
+        <!--<variable key="671">渣打银行</variable>-->
+        <!--<variable key="672">英国苏格兰皇家银行公众有限公司</variable>-->
+        <!--<variable key="691">法国兴业银行（中国）有限公司</variable>-->
+        <!--<variable key="694">法国东方汇理银行股份有限公司</variable>-->
+        <!--<variable key="695">法国外贸银行股份有限公司</variable>-->
+        <!--<variable key="711">德国德累斯登银行股份公司</variable>-->
+        <!--<variable key="712">德意志银行（中国）有限公司</variable>-->
+        <!--<variable key="713">德国商业银行股份有限公司</variable>-->
+        <!--<variable key="714">德国西德银行股份有限公司</variable>-->
+        <!--<variable key="715">德国巴伐利亚州银行</variable>-->
+        <!--<variable key="716">德国北德意志州银行</variable>-->
+        <!--<variable key="732">意大利联合圣保罗银行股份有限公司</variable>-->
+        <!--<variable key="741">瑞士信贷银行股份有限公司</variable>-->
+        <!--<variable key="742">瑞士银行</variable>-->
+        <!--<variable key="751">加拿大丰业银行有限公司</variable>-->
+        <!--<variable key="752">加拿大蒙特利尔银行有限公司</variable>-->
+        <!--<variable key="761">澳大利亚和新西兰银行集团有限公司</variable>-->
+        <!--<variable key="771">摩根士丹利国际银行（中国）有限公司</variable>-->
+        <!--<variable key="775">联合银行（中国）有限公司</variable>-->
+        <!--<variable key="776">荷兰合作银行有限公司</variable>-->
+        <!--<variable key="781">厦门国际银行</variable>-->
+        <!--<variable key="782">法国巴黎银行（中国）有限公司</variable>-->
+        <!--<variable key="785">华商银行</variable>-->
+        <!--<variable key="787">华一银行</variable>-->
+        <!--<variable key="969">（澳门地区）银行</variable>-->
+        <!--<variable key="989">（香港地区）银行</variable>-->
+
+    </banks>
+</config>

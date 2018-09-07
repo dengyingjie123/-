@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+		<select id="listReportPaymentPlanMonth">
+select 
+	sum(totalPaymentMoney) TotalPaymentMoney,
+	sum(TotalProfitMoney) TotalProfitMoney,
+	sum(TotalPaymentPrincipalMoney) TotalPaymentPrincipalMoney,
+	PaymentTime
+from (
+	SELECT
+		plan.totalPaymentMoney,
+		plan.TotalProfitMoney,
+		plan.TotalPaymentPrincipalMoney,
+		DATE_FORMAT(plan.PaymentTime, '%Y-%m') PaymentTime
+	FROM
+		core_paymentplan plan
+	left join crm_production p on p.state=0 and p.id=plan.ProductId
+	left join v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+	left join crm_order o on o.state=0 and o.id=plan.OrderId
+	WHERE
+		1 = 1
+	AND plan.state = 0
+	and plan.`Status`=0
+) t
+GROUP BY t.PaymentTime
+ORDER BY t.PaymentTime		
+		</select>
+		<select id="listReportPaymentPlan_Production_Month">
+select 
+	ProductionId,
+	ProductionName,
+	sum(totalPaymentMoney) TotalPaymentMoney,
+	sum(TotalProfitMoney) TotalProfitMoney,
+	sum(TotalPaymentPrincipalMoney) TotalPaymentPrincipalMoney,
+	PaymentTime
+from (
+	SELECT
+		p.id ProductionId,
+		p.`Name` ProductionName,
+		plan.totalPaymentMoney,
+		plan.TotalProfitMoney,
+		plan.TotalPaymentPrincipalMoney,
+		DATE_FORMAT(plan.PaymentTime, '%Y-%m') PaymentTime
+	FROM
+		core_paymentplan plan
+	left join crm_production p on p.state=0 and p.id=plan.ProductId
+	left join v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+	left join crm_order o on o.state=0 and o.id=plan.OrderId
+	WHERE
+		1 = 1
+	AND plan.state = 0
+	and plan.`Status`=0
+	<if test="#{month} !=null">
+	and DATE_FORMAT(plan.PaymentTime, '%Y-%m')=#{month}
+	</if>
+) t
+GROUP BY ProductionId, ProductionName, t.PaymentTime
+ORDER BY t.PaymentTime, ProductionName		
+		</select>
+		<select id="listReportPaymentPlan_Production_Customer_Month">
+select 
+	ProductionName,
+	CustomerName,
+	Money,
+	ExpectedYield,
+	TotalInstallment,
+	CurrentInstallment,
+	sum(totalPaymentMoney) TotalPaymentMoney,
+	sum(TotalProfitMoney) TotalProfitMoney,
+	sum(TotalPaymentPrincipalMoney) TotalPaymentPrincipalMoney,
+	PaymentTime
+from (
+	SELECT
+		p.`Name` ProductionName,
+		p.id productionId,
+		o.CustomerName,
+		o.money Money,
+		CONCAT(o.ExpectedYield, '%') ExpectedYield,
+		plan.TotalInstallment,
+		plan.CurrentInstallment,
+		plan.totalPaymentMoney,
+		plan.TotalProfitMoney,
+		plan.TotalPaymentPrincipalMoney,
+		DATE_FORMAT(plan.PaymentTime, '%Y-%m-%d') PaymentTime
+	FROM
+		core_paymentplan plan
+	left join crm_production p on p.state=0 and p.id=plan.ProductId
+	left join v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+	left join crm_order o on o.state=0 and o.id=plan.OrderId
+	WHERE
+		1 = 1
+	AND plan.state = 0
+	and plan.`Status`=0
+	<if test="#{productionId} !=null">
+	and p.id=#{productionId}
+	</if>
+	<if test="#{month} !=null">
+	and DATE_FORMAT(plan.PaymentTime, '%Y-%m')=#{month}
+	</if>
+) t
+GROUP BY ProductionName, CustomerName,Money, ExpectedYield, TotalInstallment,CurrentInstallment, t.PaymentTime
+ORDER BY t.PaymentTime, ProductionName		
+		</select>
+		<!--
+        <select id="getListReportData">
+        select * from customer c where 1=1
+        <if test="#{userId} !=null">
+            AND c.id = #{userId}
+        </if>
+        <if test="#{userId} != null and #{ageValue} > 18">
+            AND c.id = #{userId} and c.age > #{ageValue}
+        </if>
+        </select>
+		-->
+    </select-sql>
+</sql>

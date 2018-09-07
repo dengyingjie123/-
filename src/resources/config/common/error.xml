@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+    简介：该文件为系统错误的结果定义文件
+    使用：通过 Config.getErrorVariable(keyStr) 获取
+    作者：邓超
+    时间：2015-9-13
+
+-->
+
+<config>
+    <variables>
+
+        <!--
+            下列项目为通联接口的错误
+            其中 00000 格式的字符串为通联的错误代码
+        -->
+
+        <variable key="error.allinpay.00000">请联系客服</variable>
+        <variable key="error.allinpay.00001">未知的报文参数验证错误</variable>
+        <variable key="error.allinpay.00002">未知的交易处理参数配置错误</variable>
+
+        <variable key="error.allinpay.10001">不支持的字符编码格式</variable>
+        <variable key="error.allinpay.10002">参数取货地址不正确</variable>
+        <variable key="error.allinpay.10003">参数通知地址不正确</variable>
+        <variable key="error.allinpay.10004">参数签名类型不正确</variable>
+        <variable key="error.allinpay.10005">参数语言类型不正确</variable>
+        <variable key="error.allinpay.10006">参数支付方式不正确</variable>
+        <variable key="error.allinpay.10007">参数扩展参数 2 不正确</variable>
+        <variable key="error.allinpay.10008">参数扩展参数 1 不正确</variable>
+        <variable key="error.allinpay.10009">参数产品描述信息部正确</variable>
+        <variable key="error.allinpay.10010">参数产品代码不正确</variable>
+        <variable key="error.allinpay.10011">参数产品数量不正确</variable>
+        <variable key="error.allinpay.10012">参数产品名称不正确</variable>
+        <variable key="error.allinpay.10013">参数订单提交时间不正确</variable>
+        <variable key="error.allinpay.10014">参数订单金额不正确</variable>
+        <variable key="error.allinpay.10015">参数订单号不正确</variable>
+        <variable key="error.allinpay.10016">参数付款人的 Email 地址不正确</variable>
+        <variable key="error.allinpay.10017">参数付款人的电话不正确</variable>
+        <variable key="error.allinpay.10018">参数付款人名称不正确</variable>
+        <variable key="error.allinpay.10019">参数报文版本号不正确</variable>
+        <variable key="error.allinpay.10020">参数签名信息不正确</variable>
+        <variable key="error.allinpay.10021">参数发卡机构号不正确</variable>
+        <variable key="error.allinpay.10022">参数网银直连支付参数不正确</variable>
+        <variable key="error.allinpay.10023">参数查询时间不正确</variable>
+        <variable key="error.allinpay.10024">参数查询开始时间不正确</variable>
+        <variable key="error.allinpay.10025">参数查询结束时间不正确</variable>
+        <variable key="error.allinpay.10026">参数异步接收查询结果的 URL 地址不正确</variable>
+        <variable key="error.allinpay.10027">该笔订单不存在</variable>
+        <variable key="error.allinpay.10028">该笔订单不符合退款条件</variable>
+
+        <variable key="error.allinpay.20001">报文编码格式错误</variable>
+
+        <variable key="error.allinpay.30001">系统参数配置错误</variable>
+        <variable key="error.allinpay.30002">订单已经支付成功</variable>
+        <variable key="error.allinpay.30003">不能重复提交订单</variable>
+        <variable key="error.allinpay.30004">原订单不存在</variable>
+        <variable key="error.allinpay.30005">商户支付配置错误或商户号不存在</variable>
+
+        <variable key="error.allinpay.40001">商户未被授权接入系统</variable>
+
+        <variable key="error.allinpay.50001">系统繁忙，请稍后再试</variable>
+        <variable key="error.allinpay.50003">商户无效</variable>
+        <variable key="error.allinpay.50014">卡号无效</variable>
+        <variable key="error.allinpay.50055">密码不正确</variable>
+        <variable key="error.allinpay.50056">卡不存在</variable>
+        <variable key="error.allinpay.50057">密码输入次数超限</variable>
+
+    </variables>
+</config>
