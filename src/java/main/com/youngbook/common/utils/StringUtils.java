@@ -6,8 +6,6 @@ import com.youngbook.common.MyException;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import net.sf.json.JSONObject;
-import org.apache.commons.codec.binary.Hex;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -32,8 +30,7 @@ public class StringUtils {
 
     public static void main(String [] args) throws Exception {
 
-        String trans_date = "20180901";
-        String trans_time = "173136";
+
 
 
         System.out.println(AesEncrypt.encrypt("800019374406012"));

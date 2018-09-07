@@ -7,9 +7,7 @@ import com.youngbook.common.utils.NumberUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.Struts2Utils;
 import com.youngbook.dao.MySQLDao;
-import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
-import com.youngbook.entity.po.system.UserPositionInfoPO;
 import org.springframework.stereotype.Component;
 import sun.awt.SunToolkit;
 
@@ -22,21 +20,6 @@ import java.util.List;
 @Component("userDao")
 public class UserDaoImpl implements IUserDao {
 
-    public UserPositionInfoPO getUserPositionInfoByUserId(String userId, Connection conn) throws Exception {
-
-        UserPO user = this.loadUserByUserId(userId, conn);
-
-        DepartmentPO department = Config.getDefaultDepartmentByUserId(userId, conn);
-
-        UserPositionInfoPO userPositionInfo = new UserPositionInfoPO();
-
-        userPositionInfo.setUserName(user.getName());
-        userPositionInfo.setUserId(userId);
-        userPositionInfo.setDepartmentId(department.getId());
-        userPositionInfo.setDepartmentName(department.getName());
-
-        return userPositionInfo;
-    }
 
     public List<UserPO> listUserPO(String customerId, Connection conn) throws Exception {
 

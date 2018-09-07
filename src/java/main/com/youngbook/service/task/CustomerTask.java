@@ -14,7 +14,6 @@ import com.youngbook.entity.po.customer.CustomerCatalog;
 import com.youngbook.entity.po.customer.CustomerCertificatePO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.system.LogPO;
-import com.youngbook.service.customer.CustomerDistributionService;
 import com.youngbook.service.customer.CustomerPersonalService;
 import com.youngbook.service.system.LogService;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -34,15 +33,7 @@ public class CustomerTask extends Task {
 
     CustomerPersonalService customerPersonalService = Config.getBeanByName("customerPersonalService", CustomerPersonalService.class);
 
-    CustomerDistributionService customerDistributionService = Config.getBeanByName("customerDistributionService", CustomerDistributionService.class);
-
     LogService logService = Config.getBeanByName("logService", LogService.class);
-
-    public void transferCustomer(String fromSalesmanId, String toSalesmanId, Connection conn) throws Exception {
-
-        customerDistributionService.transferCustomer(fromSalesmanId, toSalesmanId, "0000", conn);
-
-    }
 
 
     public static void main(String[] args) throws Exception {

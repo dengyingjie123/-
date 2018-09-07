@@ -34,10 +34,6 @@ public class SalemanGroupService extends BaseService {
     @Autowired
     ISalemanGroupDao salemanGroupDao;
 
-    public SalemanGroupPO getDefaultSalemanGroupByUserId(String userId, Connection conn) throws Exception {
-        return salemanGroupDao.getDefaultSalemanGroupByUserId(userId, conn);
-    }
-
     public SalemanGroupPO loadSalemanGroupPO(String id, Connection conn) throws Exception {
         return salemanGroupDao.loadSalemanGroupPO(id, conn);
     }

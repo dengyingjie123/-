@@ -44,14 +44,6 @@
                     <td align="right">城市代码</td>
                     <td><input type="text" id="cityCode<%=token %>"  class="easyui-validatebox"   name="customerAccount.cityCode"  style="width:200px"/></td>
                 </tr>
-                <tr>
-                    <td align="right">银行预留手机号</td>
-                    <td><input type="text" id="mobile<%=token %>"  class="easyui-validatebox"   name="customerAccount.mobile"  style="width:200px"/></td>
-                </tr>
-                <tr>
-                    <td align="right">通联金融圈交易子账号</td>
-                    <td><input type="text" id="allinpayCircle_AcctSubNo<%=token %>"  class="easyui-validatebox"   name="customerAccount.allinpayCircle_AcctSubNo"  style="width:200px" readonly/></td>
-                </tr>
             </table>
             <input type="hidden" id="bankCode<%=token %>"  class="easyui-validatebox"  name="customerAccount.bankCode"  style="width:200px"/>
             <input type="hidden" id="customerId<%=token %>"  class="easyui-validatebox" name="customerAccount.customerId"  style="width:200px"/>
@@ -63,8 +55,7 @@
         </form>
     </div>
     <div region="south" border="false" style="text-align:right;padding:5px;background:#F4F4F4">
-        <a id="btnCustomerAccountSubmit_AllinpayCircle<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >通联金融生态圈换卡</a>
-        <a id="btnCustomerAccountSubmit<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >正常保存</a>
+        <a id="btnCustomerAccountSubmit<%=token %>" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >确定</a>
         <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('CustomerAccountWindow<%=token%>')">取消</a>
     </div>
 </div>

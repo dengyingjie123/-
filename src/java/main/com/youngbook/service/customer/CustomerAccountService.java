@@ -531,16 +531,29 @@ public class CustomerAccountService extends BaseService {
      * 内容：新增注释
      * 时间：2015-12-01
      *
-     * @param customerAccountPO
+     * @param customerAccount
      * @param conn
      * @return
      * @throws Exception
      */
-    public CustomerAccountPO insertOrUpdate(CustomerAccountPO customerAccountPO, String userId, Connection conn) throws Exception{
+    public CustomerAccountPO insertOrUpdate(CustomerAccountPO customerAccount, String userId, Connection conn) throws Exception{
 
-        customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, userId, conn);
+        //aes加密银行账号
+        if(customerAccount != null && !StringUtils.isEmpty(customerAccount.getNumber())) {
+            customerAccount.setNumber(AesEncrypt.encrypt(customerAccount.getNumber()));
+        }
 
-        return customerAccountPO;
+
+        // 保存账号名称
+        if (StringUtils.isEmpty(customerAccount.getName()) && !StringUtils.isEmpty(customerAccount.getCustomerId())) {
+            CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccount.getCustomerId(), conn);
+            customerAccount.setName(customerPersonalPO.getName());
+        }
+
+        MySQLDao.insertOrUpdate(customerAccount, userId, conn);
+
+
+        return customerAccount;
     }
 
     /**

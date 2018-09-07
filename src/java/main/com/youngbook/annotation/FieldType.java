@@ -2,5 +2,5 @@ package com.youngbook.annotation;
 
 
 public enum FieldType{
-    STRING, INT, DOUBLE, DATE, DATETIME, XML
+    STRING, INT, DOUBLE, DATE, DATETIME
 }

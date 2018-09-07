@@ -11,7 +11,7 @@
   <table width="100%">
 	<tr>
       <td>URL</td>
-      <td><input name="url" type="text" id="url" size="100" value="http://116.228.64.55:28082/AppStsWeb/service/acquireAction.action" /></td>
+      <td><input name="url" type="text" id="url" size="100" /></td>
     </tr>
     <tr>
       <td>Message</td>
@@ -19,8 +19,8 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><input type="button" name="button" id="button" value="Get" onclick="get()" />
-        <input type="button" name="button2" id="button2" value="Submit" onclick="doSubmit()" />
+      <td><input type="button" name="button" id="button" value="Get" />
+        <input type="button" name="button2" id="button2" value="Submit" />
       <input type="reset" name="button3" id="button3" value="Reset" /></td>
     </tr>
   </table>

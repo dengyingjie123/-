@@ -63,25 +63,7 @@ var CustomerAccountClass = function(token) {
                 { field: 'number', title: '账号'},
                 { field: 'bankBranchName', title: '开户支行名称'},
                 { field: 'bankCode', title: '银行代码'},
-                { field: 'mobile', title: '银行预留手机号'},
-                { field: 'cityCode', title: '城市代码'},
-                { field: 'allinpayCircle_AcctSubNo', title: '通联-交易子账号'},
-                {field: 'allinpayCircle_ChangeStatus', title: '通联-换卡状态',
-                    formatter: function(value,row,index){
-                        if (row['allinpayCircle_ChangeStatus']=='0') {
-                            return '无需换卡';
-                        }
-                        else if (row['allinpayCircle_ChangeStatus']=='1') {
-                            return '已换卡';
-                        }
-                        else if (row['allinpayCircle_ChangeStatus']=='2') {
-                            return '换卡受理';
-                        }
-                        else if (row['allinpayCircle_ChangeStatus']=='3') {
-                            return '换卡失败';
-                        }
-                    }
-                },
+                { field: 'cityCode', title: '城市代码'}
             ]],
             toolbar: [{
                 id:'btnCustomerAccountAdd'+token,
@@ -95,16 +77,11 @@ var CustomerAccountClass = function(token) {
                 id:'btnCustomerAccountDelete'+token,
                 text:'删除',
                 iconCls: 'icon-remove'
-            },{
-                id:'btnAllinpayCircleOpenAccount'+token,
-                text:'通联金融圈开户',
-                iconCls: 'icon-add'
             }],
             onLoadSuccess:function() {
                 onClickCustomerAccountAdd(obj);
                 onClickCustomerAccountDelete();
                 onClickCustomerAccountEdit(obj);
-                onClickCustomerAccount_AllinpayCircle_OpenAccount();
             }
         });
     }
@@ -166,11 +143,10 @@ var CustomerAccountClass = function(token) {
 
         var url =  WEB_ROOT + "/modules/customer/CustomerAccount_Save.jsp?token="+token;
         var windowId = "CustomerAccountWindow" + token;
-        fw.window(windowId, '账户信息', 500, 300, url, function() {
+        fw.window(windowId, '账户信息', 360, 300, url, function() {
 
             // 初始化表单提交事件
             onClickCustomerAccountSubmit();
-            onClickCustomerAccountSubmit_AllinpayCircle();
 
             // 银行列表
             var URL = WEB_ROOT + "/customer/CustomerAccount_getBankList.action";
@@ -256,27 +232,6 @@ var CustomerAccountClass = function(token) {
         });
     }
 
-
-    function onClickCustomerAccount_AllinpayCircle_OpenAccount() {
-        var buttonId = "btnAllinpayCircleOpenAccount" + token;
-        fw.bindOnClick(buttonId, function(process) {
-            fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
-
-                if (!fw.checkIsTextEmpty(selected['allinpayCircle_AcctSubNo'])) {
-                    fw.alert('提示', '该账号已注册过通联金融圈账户');
-                    return;
-                }
-
-                var id = selected.id;
-                var url = WEB_ROOT + "/pay/AllinpayCircle_openAccountPersonalByTrust?customerAccountId="+id;
-                fw.post(url, null, function(data){
-                    initWindowCustomerAccountWindow(data,obj);
-                }, null);
-            })
-
-        });
-    }
-
     /**
      * 数据提交事件
      */
@@ -295,47 +250,6 @@ var CustomerAccountClass = function(token) {
             }, function() {
                 process.afterClick();
             });
-        });
-    }
-
-
-    function onClickCustomerAccountSubmit_AllinpayCircle() {
-        var buttonId = "btnCustomerAccountSubmit_AllinpayCircle" + token;
-        fw.bindOnClick(buttonId, function(process){
-
-            fw.confirm('提示', '是否确认进行通联金融圈账号修改？', function() {
-                var formId = "formCustomerAccount" + token;
-                var url = WEB_ROOT + "/pay/AllinpayCircle_changeBankCard";
-
-                // fw.alertReturnValue(url);
-                fw.bindOnSubmitForm(formId, url, function(){
-                    process.beforeClick();
-                }, function(data) {
-                    //alert('done');
-                    fw.alertReturnValue(data);
-
-                    var mobileCodeCheckUrl = WEB_ROOT + '/modules/customer/CustomerAccount_Save_AllinpayCircle.jsp';
-                    fw.window('MobileCodeCheckWindow' + token, '验证码', 500, 400, mobileCodeCheckUrl, function(){
-                        fw.bindOnClick4Any('btnCustomerAccountMobileCheckSubmit_AllinpayCircle' + token,
-                            function() {
-                                fw.formLoad('formCustomerAccountMobileCodeCheck' + token, data);
-
-                                var mobileCheckButtonId = 'btnCustomerAccountSubmit_AllinpayCircle_MobileCodeCheck' + token;
-                                fw.bindOnClick4Any(mobileCheckButtonId, function () {
-                                    alert('提交数据');
-                                });
-                            });
-                    }, null);
-
-                    process.afterClick();
-                    fw.datagridReload("CustomerAccountTable"+token);
-                    fw.windowClose('CustomerAccountWindow'+token);
-                }, function() {
-                    process.afterClick();
-                });
-            },null);
-
-
         });
     }
 

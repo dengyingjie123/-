@@ -92,28 +92,6 @@ public class Config {
         return applicationContext;
     }
 
-    /**
-     * 通过组名和键值，获取具体数值
-     * @param key
-     * @param groupName
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    public static String getKVString(String key, String groupName, Connection conn) throws Exception {
-
-        DatabaseSQL dbSQL = new DatabaseSQL();
-        dbSQL.newSQL("SELECT * from system_kv where state=0 and GroupName='"+groupName+"'");
-        List<KVPO> search = MySQLDao.search(dbSQL.getSQL(), dbSQL.getParameters(), KVPO.class, null, conn);
-
-        for (KVPO config : search) {
-            if (config.getK().equalsIgnoreCase(key)) {
-                return  config.getV().toString();
-            }
-        }
-
-        return null;
-    }
 
     public static String getProductionExpectedYieldName(double expectedYield) throws Exception {
 

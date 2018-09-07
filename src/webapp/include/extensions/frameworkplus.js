@@ -1009,7 +1009,7 @@ var fw = (function () {
                 }
                 else {
                     fw.alert('失败', '错误编码：【'+ data.code + '】，错误说明：【'+data.message+'】');
-                    // throw new Error("错误：" + data.message);
+                    throw new Error("错误：" + data.message);
                 }
             }
         },

@@ -285,27 +285,15 @@ public class HttpUtils {
     public static String getParametersStringValue(HttpServletRequest request)  {
         StringBuffer parameter = new StringBuffer();
 
-
-        Enumeration params = request.getParameterNames();
-        while(params.hasMoreElements()) {
-            String param = (String) params.nextElement();
-            String value = request.getParameter(param);
-            parameter.append(param);
-            parameter.append("=");
-            parameter.append(value);
-            parameter.append("&");
+        for (Object key : request.getParameterMap().keySet()) {
+            String[] valueArray = (String[])request.getParameterMap().get(key);
+            for (String value : valueArray) {
+                parameter.append(key);
+                parameter.append("=");
+                parameter.append(value);
+                parameter.append("&");
+            }
         }
-
-
-//        for (Object key : request.getParameterMap().keySet()) {
-//            String[] valueArray = (String[])request.getParameterMap().get(key);
-//            for (String value : valueArray) {
-//                parameter.append(key);
-//                parameter.append("=");
-//                parameter.append(value);
-//                parameter.append("&");
-//            }
-//        }
         // 删除参数最后一个&
         parameter = StringUtils.removeLastLetters(parameter, "&");
 

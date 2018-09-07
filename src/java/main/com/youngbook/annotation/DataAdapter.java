@@ -16,5 +16,4 @@ public @interface DataAdapter {
     FieldType fieldType() default FieldType.STRING;
     String fieldName() default "";
     String fieldFormat() default "";
-    String fieldResource() default "";
 }

@@ -574,7 +574,6 @@ public class CustomerAccountAction extends BaseAction {
         }
 
         customerAccountService.insertOrUpdate(customerAccount, getLoginUser().getId(), getConnection());
-
         return SUCCESS;
     }
 

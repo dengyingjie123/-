@@ -4,20 +4,15 @@ import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.IdUtils;
-import com.youngbook.common.utils.MoneyUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
-import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.ICustomerAccountDao;
 import com.youngbook.dao.customer.ICustomerCertificateDao;
 import com.youngbook.dao.customer.ICustomerInstitutionDao;
-import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.entity.po.UserPO;
-import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.customer.CustomerCertificatePO;
-import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.service.BaseService;
 import com.youngbook.entity.po.customer.CustomerInstitutionPO;
 import com.youngbook.entity.vo.customer.CustomerInstitutionVO;
@@ -46,60 +41,6 @@ public class CustomerInstitutionService extends BaseService {
 
     @Autowired
     ICustomerInstitutionDao customerInstitutionDao;
-
-    @Autowired
-    IAllinpayCircleDao allinpayCircleDao;
-
-    @Autowired
-    ICustomerPersonalDao customerPersonalDao;
-
-    /**
-     * 通联万小宝
-     * 充值-机构自付
-     * @param customerPersonalId
-     * @param customerInstitutionAccountId
-     * @param customerInstitutionId
-     * @param money
-     * @param productCodeCashAcct
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    public ReturnObject allinpayCircle_Pay(String customerPersonalId, String customerInstitutionAccountId, String customerInstitutionId, double money, String productCodeCashAcct, Connection conn) throws Exception {
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerPersonalId, conn);
-
-        CustomerAccountPO customerInstitutionAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(customerInstitutionAccountId, conn);
-
-        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(customerInstitutionAccountId, "allinpayCircleBankCode", conn);
-
-        CustomerInstitutionPO customerInstitutionPO = customerInstitutionDao.loadByCustomerInstitutionId(customerInstitutionId, conn);
-
-        String url = "http://118.126.103.58:8574/core/api/APICommand_receiveAllinpayCircle";
-
-        TransactionPO transactionPO = new TransactionPO();
-
-        transactionPO.setProcessing_code("2080");
-
-
-        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
-        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
-        transactionPO.getRequest().addItem("pay_mode", "4");
-        transactionPO.getRequest().addItem("charge_flag", "1");
-        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
-        transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", customerInstitutionAccountPO.getNumber());
-        transactionPO.getRequest().addItem("tel_num", customerInstitutionPO.getMobile());
-        transactionPO.getRequest().addItem("cur_type", "156");
-        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("product_code_cash_acct", productCodeCashAcct);
-        transactionPO.getRequest().addItem("resp_url", url);
-
-
-        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
-
-        return returnObject;
-    }
 
 
     /**

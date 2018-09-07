@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <td align="right">注册资本</td>
-                    <td><input  class="easyui-validatebox" type="text" id="registeredCapital<%=token %>" name="institution.registeredCapital" validType="intOrFloat" style="width:150px"/>&nbsp;万元</td>
+                    <td><input  class="easyui-validatebox" type="text" id="registeredCapital<%=token %>" name="institution.registeredCapital" required="true" missingmessage="必须填写" validType="intOrFloat" style="width:150px"/>&nbsp;万元</td>
                     <td align="right">移动电话</td>
                     <td><input type="text" id="mobile<%=token %>" class="easyui-validatebox" name="institution.mobile" validType="mobile" invalidMessage="请输入11位的手机号码(如130，135，138等开头号码)" style="width:180px"/></td>
                     <td align="right">移动电话2</td>
@@ -37,7 +37,7 @@
                     <td align="right">固定电话2</td>
                     <td><input type="text" id="phone2<%=token %>" name="institution.phone2"  class="easyui-validatebox" validType="phone" style="width:180px"/></td>
                     <td align="right">注册地址</td>
-                    <td><input type="text" id="address<%=token %>" class="easyui-validatebox" name="institution.address" validType="address" style="width:180px"/></td>
+                    <td><input type="text" id="address<%=token %>" class="easyui-validatebox" name="institution.address" validType="address" required="true" missingmessage="必须填写"  style="width:180px"/></td>
                 </tr>
                 <tr style="display: none">
                     <td align="right">移动电话3</td>
@@ -61,11 +61,11 @@
                 </tr>
                 <tr>
                     <td align="right">客户种类</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="customerTypeId<%=token %>" name="institution.customerTypeId"  style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="customerTypeId<%=token %>" name="institution.customerTypeId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                     <td align="right">客户来源</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="customerSourceId<%=token %>" name="institution.customerSourceId" style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="customerSourceId<%=token %>" name="institution.customerSourceId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                     <td align="right">关系等级</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="relationshipLevelId<%=token %>" name="institution.relationshipLevelId" style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="relationshipLevelId<%=token %>" name="institution.relationshipLevelId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                 </tr>
                 <tr style="display: none">
                     <td align="right">电子邮箱3</td>
@@ -79,11 +79,11 @@
                 </tr>
                 <tr>
                     <td align="right">信用等级</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="creditRateId<%=token %>" name="institution.creditRateId" style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="creditRateId<%=token %>" name="institution.creditRateId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                     <td align="right">所属行业</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="careerId<%=token %>" name="institution.careerId" style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="careerId<%=token %>" name="institution.careerId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                     <td align="right">人员规模</td>
-                    <td><input class="easyui-combotree"  editable="false" type="text" id="staffSizeId<%=token %>" name="institution.staffSizeId" style="width:180px"/></td>
+                    <td><input class="easyui-combotree"  editable="false" type="text" id="staffSizeId<%=token %>" name="institution.staffSizeId"  required="true" missingmessage="必须填写"  style="width:180px"/></td>
                 </tr>
                 <tr>
                     <td align="right">机构客户编号</td>

@@ -293,7 +293,7 @@ public class CustomerRefundService extends BaseService {
             customerMoneyLog.setSid(MySQLDao.getMaxSid("crm_customermoneylog",conn));
             customerMoneyLog.setState(Config.STATE_CURRENT);
             customerMoneyLog.setOperateTime(TimeUtils.getNow());
-            customerMoneyLog.setStatus(CustomerMoneyLogStatus.Successed);
+            customerMoneyLog.setStatus(CustomerMoneyLogStatus.Successd);
             MySQLDao.insert(customerMoneyLog,conn);
 
         } catch (Exception e) {

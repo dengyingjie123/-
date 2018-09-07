@@ -208,39 +208,6 @@ var OrderClass = function (token) {
                         var url = "down.jsp?zipName="+zipName+"&moduleId=18833&bizId=" + row['id'];
                         return "<a href='"+url+"' target='_blank'>下载</a>";
                     }},
-                    {field: 'allinpayCircle_deposit_status', title: '通联-充值状态',
-                        formatter: function(value,row,index){
-                            if (row['allinpayCircle_deposit_status']=='0') {
-                                return '未充值';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='1') {
-                                return '充值成功';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='2') {
-                                return '充值已受理';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='3') {
-                                return '充值失败';
-                            }
-                        }
-                    },
-                    {field: 'allinpayCircle_payByShare_status', title: '通联-份额支付状态',
-                        formatter: function(value,row,index){
-                            if (row['allinpayCircle_deposit_status']=='0') {
-                                return '未支付';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='1') {
-                                return '已支付';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='2') {
-                                return '支付受理';
-                            }
-                            else if (row['allinpayCircle_deposit_status']=='3') {
-                                return '支付失败';
-                            }
-                        }
-                    },
-                    {field: 'allinpayCircle_payByShare_time', title: '通联-份额支付时间'}
                 ]
             ],
             onLoadSuccess: function () {
@@ -275,9 +242,6 @@ var OrderClass = function (token) {
                 onClickOrderFinanceMoneyConfirmCancel();
 
                 onClickExportExcel();
-
-                onClickOrder_AllinpayCircle_DepositByInstitution();
-                onClickOrder_AllinpayCircle_payByShare();
             },
             onClickCell:function(index,field,value){
                 var data = $('#OrderTable'+token).datagrid('getData');
@@ -360,61 +324,6 @@ var OrderClass = function (token) {
                         fw.datagridReload("OrderTable"+token);
                     },null);
 
-
-                }, null);
-
-            });
-        });
-
-    }
-
-
-    function onClickOrder_AllinpayCircle_DepositByInstitution() {
-        var buttonId = "btnAllinpayCircle_DepositByInstitution" + token;
-
-        fw.bindOnClick4Any(buttonId, function () {
-
-            fw.datagridGetSelected('OrderTable' + token, function (selected) {
-                var customerName = selected['customerName'];
-                var orderId = selected['id'];
-                var moneyString = fw.formatMoney(selected['money']);
-                fw.confirm('确认', '是否确认给<br>客户【'+customerName+'】<br>充值【' + moneyString + '】', function () {
-                    var url = WEB_ROOT + '/pay/AllinpayCircle_depositByInstitution?orderId=' + orderId;
-                    fw.post(url, null, function(data){
-
-                        if (!fw.checkIsTextEmpty(data)) {
-                            fw.alert('提示', data);
-                        }
-                    }, null);
-
-                }, null);
-
-            });
-        });
-
-    }
-
-
-    /**
-     * 份额支付
-     */
-    function onClickOrder_AllinpayCircle_payByShare() {
-        var buttonId = "btnAllinpayCircle_payByShare" + token;
-
-        fw.bindOnClick4Any(buttonId, function () {
-
-            fw.datagridGetSelected('OrderTable' + token, function (selected) {
-                var customerName = selected['customerName'];
-                var orderId = selected['id'];
-                var moneyString = fw.formatMoney(selected['money']);
-                fw.confirm('确认', '是否确认使用<br>客户【'+customerName+'】<br>的份额进行支付，<br>支付金额为【' + moneyString + '】', function () {
-                    var url = WEB_ROOT + '/pay/AllinpayCircle_payByShare?orderId=' + orderId;
-                    fw.post(url, null, function(data){
-
-                        if (!fw.checkIsTextEmpty(data)) {
-                            fw.alert('提示', data);
-                        }
-                    }, null);
 
                 }, null);
 

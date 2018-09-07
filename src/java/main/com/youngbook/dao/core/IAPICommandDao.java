@@ -11,8 +11,4 @@ import java.util.List;
 public interface IAPICommandDao {
     public List<APICommandPO> loadByBIzId(String bizId, Connection conn) throws Exception;
     public APICommandPO buildFuiouMobilePay(String bizId, String commands, Connection conn, String ... remains) throws Exception;
-
-    public APICommandPO saveCommand(String apiType, String apiName, String bizId, String commands, int commandType, String url, String callbackCode, String callbackMessage, Connection conn) throws Exception;
-
-    public APICommandPO saveCommand(String apiType, String apiName, String bizId, String commands, int commandType, String url, String callbackCode, String callbackMessage) throws Exception;
 }

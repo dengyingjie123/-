@@ -14,7 +14,6 @@ import com.youngbook.entity.po.sale.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -244,10 +243,9 @@ public class MoneyUtils {
 
     }
 
-    public static int format2Fen(double money) {
-
-        BigDecimal bg = new BigDecimal(money).setScale(2, RoundingMode.UP);
-        return bg.intValue() * 100;
+    public static double format2Fen(double money) {
+        BigDecimal m = new BigDecimal(money);
+        return m.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
 

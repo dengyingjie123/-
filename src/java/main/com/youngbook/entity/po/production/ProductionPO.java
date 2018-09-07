@@ -122,47 +122,6 @@ public class ProductionPO extends BasePO {
      */
     private double totalCost = Double.MAX_VALUE;
 
-
-    /**
-     * 通联万小宝供应商编码
-     */
-    private String allinpayCircle_SupplyInstCode = "";
-
-    /**
-     * 通联万小宝产品编码
-     */
-    private String allinpayCircle_ProductNum = "";
-
-
-    /**
-     * 通联万小宝现金账户代码
-     */
-    private String allinpayCircle_ProductCodeCashAcct = "";
-
-    public String getAllinpayCircle_ProductCodeCashAcct() {
-        return allinpayCircle_ProductCodeCashAcct;
-    }
-
-    public void setAllinpayCircle_ProductCodeCashAcct(String allinpayCircle_ProductCodeCashAcct) {
-        this.allinpayCircle_ProductCodeCashAcct = allinpayCircle_ProductCodeCashAcct;
-    }
-
-    public String getAllinpayCircle_SupplyInstCode() {
-        return allinpayCircle_SupplyInstCode;
-    }
-
-    public void setAllinpayCircle_SupplyInstCode(String allinpayCircle_SupplyInstCode) {
-        this.allinpayCircle_SupplyInstCode = allinpayCircle_SupplyInstCode;
-    }
-
-    public String getAllinpayCircle_ProductNum() {
-        return allinpayCircle_ProductNum;
-    }
-
-    public void setAllinpayCircle_ProductNum(String allinpayCircle_ProductNum) {
-        this.allinpayCircle_ProductNum = allinpayCircle_ProductNum;
-    }
-
     public double getTotalCost() {
         return totalCost;
     }

@@ -2,9 +2,7 @@ package com.youngbook.action.core;
 
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObjects;
-import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.StringUtils;
-import com.youngbook.dao.system.ILogDao;
 import com.youngbook.entity.po.core.APICommandPO;
 import com.youngbook.entity.po.pay.APICommandStatus;
 import com.youngbook.service.core.APICommandService;
@@ -17,23 +15,6 @@ public class APICommandAction extends BaseAction {
 
     @Autowired
     APICommandService apiCommandService;
-
-    @Autowired
-    ILogDao logDao;
-
-    /**
-     * 接受任何消息
-     * @return
-     * @throws Exception
-     */
-    public String receiveAnyData() throws Exception {
-
-        String parametersStringValue = HttpUtils.getParametersStringValue(getRequest());
-
-        logDao.save("receiveAnyData", "收到信息", parametersStringValue, getConnection());
-
-        return SUCCESS;
-    }
 
     public String receiveFuiouMobilePay() throws Exception {
 
