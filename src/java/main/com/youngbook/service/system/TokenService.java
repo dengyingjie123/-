@@ -125,6 +125,7 @@ public class TokenService extends BaseService {
 
         // 生成新的 Token
         TokenPO tokenPO = new TokenPO();
+        tokenPO.setCreateTime(now);
         tokenPO.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
         tokenPO.setOperateTime(now);
         tokenPO.setState(Config.STATE_CURRENT);
@@ -138,8 +139,8 @@ public class TokenService extends BaseService {
         tokenPO.setCheckCode(checkCode);
 
         // 插入新 Token
-        Integer count = MySQLDao.insertOrUpdate(tokenPO, conn);
-        return count == 1 ? tokenPO : null;
+        MySQLDao.insertOrUpdate(tokenPO, conn);
+        return tokenPO;
     }
 
 
