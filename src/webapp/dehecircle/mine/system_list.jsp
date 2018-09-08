@@ -20,7 +20,7 @@
         </div>
         <div class="list-block">
             <ul>
-                <li><a href="#" class="item-link">
+                <li><a href="#" class="item-link btn-check-version">
                     <div class="item-content">
                         <div class="item-media"><i class="icon material-icons">autorenew</i></div>
                         <div class="item-inner">

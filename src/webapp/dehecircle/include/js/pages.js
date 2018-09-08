@@ -40,6 +40,15 @@ pagePool.put('system-list', {
                 window.android.webViewClearCache();
             }
         });
+
+        // btn-check-version
+        $$('.btn-check-version').on('click', function(){
+            if (fm.checkIsAndroid()) {
+                var localVersion = window.android.getLocalAndroidVersion();
+
+                fm.f7_alert(myApp, '本机安装版本为:' + localVersion, null);
+            }
+        });
     },
     onReload:function () {
         alert('onReload:' + this.id);
