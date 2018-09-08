@@ -190,6 +190,10 @@ public class LoginAction extends BaseAction {
 
         finishLogin4Customer(loginCustomer, getRequest().getSession(), getConnection());
 
+
+        TokenPO tokenPO = tokenService.newToken(loginCustomer.getId(), TokenBizType.CustomerLoginToken, Config.getIP(getRequest()), getConnection());
+
+        getResult().setToken(tokenPO.getToken());
         getResult().setReturnValue(loginCustomer);
 
         return SUCCESS;

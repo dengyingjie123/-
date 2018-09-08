@@ -236,9 +236,27 @@ $$('#btn-login-mobile-code').on('click',function (e) {
     var url = WEB_ROOT + "/system/Login_customerRegisterAndLogin";
     fm.f7_post(myApp, url, formData, function (data) {
         console.log(data);
+        alert(JSON.stringify(data));
+        /**
+         * 登录成功
+         */
 
-        loginCustomer = data;
-        window.location = '../index.jsp';
+        loginCustomer = fm.convert2Json(data['returnValue']);
+
+        var token = data['token'];
+
+        console.log("token:" + token);
+        console.log("customerId:" + loginCustomer['id']);
+
+        try {
+            window.android.loginAndroid(loginCustomer['id'], token);
+        }
+        catch (e){
+            throw e;
+        }
+
+
+        // window.location = '../index.jsp';
     },null);
 
 
