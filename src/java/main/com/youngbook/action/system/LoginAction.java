@@ -232,6 +232,7 @@ public class LoginAction extends BaseAction {
      * 需要参数
      * loginToken: 登录的token
      * success_page: 成功后返回的页面，配置参考struts-system.xml
+     * fail_page: 失败返回的页面
      * @return
      * @throws Exception
      */
@@ -239,32 +240,38 @@ public class LoginAction extends BaseAction {
 
         String loginToken = getHttpRequestParameter("loginToken");
         String success_page = getHttpRequestParameter("success_page");
-        String failUrl = getHttpRequestParameter("failUrl");
+        String fail_page = getHttpRequestParameter("fail_page");
         String ip = HttpUtils.getClientIPFromRequest(getRequest());
 
+        try {
+            if (StringUtils.isEmptyAny(loginToken, success_page)) {
+                MyException.newInstance("参数不完整", "loginToken="+loginToken+"&success_page=" + success_page).throwException();
+            }
 
-        if (StringUtils.isEmptyAny(loginToken, success_page)) {
-            MyException.newInstance("参数不完整", "loginToken="+loginToken+"&success_page=" + success_page).throwException();
+            TokenPO tokenPO = tokenService.loadTokenPOByToken(loginToken, getConnection());
+
+            if (tokenPO == null) {
+                MyException.newInstance("请检查Token是否有效", "tokenString=" + loginToken).throwException();
+            }
+
+            tokenService.checkAndRenewToken(tokenPO, getConnection());
+
+            KVObjects kvObjects = new KVObjects();
+            kvObjects.addItem("loginToken", tokenPO.getToken());
+
+            getResult().setReturnValue(kvObjects.toJSONObject());
+
+            CustomerPersonalPO customerPersonalPO = customerPersonalService.loadByCustomerPersonalId(tokenPO.getBizId(), getConnection());
+
+            finishLogin4Customer(customerPersonalPO, getRequest().getSession(), getConnection());
+
+            return success_page;
+        }
+        catch (Exception e) {
+
         }
 
-        TokenPO tokenPO = tokenService.loadTokenPOByToken(loginToken, getConnection());
-
-        if (tokenPO == null) {
-            MyException.newInstance("请检查Token是否有效", "tokenString=" + loginToken).throwException();
-        }
-
-        tokenService.checkAndRenewToken(tokenPO, getConnection());
-
-        KVObjects kvObjects = new KVObjects();
-        kvObjects.addItem("loginToken", tokenPO.getToken());
-
-        getResult().setReturnValue(kvObjects.toJSONObject());
-
-        CustomerPersonalPO customerPersonalPO = customerPersonalService.loadByCustomerPersonalId(tokenPO.getBizId(), getConnection());
-
-        finishLogin4Customer(customerPersonalPO, getRequest().getSession(), getConnection());
-
-        return success_page;
+        return fail_page;
     }
 
 

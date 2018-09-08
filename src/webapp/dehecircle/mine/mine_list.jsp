@@ -79,7 +79,8 @@
       <p class="bcg_cr"></p>
 
       <ul>
-        <%--<li><div class="my_list_img5"><i></i>系统设置<div class="lf_href"><b></b></div></div></li>--%>
+        <li><div class="my_list_img5 btn-systen-config"><i></i>系统设置<div class="lf_href"><b></b></div></div></li>
+        <li><div class="my_list_img5 btn-clear-cache"><i></i>清空缓存<div class="lf_href"><b></b></div></div></li>
         <li><div class="my_list_img6 btn-logout"><i></i>退出系统<div class="lf_href"><b></b></div></div></li>
 
       </ul>

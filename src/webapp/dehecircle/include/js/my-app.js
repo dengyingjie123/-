@@ -256,7 +256,7 @@ $$('#btn-login-mobile-code').on('click',function (e) {
         }
 
 
-        // window.location = '../index.jsp';
+        window.location = WEB_ROOT + '/dehecircle/index.jsp';
     },null);
 
 

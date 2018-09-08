@@ -1191,6 +1191,16 @@ pagePool.put('mine-list', {
         $$('.btn-logout').on('click', function(){
             logout();
         });
+
+
+        $$('.btn-systen-config').on('click', function(){
+            window.android.loginWithToken();
+        });
+
+        $$('.btn-clear-cache').on('click', function(){
+            window.android.webViewClearCache();
+        });
+
     },
     onReload:function () {
         alert('onReload:' + this.id);
