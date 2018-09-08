@@ -440,6 +440,21 @@ var fm = (function () {
 
             return {};
         },
+        checkIsAndroid:function() {
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+            return isAndroid;
+        },
+        checkIsiOS:function() {
+            var u = navigator.userAgent;
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            return isiOS;
+        },
+        checkIsWX:function() {
+            var u = navigator.userAgent;
+            var isWX = u.indexOf('MicroMessenger') > -1;
+            return isWX;
+        },
         f7_alert:function(app, message, callback){
             if (fm.checkIsFunction(callback)) {
                 app.alert(message, callback);

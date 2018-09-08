@@ -1194,11 +1194,15 @@ pagePool.put('mine-list', {
 
 
         $$('.btn-systen-config').on('click', function(){
-            window.android.loginWithToken();
+            if (fm.checkIsAndroid()) {
+                window.android.loginWithToken();
+            }
         });
 
         $$('.btn-clear-cache').on('click', function(){
-            window.android.webViewClearCache();
+            if (fm.checkIsAndroid()) {
+                window.android.webViewClearCache();
+            }
         });
 
     },
