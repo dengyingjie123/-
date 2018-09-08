@@ -263,7 +263,7 @@ public class TokenService extends BaseService {
 
     private int getExpiredSeconds(String tokenBizType) throws Exception {
 
-        String key = "system.login.timeout.second";
+        String key = "system.mobileCode.timeout.second";
 
         if (tokenBizType.equals(TokenBizType.CustomerLoginToken)) {
             key = "system.customer.login.timeout.second";
