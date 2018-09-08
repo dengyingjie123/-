@@ -98,7 +98,7 @@ function logout() {
     var url = WEB_ROOT + '/system/logoutCustomer';
     $$.post(url, '', function(data){
         loginCustomer = null;
-        window.location = 'login.jsp';
+        window.location = WEB_ROOT + '/dehecircle/login.jsp';
 
     });
 
@@ -236,7 +236,7 @@ $$('#btn-login-mobile-code').on('click',function (e) {
     var url = WEB_ROOT + "/system/Login_customerRegisterAndLogin";
     fm.f7_post(myApp, url, formData, function (data) {
         console.log(data);
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
         /**
          * 登录成功
          */
@@ -248,13 +248,11 @@ $$('#btn-login-mobile-code').on('click',function (e) {
         console.log("token:" + token);
         console.log("customerId:" + loginCustomer['id']);
 
-        try {
+        // fm.f7_alert(myApp, fm.checkIsAndroid(), null);
+
+        if (fm.checkIsAndroid()) {
             window.android.loginAndroid(loginCustomer['id'], token);
         }
-        catch (e){
-            throw e;
-        }
-
 
         window.location = WEB_ROOT + '/dehecircle/index.jsp';
     },null);

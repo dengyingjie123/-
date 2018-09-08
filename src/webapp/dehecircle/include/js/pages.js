@@ -26,6 +26,27 @@
 var pagePool = new Map;
 
 
+pagePool.put('system-list', {
+    id:'system-list',
+    name:'system_list',
+    url:'system_list.jsp',
+    preprocess:function(content, url, next){
+        // alert('init:' + this.id);
+        next(content);
+    },
+    onPageInit:function (app, page) {
+        $$('.btn-clear-cache').on('click', function(){
+            if (fm.checkIsAndroid()) {
+                window.android.webViewClearCache();
+            }
+        });
+    },
+    onReload:function () {
+        alert('onReload:' + this.id);
+    }
+});
+
+
 pagePool.put('info-detail', {
     id:'info-detail',
     name:'info-detail',
@@ -1191,20 +1212,6 @@ pagePool.put('mine-list', {
         $$('.btn-logout').on('click', function(){
             logout();
         });
-
-
-        $$('.btn-systen-config').on('click', function(){
-            if (fm.checkIsAndroid()) {
-                window.android.loginWithToken();
-            }
-        });
-
-        $$('.btn-clear-cache').on('click', function(){
-            if (fm.checkIsAndroid()) {
-                window.android.webViewClearCache();
-            }
-        });
-
     },
     onReload:function () {
         alert('onReload:' + this.id);
