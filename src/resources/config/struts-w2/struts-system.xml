@@ -132,6 +132,18 @@
             </result>
         </action>
 
+
+        <action name="checkAndRenewToken" class="com.youngbook.action.system.TokenAction" method="checkAndRenewToken">
+            <interceptor-ref name ="baseStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
         <action name="logoutCustomer" class="com.youngbook.action.system.LoginAction" method="logoutCustomer">
             <interceptor-ref name ="baseStack"/>
             <result type="json">
