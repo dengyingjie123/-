@@ -65,7 +65,7 @@ public class TokenService extends BaseService {
          */
         // 当前时间
         String now = TimeUtils.getNow();
-        String expired = "";
+        String expired = TimeUtils.getTime(now, getExpiredSeconds(bizType), TimeUtils.SECOND);
 
 
 
@@ -79,7 +79,6 @@ public class TokenService extends BaseService {
                 MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "用户不存在").throwException();
             }
 
-            expired = TimeUtils.getTime(now, Config.getSystemConfigInt("system.customer.login.timeout.second"), TimeUtils.SECOND);
         }
         // 销售登录
         else if (bizType.equals(TokenBizType.UserLoginToken)) {
@@ -99,8 +98,6 @@ public class TokenService extends BaseService {
             else {
                 newTokenString = String.valueOf(NumberUtils.randomNumbers(6));
             }
-
-            expired = TimeUtils.getTime(now, Config.getSystemConfigInt("system.mobileCode.timeout.second"), TimeUtils.SECOND);
 
         }
         else {
@@ -230,11 +227,19 @@ public class TokenService extends BaseService {
      */
     public TokenPO checkAndRenewToken(TokenPO tokenPO, Connection conn) throws Exception {
 
+
+
         if(tokenPO == null || StringUtils.isEmpty(tokenPO.getToken())){
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "您需要登录才可进一步操作").throwException();
         }
 
+        String ip = tokenPO.getIp();
+
+        tokenPO.setIp("");
+
         tokenPO = MySQLDao.load(tokenPO, TokenPO.class, conn);
+
+        tokenPO.setIp(ip);
 
         if (tokenPO == null) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "您需要登录才可进一步操作").throwException();
@@ -247,13 +252,24 @@ public class TokenService extends BaseService {
         }
 
 
-        String expiredTime = TimeUtils.getTime(nowTimeStr, Config.getSystemConfigInt("system.login.timeout.second"), TimeUtils.SECOND);
+        String expiredTime = TimeUtils.getTime(nowTimeStr, getExpiredSeconds(tokenPO.getBizType()), TimeUtils.SECOND);
         tokenPO.setExpiredTime(expiredTime);
         tokenPO.setOperateTime(nowTimeStr);
         tokenPO.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
         MySQLDao.update(tokenPO,conn);  //更改失效时间
 
         return tokenPO;
+    }
+
+    private int getExpiredSeconds(String tokenBizType) throws Exception {
+
+        String key = "system.login.timeout.second";
+
+        if (tokenBizType.equals(TokenBizType.CustomerLoginToken)) {
+            key = "system.customer.login.timeout.second";
+        }
+
+        return Config.getSystemConfigInt(key);
     }
 
     public TokenPO checkAndRenewToken(String tokenString, String bizId, String bizType, String ip, Connection conn) throws Exception {
