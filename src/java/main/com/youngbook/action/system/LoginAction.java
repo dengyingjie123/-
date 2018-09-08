@@ -227,10 +227,25 @@ public class LoginAction extends BaseAction {
     }
 
 
+    /**
+     * 通过token进行登录
+     * 需要参数
+     * loginToken: 登录的token
+     * success_page: 成功后返回的页面，配置参考struts-system.xml
+     * @return
+     * @throws Exception
+     */
     public String loginWithToken() throws Exception {
 
         String loginToken = getHttpRequestParameter("loginToken");
+        String success_page = getHttpRequestParameter("success_page");
+        String failUrl = getHttpRequestParameter("failUrl");
         String ip = HttpUtils.getClientIPFromRequest(getRequest());
+
+
+        if (StringUtils.isEmptyAny(loginToken, success_page)) {
+            MyException.newInstance("参数不完整", "loginToken="+loginToken+"&success_page=" + success_page).throwException();
+        }
 
         TokenPO tokenPO = tokenService.loadTokenPOByToken(loginToken, getConnection());
 
@@ -245,7 +260,11 @@ public class LoginAction extends BaseAction {
 
         getResult().setReturnValue(kvObjects.toJSONObject());
 
-        return SUCCESS;
+        CustomerPersonalPO customerPersonalPO = customerPersonalService.loadByCustomerPersonalId(tokenPO.getBizId(), getConnection());
+
+        finishLogin4Customer(customerPersonalPO, getRequest().getSession(), getConnection());
+
+        return success_page;
     }
 
 
