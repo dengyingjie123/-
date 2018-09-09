@@ -24,10 +24,24 @@ var myApp = new Framework7({
         var url = WEB_ROOT + "/system/checkLoginCustomer";
         fm.f7_post(myApp, url, null, function (data) {
             if (data['returnValue'] == '0') {
-                fm.f7_alert(myApp, '请重新登录', function(){
-                    window.location = 'login.jsp';
-                    return false;
-                });
+
+                var url = WEB_ROOT + "/dehecircle/login/login_mobile_code.jsp";
+
+                /**
+                 * 通过统一认证登录方式登录
+                 */
+                if (!fm.checkIsTextEmpty(loginToken)) {
+                    url = WEB_ROOT +  "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_dehecircle&fail_page=login_mobile_code_dehecircle";
+                    window.location = url;
+                }
+                else {
+                    fm.f7_alert(myApp, '请重新登录', function(){
+                        window.location = url;
+                        return false;
+                    });
+                }
+
+
             }
         }, null);
 
@@ -243,18 +257,21 @@ $$('#btn-login-mobile-code').on('click',function (e) {
 
         loginCustomer = fm.convert2Json(data['returnValue']);
 
-        var token = data['token'];
+        loginToken = data['token'];
 
         console.log("token:" + token);
         console.log("customerId:" + loginCustomer['id']);
 
-        // fm.f7_alert(myApp, fm.checkIsAndroid(), null);
+        var parameters = {};
+        parameters['cmd'] = '0001';
+        parameters['customerId'] = loginCustomer['id'];
+        parameters['loginToken'] = loginToken;
 
         if (fm.checkIsAndroid()) {
-            window.android.loginAndroid(loginCustomer['id'], token);
+            window.android.loginAndroid(loginCustomer['id'], loginToken);
         }
         else if (fm.checkIsiOS()) {
-            window.webkit.messageHandlers.loginWithToken.postMessage(loginCustomer['id'], token);
+            window.webkit.messageHandlers.invokeiOS.postMessage(parameters);
         }
 
         window.location = WEB_ROOT + '/dehecircle/index.jsp';
@@ -343,5 +360,14 @@ function androidCallback(jsId, data){
         viewMine.router.loadPage('mine/customer_list.jsp');
         viewMine.router.refreshPage();
     }
+}
 
+function relogin() {
+
+    var url = WEB_ROOT + "/dehecircle/login/login/login_mobile_code.jsp"
+    if (!fm.checkIsTextEmpty(loginToken)) {
+        url = WEB_ROOT + "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_dehecircle&fail_page=login_mobile_code_dehecircle";
+    }
+
+    window.location = url;
 }
