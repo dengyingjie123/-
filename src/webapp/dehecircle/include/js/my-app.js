@@ -253,6 +253,9 @@ $$('#btn-login-mobile-code').on('click',function (e) {
         if (fm.checkIsAndroid()) {
             window.android.loginAndroid(loginCustomer['id'], token);
         }
+        else if (fm.checkIsiOS()) {
+            window.webkit.messageHandlers.loginWithToken.postMessage(loginCustomer['id'], token);
+        }
 
         window.location = WEB_ROOT + '/dehecircle/index.jsp';
     },null);
