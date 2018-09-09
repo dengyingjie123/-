@@ -103,7 +103,7 @@ public class LoginAction extends BaseAction {
 
 
             // 插入新 Token
-            tokenPO = tokenService.newToken(customer.getId(), TokenBizType.Customer, getRequest().getRemoteAddr(), getConnection());
+            tokenPO = tokenService.newToken(customer.getId(), TokenBizType.CustomerLoginToken, getRequest().getRemoteAddr(), getConnection());
             if(tokenPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "Token 添加失败").throwException();
             }
@@ -136,7 +136,7 @@ public class LoginAction extends BaseAction {
 
 
             // 插入新 Token
-            tokenPO = tokenService.newToken(user.getId(), TokenBizType.User, getRequest().getRemoteAddr(), getConnection());
+            tokenPO = tokenService.newToken(user.getId(), TokenBizType.UserLoginToken, getRequest().getRemoteAddr(), getConnection());
             if(tokenPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "Token 添加失败").throwException();
             }
@@ -190,6 +190,10 @@ public class LoginAction extends BaseAction {
 
         finishLogin4Customer(loginCustomer, getRequest().getSession(), getConnection());
 
+
+        TokenPO tokenPO = tokenService.newToken(loginCustomer.getId(), TokenBizType.CustomerLoginToken, Config.getIP(getRequest()), getConnection());
+
+        getResult().setToken(tokenPO.getToken());
         getResult().setReturnValue(loginCustomer);
 
         return SUCCESS;
@@ -223,6 +227,62 @@ public class LoginAction extends BaseAction {
     }
 
 
+    /**
+     * 通过token进行登录
+     * 需要参数
+     * loginToken: 登录的token
+     * success_page: 成功后返回的页面，配置参考struts-system.xml
+     * fail_page: 失败返回的页面
+     * @return
+     * @throws Exception
+     */
+    public String loginWithToken() throws Exception {
+
+        String loginToken = getHttpRequestParameter("loginToken");
+        String success_page = getHttpRequestParameter("success_page");
+        String fail_page = getHttpRequestParameter("fail_page");
+        String ip = HttpUtils.getClientIPFromRequest(getRequest());
+
+        try {
+            if (StringUtils.isEmptyAny(loginToken, success_page)) {
+                MyException.newInstance("参数不完整", "loginToken="+loginToken+"&success_page=" + success_page).throwException();
+            }
+
+            TokenPO tokenPO = tokenService.loadTokenPOByToken(loginToken, getConnection());
+
+            if (tokenPO == null) {
+                MyException.newInstance("请检查Token是否有效", "tokenString=" + loginToken).throwException();
+            }
+
+            tokenService.checkAndRenewToken(tokenPO, getConnection());
+
+            KVObjects kvObjects = new KVObjects();
+            kvObjects.addItem("loginToken", tokenPO.getToken());
+
+            getResult().setReturnValue(kvObjects.toJSONObject());
+
+            CustomerPersonalPO customerPersonalPO = customerPersonalService.loadByCustomerPersonalId(tokenPO.getBizId(), getConnection());
+
+            finishLogin4Customer(customerPersonalPO, getRequest().getSession(), getConnection());
+
+            return success_page;
+        }
+        catch (Exception e) {
+
+        }
+
+        return fail_page;
+    }
+
+
+    /**
+     * 客户通过手机验证码进行登录
+     * @return
+     * 1. status： 0：登录失败，1：登录成功
+     * 2. tokenString
+     * 3. tokenBizId：此处返回客户编号
+     * @throws Exception
+     */
     public String loginWithMobileCode() throws Exception {
 
         String mobile = getHttpRequestParameter("mobile");
@@ -251,7 +311,7 @@ public class LoginAction extends BaseAction {
         }
 
         // 插入新 Token
-        TokenPO tokenPO = tokenService.newToken(customerPersonalPO.getId(), TokenBizType.Customer, getRequest().getRemoteAddr(), getConnection());
+        TokenPO tokenPO = tokenService.newToken(customerPersonalPO.getId(), TokenBizType.CustomerLoginToken, getRequest().getRemoteAddr(), getConnection());
         if(tokenPO == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "Token 添加失败").throwException();
         }
@@ -268,12 +328,15 @@ public class LoginAction extends BaseAction {
             status = "1";
         }
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", status);
-        jsonObject.put("tokenString", tokenString);
+
+        KVObjects kvObjects = new KVObjects();
+        kvObjects.addItem("status", status);
+        kvObjects.addItem("tokenString", tokenString);
+        kvObjects.addItem("tokenBizId", tokenPO.getBizId());
+
 
         getResult().setToken(tokenString);
-        getResult().setReturnValue(jsonObject);
+        getResult().setReturnValue(kvObjects.toJSONObject());
 
         return SUCCESS;
     }

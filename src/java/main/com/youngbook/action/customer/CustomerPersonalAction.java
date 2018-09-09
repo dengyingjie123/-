@@ -2353,7 +2353,7 @@ public class CustomerPersonalAction extends BaseAction {
         }
 
         // 插入新 Token
-        TokenPO tokenPO = tokenService.newToken(customerPersonal.getId(), TokenBizType.Customer, request.getRemoteAddr(), conn);
+        TokenPO tokenPO = tokenService.newToken(customerPersonal.getId(), TokenBizType.CustomerLoginToken, request.getRemoteAddr(), conn);
         if(tokenPO == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "Token 添加失败").throwException();
         }
@@ -4224,7 +4224,7 @@ public class CustomerPersonalAction extends BaseAction {
 
         String ip = Config.getIP(getRequest());
 
-        if (tokenService.checkAndDestroyToken(tokenString, customerPersonalPO.getId(), TokenBizType.Customer, ip, getConnection()) != 0) {
+        if (tokenService.checkAndDestroyToken(tokenString, customerPersonalPO.getId(), TokenBizType.CustomerLoginToken, ip, getConnection()) != 0) {
             MyException.newInstance("验证码无效").throwException();
         }
 

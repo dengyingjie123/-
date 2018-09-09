@@ -60,16 +60,28 @@ public class TokenService extends BaseService {
         }
 
 
+        /**
+         * 设置过期时间
+         */
+        // 当前时间
+        String now = TimeUtils.getNow();
+        String expired = TimeUtils.getTime(now, getExpiredSeconds(bizType), TimeUtils.SECOND);
+
+
+
+
         // 客户登录
-        if (bizType.equals(TokenBizType.Customer)) {
+        if (bizType.equals(TokenBizType.CustomerLoginToken)) {
             // 查询客户
             CustomerPersonalPO personalPO = customerPersonalDao.loadByCustomerPersonalId(bizId, conn);
+
             if(personalPO == null) {
                 MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "用户不存在").throwException();
             }
+
         }
         // 销售登录
-        else if (bizType.equals(TokenBizType.User)) {
+        else if (bizType.equals(TokenBizType.UserLoginToken)) {
             // 查询客户
             UserPO userPO = userDao.loadUserByUserId(bizId, conn);
             if(userPO == null) {
@@ -97,7 +109,7 @@ public class TokenService extends BaseService {
 
 
         // 查询 Token
-        List<TokenPO> tokens = this.loadById(bizId);
+        List<TokenPO> tokens = this.loadByBizId(bizId);
         // 把客户的所有 Token 清除
         for(TokenPO token : tokens) {
             if(this.cancelToken(token, conn) != 1) {
@@ -105,12 +117,12 @@ public class TokenService extends BaseService {
             }
         }
 
-        // 当前时间
-        String now = TimeUtils.getNow();
-        String expired = TimeUtils.getTime(now, Config.getSystemConfigInt("dianjinpai.login.timeout"), TimeUtils.SECOND);
+
+
 
         // 生成新的 Token
         TokenPO tokenPO = new TokenPO();
+        tokenPO.setCreateTime(now);
         tokenPO.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
         tokenPO.setOperateTime(now);
         tokenPO.setState(Config.STATE_CURRENT);
@@ -124,8 +136,8 @@ public class TokenService extends BaseService {
         tokenPO.setCheckCode(checkCode);
 
         // 插入新 Token
-        Integer count = MySQLDao.insertOrUpdate(tokenPO, conn);
-        return count == 1 ? tokenPO : null;
+        MySQLDao.insertOrUpdate(tokenPO, conn);
+        return tokenPO;
     }
 
 
@@ -139,7 +151,7 @@ public class TokenService extends BaseService {
      * @param customerId
      * @return
      */
-    public List<TokenPO> loadById(String customerId) throws Exception {
+    public List<TokenPO> loadByBizId(String customerId) throws Exception {
 
         String sql = "select * from system_token t where t.state = 0 and t.bizId = '" + customerId + "'";
         List<TokenPO> list = MySQLDao.query(sql, TokenPO.class, new ArrayList<KVObject>());
@@ -157,12 +169,19 @@ public class TokenService extends BaseService {
      * @param token
      * @return
      */
-    public List<TokenPO> loadByToken(String token) throws Exception {
+    public TokenPO loadTokenPOByToken(String token, Connection conn) throws Exception {
 
-        String sql = "select * from system_token t where t.state = 0 and t.token = '" + token + "'";
-        List<TokenPO> list = MySQLDao.query(sql, TokenPO.class, new ArrayList<KVObject>());
-        return list;
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("ED2E1809");
+        dbSQL.addParameter4All("loginToken", token);
+        dbSQL.initSQL();
 
+        List<TokenPO> list = MySQLDao.search(dbSQL, TokenPO.class, conn);
+
+        if (list != null && list.size() == 1) {
+            return list.get(0);
+        }
+
+        return null;
     }
 
     /**
@@ -208,11 +227,19 @@ public class TokenService extends BaseService {
      */
     public TokenPO checkAndRenewToken(TokenPO tokenPO, Connection conn) throws Exception {
 
+
+
         if(tokenPO == null || StringUtils.isEmpty(tokenPO.getToken())){
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "您需要登录才可进一步操作").throwException();
         }
 
+        String ip = tokenPO.getIp();
+
+        tokenPO.setIp("");
+
         tokenPO = MySQLDao.load(tokenPO, TokenPO.class, conn);
+
+        tokenPO.setIp(ip);
 
         if (tokenPO == null) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "您需要登录才可进一步操作").throwException();
@@ -220,18 +247,29 @@ public class TokenService extends BaseService {
 
 
         String nowTimeStr = TimeUtils.getNow();
-        if(TimeUtils.getSecondDifference(nowTimeStr,tokenPO.getExpiredTime(),"yyyy-MM-dd HH:mm:ss")<0){
+        if(TimeUtils.getSecondDifference(nowTimeStr,tokenPO.getExpiredTime(),"yyyy-MM-dd HH:mm:ss") < 0){
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_IS_INVALID, "您的登录已过期").throwException();
         }
 
 
-        String expiredTime = TimeUtils.getTime(nowTimeStr, Config.getSystemConfigInt("hwbanksapp.login.timeout"), TimeUtils.SECOND);
+        String expiredTime = TimeUtils.getTime(nowTimeStr, getExpiredSeconds(tokenPO.getBizType()), TimeUtils.SECOND);
         tokenPO.setExpiredTime(expiredTime);
         tokenPO.setOperateTime(nowTimeStr);
         tokenPO.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
         MySQLDao.update(tokenPO,conn);  //更改失效时间
 
         return tokenPO;
+    }
+
+    private int getExpiredSeconds(String tokenBizType) throws Exception {
+
+        String key = "system.mobileCode.timeout.second";
+
+        if (tokenBizType.equals(TokenBizType.CustomerLoginToken)) {
+            key = "system.customer.login.timeout.second";
+        }
+
+        return Config.getSystemConfigInt(key);
     }
 
     public TokenPO checkAndRenewToken(String tokenString, String bizId, String bizType, String ip, Connection conn) throws Exception {

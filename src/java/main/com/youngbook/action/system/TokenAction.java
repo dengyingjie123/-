@@ -2,6 +2,7 @@ package com.youngbook.action.system;
 
 import com.sun.javafx.fxml.expression.Expression;
 import com.youngbook.action.BaseAction;
+import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.utils.HttpUtils;
@@ -100,6 +101,24 @@ public class TokenAction extends BaseAction {
         TokenPO token = tokenService.newToken(bizId, bizType, ip, getConnection());
 
         getResult().setReturnValue(token.getToken());
+
+        return SUCCESS;
+    }
+
+
+    public String checkAndRenewToken() throws Exception {
+
+        String tokenString = getHttpRequestParameter("token");
+        String bizId = getHttpRequestParameter("bizId");
+        String bizType = getHttpRequestParameter("bizType");
+
+        TokenPO tokenPO = tokenService.checkAndRenewToken(tokenString, bizId, bizType, Config.getIP(getRequest()), getConnection());
+
+        KVObjects kvObjects = new KVObjects();
+        kvObjects.addItem("token", tokenPO.getToken());
+        kvObjects.addItem("bizId", tokenPO.getBizId());
+
+        getResult().setReturnValue(kvObjects.toJSONObject());
 
         return SUCCESS;
     }
