@@ -7,6 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script>
+
+        function downloaded(){
+            var ua = navigator.userAgent.toLowerCase();
+            if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            } else {
+                window.location="http://dhcircle.keplerlab.cn/core/dehecircle/release/apk/dehecircle.apk";
+            }
+        }
+    </script>
 </head>
 
 
@@ -14,4 +24,4 @@
 <br><br>
 <br>
 
-<script>window.location="http://dhcircle.keplerlab.cn/core/dehecircle/release/apk/dehecircle.apk";</script>
+<script>downloaded();</script>
