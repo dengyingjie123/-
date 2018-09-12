@@ -40,8 +40,6 @@ var myApp = new Framework7({
                         return false;
                     });
                 }
-
-
             }
         }, null);
 
@@ -259,7 +257,7 @@ $$('#btn-login-mobile-code').on('click',function (e) {
 
         loginToken = data['token'];
 
-        console.log("token:" + token);
+        console.log("token:" + loginToken);
         console.log("customerId:" + loginCustomer['id']);
 
         var parameters = {};
@@ -268,10 +266,21 @@ $$('#btn-login-mobile-code').on('click',function (e) {
         parameters['loginToken'] = loginToken;
 
         if (fm.checkIsAndroid()) {
-            window.android.loginAndroid(loginCustomer['id'], loginToken);
+            try {
+                window.android.loginAndroid(loginCustomer['id'], loginToken);
+            }
+            catch (e) {
+
+            }
+
         }
         else if (fm.checkIsiOS()) {
-            window.webkit.messageHandlers.invokeiOS.postMessage(parameters);
+            try {
+                window.webkit.messageHandlers.invokeiOS.postMessage(parameters);
+            }
+            catch (e) {
+
+            }
         }
 
         window.location = WEB_ROOT + '/dehecircle/index.jsp';

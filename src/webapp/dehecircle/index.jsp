@@ -6,7 +6,7 @@
 <%
   CustomerPersonalPO loginCustomer = Config.getLoginCustomerInSession(request);
   if (loginCustomer == null) {
-      out.println("<script>relogin();</script>");
+      out.println("<script>window.location='"+Config.getWebDehecircle()+"/login/login_mobile_code.jsp'</script>");
       return;
   }
 %>
