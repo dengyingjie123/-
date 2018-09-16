@@ -32,12 +32,15 @@
 
     <div class="navbar">
         <div class="navbar-inner navbar-ph">
-            <div class="left"><a href="#" class="back link"> <i class="icon-white icon-back"></i><span></span></a></div>
-            <div class="left">德合汇服务协议</div>
+            <div class="left"></div>
+            <div class="center">德合汇服务协议</div>
         </div>
     </div>
 
     <div class="page-content">
+        <div class="content-block">
+            &nbsp;
+        </div>
         <div style="padding: 10px">
             &nbsp;&nbsp;&nbsp;&nbsp;深圳德合基金管理有限公司及其关联方（以下合称"德合基金"，为本协议目的，关联方指一方通过合同或股权方式直接或间接持有另一方超过50%的权益，或两方同由第三方通过合同或股权方式直接或间接持有超过50%的权益）同意按照本协议的规定及其不时发布的操作规则提供基于互联网以及移动网的相关服务（以下称"网络服务"），为获得网络服务，服务使用人（以下称"用户"）应当同意本协议的全部条款并按照页面上的提示完成全部的注册程序。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;1.服务内容<br>
@@ -106,8 +109,16 @@
             &nbsp;&nbsp;&nbsp;&nbsp;12.特别提示<br>
             &nbsp;&nbsp;&nbsp;&nbsp;12.1.在用户确认同意本协议之前，用户确认，其已认真阅读本协议并已充分理解本协议内容。在确信其已完全理解的情况下，用户确认其完全同意本协议的全部条款与内容。用户在进行注册程序过程中表示用户完全接受本协议项下的全部条款。<br>
         </div>
+        <div class="content-block">
+            &nbsp;
+        </div>
 
-    <div class="content-block"><a href="#" onclick="window.location='<%=Config.getWebDehecircle()%>/login/login_mobile_code.jsp'" class="button button-fill color-01 button-raised">同意并返回登录</a></div>
+    </div>
+
+    <div class = "toolbar toolbar-bottom">
+        <div class = "toolbar-inner">
+            <a href = "#" onclick="window.location='<%=Config.getWebDehecircle()%>/login/login_mobile_code.jsp'" class = "link">同意并返回</a>
+        </div>
     </div>
 </div>
 <!-- Path to Framework7 Library JS-->
