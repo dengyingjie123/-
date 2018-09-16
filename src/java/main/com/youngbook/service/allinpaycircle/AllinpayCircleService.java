@@ -97,7 +97,7 @@ public class AllinpayCircleService extends BaseService {
     public String getCallbackUrl() throws Exception {
 
         if (StringUtils.isEmpty(callbackUrl)) {
-            callbackUrl = Config.getSystemConfig("allinpay_circle_callback_url");
+            callbackUrl = Config.getSystemConfig("allinpayCircle.callback.url");
         }
 
         return callbackUrl;
