@@ -6,6 +6,7 @@ import com.emulator.paymentgateway.util.PaymentGatewayService;
 import com.emulator.paymentgateway.util.SecurityUtil;
 import com.mind.platform.system.base.CMData;
 import com.mind.platform.system.base.DataRow;
+import com.youngbook.annotation.Excel;
 import com.youngbook.common.*;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
@@ -90,9 +91,17 @@ public class AllinpayCircleService extends BaseService {
     @Autowired
     IOrderDao orderDao;
 
-    private static final String callbackUrl = "http://118.126.103.58:8574/core/pay/allinpayCircleReceiveRawData";
+    private static String callbackUrl = "";
 
 
+    public String getCallbackUrl() throws Exception {
+
+        if (StringUtils.isEmpty(callbackUrl)) {
+            callbackUrl = Config.getSystemConfig("allinpay_circle_callback_url");
+        }
+
+        return callbackUrl;
+    }
 
     public void dealRawData(Connection conn) throws Exception {
 
@@ -527,7 +536,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
         transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
-        transactionPO.getRequest().addItem("resp_url", callbackUrl);
+        transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
         ReturnObject returnObject = new ReturnObject();
@@ -612,7 +621,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("hld_name", customerPersonalPO.getName());
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
         transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
-        transactionPO.getRequest().addItem("resp_url", callbackUrl);
+        transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
@@ -833,7 +842,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("product_num", "KPL555");
         transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
-        transactionPO.getRequest().addItem("resp_url", callbackUrl);
+        transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
