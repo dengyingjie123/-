@@ -45,7 +45,7 @@
         <div class="pt_info"><i class="staff_icon"></i><input  type="text" name="referralCode" value="" placeholder="请输入推荐码（选填）"/></div>
         <%--<button id="btn-login-mobile-code" class="confirm_exchange mr_bt3">登录</button>--%>
         <div class="content-block"><a id="btn-login-mobile-code" href="#" class="button button-fill color-01 button-raised">登录</a></div>
-        <p class="agreement_text">登录即代表同意《开普乐信息服务协议》</p>
+        <p class="agreement_text">登录即代表同意《德合汇服务协议》</p>
         <%--<button class="wechat_btn"></button>--%>
     </div>
         <input name="checkCode" type="hidden" />
