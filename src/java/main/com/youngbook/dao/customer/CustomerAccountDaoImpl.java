@@ -99,9 +99,16 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
 
     public CustomerAccountPO inertOrUpdate(CustomerAccountPO customerAccountPO, String operatorId, Connection conn) throws Exception {
 
-//aes加密银行账号
+        //aes加密银行账号
         if(customerAccountPO != null && !StringUtils.isEmpty(customerAccountPO.getNumber())) {
-            customerAccountPO.setNumber(AesEncrypt.encrypt(customerAccountPO.getNumber()));
+
+            /**
+             * 防止二次加密
+             */
+
+            if (StringUtils.isNumeric(customerAccountPO.getNumber())) {
+                customerAccountPO.setNumber(AesEncrypt.encrypt(customerAccountPO.getNumber()));
+            }
         }
 
 

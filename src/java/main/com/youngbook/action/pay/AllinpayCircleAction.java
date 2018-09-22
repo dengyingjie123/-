@@ -3,6 +3,7 @@ package com.youngbook.action.pay;
 import com.mind.platform.system.base.CMData;
 import com.mind.platform.system.base.DataRow;
 import com.youngbook.action.BaseAction;
+import com.youngbook.annotation.Permission;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.KVObjects;
 import com.youngbook.common.ReturnObject;
@@ -108,6 +109,7 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Permission(require = "通联金融生态圈_信任开户")
     public String openAccountPersonalByTrust() throws Exception {
 
         String customerAccountId = getHttpRequestParameter("customerAccountId");
@@ -115,6 +117,7 @@ public class AllinpayCircleAction extends BaseAction {
         ReturnObject returnObject = allinpayCircleService.openAccountPersonalByTrust(customerAccountId, getLoginUser().getId(), getConnection());
 
         getResult().setMessage(returnObject.getMessage());
+        getResult().setReturnValue("1");
 
         return SUCCESS;
     }

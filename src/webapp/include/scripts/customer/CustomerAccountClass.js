@@ -270,7 +270,10 @@ var CustomerAccountClass = function(token) {
                 var id = selected.id;
                 var url = WEB_ROOT + "/pay/AllinpayCircle_openAccountPersonalByTrust?customerAccountId="+id;
                 fw.post(url, null, function(data){
-                    initWindowCustomerAccountWindow(data,obj);
+                    if (data == '1') {
+                        fw.alert('提示', '通联金融圈账户开户成功');
+                        fw.datagridReload('CustomerAccountTable' + token);
+                    }
                 }, null);
             })
 
