@@ -88,6 +88,7 @@ public class StringUtils {
     }
 
 
+
     public static String getEncoding(String str) {
         String encode = "GB2312";
         try {

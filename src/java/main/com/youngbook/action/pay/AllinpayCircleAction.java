@@ -12,6 +12,7 @@ import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinPayUtils;
+import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.system.ILogDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
@@ -58,7 +59,10 @@ public class AllinpayCircleAction extends BaseAction {
             getResult().setReturnValue("0");
         }
         else {
-            XmlHelper helper = new XmlHelper(returnObject.getReturnValue().toString());
+
+            KVObjects responseKVObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
+
+            XmlHelper helper = new XmlHelper(responseKVObjects.getItemString("responseXml"));
 
             String org_processing_code = helper.getValue("/transaction/head/processing_code");
             String org_trans_date = helper.getValue("/transaction/head/trans_date");
