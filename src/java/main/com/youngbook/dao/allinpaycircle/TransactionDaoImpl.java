@@ -36,7 +36,7 @@ public class TransactionDaoImpl implements ITransactionDao {
 
         List<APICommandPO> apiCommandPOs = MySQLDao.search(dbSQL, APICommandPO.class, conn);
 
-        TransactionPO transactionPO = new TransactionPO();
+
 
         if (apiCommandPOs != null && apiCommandPOs.size() == 1) {
             APICommandPO apiCommandPO = apiCommandPOs.get(0);
@@ -49,16 +49,20 @@ public class TransactionDaoImpl implements ITransactionDao {
 
                 String processingCode = helper.getValue("/transaction/head/processing_code");
                 String transDate = helper.getValue("/transaction/head/trans_date");
+                String req_trace_num = helper.getValue("/transaction/response/req_trace_num");
 
-
+                TransactionPO transactionPO = new TransactionPO();
                 transactionPO.setProcessing_code(processingCode);
                 transactionPO.setTrans_date(transDate);
+                transactionPO.getRequest().addItem("req_trace_num", req_trace_num);
+
+                return transactionPO;
 
             }
         }
 
 
 
-        return transactionPO;
+        return null;
     }
 }

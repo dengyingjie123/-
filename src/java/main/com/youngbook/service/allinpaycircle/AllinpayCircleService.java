@@ -978,6 +978,7 @@ public class AllinpayCircleService extends BaseService {
 
         String processingCodeCheck = transactionPOCheck.getProcessing_code();
         String transDateCheck = transactionPOCheck.getTrans_date();
+        String req_trace_num = transactionPOCheck.getRequest().getItemString("req_trace_num");
 
         TransactionPO transactionPO = new TransactionPO();
 
@@ -986,7 +987,7 @@ public class AllinpayCircleService extends BaseService {
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("org_processing_code", processingCodeCheck);
-        transactionPO.getRequest().addItem("org_req_trace_num", bizId);
+        transactionPO.getRequest().addItem("org_req_trace_num", req_trace_num);
         transactionPO.getRequest().addItem("org_trans_date", transDateCheck);
         transactionPO.getRequest().addItem("verify_code", mobileCode);
 
