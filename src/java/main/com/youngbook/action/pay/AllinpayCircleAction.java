@@ -6,6 +6,7 @@ import com.youngbook.action.BaseAction;
 import com.youngbook.annotation.Permission;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.KVObjects;
+import com.youngbook.common.MyException;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.XmlHelper;
 import com.youngbook.common.utils.HttpUtils;
@@ -28,6 +29,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.Quota;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,42 @@ public class AllinpayCircleAction extends BaseAction {
 
     @Autowired
     ILogDao logDao;
+
+    public String checkMobileCode() throws Exception {
+
+        String bizId = getHttpRequestParameter("bizId");
+        String mobileCode = getHttpRequestParameter("mobileCode");
+
+        ReturnObject returnObject = allinpayCircleService.checkMobileCode(bizId, mobileCode, getConnection());
+
+        if (returnObject.getCode() != 100) {
+            getResult().setCode(-1);
+            getResult().setMessage(returnObject.getMessage());
+            getResult().setReturnValue("0");
+        }
+        else {
+            getResult().setReturnValue("1");
+        }
+
+        return SUCCESS;
+    }
+
+    public String getMobileCodeInfo4ChangeBankNumber() throws Exception {
+
+        String bizId = getHttpRequestParameter("bizId");
+
+        String thirdPartyAIPName = "<processing_code>1088</processing_code>";
+
+        KVObjects mobileCodeInfo = allinpayCircleService.getMobileCodeInfo(bizId, thirdPartyAIPName, getConnection());
+
+        if (mobileCodeInfo == null) {
+            MyException.newInstance("无法获取验证码信息").throwException();
+        }
+
+        getResult().setReturnValue(mobileCodeInfo.toJSONObject());
+
+        return SUCCESS;
+    }
 
     @Permission(require = "通联金融生态圈_换卡")
     public String changeBankCard() throws Exception {

@@ -24,22 +24,17 @@
 
             <table width="100%" border="0" cellspacing="5" cellpadding="0">
                 <tr>
-                    <td align="right">org_processing_code</td>
-                    <td><input  type="text" id="org_processing_code<%=token %>" class="easyui-validatebox" name="org_processing_code"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
+                    <td align="right">验证码发送日期</td>
+                    <td><input  type="text" id="org_trans_date<%=token %>" class="easyui-validatebox" name="org_trans_date"  required="true" missingmessage="必须填写"  style="width:200px" readonly/></td>
                 </tr>
                 <tr>
-                    <td align="right">org_trans_date</td>
-                    <td><input  type="text" id="org_trans_date<%=token %>" class="easyui-validatebox" name="org_trans_date"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
-                </tr>
-                <tr>
-                    <td align="right">org_req_trace_num</td>
-                    <td><input  type="text" id="org_req_trace_num<%=token %>" class="easyui-validatebox" name="org_req_trace_num"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
-                </tr>
-                <tr>
-                    <td align="right">verify_code</td>
-                    <td><input  type="text" id="verify_code<%=token %>" class="easyui-validatebox" name="verify_code"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
+                    <td align="right">验证码</td>
+                    <td><input  type="text" id="mobileCode<%=token %>" class="easyui-validatebox" name="mobileCode"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
                 </tr>
             </table>
+            <input  type="hidden" id="org_req_trace_num<%=token %>" name="org_req_trace_num"/>
+            <input  type="hidden" id="org_processing_code<%=token %>" name="org_processing_code"/>
+            <input  type="hidden" id="bizId<%=token %>" name="bizId"/>
         </form>
     </div>
     <div region="south" border="false" style="text-align:right;padding:5px;background:#F4F4F4">

@@ -75,7 +75,7 @@ var CustomerAccountClass = function(token) {
                             return '已换卡';
                         }
                         else if (row['allinpayCircle_ChangeStatus']=='2') {
-                            return '换卡受理';
+                            return "<a href='#'>换卡受理</a>";
                         }
                         else if (row['allinpayCircle_ChangeStatus']=='3') {
                             return '换卡失败';
@@ -105,6 +105,20 @@ var CustomerAccountClass = function(token) {
                 onClickCustomerAccountDelete();
                 onClickCustomerAccountEdit(obj);
                 onClickCustomerAccount_AllinpayCircle_OpenAccount();
+            },
+            onClickCell:function(index,field,value){
+                var data = $('#CustomerAccountTable'+token).datagrid('getData');
+                // fw.alertReturnValue(data);
+
+                // 查看兑付计划
+                if (field == 'allinpayCircle_ChangeStatus') {
+                    var accountId = data['rows'][index]['id'];
+                    using(SCRIPTS_ROOT + '/allinpayCircle/MobileCodeClass.js', function () {
+                        //alert("hello");
+                        var mobileCodeClass = new MobileCodeClass(token);
+                        mobileCodeClass.openMobileCodeCheckWindow(accountId);
+                    });
+                }
             }
         });
     }
@@ -315,24 +329,7 @@ var CustomerAccountClass = function(token) {
                     process.beforeClick();
                 }, function(data) {
                     //alert('done');
-                    fw.alertReturnValue(data);
-
-                    if (data == '0') {
-                        return ;
-                    }
-
-                    var mobileCodeCheckUrl = WEB_ROOT + '/modules/customer/CustomerAccount_Save_AllinpayCircle.jsp';
-                    fw.window('MobileCodeCheckWindow' + token, '验证码', 500, 400, mobileCodeCheckUrl, function(){
-                        fw.bindOnClick4Any('btnCustomerAccountMobileCheckSubmit_AllinpayCircle' + token,
-                            function() {
-                                fw.formLoad('formCustomerAccountMobileCodeCheck' + token, data);
-
-                                var mobileCheckButtonId = 'btnCustomerAccountSubmit_AllinpayCircle_MobileCodeCheck' + token;
-                                fw.bindOnClick4Any(mobileCheckButtonId, function () {
-                                    alert('提交数据');
-                                });
-                            });
-                    }, null);
+                    // fw.alertReturnValue(data);
 
                     process.afterClick();
                     fw.datagridReload("CustomerAccountTable"+token);

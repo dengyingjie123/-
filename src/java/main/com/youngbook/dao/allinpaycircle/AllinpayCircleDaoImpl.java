@@ -379,6 +379,10 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String bizId = transactionPO.getRequest().getItemString("req_trace_num");
 
+        if (!StringUtils.isEmpty(transactionPO.getBizId())) {
+            bizId = transactionPO.getBizId();
+        }
+
         String apiName = AllinpayCircleUtils.getAPIName(transactionPO.getProcessing_code());
 
         apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");

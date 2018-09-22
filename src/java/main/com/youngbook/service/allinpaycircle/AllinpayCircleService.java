@@ -11,6 +11,7 @@ import com.youngbook.common.*;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.XmlHelper;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.*;
 import com.youngbook.common.utils.allinpay.AllinPayUtils;
 import com.youngbook.dao.JSONDao;
@@ -26,6 +27,7 @@ import com.youngbook.dao.production.IProductionDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandDirection;
+import com.youngbook.entity.po.core.APICommandPO;
 import com.youngbook.entity.po.core.APICommandType;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.customer.CustomerCertificatePO;
@@ -304,6 +306,9 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("org_bnk_id", allinpayCircleBankCodeOld);
         transactionPO.getRequest().addItem("org_acct_num", bankNumberOld);
         transactionPO.getRequest().addItem("org_tel_num", mobileOld);
+
+
+        transactionPO.setBizId(accountId);
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
 
@@ -921,6 +926,36 @@ public class AllinpayCircleService extends BaseService {
 
     }
 
+
+    public KVObjects getMobileCodeInfo(String bizId, String thirdPartyAIPName, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("C4DF1809");
+        dbSQL.addParameter4All("bizId", bizId).addParameter4All("thirdPartyAIPName", thirdPartyAIPName).initSQL();
+
+        List<APICommandPO> listAPICommandPO = MySQLDao.search(dbSQL, APICommandPO.class, conn);
+
+        if (listAPICommandPO != null && listAPICommandPO.size() > 0) {
+            APICommandPO apiCommandPO = listAPICommandPO.get(0);
+
+            XmlHelper helper = new XmlHelper(apiCommandPO.getCommands());
+
+            String org_processing_code = helper.getValue("/transaction/head/processing_code");
+            String org_trans_date = helper.getValue("/transaction/head/trans_date");
+            String org_req_trace_num = helper.getValue("/transaction/response/req_trace_num");
+
+
+            KVObjects kvObjects = new KVObjects();
+            kvObjects.addItem("org_processing_code", org_processing_code);
+            kvObjects.addItem("org_trans_date", org_trans_date);
+            kvObjects.addItem("org_req_trace_num", org_req_trace_num);
+            kvObjects.addItem("bizId", bizId);
+
+            return kvObjects;
+
+        }
+
+        return null;
+    }
 
 
 
