@@ -317,6 +317,10 @@ var CustomerAccountClass = function(token) {
                     //alert('done');
                     fw.alertReturnValue(data);
 
+                    if (data == '0') {
+                        return ;
+                    }
+
                     var mobileCodeCheckUrl = WEB_ROOT + '/modules/customer/CustomerAccount_Save_AllinpayCircle.jsp';
                     fw.window('MobileCodeCheckWindow' + token, '验证码', 500, 400, mobileCodeCheckUrl, function(){
                         fw.bindOnClick4Any('btnCustomerAccountMobileCheckSubmit_AllinpayCircle' + token,

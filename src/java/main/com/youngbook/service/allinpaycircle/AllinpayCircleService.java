@@ -317,6 +317,19 @@ public class AllinpayCircleService extends BaseService {
 
             customerAccountDao.inertOrUpdate(customerAccountPO_Old, Config.getDefaultOperatorId(), conn);
         }
+        else {
+            String responseJSON = returnObject.getReturnValue().toString();
+
+            KVObjects kvObjects = JSONDao.toKVObjects(responseJSON);
+
+            String responseXml = kvObjects.getItemString("responseXml");
+
+            XmlHelper helper = new XmlHelper(responseXml);
+
+            String responseMessage = helper.getValue("/transaction/response/resp_msg");
+
+            returnObject.setMessage(responseMessage);
+        }
 
         return returnObject;
     }

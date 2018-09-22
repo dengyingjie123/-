@@ -41,6 +41,7 @@ public class AllinpayCircleAction extends BaseAction {
     @Autowired
     ILogDao logDao;
 
+    @Permission(require = "通联金融生态圈_换卡")
     public String changeBankCard() throws Exception {
 
         String bankCode = getHttpRequestParameter("customerAccount.bank");
@@ -54,6 +55,7 @@ public class AllinpayCircleAction extends BaseAction {
         if (returnObject.getCode() != 100) {
             getResult().setCode(-1);
             getResult().setMessage(returnObject.getMessage());
+            getResult().setReturnValue("0");
         }
         else {
             XmlHelper helper = new XmlHelper(returnObject.getReturnValue().toString());

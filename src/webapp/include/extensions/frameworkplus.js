@@ -991,7 +991,7 @@ var fw = (function () {
                 }
                 else if (data.code == 202) {
                     fw.alert('失败', data.message);
-                    // throw new Error("没有操作权限，请与管理员联系。");
+                    throw new Error("没有操作权限，请与管理员联系。");
                 }
                 else if (data.code == 301) {
                     fw.alert('失败', '数据库事务异常，请检查数据是否正确');
@@ -1009,7 +1009,7 @@ var fw = (function () {
                 }
                 else {
                     fw.alert('失败', '错误编码：【'+ data.code + '】，错误说明：【'+data.message+'】');
-                    // throw new Error("错误：" + data.message);
+                    throw new Error("错误：" + data.message);
                 }
             }
         },
@@ -1220,7 +1220,6 @@ var fw = (function () {
                     }
                     else {
                         if (fw.checkIsFunction(onSubmit)) {
-
                             onSubmit();
                         }
                     }
