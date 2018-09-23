@@ -159,7 +159,7 @@ public class OrderPO extends BasePO {
      * 通联金融生态圈-充值状态
      * 0：未充值
      * 1：已充值
-     * 2：充值待系统确认
+     * 2：充值已受理
      * 3：充值失败
      */
     private String allinpayCircle_deposit_status = "";

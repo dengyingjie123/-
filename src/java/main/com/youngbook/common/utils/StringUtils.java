@@ -88,6 +88,24 @@ public class StringUtils {
     }
 
 
+    public static boolean checkIn(String waitingString, String ... conditions) {
+
+        if (StringUtils.isEmpty(waitingString)) {
+            return false;
+        }
+
+        for (int i = 0; conditions != null && i < conditions.length; i++) {
+            String s = conditions[i];
+
+            if (waitingString.equals(s)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 
     public static String getEncoding(String str) {
         String encode = "GB2312";

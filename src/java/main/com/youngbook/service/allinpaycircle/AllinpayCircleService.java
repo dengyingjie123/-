@@ -23,6 +23,7 @@ import com.youngbook.dao.customer.ICustomerAccountDao;
 import com.youngbook.dao.customer.ICustomerCertificateDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IOrderDao;
+import com.youngbook.dao.production.IOrderDetailDao;
 import com.youngbook.dao.production.IProductionDao;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
@@ -33,6 +34,7 @@ import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.customer.CustomerCertificatePO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.production.OrderPO;
+import com.youngbook.entity.po.production.OrderStatus;
 import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.vo.Sale.PaymentPlanVO;
 import com.youngbook.service.BaseService;
@@ -92,6 +94,9 @@ public class AllinpayCircleService extends BaseService {
 
     @Autowired
     IOrderDao orderDao;
+
+    @Autowired
+    IOrderDetailDao orderDetailDao;
 
     private static String callbackUrl = "";
 
@@ -500,6 +505,7 @@ public class AllinpayCircleService extends BaseService {
 
         ReturnObject returnObject = depositByInstitution(accountId, productionId, orderId, operatorId, conn);
 
+
         return returnObject;
     }
 
@@ -521,6 +527,18 @@ public class AllinpayCircleService extends BaseService {
      */
     public ReturnObject depositByInstitution(String accountId, String productionId, String orderId, String operatorId, Connection conn) throws Exception {
 
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        /**
+         * 检查订单状态
+         */
+        if (orderPO.getStatus() != OrderStatus.SaleAndWaiting) {
+            MyException.newInstance("已打款订单才能进行充值确认", "orderId=" + orderId).throwException();
+        }
+
+        if (!StringUtils.isEmpty(orderPO.getAllinpayCircle_deposit_status()) && !orderPO.getAllinpayCircle_deposit_status().equals("0")) {
+            MyException.newInstance("该订单已经进行充值确认，请不要重复充值！", "orderId=" + orderId).throwException();
+        }
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
 
@@ -538,7 +556,7 @@ public class AllinpayCircleService extends BaseService {
         ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
 
 
-        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
         double money = orderPO.getMoney();
 
         TransactionPO transactionPO = new TransactionPO();
@@ -566,25 +584,44 @@ public class AllinpayCircleService extends BaseService {
 
             returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
 
-            XmlHelper helper = getResponseXmlHelper(returnObject);
+            if (returnObject.getCode() == 100) {
+                KVObjects kvObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
 
-            String signNum = helper.getValue("/transaction/response/sign_num");
+                String responseCode = kvObjects.getItemString("responseCode");
+                String responseMessage = kvObjects.getItemString("responseMessage");
 
-            customerPersonalPO.setAllinpayCircle_SignNum(signNum);
-
-            customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
-
-
-            String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+                returnObject.setMessage(responseMessage);
 
 
-            customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
+                XmlHelper helper = getResponseXmlHelper(returnObject);
 
-            customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+                String signNum = helper.getValue("/transaction/response/sign_num");
+
+                customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+
+                customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
 
 
-            orderPO.setAllinpayCircle_req_trace_num(transactionPO.getRequest().getItemString("req_trace_num"));
-            orderDao.insertOrUpdate(orderPO, operatorId, conn);
+                String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+
+
+                customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
+
+                customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+                orderPO.setAllinpayCircle_req_trace_num(transactionPO.getRequest().getItemString("req_trace_num"));
+
+                orderPO.setAllinpayCircle_deposit_status("2");
+
+                orderDao.insertOrUpdate(orderPO, operatorId, conn);
+
+                orderDetailDao.saveOrderDetail(orderPO, orderPO.getMoney(), TimeUtils.getNow(), "通联金融圈充值【"+responseMessage+"】", operatorId, conn);
+
+
+            }
+
+
 
         }
         catch (Exception e) {

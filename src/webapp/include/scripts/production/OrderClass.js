@@ -226,16 +226,16 @@ var OrderClass = function (token) {
                     },
                     {field: 'allinpayCircle_payByShare_status', title: '通联-份额支付状态',
                         formatter: function(value,row,index){
-                            if (row['allinpayCircle_deposit_status']=='0') {
+                            if (row['allinpayCircle_payByShare_status']=='0') {
                                 return '未支付';
                             }
-                            else if (row['allinpayCircle_deposit_status']=='1') {
+                            else if (row['allinpayCircle_payByShare_status']=='1') {
                                 return '已支付';
                             }
-                            else if (row['allinpayCircle_deposit_status']=='2') {
+                            else if (row['allinpayCircle_payByShare_status']=='2') {
                                 return '支付受理';
                             }
-                            else if (row['allinpayCircle_deposit_status']=='3') {
+                            else if (row['allinpayCircle_payByShare_status']=='3') {
                                 return '支付失败';
                             }
                         }
@@ -382,9 +382,16 @@ var OrderClass = function (token) {
                     var url = WEB_ROOT + '/pay/AllinpayCircle_depositByInstitution?orderId=' + orderId;
                     fw.post(url, null, function(data){
 
-                        if (!fw.checkIsTextEmpty(data)) {
-                            fw.alert('提示', data);
+                        // fw.alertReturnValue(data);
+                        var message = "充值已受理"
+                        if (data == "1") {
+                            message = "充值申请已受理";
                         }
+                        else {
+                            message = "充值申请失败"
+                        }
+                        fw.alert('提示', message);
+
                     }, null);
 
                 }, null);

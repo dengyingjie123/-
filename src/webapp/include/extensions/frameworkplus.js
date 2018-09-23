@@ -1525,12 +1525,15 @@ var fw = (function () {
                     try {
                         try {
                             var d = fw.dealReturnObject(data);
+
+                            if (fw.checkIsFunction(success)) {
+                                success(d);
+                            }
+
                         } catch (e) {
-                            fw.alertReturnValue(e);
+                            // fw.alertReturnValue(e);
                         }
-                        if (fw.checkIsFunction(success)) {
-                            success(d);
-                        }
+
 
                         fw.showMessageDone();
                     }
