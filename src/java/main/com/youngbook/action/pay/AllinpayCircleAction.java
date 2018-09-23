@@ -158,7 +158,9 @@ public class AllinpayCircleAction extends BaseAction {
             getResult().setReturnValue("1");
         }
         else {
-            getResult().setReturnValue("0");
+            KVObjects r = new KVObjects();
+            r.addItem("code", returnObject.getCode()).addItem("message", returnObject.getMessage());
+            getResult().setReturnValue(r.toJSONObject());
         }
 
         return SUCCESS;

@@ -584,11 +584,13 @@ public class AllinpayCircleService extends BaseService {
 
             returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
 
-            if (returnObject.getCode() == 100) {
-                KVObjects kvObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
+            KVObjects kvObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
 
-                String responseCode = kvObjects.getItemString("responseCode");
-                String responseMessage = kvObjects.getItemString("responseMessage");
+            String responseCode = kvObjects.getItemString("responseCode");
+            String responseMessage = kvObjects.getItemString("responseMessage");
+
+            if (returnObject.getCode() == 100) {
+
 
                 returnObject.setMessage(responseMessage);
 
@@ -618,7 +620,10 @@ public class AllinpayCircleService extends BaseService {
 
                 orderDetailDao.saveOrderDetail(orderPO, orderPO.getMoney(), TimeUtils.getNow(), "通联金融圈充值【"+responseMessage+"】", operatorId, conn);
 
-
+            }
+            else {
+                returnObject.setCode(5000);
+                returnObject.setMessage(responseMessage);
             }
 
 

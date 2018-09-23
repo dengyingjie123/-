@@ -228,7 +228,7 @@ public class OrderDaoImpl implements IOrderDao {
     }
 
     public OrderPO loadByLikeOrderId(String orderId, Connection conn) throws Exception {
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("ED3F1809");
         dbSQL.addParameter4All("orderId", orderId);
         dbSQL.initSQL();
 
@@ -243,7 +243,7 @@ public class OrderDaoImpl implements IOrderDao {
 
 
     public OrderPO loadOrderPOBy_allinpayCircle_req_trace_num(String allinpayCircle_req_trace_num, Connection conn) throws Exception {
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("ED3F1809");
         dbSQL.addParameter4All("allinpayCircle_req_trace_num", allinpayCircle_req_trace_num);
         dbSQL.initSQL();
 

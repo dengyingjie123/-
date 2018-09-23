@@ -8,6 +8,7 @@ import com.mind.platform.system.base.DataRow;
 import com.youngbook.action.api.dehecircle.DeheCircleAction;
 import com.youngbook.common.Database;
 import com.youngbook.common.KVObjects;
+import com.youngbook.common.MyException;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.XmlHelper;
@@ -188,7 +189,11 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         Connection conn = Config.getConnection();
         try {
-            OrderPO orderPO = orderDao.loadOrderPOBy_allinpayCircle_req_trace_num(allinpayCircleResponseDataPO.getResp_trace_num(), conn);
+            OrderPO orderPO = orderDao.loadOrderPOBy_allinpayCircle_req_trace_num(allinpayCircleResponseDataPO.getReq_trace_num(), conn);
+
+            if (orderPO == null) {
+                MyException.newInstance("无法找到需要处理的订单").throwException();
+            }
 
             String comment = "通联金融生态圈充值成功";
             if (allinpayCircleResponseDataPO.getResp_code().equals("0000")) {

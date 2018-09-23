@@ -383,12 +383,12 @@ var OrderClass = function (token) {
                     fw.post(url, null, function(data){
 
                         // fw.alertReturnValue(data);
-                        var message = "充值已受理"
+                        var message = "充值已受理";
                         if (data == "1") {
                             message = "充值申请已受理";
                         }
                         else {
-                            message = "充值申请失败"
+                            message = "充值申请失败：" + data['message'];
                         }
                         fw.alert('提示', message);
 
