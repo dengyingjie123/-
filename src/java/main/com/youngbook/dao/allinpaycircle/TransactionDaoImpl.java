@@ -21,12 +21,13 @@ public class TransactionDaoImpl implements ITransactionDao {
 
     public TransactionPO loadByRequestTraceNum(String requestTraceNum, int apiCommandDirection, Connection conn) throws Exception {
 
-
-
         String apiName = "接收";
+
+        String traceNumXPath = "/transaction/response/req_trace_num";
 
         if (apiCommandDirection == APICommandDirection.Send) {
             apiName = "发送";
+            traceNumXPath = "/transaction/request/req_trace_num";
         }
 
 
@@ -49,12 +50,13 @@ public class TransactionDaoImpl implements ITransactionDao {
 
                 String processingCode = helper.getValue("/transaction/head/processing_code");
                 String transDate = helper.getValue("/transaction/head/trans_date");
-                String req_trace_num = helper.getValue("/transaction/response/req_trace_num");
+                String req_trace_num = helper.getValue(traceNumXPath);
 
                 TransactionPO transactionPO = new TransactionPO();
                 transactionPO.setProcessing_code(processingCode);
                 transactionPO.setTrans_date(transDate);
                 transactionPO.getRequest().addItem("req_trace_num", req_trace_num);
+                transactionPO.setBizId(req_trace_num);
 
                 return transactionPO;
 

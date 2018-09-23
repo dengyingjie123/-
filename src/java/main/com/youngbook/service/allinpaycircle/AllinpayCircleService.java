@@ -405,51 +405,51 @@ public class AllinpayCircleService extends BaseService {
 
     /**
      * 通联万小宝
-     * 更改手机号
-     * @param customerId
-     * @param accountId
-     * @param mobileNew
+     * 单笔查询
      * @param conn
      * @return
      * @throws Exception
      */
-    public ReturnObject queryWithOneOrder(String customerId, String accountId, String mobileNew, Connection conn) throws Exception {
+    public ReturnObject queryWithOneOrder(String bizId, Connection conn) throws Exception {
 
-        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+        TransactionPO transactionPOCheck = transactionDao.loadByRequestTraceNum(bizId, APICommandDirection.Send, conn);
 
-        StringUtils.checkIsEmpty(customerPersonalPO.getAllinpayCircle_SignNum(), "金融圈客户编号");
+        if (transactionPOCheck == null) {
+            MyException.newInstance("无法查到所需要的记录", "bizId=" + bizId).throwException();
+        }
 
-        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
-
-        String mobileOld = customerAccountPO.getMobile();
-
-        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
-        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
-
-        StringUtils.checkIsEmpty(bankNumber, "银行卡号");
-        StringUtils.checkIsEmpty(mobileNew, "新手机号");
-        StringUtils.checkIsEmpty(mobileOld, "旧手机号");
-
+        if (StringUtils.isEmpty(transactionPOCheck.getBizId())) {
+            MyException.newInstance("无法查到所需要记录的原编号", "bizId=" + bizId).throwException();
+        }
 
         TransactionPO transactionPO = new TransactionPO();
 
-        transactionPO.setProcessing_code("1090");
+        transactionPO.setProcessing_code("3001");
 
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
-        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
-        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
-        transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", bankNumber);
-        transactionPO.getRequest().addItem("tel_num", mobileNew);
-        transactionPO.getRequest().addItem("org_tel_num", mobileOld);
+        transactionPO.getRequest().addItem("org_req_trace_num", transactionPOCheck.getBizId());
+        transactionPO.getRequest().addItem("org_trans_date", transactionPOCheck.getTrans_date());
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
 
         XmlHelper helper = getResponseXmlHelper(returnObject);
 
-        String signNum = helper.getValue("/transaction/response/sign_num");
+        if (returnObject.getCode() == 100) {
+            String qur_rst = helper.getValue("/transaction/response/qur_rst");
+            String qur_rst_msg = helper.getValue("/transaction/response/qur_rst_msg");
+
+            KVObjects kvObjects = new KVObjects();
+            kvObjects.addItem("qur_rst", qur_rst).addItem("qur_rst_msg", qur_rst_msg);
+
+            returnObject.setReturnValue(kvObjects.toJSONObject());
+        }
+        else {
+            returnObject.setCode(5000);
+        }
+
+
 
 
 
@@ -695,18 +695,14 @@ public class AllinpayCircleService extends BaseService {
 
         String signNum = helper.getValue("/transaction/response/sign_num");
 
-        customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+        if (returnObject.getCode() == 100) {
 
-        customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
+            // todo: 实时取现
 
-
-        String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
-
-
-
-        customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
-
-        customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+        }
+        else {
+            returnObject.setCode(5000);
+        }
 
 
         return null;

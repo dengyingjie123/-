@@ -259,6 +259,14 @@ function contentTabAdd(permissionName, token) {
             menuClass.initModule();
         });
     }
+    else if (permissionName == "通联金融生态圈_单笔查询") {
+        //alert("begin");
+        using(SCRIPTS_ROOT + '/allinpayCircle/AllinpayCircleQueryClass.js', function () {
+            //alert("hello");
+            var allinpayCircleQueryClass = new AllinpayCircleQueryClass(token);
+            allinpayCircleQueryClass.initModule();
+        });
+    }
     else if (permissionName == "文章管理") {
         //alert("begin");
         using(SCRIPTS_ROOT + '/cms/ArticleClass.js', function () {

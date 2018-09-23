@@ -184,6 +184,24 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    public String queryWithOneOrder() throws Exception {
+        String bizId = getHttpRequestParameter("bizId");
+        ReturnObject returnObject = allinpayCircleService.queryWithOneOrder(bizId, getConnection());
+
+        if (returnObject.getCode() == 100) {
+            getResult().setReturnValue(returnObject.getReturnValue());
+        }
+        else {
+            KVObjects r = new KVObjects();
+            r.addItem("code", returnObject.getCode()).addItem("message", returnObject.getMessage());
+            getResult().setReturnValue(r.toJSONObject());
+        }
+
+
+        return SUCCESS;
+    }
+
     @Permission(require = "通联金融生态圈_信任开户")
     public String openAccountPersonalByTrust() throws Exception {
 
