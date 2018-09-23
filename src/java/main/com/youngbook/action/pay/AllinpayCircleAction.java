@@ -172,7 +172,14 @@ public class AllinpayCircleAction extends BaseAction {
 
         ReturnObject returnObject = allinpayCircleService.payByShare(orderId, getLoginUser().getId(), getConnection());
 
-        setResult(returnObject);
+        if (returnObject.getCode() == 100) {
+            getResult().setReturnValue("1");
+        }
+        else {
+            KVObjects r = new KVObjects();
+            r.addItem("code", returnObject.getCode()).addItem("message", returnObject.getMessage());
+            getResult().setReturnValue(r.toJSONObject());
+        }
 
         return SUCCESS;
     }

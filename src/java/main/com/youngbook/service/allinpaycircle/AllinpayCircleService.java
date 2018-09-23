@@ -59,6 +59,7 @@ import sun.misc.BASE64Decoder;
 import java.net.ConnectException;
 import java.security.Key;
 import java.sql.Connection;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -912,7 +913,24 @@ public class AllinpayCircleService extends BaseService {
 
         XmlHelper helper = getResponseXmlHelper(returnObject);
 
-        String signNum = helper.getValue("/transaction/response/sign_num");
+        String resp_code = helper.getValue("/transaction/response/resp_code");
+        String resp_msg = helper.getValue("/transaction/response/resp_msg");
+        String order_num = helper.getValue("/transaction/response/order_num");
+
+        if (returnObject.getCode() == 100) {
+            OrderPO orderDone = orderDao.loadByOrderId(order_num, conn);
+
+            orderDone.setAllinpayCircle_payByShare_status("2");
+            orderDone.setAllinpayCircle_payByShare_time(TimeUtils.getNow());
+
+            orderDao.insertOrUpdate(orderDone, operatorId, conn);
+
+            orderDetailDao.saveOrderDetail(orderDone, orderDone.getMoney(), TimeUtils.getNow(), "通联金融圈份额支付【"+resp_msg+"】", operatorId, conn);
+        }
+        else {
+            returnObject.setCode(5000);
+        }
+
 
         return returnObject;
     }

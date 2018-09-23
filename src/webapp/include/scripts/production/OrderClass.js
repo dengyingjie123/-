@@ -414,13 +414,21 @@ var OrderClass = function (token) {
                 var customerName = selected['customerName'];
                 var orderId = selected['id'];
                 var moneyString = fw.formatMoney(selected['money']);
-                fw.confirm('确认', '是否确认使用<br>客户【'+customerName+'】<br>的份额进行支付，<br>支付金额为【' + moneyString + '】', function () {
+                fw.confirm('确认', '是否对如下客户进行份额支付？<br>客户【'+customerName+'】，金额为【' + moneyString + '】', function () {
                     var url = WEB_ROOT + '/pay/AllinpayCircle_payByShare?orderId=' + orderId;
                     fw.post(url, null, function(data){
 
-                        if (!fw.checkIsTextEmpty(data)) {
-                            fw.alert('提示', data);
+                        // fw.alertReturnValue(data);
+                        var message = "份额支付申请已受理";
+                        if (data == "1") {
+                            message = "份额支付申请已受理";
                         }
+                        else {
+                            message = "份额支付申请失败：" + data['message'];
+                        }
+                        fw.alert('提示', message);
+
+                        fw.datagridReload("OrderTable"+token);
                     }, null);
 
                 }, null);
