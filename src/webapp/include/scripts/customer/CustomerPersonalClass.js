@@ -181,6 +181,7 @@ var CustomerPersonalClass = function (token) {
                 onClickSendSms();
                 // Excel导出
                 onClickCustomerPersonalExport();
+                onClickAllinpayCircleQueryCashShare();
                 // HOPEWEALTH-1276 呼叫电话事件
                 //onClickCustomerPersonalDialNew();
 
@@ -696,6 +697,35 @@ var CustomerPersonalClass = function (token) {
             $('#search_GroupName' + token).val('');
             $('#search_SaleManName' + token).val('');
         });
+    }
+
+
+    function onClickAllinpayCircleQueryCashShare() {
+        var btnId = 'btnAllinpayCircleQueryCashShare' + token;
+
+        fw.bindOnClick(btnId, function (process) {
+            process.beforeClick();
+
+            try {
+
+                fw.datagridGetSelected('CustomerPersonalTable' + token, function (selected) {
+                    using(SCRIPTS_ROOT + '/allinpayCircle/AllinpayCircleQueryCashShareClass.js', function () {
+                        //alert("hello");
+                        var allinpayCircleQueryCashShareClass = new AllinpayCircleQueryCashShareClass(token);
+                        allinpayCircleQueryCashShareClass.openWindow(selected.id);
+                    });
+                });
+
+
+
+            }
+            catch (e) {
+
+            }
+
+            process.afterClick();
+        });
+
     }
 
     /**

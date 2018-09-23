@@ -345,6 +345,8 @@ var CustomerAccountClass = function(token) {
     }
 
 
+
+
     function onClickCustomerAccountSubmit_AllinpayCircle_ChangeMobile() {
         var buttonId = "btnCustomerAccountSubmit_AllinpayCircle_ChangeMobile" + token;
         fw.bindOnClick(buttonId, function(process){

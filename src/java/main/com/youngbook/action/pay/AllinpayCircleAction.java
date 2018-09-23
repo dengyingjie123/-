@@ -185,6 +185,19 @@ public class AllinpayCircleAction extends BaseAction {
     }
 
 
+    public String queryCashShare() throws Exception {
+
+        String customerId = getHttpRequestParameter("customerId");
+
+        ReturnObject returnObject = allinpayCircleService.queryCashShare(customerId, getConnection());
+
+        getResult().setCode(returnObject.getCode());
+        getResult().setMessage(returnObject.getMessage());
+        getResult().setReturnValue(returnObject.getReturnValue());
+
+        return SUCCESS;
+    }
+
     public String queryWithOneOrder() throws Exception {
         String bizId = getHttpRequestParameter("bizId");
         ReturnObject returnObject = allinpayCircleService.queryWithOneOrder(bizId, getConnection());

@@ -249,6 +249,81 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
+    public ReturnObject queryCashShare(String customerId, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+        String allinpayCircleSignNum = customerPersonalPO.getAllinpayCircle_SignNum();
+
+        StringUtils.checkIsEmpty(allinpayCircleSignNum, "金融圈客户号");
+
+
+
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("3004");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", allinpayCircleSignNum);
+//        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+//        transactionPO.getRequest().addItem("acct_type", "1");
+//        transactionPO.getRequest().addItem("acct_num", bankNumber);
+//        transactionPO.getRequest().addItem("prod_import_flag", "1");
+//        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
+//        transactionPO.getRequest().addItem("product_num", "KPL555");
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+        KVObjects kvObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
+
+        String responseXml = kvObjects.getItemString("responseXml");
+        XmlHelper helper = new XmlHelper(responseXml);
+
+        String all_total_assets = helper.getValue("/transaction/response/all_total_assets");
+        String realtime_total_assets = helper.getValue("/transaction/response/realtime_total_assets");
+        String frozen_realtime_total_assets = helper.getValue("/transaction/response/frozen_realtime_total_assets");
+        String all_total_income = helper.getValue("/transaction/response/all_total_income");
+        String yesterday_total_income = helper.getValue("/transaction/response/yesterday_total_income");
+        String yesterday_total_income_date = helper.getValue("/transaction/response/yesterday_total_income_date");
+        String qur_rst = helper.getValue("/transaction/response/qur_rst");
+
+
+        List<KVObjects> listKVObjects = JSONDao.getListKVObjects(qur_rst);
+
+        for (int i = 0; listKVObjects != null && i < listKVObjects.size(); i++) {
+            KVObjects kosRawData = listKVObjects.get(i);
+
+            kosRawData.removeByKey("bnkId");
+            kosRawData.removeByKey("acctSubNo");
+            kosRawData.removeByKey("productYesterdayIncome");
+            kosRawData.removeByKey("dateOfProductYesterdayIncome");
+            kosRawData.removeByKey("incomeUpdateFlag");
+            kosRawData.removeByKey("productHistoryIncome");
+            kosRawData.removeByKey("totalIncome");
+            kosRawData.removeByKey("defDividendMethod");
+            kosRawData.removeByKey("transferAmt");
+            kosRawData.removeByKey("addtnl_data1");
+            kosRawData.removeByKey("addtnl_data2");
+            kosRawData.removeByKey("addtnl_data3");
+        }
+
+        KVObjects returnKVObjects = new KVObjects();
+        returnKVObjects.addItem("all_total_assets", all_total_assets)
+                .addItem("realtime_total_assets", realtime_total_assets)
+                .addItem("frozen_realtime_total_assets", frozen_realtime_total_assets)
+                .addItem("all_total_income", all_total_income)
+                .addItem("yesterday_total_income", yesterday_total_income)
+                .addItem("yesterday_total_income_date", yesterday_total_income_date)
+                .addItem("qur_rst", JSONDao.convert2JSONArray(listKVObjects));
+        returnObject.setReturnValue(returnKVObjects.toJSONObject());
+
+        return returnObject;
+    }
+
+
     /**
      * 通联万小宝
      * 换卡方法

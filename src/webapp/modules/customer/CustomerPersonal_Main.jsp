@@ -21,6 +21,7 @@
     // 创建不需要权限控制的按钮
     ButtonPO btnDelete = new ButtonPO("btnCustomerPersonalDelete" + token, "删除", "icon-cut", "客户管理_个人客户管理_删除");
     ButtonPO btnPassword = new ButtonPO("btnPassword" + token, "密码管理", "icon-search");
+    ButtonPO btnAllinpayCircleQueryCashShare = new ButtonPO("btnAllinpayCircleQueryCashShare" + token, "通联资产查询", "icon-search");
 //    ButtonPO btnExport = new ButtonPO("btnCustomerPersonalExport" + token, "导出excel", "icon-search");
 
     ButtonPO btnDial = new ButtonPO("btnCustomerPersonalDial" + token, "呼叫", "icon-search");// HOPEWEALTH-1276 拨打电话
@@ -33,6 +34,7 @@
     toolbar.addButton(btnDelete);
     toolbar.addButton(btnDistribution);
     toolbar.addButton(btnPassword);
+    toolbar.addButton(btnAllinpayCircleQueryCashShare);
 //    toolbar.addButton(btnDial);// HOPEWEALTH-1276
 //    toolbar.addButton(btnExport);
     // toolbar.addButton(btnSms);
