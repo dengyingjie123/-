@@ -185,6 +185,7 @@ var CustomerAccountClass = function(token) {
             // 初始化表单提交事件
             onClickCustomerAccountSubmit();
             onClickCustomerAccountSubmit_AllinpayCircle();
+            onClickCustomerAccountSubmit_AllinpayCircle_ChangeMobile();
 
             // 银行列表
             var URL = WEB_ROOT + "/customer/CustomerAccount_getBankList.action";
@@ -330,6 +331,38 @@ var CustomerAccountClass = function(token) {
                 }, function(data) {
                     //alert('done');
                     // fw.alertReturnValue(data);
+
+                    process.afterClick();
+                    fw.datagridReload("CustomerAccountTable"+token);
+                    fw.windowClose('CustomerAccountWindow'+token);
+                }, function() {
+                    process.afterClick();
+                });
+            },null);
+
+
+        });
+    }
+
+
+    function onClickCustomerAccountSubmit_AllinpayCircle_ChangeMobile() {
+        var buttonId = "btnCustomerAccountSubmit_AllinpayCircle_ChangeMobile" + token;
+        fw.bindOnClick(buttonId, function(process){
+
+            fw.confirm('提示', '是否确认进行通联金融圈银行预留手机号修改？', function() {
+                var formId = "formCustomerAccount" + token;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_changeMobile";
+
+                // fw.alertReturnValue(url);
+                fw.bindOnSubmitForm(formId, url, function(){
+                    process.beforeClick();
+                }, function(data) {
+                    //alert('done');
+                    // fw.alertReturnValue(data);
+
+                    if (data == '1') {
+                        fw.alert('提示', '通联生态圈银行预留手机号变更成功');
+                    }
 
                     process.afterClick();
                     fw.datagridReload("CustomerAccountTable"+token);

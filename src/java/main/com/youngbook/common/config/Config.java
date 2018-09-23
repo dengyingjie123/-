@@ -92,6 +92,29 @@ public class Config {
         return applicationContext;
     }
 
+    public static boolean checkloginUserHasPermission(String permissionName, HttpServletRequest request) throws Exception {
+        UserPO loginUserInSession = getLoginUserInSession(request);
+
+        if (loginUserInSession != null) {
+            Connection conn = Config.getConnection();
+            try {
+                String permissions = getUserPermissions(loginUserInSession.getId(), conn);
+
+                if (!StringUtils.isEmpty(permissions) && permissions.contains(permissionName)) {
+                    return true;
+                }
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            finally {
+                Database.close(conn);
+            }
+        }
+
+        return false;
+    }
+
     /**
      * 通过组名和键值，获取具体数值
      * @param key

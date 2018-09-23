@@ -349,15 +349,13 @@ public class AllinpayCircleService extends BaseService {
      * @return
      * @throws Exception
      */
-    public ReturnObject changeMobile(String accountId, String mobileNew, Connection conn) throws Exception {
+    public ReturnObject changeMobile(String accountId, String mobileNew, String operatorId, Connection conn) throws Exception {
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccountPO.getCustomerId(), conn);
 
         StringUtils.checkIsEmpty(customerPersonalPO.getAllinpayCircle_SignNum(), "金融圈客户编号");
-
-
 
         String mobileOld = customerAccountPO.getMobile();
 
@@ -387,9 +385,14 @@ public class AllinpayCircleService extends BaseService {
 
         XmlHelper helper = getResponseXmlHelper(returnObject);
 
-        String signNum = helper.getValue("/transaction/response/sign_num");
+        String resp_code = helper.getValue("/transaction/response/resp_code");
+        String resp_msg = helper.getValue("/transaction/response/resp_msg");
 
+        if (!StringUtils.isEmpty(resp_code) && resp_code.equals("0000")) {
+            customerAccountPO.setMobile(mobileNew);
 
+            customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+        }
 
         return returnObject;
     }
@@ -998,55 +1001,7 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
-    /**
-     * 快捷换卡
-     * @param parameters
-     * @param conn
-     * @throws Exception
-     */
-    public void changeBankCard(KVObjects parameters, Connection conn) throws Exception {
-
-        if (parameters.isContainsAnyEmptyValue("sign_num","bnk_id","hld_name", "cer_num", "tel_num", "org_bnk_id", "org_acct_type", "org_acct_num")) {
-            MyException.newInstance("参数不完整，包含空值", parameters.toJSONObject().toString()).throwException();
-        }
-
-        String bankName = Config.getKVString(parameters.getItemString("bnk_id"), "AllinpayCircleBankCode", conn);
-
-        if (StringUtils.isEmpty(bankName)) {
-            MyException.newInstance("无法获得银行编号", "bank_id" + parameters.getItemString("bnk_id")).throwException();
-        }
-
-        TransactionPO transactionPO = new TransactionPO();
-
-        transactionPO.setProcessing_code("1088");
-
-
-        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
-        transactionPO.getRequest().addItem("sign_num", parameters.getItemString("sign_num"));
-        transactionPO.getRequest().addItem("sign_type", "2");
-        transactionPO.getRequest().addItem("bnk_id", parameters.getItemString("bnk_id"));
-        transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", parameters.getItemString("acct_num"));
-        transactionPO.getRequest().addItem("hld_name", parameters.getItemString("hld_name"));
-        transactionPO.getRequest().addItem("cer_type", "01");
-        transactionPO.getRequest().addItem("cer_num", parameters.getItemString("cer_num"));
-        transactionPO.getRequest().addItem("tel_num", parameters.getItemString("tel_num"));
-        transactionPO.getRequest().addItem("is_send_msg", "0");
-        transactionPO.getRequest().addItem("mhnt_name", "德合基金");
-        transactionPO.getRequest().addItem("ms_signature", "德合基金");
-        transactionPO.getRequest().addItem("org_bnk_id", parameters.getItemString("org_bnk_id"));
-        transactionPO.getRequest().addItem("org_acct_type", parameters.getItemString("org_acct_type"));
-        transactionPO.getRequest().addItem("org_acct_num", parameters.getItemString("org_acct_num"));
-
-
-
-        sendTransaction(transactionPO, conn);
-    }
-
-
     public ReturnObject receiveTransaction() throws Exception {
-
-
 
 
         ReturnObject returnObject = new ReturnObject();

@@ -80,6 +80,21 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+    @Permission(require = "通联金融生态圈_换手机号")
+    public String changeMobile() throws Exception {
+
+        // String accountId, String mobileNew, String operatorId, Connection conn
+        String accountId = getHttpRequestParameter("customerAccount.id");
+        String mobileNew = getHttpRequestParameter("customerAccount.mobile");
+
+        ReturnObject returnObject = allinpayCircleService.changeMobile(accountId, mobileNew, getLoginUser().getId(), getConnection());
+
+
+        getResult().setMessage(returnObject.getMessage());
+
+        return SUCCESS;
+    }
+
     @Permission(require = "通联金融生态圈_换卡")
     public String changeBankCard() throws Exception {
 
