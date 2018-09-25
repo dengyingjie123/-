@@ -1069,14 +1069,11 @@ public class OrderService extends BaseService {
         }
 
         // 新增新的资金日志
-        String logType = CustomerMoneyLogType.Pay;
-        String logContent = CustomerMoneyLogType.Pay + "[" + production.getName() +"]" + order.getMoney() + "元";
+        String logType = CustomerMoneyLogType.Buy;
+        String logContent = CustomerMoneyLogType.Buy + "[" + production.getName() +"]" + order.getMoney() + "元";
         String logStatus = Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS;
 
-        Integer moneyLogExecCount = customerMoneyLogDao.insertCustomerMoneyLog(logType, logContent, logStatus, order.getId(), order.getCustomerId(), conn);
-        if(moneyLogExecCount != 1) {
-            MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "数据库异常").throwException();
-        }
+        customerMoneyLogDao.newCustomerMoneyLog(order.getMoney(), 0, logType, logContent, logStatus, order.getId(), order.getCustomerId(), conn);
 
 
         /**

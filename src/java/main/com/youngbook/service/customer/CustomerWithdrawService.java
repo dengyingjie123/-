@@ -297,7 +297,7 @@ public class CustomerWithdrawService extends BaseService {
      */
     public void customerMoneyLogStatus(String loginUserId,Connection conn) throws Exception {
         CustomerMoneyLogPO customerMoneyLog = new CustomerMoneyLogPO();
-        customerMoneyLog.setType(CustomerMoneyLogType.Withdraw);
+        customerMoneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment);
         customerMoneyLog.setContent("更改客户资金失败");
         customerMoneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_TYPE_FAILED);//提现失败
         customerMoneyLog.setCustomerId(loginUserId);

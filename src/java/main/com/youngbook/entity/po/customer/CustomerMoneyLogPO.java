@@ -1,19 +1,14 @@
 package com.youngbook.entity.po.customer;
 
-import com.youngbook.annotation.DataAdapter;
-import com.youngbook.annotation.FieldType;
-import com.youngbook.annotation.Id;
-import com.youngbook.annotation.Table;
+import com.youngbook.annotation.*;
 import com.youngbook.entity.po.BasePO;
 
-/**
- * Created by admin on 2015/4/28.
- */
+
 @Table(name = "CRM_CustomerMoneyLog", jsonPrefix = "customerMoneyLog")
-public class CustomerMoneyLogPO extends BasePO{
+public class CustomerMoneyLogPO extends BasePO {
     // sid
-    @Id
-    private int sid = Integer.MAX_VALUE;
+    @Id(type = IdType.LONG)
+    private long sid = Long.MAX_VALUE;
 
     // id
     private String id = new String();
@@ -29,7 +24,7 @@ public class CustomerMoneyLogPO extends BasePO{
     private String operateTime = new String();
 
     /**
-     * 购买、兑付、充值、提现
+     * 购买、兑付或提现、充值、收益
      */
     private String type = new String();
 
@@ -90,11 +85,11 @@ public class CustomerMoneyLogPO extends BasePO{
         this.feeMoney = feeMoney;
     }
 
-    public int getSid() {
+    public long getSid() {
         return sid;
     }
 
-    public void setSid(int sid) {
+    public void setSid(long sid) {
         this.sid = sid;
     }
 

@@ -17,6 +17,7 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.CustomerPersonalDaoImpl;
 import com.youngbook.dao.customer.ICustomerAccountDao;
+import com.youngbook.dao.customer.ICustomerMoneyLogDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IProductionDao;
 import com.youngbook.dao.sale.IPaymentPlanDao;
@@ -101,6 +102,8 @@ public class PaymentPlanService extends BaseService implements IBizService {
     @Autowired
     IProductionDao productionDao;
 
+    @Autowired
+    ICustomerMoneyLogDao customerMoneyLogDao;
 
     /**
      * 通联万小宝
@@ -951,8 +954,13 @@ public class PaymentPlanService extends BaseService implements IBizService {
         }
         ProductionPO production = producitons.get(0);
 
+
+        String content = "兑付[" + production.getName() + "]" + paymentPlanPO.getTotalPaymentMoney() + "元，兑付收益"+paymentPlanPO.getTotalProfitMoney()+"元";
+
+        customerMoneyLogDao.newCustomerMoneyLog(paymentPlanPO.getTotalPaymentMoney(), paymentPlanPO.getTotalProfitMoney(), CustomerMoneyLogType.WithdrawOrPayment, content, "1", paymentPlanPO.getId(), paymentPlanPO.getCustomerId(), conn);
+
         CustomerMoneyLogPO moneyLog = new CustomerMoneyLogPO();
-        moneyLog.setType(CustomerMoneyLogType.Payment); // 兑付类型
+        moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 兑付类型
         moneyLog.setContent("兑付[" + production.getName() + "]" + paymentPlanPO.getTotalPaymentMoney() + "元");
         moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS)); // 兑付成功
         moneyLog.setCustomerId(paymentPlanPO.getCustomerId());
@@ -1075,7 +1083,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
             moneyLog.setOperatorId(user.getId());
             moneyLog.setOperateTime(TimeUtils.getNow());
             moneyLog.setState(Config.STATE_CURRENT);
-            moneyLog.setType(CustomerMoneyLogType.Payment); // 兑付类型
+            moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 兑付类型
             moneyLog.setContent("兑付[" + production.getName() + "]" + plan.getTotalPaymentMoney() + "元");
             moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_PAYMENT_UNFINISH)); // 兑付未成功
             moneyLog.setCustomerId(plan.getCustomerId());
@@ -1180,7 +1188,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
                     moneyLog.setState(Config.STATE_CURRENT);
                     moneyLog.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
                     moneyLog.setOperateTime(TimeUtils.getNow());
-                    moneyLog.setType(CustomerMoneyLogType.Payment); //兑付类型
+                    moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); //兑付类型
                     moneyLog.setContent("兑付[" + production.getName() + "]" + totalPaymentMoney + "元");
                     moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS));//兑付成功
                     moneyLog.setCustomerId(customerId);

@@ -716,6 +716,60 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
+    public ReturnObject withdrawalByBankNormal(String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String customerId = customerAccountPO.getCustomerId();
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("2280");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("pay_mode", "0");
+        transactionPO.getRequest().addItem("charge_flag", "1");
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("cur_type", "156");
+        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+
+        XmlHelper helper = getResponseXmlHelper(returnObject);
+
+        String signNum = helper.getValue("/transaction/response/sign_num");
+
+        if (returnObject.getCode() == 100) {
+
+            // todo: 普通取现
+
+
+
+        }
+        else {
+            returnObject.setCode(5000);
+        }
+
+
+        return null;
+    }
+
+
     /**
      * 实时取现-银行卡支付
      * @param customerId
@@ -727,7 +781,7 @@ public class AllinpayCircleService extends BaseService {
      * @return
      * @throws Exception
      */
-    public ReturnObject withdrawalByBank(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject withdrawalByBankRealTime(String customerId, String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
 
         String url = "";
 
