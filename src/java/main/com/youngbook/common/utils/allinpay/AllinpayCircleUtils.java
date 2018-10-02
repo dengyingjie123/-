@@ -22,6 +22,7 @@ public class AllinpayCircleUtils {
             APINames.addItem("1087", "单笔信任开户");
             APINames.addItem("2080", "充值机构自付");
             APINames.addItem("2085", "份额支付");
+            APINames.addItem("2280", "普通取现");
         }
 
         String name = APINames.getItemString(processingCode);

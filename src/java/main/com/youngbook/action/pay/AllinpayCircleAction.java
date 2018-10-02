@@ -9,9 +9,7 @@ import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.XmlHelper;
-import com.youngbook.common.utils.HttpUtils;
-import com.youngbook.common.utils.IdUtils;
-import com.youngbook.common.utils.TimeUtils;
+import com.youngbook.common.utils.*;
 import com.youngbook.common.utils.allinpay.AllinPayUtils;
 import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.system.ILogDao;
@@ -89,8 +87,19 @@ public class AllinpayCircleAction extends BaseAction {
 
         ReturnObject returnObject = allinpayCircleService.changeMobile(accountId, mobileNew, getLoginUser().getId(), getConnection());
 
-
+        getResult().setCode(returnObject.getCode());
         getResult().setMessage(returnObject.getMessage());
+
+//        getResult().setMessage(returnObject.getMessage());
+
+        if (returnObject.getCode() == 100) {
+            getResult().setReturnValue("1");
+        }
+        else {
+            KVObjects r = new KVObjects();
+            r.addItem("code", returnObject.getCode()).addItem("message", returnObject.getMessage());
+            getResult().setReturnValue(r.toJSONObject());
+        }
 
         return SUCCESS;
     }
@@ -198,6 +207,19 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String withdrawalByBankNormal() throws Exception {
+
+        String accountId = getHttpRequestParameter("accountId");
+        String moneyString = getHttpRequestParameter("money");
+
+        ReturnObject returnObject = allinpayCircleService.withdrawalByBankNormal(accountId, Double.parseDouble(moneyString), getLoginUser().getId(), getConnection());
+
+        getResult().setCode(returnObject.getCode());
+        getResult().setMessage(returnObject.getMessage());
+        getResult().setReturnValue(returnObject.getReturnValue());
+
+        return SUCCESS;
+    }
     public String queryWithOneOrder() throws Exception {
         String bizId = getHttpRequestParameter("bizId");
         ReturnObject returnObject = allinpayCircleService.queryWithOneOrder(bizId, getConnection());

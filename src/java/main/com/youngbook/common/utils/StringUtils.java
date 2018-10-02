@@ -449,6 +449,22 @@ public class StringUtils {
         return false;
     }
 
+
+    public static boolean isEmpty(Object textObject) {
+
+        if (textObject == null) {
+            return true;
+        }
+
+        String text = textObject.toString();
+
+        if (text == null || text.trim().equals("")) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean isEmptyAny(String ... strings) {
 
         for (int i = 0; i < strings.length; i++) {

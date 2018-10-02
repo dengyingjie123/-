@@ -57,7 +57,7 @@ public class CommandExecutor {
 
     UserService userService = Config.getBeanByName("userService", UserService.class);
 
-    public static void main(String [] args) {
+    public static void ma5in(String [] args) {
 
         String [] commandNames = new String[] {"OrderBuildAndPayManually", "CancelContract", "ExecutePaymentPlan", "distributeCustomerTask","TimeRunner", "Test", "FuiouPCOrderScanAndUpdateTask","FuiouOrderQueryTask", "CustomerTask","icelandCustomerImportTask", "customerMergeTask", "transferCustomer"};
 

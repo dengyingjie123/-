@@ -21,6 +21,7 @@ import com.youngbook.dao.allinpaycircle.ITransactionDao;
 import com.youngbook.dao.core.IAPICommandDao;
 import com.youngbook.dao.customer.ICustomerAccountDao;
 import com.youngbook.dao.customer.ICustomerCertificateDao;
+import com.youngbook.dao.customer.ICustomerMoneyLogDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IOrderDetailDao;
@@ -30,9 +31,7 @@ import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandDirection;
 import com.youngbook.entity.po.core.APICommandPO;
 import com.youngbook.entity.po.core.APICommandType;
-import com.youngbook.entity.po.customer.CustomerAccountPO;
-import com.youngbook.entity.po.customer.CustomerCertificatePO;
-import com.youngbook.entity.po.customer.CustomerPersonalPO;
+import com.youngbook.entity.po.customer.*;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.po.production.OrderStatus;
 import com.youngbook.entity.po.production.ProductionPO;
@@ -99,6 +98,9 @@ public class AllinpayCircleService extends BaseService {
     @Autowired
     IOrderDetailDao orderDetailDao;
 
+    @Autowired
+    ICustomerMoneyLogDao customerMoneyLogDao;
+
     private static String callbackUrl = "";
 
 
@@ -132,17 +134,16 @@ public class AllinpayCircleService extends BaseService {
 
         XmlHelper helper = null;
 
-        if (returnObject == null || returnObject.getCode() != 100) {
-            MyException.newInstance("返回值解析异常，【"+returnObject.getMessage()+"】", returnObject.getMessage()).throwException();
-        }
+        if (returnObject != null && !StringUtils.isEmpty(returnObject.getReturnValue())) {
+            String jsonString = returnObject.getReturnValue().toString();
 
-        String jsonString = returnObject.getReturnValue().toString();
-
-        if (!StringUtils.isEmpty(jsonString)) {
             KVObjects kvObjects = JSONDao.toKVObjects(jsonString);
 
-            helper = new XmlHelper(kvObjects.getItemString("responseXml"));
+            String xml = kvObjects.getItemString("responseXml");
+            helper = new XmlHelper(xml);
+
         }
+
 
         if (helper == null) {
             MyException.newInstance("无法解析返回值", returnObject.getMessage()).throwException();
@@ -474,6 +475,10 @@ public class AllinpayCircleService extends BaseService {
 
             customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
         }
+        else {
+            returnObject.setCode(5000);
+            returnObject.setMessage(resp_msg);
+        }
 
         return returnObject;
     }
@@ -716,7 +721,7 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
-    public ReturnObject withdrawalByBankNormal(String accountId, String productionId, double money, String operatorId, Connection conn) throws Exception {
+    public ReturnObject withdrawalByBankNormal(String accountId, double money, String operatorId, Connection conn) throws Exception {
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
 
@@ -741,6 +746,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
         transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
@@ -756,9 +762,10 @@ public class AllinpayCircleService extends BaseService {
 
         if (returnObject.getCode() == 100) {
 
-            // todo: 普通取现
+            String content = TimeUtils.getNow() + " 取现 " + MoneyUtils.format2String(money) + "元";
+            customerMoneyLogDao.newCustomerMoneyLog(money, 0, CustomerMoneyLogType.WithdrawOrPayment, content, "2", accountId, customerId, conn);
 
-
+            returnObject.setReturnValue("1");
 
         }
         else {
@@ -766,7 +773,7 @@ public class AllinpayCircleService extends BaseService {
         }
 
 
-        return null;
+        return returnObject;
     }
 
 

@@ -99,12 +99,17 @@ var CustomerAccountClass = function(token) {
                 id:'btnAllinpayCircleOpenAccount'+token,
                 text:'通联金融圈开户',
                 iconCls: 'icon-add'
+            },{
+                id:'btnAllinpayCircleWithdrawByBankNormal'+token,
+                text:'通联金融圈普通取现',
+                iconCls: 'icon-ok'
             }],
             onLoadSuccess:function() {
                 onClickCustomerAccountAdd(obj);
                 onClickCustomerAccountDelete();
                 onClickCustomerAccountEdit(obj);
                 onClickCustomerAccount_AllinpayCircle_OpenAccount();
+                onClickCustomerAccount_AllinpayCircle_WithdrawByBankNormal();
             },
             onClickCell:function(index,field,value){
                 var data = $('#CustomerAccountTable'+token).datagrid('getData');
@@ -291,6 +296,24 @@ var CustomerAccountClass = function(token) {
                     }
                 }, null);
             })
+
+        });
+    }
+
+
+    function onClickCustomerAccount_AllinpayCircle_WithdrawByBankNormal() {
+        var buttonId = "btnAllinpayCircleWithdrawByBankNormal" + token;
+        fw.bindOnClick(buttonId, function(process) {
+            fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
+
+                using(SCRIPTS_ROOT + '/allinpayCircle/AllinpayCircleWithdrawByBankNormalClass.js', function () {
+                    //alert("hello");
+                    var allinpayCircleWithdrawByBankNormalClass = new AllinpayCircleWithdrawByBankNormalClass(token);
+                    var data = {'accountId' : selected.id};
+                    allinpayCircleWithdrawByBankNormalClass.openWindow(data);
+                });
+
+            });
 
         });
     }
