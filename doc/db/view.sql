@@ -141,7 +141,10 @@ SELECT
     o.financeMoneyConfirm,
     o.financeMoneyConfirmUserId,
     (select name from system_user where state=0 and id=o.financeMoneyConfirmUserId) financeMoneyConfirmUserName,
-    o.financeMoneyConfirmTime
+    o.financeMoneyConfirmTime,
+    o.allinpayCircle_deposit_status,	
+    o.allinpayCircle_payByShare_status,	
+    o.allinpayCircle_payByShare_time
 FROM
     crm_order o
 left join view_salesman_customer_distribution scd on  scd.customerId=o.CustomerId
