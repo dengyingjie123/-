@@ -872,6 +872,13 @@ public class OrderAction extends BaseAction {
 
             order.setMoney(Double.parseDouble(moneyString));
 
+            if (!StringUtils.isEmpty(order.getFinanceMoneyConfirm()) && order.getFinanceMoneyConfirm().equals("1")) {
+                // 已确认的扎帐数据不删除
+                order.setFinanceMoneyConfirm(null);
+                order.setFinanceMoneyConfirmUserId(null);
+                order.setFinanceMoneyConfirmTime(null);
+            }
+
 
 
             order = orderService.appointmentOrderFromNow(order.getId(), order.getCustomerId(), order.getProductionId(), order.getProductionCompositionId(), order.getMoney(), order.getPayTime(), order.getContractNo(), order.getReferralCode(), order.getStatus(), order.getAccountId(), order.getBankCode(), order.getDescription(), getConnection());
