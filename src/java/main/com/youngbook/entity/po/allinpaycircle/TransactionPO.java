@@ -2,6 +2,7 @@ package com.youngbook.entity.po.allinpaycircle;
 
 import com.youngbook.annotation.IgnoreDB;
 import com.youngbook.common.KVObjects;
+import com.youngbook.common.utils.StringUtils;
 import com.youngbook.entity.po.BasePO;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -43,7 +44,11 @@ public class TransactionPO extends BasePO {
         head.addElement("inst_id").addText(inst_id);
         head.addElement("trans_date").addText(trans_date);
         head.addElement("trans_time").addText(trans_time);
-        head.addElement("sign_code").addText(sign_code);
+
+        if (!StringUtils.isEmpty(sign_code)) {
+            head.addElement("sign_code").addText(sign_code);
+        }
+
         head.addElement("ver_num").addText(ver_num);
 
         if (request != null && request.size() > 0) {
