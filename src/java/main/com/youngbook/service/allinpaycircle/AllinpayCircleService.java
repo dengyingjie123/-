@@ -1,5 +1,6 @@
 package com.youngbook.service.allinpaycircle;
 
+import com.alibaba.fastjson.JSONObject;
 import com.allinpay.ets.client.StringUtil;
 import com.emulator.paymentgateway.util.PaymentGatewayService;
 import com.emulator.paymentgateway.util.SecurityUtil;
@@ -37,17 +38,32 @@ import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.vo.Sale.PaymentPlanVO;
 import com.youngbook.service.BaseService;
 import encryption.DataGramB2cUtil;
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.misc.BASE64Decoder;
 
+import java.net.ConnectException;
+import java.security.Key;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.XMLFormatter;
 
 /**
  * Created by leevits on 4/15/2018.
@@ -1059,23 +1075,21 @@ public class AllinpayCircleService extends BaseService {
         TransactionPO transactionPO = new TransactionPO();
 
         transactionPO.setProcessing_code("1087");
-        transactionPO.setTrans_date(TimeUtils.getNowDateYYYYMMDD());
-        transactionPO.setTrans_time(TimeUtils.getNowTimeHH24MMSS());
 
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
-        transactionPO.getRequest().addItem("sub_merchant_id", "79020000");
-        transactionPO.getRequest().addItem("sign_type", "2");
+        transactionPO.getRequest().addItem("sub_merchant_id", "");
+        transactionPO.getRequest().addItem("sign_type", "3");
         transactionPO.getRequest().addItem("prod_flag", "0");
         transactionPO.getRequest().addItem("bnk_id", "03040000");
         transactionPO.getRequest().addItem("acct_type", "1");
-        transactionPO.getRequest().addItem("acct_num", "1234558712203953");
+        transactionPO.getRequest().addItem("acct_num", "1234558712203145872");
         transactionPO.getRequest().addItem("cnaps_code", "");
         transactionPO.getRequest().addItem("hld_name", "李扬");
         transactionPO.getRequest().addItem("cer_type", "01");
-        transactionPO.getRequest().addItem("cer_num", "530103198203091219");
+        transactionPO.getRequest().addItem("cer_num", "530103198203091218");
         transactionPO.getRequest().addItem("tel_num", "13888939712");
-        transactionPO.getRequest().addItem("supply_inst_code", "2");
+        transactionPO.getRequest().addItem("supply_inst_code", "");
         transactionPO.getRequest().addItem("is_send_msg", "");
         transactionPO.getRequest().addItem("mhnt_name", "2");
         transactionPO.getRequest().addItem("ms_signature", "");
@@ -1087,18 +1101,18 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("sys_id", "");
         transactionPO.getRequest().addItem("account_manager_tel", "");
 
-        System.out.println(transactionPO.toXmlString());
 
-        // allinpay_circle
-
-
-        String signature = DataGramB2cUtil.signature(transactionPO.toXmlString());
-
-        transactionPO.setSign_code(signature);
-
-        System.out.println(transactionPO.toXmlString());
+        AllinpayCircleService allinpayCircleService = Config.getBeanByName("allinpayCircleService", AllinpayCircleService.class);
 
 
+        Connection conn = Config.getConnection();
+
+        try {
+            allinpayCircleService.sendTransaction(transactionPO, conn);
+        }
+        catch (Exception e) {
+            throw e;
+        }
         finally {
             Database.close(conn);
 
@@ -1133,16 +1147,15 @@ public class AllinpayCircleService extends BaseService {
 
             return kvObjects;
 
+        }
+
+        return null;
+    }
 
 
-        String base64 = AllinPayUtils.getBASE64(transactionPO.toXmlString());
 
-        System.out.println(base64);
-
-        Map<String,String> rawParams = new HashMap<>();
-        rawParams.put("msgPlain", base64);
-        String postRequest = HttpUtils.postRequest(url, rawParams);
-
+    /**
+     * 通联万小宝
      * 验证码验证
      * @param bizId
      * @param mobileCode
