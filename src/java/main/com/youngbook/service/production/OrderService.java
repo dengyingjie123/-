@@ -697,7 +697,7 @@ public class OrderService extends BaseService {
         sbSignature.append(order.getMoney());
 
         String bankNumber = "";
-        CustomerAccountPO customerAccountPO = customerAccountDao.getCustomerAccountPO(order.getId(), conn);
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByOrderId(order.getId(), conn);
         if (customerAccountPO != null) {
             bankNumber = customerAccountPO.getNumber();
         }

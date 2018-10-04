@@ -4,20 +4,15 @@ import com.aipg.transquery.QTDetail;
 import com.youngbook.annotation.*;
 import com.youngbook.command.CommandExecutor;
 import com.youngbook.common.*;
-import com.youngbook.common.config.AesEncrypt;
-import com.youngbook.common.config.BizRouteConfig;
-import com.youngbook.common.config.Config;
-import com.youngbook.common.config.Config4Status;
+import com.youngbook.common.config.*;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.utils.IdUtils;
-import com.youngbook.common.utils.NumberUtils;
-import com.youngbook.common.utils.StringUtils;
-import com.youngbook.common.utils.TimeUtils;
+import com.youngbook.common.utils.*;
 import com.youngbook.common.utils.console.ConsoleTable;
 import com.youngbook.common.wf.admin.Action;
 import com.youngbook.common.wf.admin.RouteList;
 import com.youngbook.common.wf.clientapp.ClientApplications;
 import com.youngbook.common.wf.services.IBizService;
+import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.CustomerPersonalDaoImpl;
@@ -30,6 +25,7 @@ import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentDetailPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentStatus;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentType;
+import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.OrderPayPO;
 import com.youngbook.entity.po.core.TransferPO;
 import com.youngbook.entity.po.core.TransferTargetType;
@@ -800,7 +796,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
             /**
              * 从订单里获得银行账号
              */
-            CustomerAccountPO customerAccountPO = customerAccountDao.getCustomerAccountPO(paymentPlanPO.getOrderId(), conn);
+            CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByOrderId(paymentPlanPO.getOrderId(), conn);
             accountName = customerAccountPO.getName();
             bankCode = customerAccountPO.getBankCode();
             cityCode = customerAccountPO.getCityCode();

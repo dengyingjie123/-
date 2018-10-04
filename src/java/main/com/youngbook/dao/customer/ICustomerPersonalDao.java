@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Lee on 2016/5/28.
  */
 public interface ICustomerPersonalDao {
-
+    public CustomerPersonalPO insertOrUpdate(CustomerPersonalPO customerPersonalPO, String userId, Connection conn) throws Exception;
     public CustomerPersonalPO updateModern(CustomerPersonalPO customer, String userId, Connection conn) throws Exception;
     public boolean isCustomerCatalogConfirmed(CustomerPersonalPO customerPersonalPO);
     public CustomerPersonalPO loadByCustomerPersonalNumber(String personalNumber, Connection conn) throws Exception;

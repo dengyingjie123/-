@@ -57,6 +57,43 @@ public class CustomerAccountPO extends BasePO {
     // 客户类型
     private int customerType = Integer.MAX_VALUE;
 
+    /**
+     * 通联万小宝交易子账号
+     */
+    private String allinpayCircle_AcctSubNo = "";
+
+
+    private String allinpayCircle_ChangeStatus = "";
+
+    public String getAllinpayCircle_ChangeStatus() {
+        return allinpayCircle_ChangeStatus;
+    }
+
+    public void setAllinpayCircle_ChangeStatus(String allinpayCircle_ChangeStatus) {
+        this.allinpayCircle_ChangeStatus = allinpayCircle_ChangeStatus;
+    }
+
+    /**
+     * 银行预留手机号
+     */
+    private String mobile = "";
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAllinpayCircle_AcctSubNo() {
+        return allinpayCircle_AcctSubNo;
+    }
+
+    public void setAllinpayCircle_AcctSubNo(String allinpayCircle_AcctSubNo) {
+        this.allinpayCircle_AcctSubNo = allinpayCircle_AcctSubNo;
+    }
+
     public String getCityCode() {
         return cityCode;
     }

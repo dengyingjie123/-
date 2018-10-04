@@ -5,11 +5,15 @@ import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.StringUtils;
+import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.production.IOrderDao;
+import com.youngbook.dao.system.IKVDao;
+import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.customer.CustomerAccountStatus;
+import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.fdcg.FdcgCustomerAccountPO;
 import com.youngbook.entity.po.production.OrderPO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,11 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
     @Autowired
     IOrderDao orderDao;
 
+    @Autowired
+    IKVDao kvDao;
+
+    @Autowired
+    ICustomerPersonalDao customerPersonalDao;
 
     public FdcgCustomerAccountPO fdcgGetCustomerAccountPO(String crmCustomerPersonalId, String bindStatus, Connection conn) throws Exception {
 

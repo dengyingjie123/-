@@ -31,8 +31,25 @@ public class CustomerMoneyLogPO extends BasePO {
     // 内容
     private String content = new String();
 
-    // 状态
+    /**
+     * 成功、受理、失败
+     */
     private String status = new String();
+
+    /**
+     * 本金
+     */
+    private double principalMoney = Double.MAX_VALUE;
+
+    /**
+     * 收益
+     */
+    private double profitMoney = Double.MAX_VALUE;
+
+    /**
+     * 手续费
+     */
+    private double feeMoney = Double.MAX_VALUE;
 
     // 模块编号 : 用于确定是哪个模块对此表的操作
     private String moduleId = new String();

@@ -51,6 +51,14 @@ public class OrderPO extends BasePO {
     @DataAdapter(fieldType = FieldType.DATE)
     private String createTime = new String();
 
+    /**
+     * 充值状态
+     * 0：未充值
+     * 1：已充值
+     * 2：充值待系统确认
+     * 3：充值失败
+     */
+    private int depositStatus = Integer.MAX_VALUE;
 
     // 客户属性  0-个人客户  1-机构客户
     private int customerAttribute = Integer.MAX_VALUE;
