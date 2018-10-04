@@ -127,7 +127,8 @@ public class OrderService extends BaseService {
         customerDistributionDao.distributeCustomer(order.getCustomerId(), userPO.getId(), salemanGroup.getId(), userPositionInfo.getDepartmentId(), 0, true, conn);
 
 
-        return MySQLDao.insertOrUpdate(order, userId, conn);
+        orderDao.insertOrUpdate(order, userId, conn);
+        return 1;
     }
 
 
@@ -599,7 +600,7 @@ public class OrderService extends BaseService {
             order.setMoneyTransferStatus(OrderMoneyTransferStatus.Transfered);
             order.setMoneyTransferTime(TimeUtils.getNow());
 
-            MySQLDao.insertOrUpdate(order, userId, conn);
+            orderDao.insertOrUpdate(order, userId, conn);
         }
 
 
@@ -607,66 +608,8 @@ public class OrderService extends BaseService {
     }
 
 
-    /**
-     * 支付后修改订单信息
-     * <p/>
-     * 作者：邓超
-     * 内容：创建代码
-     * 时间：2015年12月17日
-     *
-     * @param order
-     * @param status
-     * @param payTime
-     * @param valueDate
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    private int updateAfterPay(OrderPO order, Integer status, String payTime, String valueDate, Connection conn) throws Exception {
-        order.setStatus(status);
-        order.setPayTime(payTime);
-        order.setValueDate(valueDate);
-        return MySQLDao.insertOrUpdate(order, conn);
-    }
 
 
-
-    public void setAppointmentTimeout(Connection conn) throws Exception {
-
-        int minutes = 0 - 30;
-
-        String now = TimeUtils.getNow();
-        String timeoutTime = TimeUtils.getTime(now, minutes, TimeUtils.MINUTE);
-
-        String webProjectId = Config.getSystemConfig("web.webproject.id");
-
-        StringBuffer sbSQL = new StringBuffer();
-        sbSQL.append(" SELECT");
-        sbSQL.append("     o.*");
-        sbSQL.append(" FROM");
-        sbSQL.append("     crm_order o,");
-        sbSQL.append("     crm_production p,");
-        sbSQL.append("     crm_productionhome ph");
-        sbSQL.append(" WHERE");
-        sbSQL.append("     1 = 1");
-        sbSQL.append(" AND o.state = 0");
-        sbSQL.append(" AND p.state = 0");
-        sbSQL.append(" AND ph.state = 0");
-        sbSQL.append(" AND o.`Status` = 0");
-        sbSQL.append(" AND o.AppointmentTime < '" + timeoutTime + "'");
-        sbSQL.append(" AND ph.ProjectId = '" + webProjectId + "'");
-        sbSQL.append(" AND p.productHomeId = ph.Id");
-        sbSQL.append(" AND o.ProductionId = p.id");
-
-        List<OrderPO> orders = MySQLDao.search(sbSQL.toString(), null, OrderPO.class, null, conn);
-
-        for (int i = 0; orders != null && i < orders.size(); i++) {
-            OrderPO order = orders.get(i);
-            order.setStatus(OrderStatus.AppointmentTimeout);
-            MySQLDao.insertOrUpdate(order, conn);
-        }
-
-    }
 
     /**
      * 通过订单编号查询订单
@@ -743,10 +686,7 @@ public class OrderService extends BaseService {
 
         order.setStatus(orderStatusTransferType);
 
-        int count = MySQLDao.insertOrUpdate(order, conn);
-        if (count != 1) {
-            MyException.newInstance("转让失败，保存转让信息失败").throwException();
-        }
+        orderDao.insertOrUpdate(order, operatorId, conn);
 
         orderDetailDao.saveOrderDetail(order, transferMoney, transferTime, orderStatusTransferType,  "订单转让", operatorId, conn);
 
@@ -793,10 +733,7 @@ public class OrderService extends BaseService {
          * Date: 2016-05-20 9:50:30
          * Author: leevits
          */
-        int count = MySQLDao.insertOrUpdate(order, conn);
-        if (count != 1) {
-            MyException.newInstance("转让失败，保存兑付信息失败").throwException();
-        }
+        orderDao.insertOrUpdate(order, operatorId, conn);
 
         orderDetailDao.saveOrderDetail(order, paybackMoney, paybackTime, order.getStatus(), "订单兑付", operatorId, conn);
 
@@ -812,7 +749,7 @@ public class OrderService extends BaseService {
 
     public OrderPO saveOrder(OrderPO order, String userId, Connection conn) throws Exception {
 
-        MySQLDao.insertOrUpdate(order, userId, conn);
+        orderDao.insertOrUpdate(order, userId, conn);
 
         return order;
     }
@@ -825,7 +762,7 @@ public class OrderService extends BaseService {
          */
         orderDetailDao.saveOrderDetail(order, order.getMoney(), TimeUtils.getNow(), OrderStatus.FinanceConfirm01, "财务一次审核", userId, conn);
 
-        MySQLDao.insertOrUpdate(order, userId, conn);
+        orderDao.insertOrUpdate(order, userId, conn);
 
         return order;
     }
@@ -982,14 +919,6 @@ public class OrderService extends BaseService {
         order.setStatus(OrderStatus.Saled);
 
 
-        // 设置销售的银行卡
-        Integer orderExecCount = this.updateAfterPay(order, OrderStatus.Saled, payTime, valueDate, conn);
-        if(orderExecCount != 1) {
-            MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "数据库异常").throwException();
-        }
-
-
-
         /**
          * 保存订单详情
          *
@@ -1029,12 +958,7 @@ public class OrderService extends BaseService {
         }
         order.setPayChannel(orderPayChannel);*/
 
-        int orderOperateStatus = MySQLDao.insertOrUpdate(order, userId, conn);
-        if (orderOperateStatus != 1) {
-            MyException.newInstance(Config.getWords4WebGeneralError(), "产品购买失败，请检查").throwException();
-        }
-
-
+        orderDao.insertOrUpdate(order, userId, conn);
 
 
 
@@ -1152,19 +1076,10 @@ public class OrderService extends BaseService {
             MyException.newInstance("当前订单状态不支持取消").throwException();
         }
 
-        int count = MySQLDao.insertOrUpdate(order, conn);
+        orderDao.insertOrUpdate(order, userId, conn);
 
-        if (count != 1) {
-            MyException.newInstance("取消预约订单失败，订单明细保存异常").throwException();
-        }
+        orderDetailDao.saveOrderDetail(order, order.getMoney(), now, detail.getStatus(), "订单取消", userId, conn);
 
-
-        count = orderDetailDao.saveOrderDetail(order, order.getMoney(), now, detail.getStatus(), "订单取消", userId, conn);
-
-
-        if (count != 1) {
-            MyException.newInstance("保存订单明细失败").throwException();
-        }
 
         return 1;
     }
@@ -1319,14 +1234,6 @@ public class OrderService extends BaseService {
         order.setPayTime(payTime);
         order.setDescription(description);
 
-        /**
-         * 如果财务已扎帐确认，则不清除扎帐信息
-         */
-        if (StringUtils.isEmpty(order.getFinanceMoneyConfirm()) || order.getFinanceMoneyConfirm().equals("1")) {
-            // 财务未确认
-            order.setFinanceMoneyConfirm("0");
-        }
-
 
 
         if(!StringUtils.isEmpty(accountId)) {
@@ -1392,7 +1299,7 @@ public class OrderService extends BaseService {
 
 
         // 生成订单
-        MySQLDao.insertOrUpdate(order, order.getSalemanId(), conn);
+        orderDao.insertOrUpdate(order, order.getSalemanId(), conn);
 
 
         /**
@@ -1433,7 +1340,7 @@ public class OrderService extends BaseService {
 
         order.setStatus(feedbackStatus);
 
-        MySQLDao.insertOrUpdate(order, userId, conn);
+        orderDao.insertOrUpdate(order, userId, conn);
 
         String now = TimeUtils.getNow();
 
@@ -1491,7 +1398,9 @@ public class OrderService extends BaseService {
         }
 
         order.setReferralCode(referralCode);
-        return MySQLDao.insertOrUpdate(order, conn);
+
+        orderDao.insertOrUpdate(order, order.getSalemanId(), conn);
+        return 1;
     }
 
 
