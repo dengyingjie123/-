@@ -983,7 +983,7 @@ public class OrderService extends BaseService {
         // 新增新的资金日志
         String logType = CustomerMoneyLogType.Buy;
         String logContent = CustomerMoneyLogType.Buy + "[" + production.getName() +"]" + order.getMoney() + "元";
-        String logStatus = Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS;
+        String logStatus = CustomerMoneyLogStatus.Success;
 
         customerMoneyLogDao.newCustomerMoneyLog(order.getMoney(), 0, logType, logContent, logStatus, order.getId(), order.getCustomerId(), conn);
 

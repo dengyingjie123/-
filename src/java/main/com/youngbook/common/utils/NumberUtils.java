@@ -1,5 +1,7 @@
 package com.youngbook.common.utils;
 
+import com.youngbook.common.MyException;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
@@ -12,11 +14,12 @@ import java.util.regex.Pattern;
 public class NumberUtils {
 
     public static int parse2Int(String text) throws Exception {
-        if (!StringUtils.isEmpty(text) && StringUtils.isNumeric(text)) {
-            return Integer.parseInt(text);
+
+        if (StringUtils.isEmpty(text) || !StringUtils.isNumeric(text)) {
+            MyException.newInstance("无法转换字符串", "text=" + text).throwException();
         }
 
-        return Integer.MAX_VALUE;
+        return Integer.parseInt(text);
     }
 
     public static double formatDouble(double number, int scale) {

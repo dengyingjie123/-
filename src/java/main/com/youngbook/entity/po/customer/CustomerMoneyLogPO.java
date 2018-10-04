@@ -32,7 +32,10 @@ public class CustomerMoneyLogPO extends BasePO {
     private String content = new String();
 
     /**
-     * 成功、受理、失败
+     * 0 未操作,
+     * 1 成功,
+     * 2 已受理,
+     * 3 失败
      */
     private String status = new String();
 
