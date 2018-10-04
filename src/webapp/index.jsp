@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.print.css" media='print'>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/JSON-to-Table-1.0.0.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/third-party/accounting.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/easyloader.js"></script>

@@ -985,27 +985,13 @@ var fw = (function () {
                     });
                     //throw new Error("数据库无法连接");
                 }
-                else if (data.code == 6855) {
-                    fw.alert('失败', data.message);
-                    // throw new Error("没有系统邮箱，请与管理员联系。");
-                }
                 else if (data.code == 202) {
                     fw.alert('失败', data.message);
-                    // throw new Error("没有操作权限，请与管理员联系。");
+                    throw new Error("没有操作权限，请与管理员联系。");
                 }
                 else if (data.code == 301) {
                     fw.alert('失败', '数据库事务异常，请检查数据是否正确');
                     // throw new Error("数据库事务异常，请检查数据是否正确");
-                }
-                else if (data.code == 32537) {
-                    fw.alert('失败', '请选择归属为是！');
-                    // throw new Error("数据库事务异常，请检查数据是否正确");
-                }
-                //2015 -6 -17 周海鸿
-                // 获取用户默认部门 该用户没有默认部门异常处理
-                else if (data.code == 2015617) {
-                    fw.alert('失败', '该用户没有默认部门');
-                   //  throw new Error("检查用户数据，该用户没有默认部门");
                 }
                 else {
                     fw.alert('失败', '错误编码：【'+ data.code + '】，错误说明：【'+data.message+'】');
@@ -1220,7 +1206,6 @@ var fw = (function () {
                     }
                     else {
                         if (fw.checkIsFunction(onSubmit)) {
-
                             onSubmit();
                         }
                     }
@@ -1526,12 +1511,15 @@ var fw = (function () {
                     try {
                         try {
                             var d = fw.dealReturnObject(data);
+
+                            if (fw.checkIsFunction(success)) {
+                                success(d);
+                            }
+
                         } catch (e) {
-                            fw.alertReturnValue(e);
+                            // fw.alertReturnValue(e);
                         }
-                        if (fw.checkIsFunction(success)) {
-                            success(d);
-                        }
+
 
                         fw.showMessageDone();
                     }

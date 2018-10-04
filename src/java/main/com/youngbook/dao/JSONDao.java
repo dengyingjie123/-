@@ -108,6 +108,32 @@ public class JSONDao {
 
     }
 
+    public static JSONArray convert2JSONArray(List<KVObjects> listKOS) {
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; listKOS != null && i < listKOS.size(); i++) {
+            KVObjects kvObjects = listKOS.get(i);
+            jsonArray.element(kvObjects.toJSONObject());
+        }
+
+        return jsonArray;
+    }
+
+    public static List<KVObjects> getListKVObjects(String jsonString) throws Exception {
+
+        JSONArray jsonArray = JSONArray.fromObject(jsonString);
+
+        List<KVObjects> list = new ArrayList<>();
+
+        for (int i = 0; jsonArray != null && i < jsonArray.size(); i++) {
+            String json = jsonArray.getJSONObject(i).toString();
+            KVObjects kvObjects = toKVObjects(json);
+            list.add(kvObjects);
+        }
+
+        return list;
+    }
+
 
     public static KVObjects toKVObjects (String jsonString) throws JSONException {
 

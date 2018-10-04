@@ -63,7 +63,25 @@ var CustomerAccountClass = function(token) {
                 { field: 'number', title: '账号'},
                 { field: 'bankBranchName', title: '开户支行名称'},
                 { field: 'bankCode', title: '银行代码'},
-                { field: 'cityCode', title: '城市代码'}
+                { field: 'mobile', title: '银行预留手机号'},
+                { field: 'cityCode', title: '城市代码'},
+                { field: 'allinpayCircle_AcctSubNo', title: '通联-交易子账号'},
+                {field: 'allinpayCircle_ChangeStatus', title: '通联-换卡状态',
+                    formatter: function(value,row,index){
+                        if (row['allinpayCircle_ChangeStatus']=='0') {
+                            return '无需换卡';
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='1') {
+                            return '已换卡';
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='2') {
+                            return "<a href='#'>换卡受理</a>";
+                        }
+                        else if (row['allinpayCircle_ChangeStatus']=='3') {
+                            return '换卡失败';
+                        }
+                    }
+                },
             ]],
             toolbar: [{
                 id:'btnCustomerAccountAdd'+token,
@@ -77,11 +95,35 @@ var CustomerAccountClass = function(token) {
                 id:'btnCustomerAccountDelete'+token,
                 text:'删除',
                 iconCls: 'icon-remove'
+            },{
+                id:'btnAllinpayCircleOpenAccount'+token,
+                text:'通联金融圈开户',
+                iconCls: 'icon-add'
+            },{
+                id:'btnAllinpayCircleWithdrawByBankNormal'+token,
+                text:'通联金融圈普通取现',
+                iconCls: 'icon-ok'
             }],
             onLoadSuccess:function() {
                 onClickCustomerAccountAdd(obj);
                 onClickCustomerAccountDelete();
                 onClickCustomerAccountEdit(obj);
+                onClickCustomerAccount_AllinpayCircle_OpenAccount();
+                onClickCustomerAccount_AllinpayCircle_WithdrawByBankNormal();
+            },
+            onClickCell:function(index,field,value){
+                var data = $('#CustomerAccountTable'+token).datagrid('getData');
+                // fw.alertReturnValue(data);
+
+                // 查看兑付计划
+                if (field == 'allinpayCircle_ChangeStatus') {
+                    var accountId = data['rows'][index]['id'];
+                    using(SCRIPTS_ROOT + '/allinpayCircle/MobileCodeClass.js', function () {
+                        //alert("hello");
+                        var mobileCodeClass = new MobileCodeClass(token);
+                        mobileCodeClass.openMobileCodeCheckWindow(accountId);
+                    });
+                }
             }
         });
     }
@@ -147,6 +189,8 @@ var CustomerAccountClass = function(token) {
 
             // 初始化表单提交事件
             onClickCustomerAccountSubmit();
+            onClickCustomerAccountSubmit_AllinpayCircle();
+            onClickCustomerAccountSubmit_AllinpayCircle_ChangeMobile();
 
             // 银行列表
             var URL = WEB_ROOT + "/customer/CustomerAccount_getBankList.action";
@@ -232,6 +276,48 @@ var CustomerAccountClass = function(token) {
         });
     }
 
+
+    function onClickCustomerAccount_AllinpayCircle_OpenAccount() {
+        var buttonId = "btnAllinpayCircleOpenAccount" + token;
+        fw.bindOnClick(buttonId, function(process) {
+            fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
+
+                if (!fw.checkIsTextEmpty(selected['allinpayCircle_AcctSubNo'])) {
+                    fw.alert('提示', '该账号已注册过通联金融圈账户');
+                    return;
+                }
+
+                var id = selected.id;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_openAccountPersonalByTrust?customerAccountId="+id;
+                fw.post(url, null, function(data){
+                    if (data == '1') {
+                        fw.alert('提示', '通联金融圈账户开户成功');
+                        fw.datagridReload('CustomerAccountTable' + token);
+                    }
+                }, null);
+            })
+
+        });
+    }
+
+
+    function onClickCustomerAccount_AllinpayCircle_WithdrawByBankNormal() {
+        var buttonId = "btnAllinpayCircleWithdrawByBankNormal" + token;
+        fw.bindOnClick(buttonId, function(process) {
+            fw.datagridGetSelected('CustomerAccountTable'+token, function(selected){
+
+                using(SCRIPTS_ROOT + '/allinpayCircle/AllinpayCircleWithdrawByBankNormalClass.js', function () {
+                    //alert("hello");
+                    var allinpayCircleWithdrawByBankNormalClass = new AllinpayCircleWithdrawByBankNormalClass(token);
+                    var data = {'accountId' : selected.id};
+                    allinpayCircleWithdrawByBankNormalClass.openWindow(data);
+                });
+
+            });
+
+        });
+    }
+
     /**
      * 数据提交事件
      */
@@ -250,6 +336,68 @@ var CustomerAccountClass = function(token) {
             }, function() {
                 process.afterClick();
             });
+        });
+    }
+
+
+    function onClickCustomerAccountSubmit_AllinpayCircle() {
+        var buttonId = "btnCustomerAccountSubmit_AllinpayCircle" + token;
+        fw.bindOnClick(buttonId, function(process){
+
+            fw.confirm('提示', '是否确认进行通联金融圈账号修改？', function() {
+                var formId = "formCustomerAccount" + token;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_changeBankCard";
+
+                // fw.alertReturnValue(url);
+                fw.bindOnSubmitForm(formId, url, function(){
+                    process.beforeClick();
+                }, function(data) {
+                    //alert('done');
+                    // fw.alertReturnValue(data);
+
+                    process.afterClick();
+                    fw.datagridReload("CustomerAccountTable"+token);
+                    fw.windowClose('CustomerAccountWindow'+token);
+                }, function() {
+                    process.afterClick();
+                });
+            },null);
+
+
+        });
+    }
+
+
+
+
+    function onClickCustomerAccountSubmit_AllinpayCircle_ChangeMobile() {
+        var buttonId = "btnCustomerAccountSubmit_AllinpayCircle_ChangeMobile" + token;
+        fw.bindOnClick(buttonId, function(process){
+
+            fw.confirm('提示', '是否确认进行通联金融圈银行预留手机号修改？', function() {
+                var formId = "formCustomerAccount" + token;
+                var url = WEB_ROOT + "/pay/AllinpayCircle_changeMobile";
+
+                // fw.alertReturnValue(url);
+                fw.bindOnSubmitForm(formId, url, function(){
+                    process.beforeClick();
+                }, function(data) {
+                    //alert('done');
+                    // fw.alertReturnValue(data);
+
+                    if (data == '1') {
+                        fw.alert('提示', '通联生态圈银行预留手机号变更成功');
+                    }
+
+                    process.afterClick();
+                    fw.datagridReload("CustomerAccountTable"+token);
+                    fw.windowClose('CustomerAccountWindow'+token);
+                }, function() {
+                    process.afterClick();
+                });
+            },null);
+
+
         });
     }
 

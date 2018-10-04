@@ -1,5 +1,6 @@
 package com.youngbook.entity.po.allinpaycircle;
 
+import com.youngbook.annotation.IgnoreDB;
 import com.youngbook.common.KVObjects;
 import com.youngbook.entity.po.BasePO;
 import org.dom4j.Document;
@@ -12,10 +13,17 @@ import org.dom4j.Element;
 public class TransactionPO extends BasePO {
 
     /**
+     * 关联的业务编号
+     */
+    @IgnoreDB
+    private String bizId = "";
+
+    /**
      * head部分
      */
     private String processing_code = "";
-    private String inst_id = "79020000";
+
+    private String inst_id = "79040000";
     private String trans_date = "";
     private String trans_time = "";
     private String sign_code = "";
@@ -121,5 +129,13 @@ public class TransactionPO extends BasePO {
 
     public void setResponse(KVObjects response) {
         this.response = response;
+    }
+
+    public String getBizId() {
+        return bizId;
+    }
+
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
     }
 }

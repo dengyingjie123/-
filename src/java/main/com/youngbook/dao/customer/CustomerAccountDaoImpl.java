@@ -87,7 +87,77 @@ public class CustomerAccountDaoImpl implements ICustomerAccountDao {
 
     }
 
-    public CustomerAccountPO getCustomerAccountPO(String orderId, Connection conn) throws Exception {
+
+    public CustomerAccountPO inertOrUpdate(CustomerAccountPO customerAccountPO, String operatorId, Connection conn) throws Exception {
+
+        //aes加密银行账号
+        if(customerAccountPO != null && !StringUtils.isEmpty(customerAccountPO.getNumber())) {
+
+            /**
+             * 防止二次加密
+             */
+
+            if (StringUtils.isNumeric(customerAccountPO.getNumber())) {
+                customerAccountPO.setNumber(AesEncrypt.encrypt(customerAccountPO.getNumber()));
+            }
+        }
+
+
+        // 保存账号名称
+        if (StringUtils.isEmpty(customerAccountPO.getName()) && !StringUtils.isEmpty(customerAccountPO.getCustomerId())) {
+            CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerAccountPO.getCustomerId(), conn);
+            customerAccountPO.setName(customerPersonalPO.getName());
+        }
+
+        MySQLDao.insertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+        return customerAccountPO;
+    }
+
+    /**
+     * 通过KV里获得对应的银行编号
+     * @param accountId
+     * @param parameterKey
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public String getBankCodeInKVParameter(String accountId, String parameterKey, Connection conn) throws Exception {
+
+        CustomerAccountPO customerAccountPO = loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String bankCode = getBankCodeInKVParameterWithBankCode(customerAccountPO.getBankCode(), parameterKey, conn);
+
+        return bankCode;
+    }
+
+    public String getBankCodeInKVParameterWithBankCode(String bankCode, String parameterKey, Connection conn) throws Exception {
+
+        KVPO kvpo = kvDao.loadKVPO(bankCode, "Bank", conn);
+
+        bankCode = StringUtils.getUrlParameters(kvpo.getParameter()).getItemString(parameterKey);
+
+        return bankCode;
+    }
+
+
+    public CustomerAccountPO loadCustomerAccountPOByAccountId(String accountId, Connection conn) throws Exception {
+
+        CustomerAccountPO customerAccountPO = new CustomerAccountPO();
+        customerAccountPO.setId(accountId);
+        customerAccountPO.setState(Config.STATE_CURRENT);
+
+        customerAccountPO = MySQLDao.load(customerAccountPO, CustomerAccountPO.class, conn);
+
+        if (customerAccountPO == null) {
+            MyException.newInstance("无法获得客户账户信息", "accountId=" + accountId).throwException();
+        }
+
+        return customerAccountPO;
+    }
+
+    public CustomerAccountPO loadCustomerAccountPOByOrderId(String orderId, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(orderId)) {
             return null;

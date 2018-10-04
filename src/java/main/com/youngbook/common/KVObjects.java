@@ -29,6 +29,27 @@ public class KVObjects {
     }
 
 
+    public void removeByKey(Object key) {
+
+        while (containsKey(key)) {
+            int index = getIndex(key);
+            objects.remove(index);
+        }
+    }
+
+    public int getIndex(Object key) {
+
+        for (int i = 0; objects != null && i < objects.size(); i++) {
+            KVObject o = objects.get(i);
+
+            if (o.getKey().equals(key)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public boolean containsKey(Object key) {
 
         for (int i = 0; objects != null && i < objects.size(); i++) {
