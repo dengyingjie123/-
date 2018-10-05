@@ -1034,13 +1034,19 @@ public class AllinpayCircleService extends BaseService {
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(orderPO.getAccountId(), "allinpayCircleBankCode", conn);
 
 
-
+        String supplyCode = getSupplyCode(customerAccountPO.getSupplyCode(), conn);
 
         ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
 
         TransactionPO transactionPO = new TransactionPO();
 
         transactionPO.setProcessing_code("2085");
+
+
+        KVObjects productionParameter = getProductionParameter(productionPO.getProductHomeId(), conn);
+
+        String product_num = productionParameter.getItemString("product_num");
+        String product_code_cash_acct = productionParameter.getItemString("product_code_cash_acct");
 
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
@@ -1054,9 +1060,11 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(orderPO.getMoney()));
         transactionPO.getRequest().addItem("prod_import_flag", "0");
-        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
-        transactionPO.getRequest().addItem("product_num", "KPL555");
-        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("supply_inst_code", supplyCode);
+        // KPL555
+        transactionPO.getRequest().addItem("product_num", product_num);
+        // 000709
+        transactionPO.getRequest().addItem("product_code_cash_acct", product_code_cash_acct);
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
@@ -1089,6 +1097,18 @@ public class AllinpayCircleService extends BaseService {
 
 
 
+    public KVObjects getProductionParameter(String productionHomeId, Connection conn) throws Exception {
+
+        ProductPropertyPO productPropertyPO = productPropertyDao.loadProductPropertyPO(productionHomeId, "10", conn);
+
+        if (productPropertyPO != null && !StringUtils.isEmpty(productPropertyPO.getValue())) {
+            KVObjects parameters = StringUtils.getUrlParameters(productPropertyPO.getValue());
+
+            return parameters;
+        }
+
+        return null;
+    }
 
     public static void main(String[] args) throws Exception {
 
