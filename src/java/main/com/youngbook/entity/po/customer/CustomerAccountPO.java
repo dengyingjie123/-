@@ -44,6 +44,10 @@ public class CustomerAccountPO extends BasePO {
     // 银行代码
     private String bankCode = new String();
 
+    /**
+     * 供应商编号
+     */
+    private String supplyCode = "";
 
     private String cityCode = "";
 
@@ -77,6 +81,7 @@ public class CustomerAccountPO extends BasePO {
      * 银行预留手机号
      */
     private String mobile = "";
+
 
     public String getMobile() {
         return mobile;
@@ -199,6 +204,13 @@ public class CustomerAccountPO extends BasePO {
     }
 
 
+    public String getSupplyCode() {
+        return supplyCode;
+    }
+
+    public void setSupplyCode(String supplyCode) {
+        this.supplyCode = supplyCode;
+    }
 
     @Override
     public String toString() {

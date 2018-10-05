@@ -299,6 +299,13 @@ function contentTabAdd(permissionName, token) {
             article.initModule();
         });
     }
+    else if (permissionName == "产品管理_供应商管理") {
+        //alert(SCRIPTS_ROOT+'/system/UserClass.js?VERSION='+VERSION);
+        using(SCRIPTS_ROOT+'/system/KVClass.js', function () {
+            var kvClass = new KVClass(token);
+            kvClass.initModule('Production_Supply','供应商管理');
+        });
+    }
     else if (permissionName == "销售管理_销售日报_查看") {
         using(SCRIPTS_ROOT + '/production/OrderClass.js', function () {
             //alert("hello");

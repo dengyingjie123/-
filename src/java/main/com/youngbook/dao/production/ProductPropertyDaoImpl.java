@@ -58,4 +58,20 @@ public class ProductPropertyDaoImpl implements IProductPropertyDao {
 
         return productProperty;
     }
+
+    public ProductPropertyPO loadProductPropertyPO(String productionHomeId, String productPropertyTypeId, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("CBFB1810");
+        dbSQL.addParameter4All("productId", productionHomeId)
+                .addParameter4All("typeId", productPropertyTypeId);
+        dbSQL.initSQL();
+
+        List<ProductPropertyPO> list = MySQLDao.search(dbSQL, ProductPropertyPO.class, conn);
+
+        if (list != null && list.size() == 1) {
+            return list.get(0);
+        }
+
+        return null;
+    }
 }

@@ -8,6 +8,8 @@
 var KVClass  = function(token){
 
     var initGroupName;
+    var title;
+
   function initAll(){
       initFormSearch(token);
   }
@@ -179,7 +181,7 @@ var KVClass  = function(token){
 
     }
     //构建表显示数据
-    function buildTable(type,singleSelect,initGroupName,token){
+    function buildTable(type,singleSelect,initGroupName, token){
         if(fw.checkIsNullObject(singleSelect))   {
             singleSelect = true;
         }
@@ -193,8 +195,13 @@ var KVClass  = function(token){
         if (type == config.buildTableTypeSelection) {
             datagridPageListType = config.datagridPageListType4Window;
         }
-        $('#'+strTableId).datagrid({
-            title: 'KV管理',
+
+        var titleName = 'KV管理';
+        if (!fw.checkIsTextEmpty(title)) {
+            titleName = title;
+        }
+         $('#'+strTableId).datagrid({
+            title: titleName,
             url:url,
             queryParams: {   'kv.GroupName':initGroupName       },
             loadMsg:'数据正在加载，请稍后……',
@@ -253,9 +260,11 @@ var KVClass  = function(token){
         });
     }
     return {
-        initModule:function(KVGroupName){
+        initModule:function(KVGroupName, titleName){
 
             initGroupName = KVGroupName;
+            title = titleName;
+
             initAll();
             buildTable(config.buildTableTypeWithManagement,true,initGroupName,token);
 
