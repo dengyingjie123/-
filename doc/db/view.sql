@@ -190,3 +190,4 @@ left join view_salesman_customer_distribution cd on cd.customerId=c.id
 left join crm_saleman_salemangroup sg on sg.defaultGroup=1 and sg.saleManId=cd.salesmanId
 left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
 left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
+where c.state=0
