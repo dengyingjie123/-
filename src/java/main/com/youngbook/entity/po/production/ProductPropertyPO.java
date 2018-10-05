@@ -6,9 +6,7 @@ import com.youngbook.annotation.Id;
 import com.youngbook.annotation.Table;
 import com.youngbook.entity.po.BasePO;
 
-/**
- * Created by Lee on 2016/10/2.
- */
+
 @Table(name = "crm_ProductProperty", jsonPrefix = "productProperty")
 public class ProductPropertyPO extends BasePO {
     // sid

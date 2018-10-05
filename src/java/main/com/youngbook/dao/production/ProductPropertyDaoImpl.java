@@ -44,11 +44,9 @@ public class ProductPropertyDaoImpl implements IProductPropertyDao {
 
     public ProductPropertyPO newProperty(ProductPropertyPO productProperty, Connection conn) throws Exception {
 
-        if (MySQLDao.insertOrUpdate(productProperty, conn) == 1) {
-            return productProperty;
-        }
+        MySQLDao.insertOrUpdate(productProperty, conn);
 
-        return null;
+        return productProperty;
     }
 
     public ProductPropertyPO loadById(String productPropertyId, Connection conn) throws Exception {

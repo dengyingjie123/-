@@ -26,7 +26,7 @@
         </tr>
         <tr>
           <td align="right">类型</td>
-          <td><input class="easyui-combotree"  editable="false" type="text" id="typeId<%=token %>" name="productProperty.typeId"       style="width:200px"/></td>
+          <td><input class="easyui-combotree"  editable="false" type="text" id="typeId<%=token %>" name="productProperty.typeId"  style="width:200px"/></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
