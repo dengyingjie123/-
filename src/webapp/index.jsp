@@ -26,6 +26,7 @@
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/frameworkplus.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/treeplus.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/md5.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/functions.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/validator.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/highcharts4/js/highcharts.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/lib/moment.min.js"></script>
@@ -45,6 +46,19 @@
             //alert('Hello');
             hmMenu = new Map();
             initSystem();
+
+            /**
+             * 检测浏览器
+             */
+            var thisBroswer = isBroswer();
+
+            console.log(thisBroswer);
+
+            if (thisBroswer['name'] != 'chrome' && thisBroswer['name'] != 'mozilla') {
+                fw.alert('提示', '推荐使用chrome内核浏览器');
+            }
+
+
             //call("13888888888");
             onUpdatePassword(<%=isUpdatePassword%>,null);
         });
