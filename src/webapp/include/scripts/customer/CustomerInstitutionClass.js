@@ -55,7 +55,7 @@ var CustomerInstitutionClass = function(token) {
                 { field: 'sid', title: '序号', hidden:true},
                 { field: 'id', title: '编号', hidden:true },
                 { field: 'name', title: '姓名'},
-                { field: 'type', title: '性质' },
+                { field: 'type', title: '性质',hidden:true },
                 { field: 'legalPerson', title: '法人' },
                 { field: 'registeredCapital', title: '注册资本' },
                 { field: 'address', title: '注册地址' },

@@ -15,4 +15,5 @@ public interface ICustomerInstitutionDao {
     public CustomerInstitutionPO loadByCustomerInstitutionId(String customerInstitutionId, Connection conn) throws Exception;
     public Pager listCustomers4DistributionToManagedSaleGroup(CustomerInstitutionVO customerInstitutionVO, List<KVObject> conditions, int currentPage, int showRowCount, String userId, Connection conn) throws Exception;
     public Pager listCustomers4DistributionToMe(CustomerInstitutionVO customerInstitutionVO, List<KVObject> conditions, int currentPage, int showRowCount, String userId, Connection conn) throws Exception;
+    public Pager getPagerCustomers4All(CustomerInstitutionVO customerInstitutionVO, int currentPage, int showRowCount, Connection conn) throws Exception;
 }
