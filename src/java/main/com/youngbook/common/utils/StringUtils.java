@@ -85,6 +85,7 @@ public class StringUtils {
     }
 
 
+
     public static boolean checkIn(String waitingString, String ... conditions) {
 
         if (StringUtils.isEmpty(waitingString)) {

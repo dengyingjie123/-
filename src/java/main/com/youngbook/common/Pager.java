@@ -2,6 +2,7 @@ package com.youngbook.common;
 
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.BasePO;
@@ -107,6 +108,11 @@ public class Pager implements IJsonable {
             Database.close(conn);
         }
         return null;
+    }
+
+    public static Pager search(DatabaseSQL dbSQL, IJsonable object, int currentPage, int showRowCount, Connection conn) throws Exception {
+
+        return  MySQLDao.search(dbSQL.getSQL(), dbSQL.getParameters(), object, null, currentPage, showRowCount, null, conn);
     }
 
     public static Pager search(String sql, List<KVObject> parameters, IJsonable object, List<KVObject> conditions, int currentPage, int showRowCount, QueryType queryType, Connection conn) throws Exception {

@@ -961,7 +961,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
         CustomerMoneyLogPO moneyLog = new CustomerMoneyLogPO();
         moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 兑付类型
         moneyLog.setContent("兑付[" + production.getName() + "]" + paymentPlanPO.getTotalPaymentMoney() + "元");
-        moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS)); // 兑付成功
+        moneyLog.setStatus(String.valueOf(CustomerMoneyLogStatus.Success)); // 兑付成功
         moneyLog.setCustomerId(paymentPlanPO.getCustomerId());
         moneyLog.setBizId(paymentPlanPO.getId());
 
@@ -1189,7 +1189,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
                     moneyLog.setOperateTime(TimeUtils.getNow());
                     moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); //兑付类型
                     moneyLog.setContent("兑付[" + production.getName() + "]" + totalPaymentMoney + "元");
-                    moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS));//兑付成功
+                    moneyLog.setStatus(CustomerMoneyLogStatus.Success);//兑付成功
                     moneyLog.setCustomerId(customerId);
                     MySQLDao.insert(moneyLog, conn);
 

@@ -873,7 +873,6 @@ public class OrderAction extends BaseAction {
             order.setMoney(Double.parseDouble(moneyString));
 
 
-
             order = orderService.appointmentOrderFromNow(order.getId(), order.getCustomerId(), order.getProductionId(), order.getProductionCompositionId(), order.getMoney(), order.getPayTime(), order.getContractNo(), order.getReferralCode(), order.getStatus(), order.getAccountId(), order.getBankCode(), order.getDescription(), getConnection());
 
             if (order == null) {

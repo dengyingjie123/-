@@ -42,9 +42,6 @@ public class Config4Status {
 
 
     public final static String CUSTOMER_MONEY_PAYMENT_UNFINISH  ="未兑付";
-    public final static String CUSTOMER_MONEY_LOG_UNFINISH="未提现";
-    public final static String CUSTOMER_MONEY_LOG_TYPE_FAILED = "失败";
-    public final static String CUSTOMER_MONEY_LOG_TYPE_SUCCESS = "成功";
 
     // 通联代付修正：初始状态
     public final static Integer STATUS_ALLINPAY_REVISED_NULL = 0;

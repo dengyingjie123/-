@@ -1,7 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""
          import="com.youngbook.common.config.*" %>
+<%@ page import="com.youngbook.common.utils.StringUtils" %>
 <%
-    String token = request.getParameter("token") ;
+    String token = request.getParameter("token");
 %>
 <html>
 <head>

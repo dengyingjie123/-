@@ -62,6 +62,19 @@ public class CustomerInstitutionDaoImpl implements ICustomerInstitutionDao {
     }
 
 
+    public Pager getPagerCustomers4All(CustomerInstitutionVO customerInstitutionVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("775D1810");
+        dbSQL.addParameter4All("name", customerInstitutionVO.getName());
+        dbSQL.initSQL();
+        dbSQL.init4Pager();
+
+        Pager pager = Pager.search(dbSQL, customerInstitutionVO, currentPage, showRowCount, conn);
+
+        return pager;
+    }
+
+
     /**
      * 查询分配给自己的机构客户
      * @param customerInstitutionVO
@@ -79,14 +92,12 @@ public class CustomerInstitutionDaoImpl implements ICustomerInstitutionDao {
             MyException.newInstance("无法获得用户编号").throwException();
         }
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("0EB21804");
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("775D1810");
         dbSQL.addParameter4All("userId", userId);
         dbSQL.initSQL();
+        dbSQL.init4Pager();
 
-        StringBuffer sbSQL = new StringBuffer(dbSQL.getSQL());
-        sbSQL.insert(0, "select DISTINCT _ft_.* from (").append(" ) _ft_ ");
-        QueryType queryType = new QueryType(Database.QUERY_FUZZY, Database.NUMBER_EQUAL);
-        Pager pager = Pager.search(sbSQL.toString(), dbSQL.getParameters(), customerInstitutionVO, conditions, currentPage, showRowCount, queryType, conn);
+        Pager pager = Pager.search(dbSQL, customerInstitutionVO, currentPage, showRowCount, conn);
 
         return pager;
     }

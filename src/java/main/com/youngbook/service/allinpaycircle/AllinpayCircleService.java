@@ -18,7 +18,10 @@ import com.youngbook.dao.customer.ICustomerMoneyLogDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IOrderDetailDao;
+import com.youngbook.dao.production.IProductPropertyDao;
 import com.youngbook.dao.production.IProductionDao;
+import com.youngbook.dao.system.IKVDao;
+import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandDirection;
@@ -27,6 +30,7 @@ import com.youngbook.entity.po.core.APICommandType;
 import com.youngbook.entity.po.customer.*;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.po.production.OrderStatus;
+import com.youngbook.entity.po.production.ProductPropertyPO;
 import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.vo.Sale.PaymentPlanVO;
 import com.youngbook.service.BaseService;
@@ -80,10 +84,16 @@ public class AllinpayCircleService extends BaseService {
     IAllinpayCircleDao allinpayCircleDao;
 
     @Autowired
+    IKVDao kvDao;
+
+    @Autowired
     ITransactionDao transactionDao;
 
     @Autowired
     IProductionDao productionDao;
+
+    @Autowired
+    IProductPropertyDao productPropertyDao;
 
     @Autowired
     IOrderDao orderDao;
@@ -946,6 +956,9 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.setProcessing_code("1087");
 
 
+        String supplyCode = getSupplyCode(customerAccountPO.getSupplyCode(), conn);
+
+
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sign_type", "3");
         transactionPO.getRequest().addItem("prod_flag", "2");
@@ -956,7 +969,8 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cer_type", "01");
         transactionPO.getRequest().addItem("cer_num", customerCertificateNumber);
         transactionPO.getRequest().addItem("tel_num", allinpayCircleMobile);
-        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
+        // 000000324
+        transactionPO.getRequest().addItem("supply_inst_code", supplyCode);
 
 
         ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
@@ -986,6 +1000,19 @@ public class AllinpayCircleService extends BaseService {
         allinpayCircleDao.dealPayByShare(conn);
     }
 
+    public String getSupplyCode(String key, Connection conn) throws Exception {
+
+        KVPO kvpo = kvDao.loadKVPO(key, "Production_Supply", conn);
+
+        String parameter = kvpo.getParameter();
+
+        KVObjects kvObjects = StringUtils.getUrlParameters(parameter);
+
+        String code = kvObjects.getItemString("supply_inst_code");
+
+        return code;
+    }
+
     /**
      * 通联万小宝
      * 单笔购买交易，份额支付
@@ -1007,13 +1034,19 @@ public class AllinpayCircleService extends BaseService {
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(orderPO.getAccountId(), "allinpayCircleBankCode", conn);
 
 
-
+        String supplyCode = getSupplyCode(customerAccountPO.getSupplyCode(), conn);
 
         ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
 
         TransactionPO transactionPO = new TransactionPO();
 
         transactionPO.setProcessing_code("2085");
+
+
+        KVObjects productionParameter = getProductionParameter(productionPO.getProductHomeId(), conn);
+
+        String product_num = productionParameter.getItemString("product_num");
+        String product_code_cash_acct = productionParameter.getItemString("product_code_cash_acct");
 
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
@@ -1027,9 +1060,11 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(orderPO.getMoney()));
         transactionPO.getRequest().addItem("prod_import_flag", "0");
-        transactionPO.getRequest().addItem("supply_inst_code", "000000324");
-        transactionPO.getRequest().addItem("product_num", "KPL555");
-        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("supply_inst_code", supplyCode);
+        // KPL555
+        transactionPO.getRequest().addItem("product_num", product_num);
+        // 000709
+        transactionPO.getRequest().addItem("product_code_cash_acct", product_code_cash_acct);
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
@@ -1062,6 +1097,18 @@ public class AllinpayCircleService extends BaseService {
 
 
 
+    public KVObjects getProductionParameter(String productionHomeId, Connection conn) throws Exception {
+
+        ProductPropertyPO productPropertyPO = productPropertyDao.loadProductPropertyPO(productionHomeId, "10", conn);
+
+        if (productPropertyPO != null && !StringUtils.isEmpty(productPropertyPO.getValue())) {
+            KVObjects parameters = StringUtils.getUrlParameters(productPropertyPO.getValue());
+
+            return parameters;
+        }
+
+        return null;
+    }
 
     public static void main(String[] args) throws Exception {
 

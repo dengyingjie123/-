@@ -185,7 +185,7 @@ var CustomerAccountClass = function(token) {
 
         var url =  WEB_ROOT + "/modules/customer/CustomerAccount_Save.jsp?token="+token;
         var windowId = "CustomerAccountWindow" + token;
-        fw.window(windowId, '账户信息', 360, 300, url, function() {
+        fw.window(windowId, '账户信息', 500, 350, url, function() {
 
             // 初始化表单提交事件
             onClickCustomerAccountSubmit();
@@ -195,6 +195,8 @@ var CustomerAccountClass = function(token) {
             // 银行列表
             var URL = WEB_ROOT + "/customer/CustomerAccount_getBankList.action";
             fw.combotreeLoad('bank' + token, URL, data["customerAccount.bankCode"]);
+
+            fw.getComboTreeFromKV('supplyCode' + token, 'Production_Supply', 'orders', data["customerAccount.supplyCode"]);
 
             //加载数据
             fw.formLoad('formCustomerAccount'+token, data);

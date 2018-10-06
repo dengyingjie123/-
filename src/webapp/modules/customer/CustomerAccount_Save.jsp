@@ -17,6 +17,11 @@
 
             <table width="100%" border="0" cellspacing="5" cellpadding="0">
                 <tr>
+                    <td align="right">供应商</td>
+                    <td><input  type="text" id="supplyCode<%=token %>" class="easyui-combotree" name="customerAccount.supplyCode"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
                     <td align="right">开户行</td>
                     <td><input  type="text" id="bank<%=token %>" class="easyui-combotree" name="customerAccount.bank"  required="true" missingmessage="必须填写"  style="width:200px"/></td>
                     <td>&nbsp;</td>

@@ -44,11 +44,9 @@ public class ProductPropertyDaoImpl implements IProductPropertyDao {
 
     public ProductPropertyPO newProperty(ProductPropertyPO productProperty, Connection conn) throws Exception {
 
-        if (MySQLDao.insertOrUpdate(productProperty, conn) == 1) {
-            return productProperty;
-        }
+        MySQLDao.insertOrUpdate(productProperty, conn);
 
-        return null;
+        return productProperty;
     }
 
     public ProductPropertyPO loadById(String productPropertyId, Connection conn) throws Exception {
@@ -59,5 +57,21 @@ public class ProductPropertyDaoImpl implements IProductPropertyDao {
         productProperty = MySQLDao.load(productProperty, ProductPropertyPO.class, conn);
 
         return productProperty;
+    }
+
+    public ProductPropertyPO loadProductPropertyPO(String productionHomeId, String productPropertyTypeId, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("CBFB1810");
+        dbSQL.addParameter4All("productId", productionHomeId)
+                .addParameter4All("typeId", productPropertyTypeId);
+        dbSQL.initSQL();
+
+        List<ProductPropertyPO> list = MySQLDao.search(dbSQL, ProductPropertyPO.class, conn);
+
+        if (list != null && list.size() == 1) {
+            return list.get(0);
+        }
+
+        return null;
     }
 }
