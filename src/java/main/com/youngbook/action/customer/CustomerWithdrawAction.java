@@ -183,9 +183,9 @@ public class CustomerWithdrawAction extends BaseAction {
                     getRequest().setAttribute("returnObject", getResult());
                     return "info";
                 }
-                customerMoneyLog.setType(CustomerMoneyLogType.Withdraw); // 提现类型 2
+                customerMoneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 提现类型 2
                 customerMoneyLog.setContent("提现" + withdrawPO.getMoney() + "元");
-                customerMoneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_UNFINISH); // 默认状态：未提现
+                customerMoneyLog.setStatus(CustomerMoneyLogStatus.Default); // 默认状态：未提现
                 customerMoneyLog.setCustomerId(loginUser.getId());
                 customerMoneyLog.setBizId(bizId);
                 MySQLDao.insertOrUpdate(customerMoneyLog, operator.getId(), conn);
@@ -216,9 +216,9 @@ public class CustomerWithdrawAction extends BaseAction {
                 MyException.deal(e);
 
                 // 插入客户资金日志
-                customerMoneyLog.setType(CustomerMoneyLogType.Withdraw);
+                customerMoneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment);
                 customerMoneyLog.setContent("提现失败");
-                customerMoneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_FAILED));// 提现失败
+                customerMoneyLog.setStatus(CustomerMoneyLogStatus.Failed);// 提现失败
                 customerMoneyLog.setCustomerId(loginUser.getId());
                 MySQLDao.insertOrUpdate(customerMoneyLog, conn);
                 getResult().setMessage("提现失败");

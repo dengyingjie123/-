@@ -4,29 +4,28 @@ import com.aipg.transquery.QTDetail;
 import com.youngbook.annotation.*;
 import com.youngbook.command.CommandExecutor;
 import com.youngbook.common.*;
-import com.youngbook.common.config.AesEncrypt;
-import com.youngbook.common.config.BizRouteConfig;
-import com.youngbook.common.config.Config;
-import com.youngbook.common.config.Config4Status;
+import com.youngbook.common.config.*;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.utils.IdUtils;
-import com.youngbook.common.utils.NumberUtils;
-import com.youngbook.common.utils.StringUtils;
-import com.youngbook.common.utils.TimeUtils;
+import com.youngbook.common.utils.*;
 import com.youngbook.common.utils.console.ConsoleTable;
 import com.youngbook.common.wf.admin.Action;
 import com.youngbook.common.wf.admin.RouteList;
 import com.youngbook.common.wf.clientapp.ClientApplications;
 import com.youngbook.common.wf.services.IBizService;
+import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.dao.allinpaycircle.IAllinpayCircleDao;
 import com.youngbook.dao.customer.CustomerPersonalDaoImpl;
 import com.youngbook.dao.customer.ICustomerAccountDao;
+import com.youngbook.dao.customer.ICustomerMoneyLogDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
+import com.youngbook.dao.production.IProductionDao;
 import com.youngbook.dao.sale.IPaymentPlanDao;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentDetailPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentStatus;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentType;
+import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.OrderPayPO;
 import com.youngbook.entity.po.core.TransferPO;
 import com.youngbook.entity.po.core.TransferTargetType;
@@ -95,6 +94,84 @@ public class PaymentPlanService extends BaseService implements IBizService {
 
     @Autowired
     ICustomerAccountDao customerAccountDao;
+
+    @Autowired
+    IAllinpayCircleDao allinpayCircleDao;
+
+    @Autowired
+    IProductionDao productionDao;
+
+    @Autowired
+    ICustomerMoneyLogDao customerMoneyLogDao;
+
+    /**
+     * 通联万小宝
+     * 单笔还款-机构引入
+     * @param customerId
+     * @param accountId
+     * @param paymentPlanId
+     * @param operatorId
+     * @param conn
+     * @return
+     * @throws Exception
+     */
+    public ReturnObject allinpayCircle_Payback(String customerId, String accountId, String paymentPlanId, String operatorId, Connection conn) throws Exception {
+
+        String url = "";
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+
+
+        PaymentPlanVO paymentPlanVO = paymentPlanDao.loadPaymentPlanVO(paymentPlanId, conn);
+
+        ProductionPO productionPO = productionDao.getProductionById(paymentPlanVO.getProductId(), conn);
+
+        double money = paymentPlanVO.getTotalPaymentPrincipalMoney() + paymentPlanVO.getTotalProfitMoney();
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("2294");
+
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("repayment_type", "0");
+        transactionPO.getRequest().addItem("pay_mode", "0");
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("cer_type", "01");
+        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("prod_import_flag", "0");
+        transactionPO.getRequest().addItem("product_num", productionPO.getAllinpayCircle_ProductNum());
+        transactionPO.getRequest().addItem("resp_url", url);
+
+
+        ReturnObject returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+        if (returnObject != null) {
+            if (returnObject.getCode() == 100) {
+
+                String jsonString = returnObject.getReturnValue().toString();
+
+                if (!StringUtils.isEmpty(jsonString)) {
+                    KVObjects kvObjects = JSONDao.toKVObjects(jsonString);
+
+                    XmlHelper helper = new XmlHelper(kvObjects.getItemString("responseXml"));
+
+//                    String signNum = helper.getValue("/transaction/response/sign_num");
+
+                }
+            }
+        }
+
+        return returnObject;
+    }
 
     @Override
     public void afterOver(BizRoutePO bizdao, RouteList routeList, Action worlkflow, Connection conn) throws Exception {
@@ -719,7 +796,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
             /**
              * 从订单里获得银行账号
              */
-            CustomerAccountPO customerAccountPO = customerAccountDao.getCustomerAccountPO(paymentPlanPO.getOrderId(), conn);
+            CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByOrderId(paymentPlanPO.getOrderId(), conn);
             accountName = customerAccountPO.getName();
             bankCode = customerAccountPO.getBankCode();
             cityCode = customerAccountPO.getCityCode();
@@ -876,10 +953,15 @@ public class PaymentPlanService extends BaseService implements IBizService {
         }
         ProductionPO production = producitons.get(0);
 
+
+        String content = "兑付[" + production.getName() + "]" + paymentPlanPO.getTotalPaymentMoney() + "元，兑付收益"+paymentPlanPO.getTotalProfitMoney()+"元";
+
+        customerMoneyLogDao.newCustomerMoneyLog(paymentPlanPO.getTotalPaymentMoney(), paymentPlanPO.getTotalProfitMoney(), CustomerMoneyLogType.WithdrawOrPayment, content, "1", paymentPlanPO.getId(), paymentPlanPO.getCustomerId(), conn);
+
         CustomerMoneyLogPO moneyLog = new CustomerMoneyLogPO();
-        moneyLog.setType(CustomerMoneyLogType.Payment); // 兑付类型
+        moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 兑付类型
         moneyLog.setContent("兑付[" + production.getName() + "]" + paymentPlanPO.getTotalPaymentMoney() + "元");
-        moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS)); // 兑付成功
+        moneyLog.setStatus(String.valueOf(CustomerMoneyLogStatus.Success)); // 兑付成功
         moneyLog.setCustomerId(paymentPlanPO.getCustomerId());
         moneyLog.setBizId(paymentPlanPO.getId());
 
@@ -1000,7 +1082,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
             moneyLog.setOperatorId(user.getId());
             moneyLog.setOperateTime(TimeUtils.getNow());
             moneyLog.setState(Config.STATE_CURRENT);
-            moneyLog.setType(CustomerMoneyLogType.Payment); // 兑付类型
+            moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); // 兑付类型
             moneyLog.setContent("兑付[" + production.getName() + "]" + plan.getTotalPaymentMoney() + "元");
             moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_PAYMENT_UNFINISH)); // 兑付未成功
             moneyLog.setCustomerId(plan.getCustomerId());
@@ -1105,9 +1187,9 @@ public class PaymentPlanService extends BaseService implements IBizService {
                     moneyLog.setState(Config.STATE_CURRENT);
                     moneyLog.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
                     moneyLog.setOperateTime(TimeUtils.getNow());
-                    moneyLog.setType(CustomerMoneyLogType.Payment); //兑付类型
+                    moneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment); //兑付类型
                     moneyLog.setContent("兑付[" + production.getName() + "]" + totalPaymentMoney + "元");
-                    moneyLog.setStatus(String.valueOf(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS));//兑付成功
+                    moneyLog.setStatus(CustomerMoneyLogStatus.Success);//兑付成功
                     moneyLog.setCustomerId(customerId);
                     MySQLDao.insert(moneyLog, conn);
 

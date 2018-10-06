@@ -182,7 +182,7 @@ public class AllinPayAction extends BaseAction {
             // 增加资金日志记录
             customerMoneyLog.setType(CustomerMoneyLogType.Deposit);
             customerMoneyLog.setContent(CustomerMoneyLogType.Deposit + money + "元");
-            customerMoneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS);
+            customerMoneyLog.setStatus(CustomerMoneyLogStatus.Success);
             customerMoneyLog.setBizId(customerDeposit.getId());
             customerMoneyLog.setCustomerId(loginUser.getId());
             MySQLDao.insertOrUpdate(customerMoneyLog, conn);
@@ -287,7 +287,7 @@ public class AllinPayAction extends BaseAction {
                     // 增加资金日志记录
                     customerMoneyLog.setType(CustomerMoneyLogType.Deposit);
                     customerMoneyLog.setContent(CustomerMoneyLogType.Deposit + money + "元");
-                    customerMoneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS);
+                    customerMoneyLog.setStatus(CustomerMoneyLogStatus.Success);
                     customerMoneyLog.setBizId(customerDeposit.getId());
                     customerMoneyLog.setCustomerId(loginUser.getId());
                     MySQLDao.insertOrUpdate(customerMoneyLog, conn);

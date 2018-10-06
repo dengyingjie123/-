@@ -141,7 +141,10 @@ SELECT
     o.financeMoneyConfirm,
     o.financeMoneyConfirmUserId,
     (select name from system_user where state=0 and id=o.financeMoneyConfirmUserId) financeMoneyConfirmUserName,
-    o.financeMoneyConfirmTime
+    o.financeMoneyConfirmTime,
+    o.allinpayCircle_deposit_status,	
+    o.allinpayCircle_payByShare_status,	
+    o.allinpayCircle_payByShare_time
 FROM
     crm_order o
 left join view_salesman_customer_distribution scd on  scd.customerId=o.CustomerId
@@ -187,3 +190,24 @@ left join view_salesman_customer_distribution cd on cd.customerId=c.id
 left join crm_saleman_salemangroup sg on sg.defaultGroup=1 and sg.saleManId=cd.salesmanId
 left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
 left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
+where c.state=0
+;
+
+
+-- 机构客户视图
+create or replace view view_customerinstitution as
+select DISTINCT
+    cd.salesmanId salemanId,
+    cd.salesmanName salemanName,
+    g.id groupId,
+    g.`Name` groupName,
+    cd.status distributionStatus,
+    cc.Number idCardNumber,
+    c.*
+from crm_customerinstitution c
+left join view_salesman_customer_distribution cd on cd.customerId=c.id
+left join crm_saleman_salemangroup sg on sg.defaultGroup=1 and sg.saleManId=cd.salesmanId
+left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
+left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
+where c.state=0
+;

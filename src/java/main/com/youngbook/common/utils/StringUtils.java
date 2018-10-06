@@ -85,6 +85,26 @@ public class StringUtils {
     }
 
 
+
+    public static boolean checkIn(String waitingString, String ... conditions) {
+
+        if (StringUtils.isEmpty(waitingString)) {
+            return false;
+        }
+
+        for (int i = 0; conditions != null && i < conditions.length; i++) {
+            String s = conditions[i];
+
+            if (waitingString.equals(s)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
     public static String getEncoding(String str) {
         String encode = "GB2312";
         try {
@@ -420,6 +440,22 @@ public class StringUtils {
 
 
     public static boolean isEmpty(String text) {
+        if (text == null || text.trim().equals("")) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public static boolean isEmpty(Object textObject) {
+
+        if (textObject == null) {
+            return true;
+        }
+
+        String text = textObject.toString();
+
         if (text == null || text.trim().equals("")) {
             return true;
         }

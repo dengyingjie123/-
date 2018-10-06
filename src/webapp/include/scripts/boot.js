@@ -259,6 +259,14 @@ function contentTabAdd(permissionName, token) {
             menuClass.initModule();
         });
     }
+    else if (permissionName == "通联金融生态圈_单笔查询") {
+        //alert("begin");
+        using(SCRIPTS_ROOT + '/allinpayCircle/AllinpayCircleQueryClass.js', function () {
+            //alert("hello");
+            var allinpayCircleQueryClass = new AllinpayCircleQueryClass(token);
+            allinpayCircleQueryClass.initModule();
+        });
+    }
     else if (permissionName == "文章管理") {
         //alert("begin");
         using(SCRIPTS_ROOT + '/cms/ArticleClass.js', function () {
@@ -289,6 +297,13 @@ function contentTabAdd(permissionName, token) {
             //alert("hello");
             var article = new ArticleClass(token);
             article.initModule();
+        });
+    }
+    else if (permissionName == "产品管理_供应商管理") {
+        //alert(SCRIPTS_ROOT+'/system/UserClass.js?VERSION='+VERSION);
+        using(SCRIPTS_ROOT+'/system/KVClass.js', function () {
+            var kvClass = new KVClass(token);
+            kvClass.initModule('Production_Supply','供应商管理');
         });
     }
     else if (permissionName == "销售管理_销售日报_查看") {

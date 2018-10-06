@@ -22,6 +22,8 @@ public class ProductPropertyAction extends BaseAction {
 
     public String load() throws Exception {
 
+        productProperty = HttpUtils.getInstanceFromRequest(getRequest(), "productProperty", ProductPropertyPO.class);
+
         productProperty = productPropertyService.loadById(productProperty.getId(), getConnection());
 
         if (productProperty == null) {
@@ -36,9 +38,11 @@ public class ProductPropertyAction extends BaseAction {
 
     public String getPropertiesByProductId() throws Exception {
 
-        if (productProperty != null && !StringUtils.isEmpty(productProperty.getProductId())) {
+        String productId = getHttpRequestParameter("productProperty.productId");
+
+        if (!StringUtils.isEmpty(productId)) {
             Pager pager = Pager.getInstance(getRequest());
-            pager = productPropertyService.getPropertiesByProductId(productProperty.getProductId(), pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+            pager = productPropertyService.getPropertiesByProductId(productId, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
 
             getResult().setReturnValue(pager.toJsonObject());
         }
@@ -47,6 +51,8 @@ public class ProductPropertyAction extends BaseAction {
     }
 
     public String newProperty() throws Exception {
+
+        productProperty = HttpUtils.getInstanceFromRequest(getRequest(), "productProperty", ProductPropertyPO.class);
 
         ProductPropertyPO newProperty = productPropertyService.newProperty(productProperty, getConnection());
 

@@ -77,6 +77,12 @@ public class CustomerInstitutionService extends BaseService {
         return pager;
     }
 
+    public Pager getPagerCustomers4All(CustomerInstitutionVO customerInstitutionVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+        Pager pager = customerInstitutionDao.getPagerCustomers4All(customerInstitutionVO, currentPage, showRowCount, conn);
+
+        return pager;
+    }
+
 
     public int passwordUpdate(CustomerInstitutionPO institution, UserPO user, Connection conn) throws Exception {
         int count = 0;

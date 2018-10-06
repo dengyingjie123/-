@@ -10,10 +10,7 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentDetailPO;
 import com.youngbook.entity.po.allinpay.AllinpayBatchPaymentStatus;
-import com.youngbook.entity.po.customer.CustomerMoneyLogPO;
-import com.youngbook.entity.po.customer.CustomerMoneyLogType;
-import com.youngbook.entity.po.customer.CustomerMoneyPO;
-import com.youngbook.entity.po.customer.CustomerWithdrawPO;
+import com.youngbook.entity.po.customer.*;
 import com.youngbook.entity.vo.customer.CustomerWithdrawVO;
 import com.youngbook.service.BaseService;
 import com.youngbook.service.allinpay.AllinpayBatchPaymentDetailService;
@@ -246,7 +243,7 @@ public class CustomerWithdrawService extends BaseService {
                         moneyLog.setState(Config.STATE_CURRENT);
                         moneyLog.setOperatorId(Config.getSystemConfig("web.default.operatorId"));
                         moneyLog.setOperateTime(TimeUtils.getNow());
-                        moneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_TYPE_SUCCESS);//提现成功
+                        moneyLog.setStatus(CustomerMoneyLogStatus.Success);//提现成功
                         logCount = MySQLDao.insert(moneyLog, conn);
                     }
 
@@ -297,9 +294,9 @@ public class CustomerWithdrawService extends BaseService {
      */
     public void customerMoneyLogStatus(String loginUserId,Connection conn) throws Exception {
         CustomerMoneyLogPO customerMoneyLog = new CustomerMoneyLogPO();
-        customerMoneyLog.setType(CustomerMoneyLogType.Withdraw);
+        customerMoneyLog.setType(CustomerMoneyLogType.WithdrawOrPayment);
         customerMoneyLog.setContent("更改客户资金失败");
-        customerMoneyLog.setStatus(Config4Status.CUSTOMER_MONEY_LOG_TYPE_FAILED);//提现失败
+        customerMoneyLog.setStatus(CustomerMoneyLogStatus.Failed);//提现失败
         customerMoneyLog.setCustomerId(loginUserId);
         MySQLDao.insertOrUpdate(customerMoneyLog, conn);
     }

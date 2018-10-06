@@ -1137,9 +1137,19 @@ public class CustomerPersonalService extends BaseService {
 
             SalemanGroupPO salemanGroup = salemanGroupDao.getDefaultSalemanGroupByUserId(userId, conn);
 
-            if (userPositionInfo != null && salemanGroup != null) {
-                customerDistributionDao.distributeCustomer(personal.getId(), userId, salemanGroup.getId(), userPositionInfo.getDepartmentId(), 0, true, conn);
+            if (userPositionInfo == null) {
+                MyException.newInstance("无法获得用户岗位信息", "userId=" + userId).throwException();
             }
+
+
+            if (salemanGroup == null) {
+                MyException.newInstance("无法获得用户销售组信息", "userId=" + userId).throwException();
+            }
+
+            /**
+             * 分配客户给对应销售
+             */
+            customerDistributionDao.distributeCustomer(personal.getId(), userId, salemanGroup.getId(), userPositionInfo.getDepartmentId(), 0, true, conn);
 
         }
 

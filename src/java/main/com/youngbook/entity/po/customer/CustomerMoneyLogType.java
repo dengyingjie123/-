@@ -7,10 +7,11 @@ import net.sf.json.JSONObject;
  * Created by admin on 2015/4/28.
  */
 public class CustomerMoneyLogType {
+
     public static final String Deposit  = "充值";
-    public static final String Withdraw = "提现";
-    public static final String Pay =  "购买";
-    public static final String Payment =  "兑付";
+    public static final String WithdrawOrPayment = "兑付或提现";
+    public static final String Buy =  "购买";
+    public static final String Profit =  "收益";
     public static final String Refund = "退款";
     /**
      * 创建json数组
@@ -22,14 +23,11 @@ public class CustomerMoneyLogType {
         jArrays.element("id",CustomerMoneyLogType.Deposit);
         jArrays.element("text",CustomerMoneyLogType.Deposit);
         array.add(jArrays);//添加到json数组中
-        jArrays.element("id",CustomerMoneyLogType.Withdraw);
-        jArrays.element("text",CustomerMoneyLogType.Withdraw);
+        jArrays.element("id",CustomerMoneyLogType.WithdrawOrPayment);
+        jArrays.element("text",CustomerMoneyLogType.WithdrawOrPayment);
         array.add(jArrays);//添加到json数组中
-        jArrays.element("id",CustomerMoneyLogType.Pay);
-        jArrays.element("text",CustomerMoneyLogType.Pay);
-
-        jArrays.element("id",CustomerMoneyLogType.Payment);
-        jArrays.element("text",CustomerMoneyLogType.Payment);
+        jArrays.element("id",CustomerMoneyLogType.Buy);
+        jArrays.element("text",CustomerMoneyLogType.Buy);
 
         jArrays.element("id",CustomerMoneyLogType.Refund);
         jArrays.element("text",CustomerMoneyLogType.Refund);

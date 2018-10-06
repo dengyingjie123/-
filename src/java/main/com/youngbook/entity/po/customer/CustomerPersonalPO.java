@@ -157,14 +157,33 @@ public class CustomerPersonalPO extends BasePO {
     //手势密码
     private String gesturePassword = new String();
 
-   //手势密码是否启动
-   private int gesturePasswordStatus=Integer.MAX_VALUE;
+    //手势密码是否启动
+    private int gesturePasswordStatus=Integer.MAX_VALUE;
 
     // 推荐码
     private String referralCode = "";
 
+
+
+
     // 确认合格投资者
     private String confirmInvestor = new String();
+
+
+    /**
+     * 通联万小宝会员号
+     */
+    private String allinpayCircle_SignNum = "";
+
+
+    public String getAllinpayCircle_SignNum() {
+        return allinpayCircle_SignNum;
+    }
+
+    public void setAllinpayCircle_SignNum(String allinpayCircle_SignNum) {
+        this.allinpayCircle_SignNum = allinpayCircle_SignNum;
+    }
+
 
     public String getCustomerChannelTypeId() {
         return customerChannelTypeId;

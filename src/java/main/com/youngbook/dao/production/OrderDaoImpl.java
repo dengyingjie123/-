@@ -203,7 +203,14 @@ public class OrderDaoImpl implements IOrderDao {
 
     public OrderPO insertOrUpdate(OrderPO orderPO, String userId, Connection conn) throws Exception {
 
+        OrderPO orderCheckPO = loadByOrderId(orderPO.getId(), conn);
 
+        if (!StringUtils.isEmpty(orderCheckPO.getFinanceMoneyConfirm()) && orderCheckPO.getFinanceMoneyConfirm().equals("1") && !orderPO.getFinanceMoneyConfirm().equals("0")) {
+            // 已确认的扎帐数据不删除
+            orderPO.setFinanceMoneyConfirm(null);
+            orderPO.setFinanceMoneyConfirmUserId(null);
+            orderPO.setFinanceMoneyConfirmTime(null);
+        }
 
         MySQLDao.insertOrUpdate(orderPO, userId, conn);
 
@@ -230,8 +237,23 @@ public class OrderDaoImpl implements IOrderDao {
     }
 
     public OrderPO loadByLikeOrderId(String orderId, Connection conn) throws Exception {
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("41901712");
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("ED3F1809");
         dbSQL.addParameter4All("orderId", orderId);
+        dbSQL.initSQL();
+
+        List<OrderPO> orders = MySQLDao.search(dbSQL, OrderPO.class, conn);
+
+        if (orders != null && orders.size() == 1) {
+            return orders.get(0);
+        }
+
+        return null;
+    }
+
+
+    public OrderPO loadOrderPOBy_allinpayCircle_req_trace_num(String allinpayCircle_req_trace_num, Connection conn) throws Exception {
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("ED3F1809");
+        dbSQL.addParameter4All("allinpayCircle_req_trace_num", allinpayCircle_req_trace_num);
         dbSQL.initSQL();
 
         List<OrderPO> orders = MySQLDao.search(dbSQL, OrderPO.class, conn);

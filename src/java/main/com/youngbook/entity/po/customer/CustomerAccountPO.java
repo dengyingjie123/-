@@ -44,6 +44,10 @@ public class CustomerAccountPO extends BasePO {
     // 银行代码
     private String bankCode = new String();
 
+    /**
+     * 供应商编号
+     */
+    private String supplyCode = "";
 
     private String cityCode = "";
 
@@ -56,6 +60,44 @@ public class CustomerAccountPO extends BasePO {
 
     // 客户类型
     private int customerType = Integer.MAX_VALUE;
+
+    /**
+     * 通联万小宝交易子账号
+     */
+    private String allinpayCircle_AcctSubNo = "";
+
+
+    private String allinpayCircle_ChangeStatus = "";
+
+    public String getAllinpayCircle_ChangeStatus() {
+        return allinpayCircle_ChangeStatus;
+    }
+
+    public void setAllinpayCircle_ChangeStatus(String allinpayCircle_ChangeStatus) {
+        this.allinpayCircle_ChangeStatus = allinpayCircle_ChangeStatus;
+    }
+
+    /**
+     * 银行预留手机号
+     */
+    private String mobile = "";
+
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAllinpayCircle_AcctSubNo() {
+        return allinpayCircle_AcctSubNo;
+    }
+
+    public void setAllinpayCircle_AcctSubNo(String allinpayCircle_AcctSubNo) {
+        this.allinpayCircle_AcctSubNo = allinpayCircle_AcctSubNo;
+    }
 
     public String getCityCode() {
         return cityCode;
@@ -162,6 +204,13 @@ public class CustomerAccountPO extends BasePO {
     }
 
 
+    public String getSupplyCode() {
+        return supplyCode;
+    }
+
+    public void setSupplyCode(String supplyCode) {
+        this.supplyCode = supplyCode;
+    }
 
     @Override
     public String toString() {

@@ -16,6 +16,7 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,10 @@ public class CustomerInstitutionAction extends BaseAction{
 
         Pager pager = Pager.getInstance(request);
 
-        if (getPermission().has("客户管理_机构客户管理_管理员查看")) {
+        if (getPermission().has("客户管理_机构客户管理_查看所有")) {
+            pager = customerInstitutionService.getPagerCustomers4All(customerInstitutionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+        }
+        else if (getPermission().has("客户管理_机构客户管理_管理员查看")) {
             pager = customerInstitutionService.listCustomers4DistributionToManagedSaleGroup(customerInstitutionVO, conditions, pager.getCurrentPage(), pager.getShowRowCount(), getLoginUser().getId(), getConnection());
         }
         else if (getPermission().has("客户管理_机构客户管理_销售人员查看")) {
@@ -135,6 +139,7 @@ public class CustomerInstitutionAction extends BaseAction{
         getResult().setReturnValue(pager.toJsonObject());
         return SUCCESS;
     }
+
 
 
     /**

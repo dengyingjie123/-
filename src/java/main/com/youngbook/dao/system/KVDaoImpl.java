@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * Created by Lee on 3/20/2017.
  */
-@Component("kvDaoImpl")
+@Component("kvDao")
 public class KVDaoImpl extends BaseDao implements IKVDao {
 
     public KVPO loadKVPO(String k, String groupName, Connection conn) throws Exception {
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("loadKVPO", this);
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("3DAF1810");
         dbSQL.addParameter4All("k", k);
         dbSQL.addParameter4All("groupName", groupName);
         dbSQL.initSQL();

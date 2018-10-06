@@ -91,8 +91,8 @@ var ProductPropertyClass = function (token) {
             queryParams: queryParams,
             loadMsg: '数据正在加载，请稍后……',
             singleSelect: true,
-            pageList: [15, 30, 60],
-            pageSize: 15,
+            pageList: [8],
+            pageSize: 8,
             rownumbers: true,
             remoteSort: true,//是否从数据库排序
             sortOrder: 'desc',//排序方法 默认
@@ -120,7 +120,7 @@ var ProductPropertyClass = function (token) {
                     { field: 'operatorId', title: 'operatorId',hidden:true},
                     { field: 'operateTime', title: 'operateTime',hidden:true},
                     { field: 'productId', title: '产品编号',hidden:true},
-                    { field: 'typeId', title: '类型',hidden:true},
+                    { field: 'typeId', title: '类型编号'},
                     { field: 'typeName', title: '类型名称',hidden:false},
                     { field: 'value', title: '值',formatter: function(value,row,index) {
                         return fw.stringSubString(row['value'], 0, 100);
