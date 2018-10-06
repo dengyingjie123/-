@@ -191,6 +191,7 @@ left join crm_saleman_salemangroup sg on sg.defaultGroup=1 and sg.saleManId=cd.s
 left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
 left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
 where c.state=0
+;
 
 
 -- 机构客户视图
@@ -209,3 +210,4 @@ left join crm_saleman_salemangroup sg on sg.defaultGroup=1 and sg.saleManId=cd.s
 left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
 left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
 where c.state=0
+;
