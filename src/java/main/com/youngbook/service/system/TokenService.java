@@ -96,10 +96,9 @@ public class TokenService extends BaseService {
             String isDebug = Config.getSystemConfig("system.debug");
             if (!StringUtils.isEmpty(isDebug) && isDebug.equals("1")) {
 
-                if (!bizId.equals(Config.getSystemConfig("system.debug.mobile"))) {
-                    MyException.newInstance("无法获得调试信息", "bizId=" + bizId).throwException();
+                if (bizId.equals(Config.getSystemConfig("system.debug.mobile"))) {
+                    newTokenString = Config.getSystemConfig("system.debug.mobileCode");
                 }
-                newTokenString = Config.getSystemConfig("system.debug.mobileCode");
             }
 
         }

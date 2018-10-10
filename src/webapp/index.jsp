@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" import="com.youngbook.common.config.*"
          language="java" %>
-<%@ page import="com.youngbook.common.Permission" %>
 <%
     String isUpdatePassword = (String) request.getAttribute("isUpdatePassword");
 %>
