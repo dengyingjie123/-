@@ -205,7 +205,7 @@ public class OrderDaoImpl implements IOrderDao {
 
         OrderPO orderCheckPO = loadByOrderId(orderPO.getId(), conn);
 
-        if (!StringUtils.isEmpty(orderCheckPO.getFinanceMoneyConfirm()) && orderCheckPO.getFinanceMoneyConfirm().equals("1") && !orderPO.getFinanceMoneyConfirm().equals("0")) {
+        if (orderCheckPO != null && !StringUtils.isEmpty(orderCheckPO.getFinanceMoneyConfirm()) && orderCheckPO.getFinanceMoneyConfirm().equals("1") && !orderPO.getFinanceMoneyConfirm().equals("0")) {
             // 已确认的扎帐数据不删除
             orderPO.setFinanceMoneyConfirm(null);
             orderPO.setFinanceMoneyConfirmUserId(null);
