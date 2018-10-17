@@ -380,7 +380,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
-        String url = "http://116.228.64.55:28082/AppStsWeb/service/acquireAction.action";
+        String url = Config.getSystemConfig("allinpay_circle_action_url");
 
         String bizId = transactionPO.getRequest().getItemString("req_trace_num");
 
