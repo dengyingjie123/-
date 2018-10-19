@@ -41,8 +41,6 @@ public class SecurityUtil
 	 
 	public static final String KEY_GEN_ALGORITHM   = "RSA"; //
 	  
-	private static final String PASSWORD = "111111";//
-	  
 	private static final String SIGNMODE = "PKCS12";//
 
 	
@@ -60,6 +58,11 @@ public class SecurityUtil
     public SecurityUtil(){}
 
 
+    public static String getPrivateKeyPassword() throws Exception {
+
+    	return Config.getSystemConfig("allinpay_circle_private_password");
+	}
+
 
     public static String getSignMsg(String sign)
     {
@@ -76,7 +79,7 @@ public class SecurityUtil
         	FileInputStream priStream = new FileInputStream(getPrivateKeyPath());
         	
         	KeyStore ks = KeyStore.getInstance(SIGNMODE);  
-    		ks.load(priStream, PASSWORD.toCharArray());
+    		ks.load(priStream, getPrivateKeyPassword().toCharArray());
     		priStream.close();  
     		
     		Enumeration enumas = ks.aliases();  
@@ -85,7 +88,7 @@ public class SecurityUtil
     	    {
     	          keyAlias = (String)enumas.nextElement();   
             }
-    	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, PASSWORD.toCharArray());  //�õ�˽Կ
+    	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, getPrivateKeyPassword().toCharArray());  //�õ�˽Կ
     	    
 	        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM,"BC");  
 	        signature.initSign(priKey);
@@ -298,7 +301,7 @@ public class SecurityUtil
 	{ 
 		FileInputStream priStream = new FileInputStream(getRealPath()+getPrivateKeyPath());
 		KeyStore ks = KeyStore.getInstance(SIGNMODE);  
-		ks.load(priStream, PASSWORD.toCharArray());
+		ks.load(priStream, getPrivateKeyPassword().toCharArray());
 		priStream.close();  
 		
 		Enumeration enumas = ks.aliases();  
@@ -307,7 +310,7 @@ public class SecurityUtil
 	    {  
 	          keyAlias = (String)enumas.nextElement();   
         }  
-	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, PASSWORD.toCharArray());
+	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, getPrivateKeyPassword().toCharArray());
 	    return priKey;
 	}
 	
