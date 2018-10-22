@@ -911,6 +911,9 @@ public class OrderAction extends BaseAction {
         String orderId = getHttpRequestParameter("order.id");
         orderVO = orderService.getOrderVOByOrderId(orderId, conn);
 
+        if (orderVO == null) {
+            MyException.newInstance("无法获得订单信息", "orderId=" + orderId).throwException();
+        }
 
         /**
          * 补充客户名称
