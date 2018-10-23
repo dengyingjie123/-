@@ -1,5 +1,6 @@
 package com.youngbook.common.utils;
 
+import org.apache.http.Consts;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -17,4 +18,11 @@ public class Base64Utils {
 
         return encode;
     }
+
+    public static String decode(String text) throws Exception {
+        String encode = new String(decoder.decodeBuffer(text), Consts.UTF_8);
+
+        return encode;
+    }
+
 }

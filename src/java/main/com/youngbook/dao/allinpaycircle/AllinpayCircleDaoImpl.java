@@ -3,17 +3,13 @@ package com.youngbook.dao.allinpaycircle;
 import com.alibaba.fastjson.JSONObject;
 import com.emulator.paymentgateway.util.PaymentGatewayService;
 import com.emulator.paymentgateway.util.SecurityUtil;
-import com.mind.platform.system.base.CMData;
-import com.mind.platform.system.base.DataRow;
-import com.youngbook.action.api.dehecircle.DeheCircleAction;
 import com.youngbook.common.Database;
-import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.XmlHelper;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.utils.HttpUtils;
+import com.youngbook.common.utils.RSAHelper;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinpayCircleUtils;
@@ -27,7 +23,6 @@ import com.youngbook.entity.po.allinpaycircle.AllinpayCircleResponseDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandType;
 import com.youngbook.entity.po.production.OrderPO;
-import encryption.DataGramB2cUtil;
 import encryption.STSTxData;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -38,7 +33,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.poi.util.XMLHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
@@ -467,26 +461,55 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
     private String decode(String code) throws Exception {
 
         BASE64Decoder base64 = new BASE64Decoder();
+
         String xmlDecode = new String(base64.decodeBuffer(code), Consts.UTF_8);
         System.out.println(" xmlDecode  === " + xmlDecode);
 
+        XmlHelper xmlHelper = new XmlHelper(xmlDecode);
 
-        String encryptedText = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
+        String encryptedKeyWithBase64 = xmlHelper.getText("/STSPackage/KeyInfo/EncryptedKey");
+
+//        String encryptedKey = new String(base64.decodeBuffer(encryptedKeyWithBase64));
+
+//        RSAHelper.setAlias_private("allinpay_private");
+//        RSAHelper.setJks_pfx("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\private.jks");
+//        RSAHelper.setPassword_private("111111");
+//
+//        String desKey = new String(RSAHelper.decrypt2(RSAHelper.getPrivateKey(), encryptedKey.getBytes()));
+//
+//        System.out.println(desKey);
+//
+//        String encryptedText = xmlHelper.getText("/STSPackage/EncryptedText");
+//
+//
+//
+//        System.out.println(encryptedText);
+//
+//        byte[] decrypt = RSAUtils.decrypt(encryptedText);
+//
+//        System.out.println(new String(decrypt));
+
+//        String encryptedText = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
 
 
-        String receiverX509CertSN = PaymentGatewayService.getNodeValue(xmlDecode, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
-        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
-
-
+//        String receiverX509CertSN = PaymentGatewayService.getNodeValue(xmlDecode, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
+//        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
+//
+////
         String encryptedKey = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedKey");
-
+////
         Key pfxKey = SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(encryptedKey),
                 SecurityUtil.getPrivateKey());
+////
+//        encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
+        SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(""), null);
+        SecurityUtil.decryptSymmetry(base64.decodeBuffer(""), null);
+//
+//
+//        System.out.println("加密后的 ==" + encryptedText);
 
-        encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
 
-        System.out.println("加密后的 ==" + encryptedText);
 
-        return encryptedText;
+        return "";
     }
 }
