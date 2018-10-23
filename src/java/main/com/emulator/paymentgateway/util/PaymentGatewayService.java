@@ -61,7 +61,7 @@ public class PaymentGatewayService
 		if(null == pg.getBrcId()|| "".equals(pg.getBrcId()))
 			pg.setBrcId("0000");
 		
-		//Ã÷ÎÄ
+		//ï¿½ï¿½ï¿½ï¿½
 		String xml1 = "<transaction>" +
 		"<Head>" +
 		"<Processing_code>" + pg.getProcessingCode() + "</Processing_code>" +
@@ -113,7 +113,7 @@ public class PaymentGatewayService
 		if(null == pg.getBrcId()|| "".equals(pg.getBrcId()))
 			pg.setBrcId("0000");
 		
-		//Ã÷ÎÄ
+		//ï¿½ï¿½ï¿½ï¿½
 		String xml1 = "<?xml version=\"1.0\" encoding=\"GBK\"?><transaction>" +
 		"<Head>" +
 		"<Processing_code>" + pg.getProcessingCode() + "</Processing_code>" +
@@ -156,14 +156,14 @@ public class PaymentGatewayService
 		try
 		{
 			
-			//===¼ÓÇ©
+			//===ï¿½ï¿½Ç©
 			String signMsg = SecurityUtil.getSignMsg(xml1+xml2);
 			signMsg = xml1 + "<sign_code>"+signMsg+"</sign_code>"+xml2;
 			
-			//¶Ô³Æ¼ÓÃÜ
+			//ï¿½Ô³Æ¼ï¿½ï¿½ï¿½
 			byte[] encryptedText = SecurityUtil.encryptSymmetry(signMsg, key);
 			
-			//¶Ô³ÆÃÜÔ¿¼ÓÃÜ
+			//ï¿½Ô³ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ï¿½
 			X509Certificate cert = SecurityUtil.getCer();
 			byte[] encryptedKey = SecurityUtil.encryptSymmetricKey(key, cert.getPublicKey());
 			BASE64Encoder encoder = new BASE64Encoder();
@@ -172,7 +172,7 @@ public class PaymentGatewayService
 			"<KeyInfo>"+
 			"<ReceiverX509CertSN>"+cert.getSerialNumber().toString(10)+"</ReceiverX509CertSN>" +
 			"<EncryptedKey>"+encoder.encode(encryptedKey)+"</EncryptedKey>" +
-			"<KeyInfo>"+
+			"</KeyInfo>"+
 			"</STSPackage>";
 			System.out.println("xml3  ======"+xml3);
 			signformat = encoder.encode(xml3.getBytes("UTF-8"));
@@ -194,9 +194,9 @@ public class PaymentGatewayService
 	
 	public static void main(String[] agre) throws Exception
 	{
-//		//µÃµ½¶Ô³ÆKEY
+//		//ï¿½Ãµï¿½ï¿½Ô³ï¿½KEY
 //		Key key = SecurityUtil.generateSymmetricKey();
-//		//¶Ô³Æ¼ÓÃÜ
+//		//ï¿½Ô³Æ¼ï¿½ï¿½ï¿½
 //		byte[] keySignMsg = SecurityUtil.encryptSymmetry("aaaaaa", key);
 //		
 //		System.out.println(key.toString());

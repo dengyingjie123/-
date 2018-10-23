@@ -275,6 +275,9 @@ var OrderClass = function (token) {
                 onClickOrderFinanceMoneyConfirmCancel();
 
                 onClickExportExcel();
+
+                onClickOrder_AllinpayCircle_DepositByInstitution();
+                onClickOrder_AllinpayCircle_payByShare();
             },
             onClickCell:function(index,field,value){
                 var data = $('#OrderTable'+token).datagrid('getData');

@@ -342,7 +342,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                 "<KeyInfo>"+
                 "<ReceiverX509CertSN>"+cert.getSerialNumber().toString(10)+"</ReceiverX509CertSN>" +
                 "<EncryptedKey>"+encoder.encode(encryptedKey)+"</EncryptedKey>" +
-                "<KeyInfo>"+
+                "</KeyInfo>"+
                 "</STSPackage>";
 
 //        System.out.println("待发送组装好的数据 min 未编码 === " + xml);
@@ -365,7 +365,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 //        System.out.println("待发送加密后的xml mine ===" + signedXml);
 
 
-        String unsignXml = decode(signedXml);
+//        String unsignXml = decode(signedXml);
 //        System.out.println("解密待发送的xml====" + unsignXml);
 
 
@@ -384,7 +384,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String apiName = AllinpayCircleUtils.getAPIName(transactionPO.getProcessing_code());
 
-        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");
+        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, transactionPO.toXmlString(), APICommandType.Xml, url, "", "");
 
         HttpPost httpPost = new HttpPost(url);
 
@@ -397,6 +397,15 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String resultHtml = EntityUtils.toString(entity, "UTF-8");
 //        System.out.println(" resultHtml111  === " + resultHtml);
+
+
+        /**
+         *  自己实现开始
+         */
+        logDao.save("通联支付正式环境测试", "反馈", resultHtml);
+
+
+
 
         BASE64Decoder base64 = new BASE64Decoder();
         resultHtml = new String(base64.decodeBuffer(resultHtml), Consts.UTF_8);

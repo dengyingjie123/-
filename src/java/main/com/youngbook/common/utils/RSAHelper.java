@@ -60,6 +60,15 @@ public class RSAHelper {
         return encryptedBytes;
     }
 
+    public static byte[] fromHexString(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
 
     public byte[] decrypt(PrivateKey privateKey, byte[] inputData) throws Exception {
 
@@ -67,7 +76,7 @@ public class RSAHelper {
 
         // Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.PRIVATE_KEY, privateKey);
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
         byte[] decryptedBytes = cipher.doFinal(inputData);
 
@@ -106,24 +115,53 @@ public class RSAHelper {
         helper.setJksPublicAlias("allinpay_public");
         helper.setJksPublicPassword("111111");
 
-        helper.setJksPrivatePath("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\private.jks");
-        helper.setJksPrivateAlias("allinpay_private");
-        helper.setJksPrivatePassword("111111");
+//        helper.setJksPrivatePath("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\private.jks");
+//        helper.setJksPrivateAlias("allinpay_private");
+//        helper.setJksPrivatePassword("111111");
+
+
+        helper.setJksPrivatePath("C:\\Users\\leevits\\Desktop\\ttt\\p-sha1.jks");
+        helper.setJksPrivateAlias("kepler_private");
+        helper.setJksPrivatePassword("12345678");
+
+        helper.testNormal();
+//        helper.testEncryptAllinpay();
+    }
+
+    public void testNormal() throws Exception {
+
+        RSAHelper helper = new RSAHelper();
+//        helper.setJksPublicPath("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\public.jks");
+//        helper.setJksPublicAlias("allinpay_public");
+//        helper.setJksPublicPassword("111111");
+//
+//        helper.setJksPrivatePath("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\private.jks");
+//        helper.setJksPrivateAlias("allinpay_private");
+//        helper.setJksPrivatePassword("111111");
+
+
+        helper.setJksPublicPath("C:\\Users\\leevits\\Desktop\\ttt\\kepler_public.jks");
+        helper.setJksPublicAlias("kepler_public");
+        helper.setJksPublicPassword("12345678");
+
+        helper.setJksPrivatePath("C:\\Users\\leevits\\Desktop\\ttt\\p-sha1.jks");
+        helper.setJksPrivateAlias("kepler_private");
+        helper.setJksPrivatePassword("12345678");
 
 
         byte[] abcs = helper.encrypt(helper.getPublicKey(), "abc".getBytes());
 
-        String encryptText = new String(abcs);
+        String encryptText = new String(abcs) + "3";
         System.out.println(Base64Utils.encode(encryptText));
 
-        byte[] decrypt = helper.decrypt(helper.getPrivateKey(), abcs);
-        System.out.println(new String(decrypt));
+        BASE64Decoder base64Decoder = new BASE64Decoder();
 
-        helper.testAllinpay();
+        byte[] decrypt = helper.decrypt(helper.getPrivateKey(), base64Decoder.decodeBuffer(encryptText));
+        System.out.println(new String(decrypt));
     }
 
 
-    public void testAllinpay() throws Exception {
+    public void testEncryptAllinpay() throws Exception {
 
 //        RSAHelper helper = new RSAHelper();
 //        helper.setJksPublicPath("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\public.jks");
@@ -134,7 +172,47 @@ public class RSAHelper {
 //        helper.setJksPrivateAlias("allinpay_private");
 //        helper.setJksPrivatePassword("111111");
 
-        String message = "repMsg=PFNUU1BhY2thZ2U+PEVuY3J5cHRlZFRleHQ+c21GZEtBd1Q1OXNjMHhpTi9vcUpEK05sYm1SWndJN3ZCUWJjU3lxcXZkTDFMZ09iekpNZUQ5NFQyOGlFRVM5SGI5N1VrYklnd1lTb1NUb2o3TjN3MjJ2dDJTcHZXbnlFdzA2Tm0yUlN3NG9OOVU3SEMyZjVaYXlnL3VtVlhOSTFjYzJGdUFSbTU1Tnp5Y1BadjdwQWFtOVI3WmZNdDl4RGNUd3VpNFBadXBOUUM0bk9UOXorTlVUdCtkYTBFM3duSDlMcDNPNUdILytXczltTHVxK3ZuUzQ0THVqcnltNkorQlRxUkY2S2dsZ1lTbzQwNFloamk4dHZTY3RtRkZhNlVFc2NkYWJ0R0FuWEMwaHNtU1pQOHo2WHZtOVdzUFNzT21QQ3hCMTd6eW85ak8rdGZrRXlKWUhCWFZQcDBoM1JCSjdCdS80Q2ZqQ3Q4RzRjTERwN3pnTThZTHhGQjcvNkhQVWhqZldOZnE4a2pNazJESlJuNkZiSStUZnl1UFNycjVOczhhZi9qQjF5NXR4V0FEZm9nQ3g0cUx4S1F1dWZrOUtodHU5Sm5BVUsyV3d6NzY2SEp6NkxYMGo4YkR1Y1UveVRvdXZkbDJjeFpsQzFQVmxsaytmbDdPc2cxdWZaNFp4QUZxeWt6eEsrZWd0R0FYQzdmNUhGMmdZeTdya1ZMSUpZQ0xYT0llZjlYb3MzdGltemI5THZiY0QvVnFZUUZHMjBJdHIzd0Z4VGpVTGhMMUUwdmV2SzJGOHdMVFhwZStMK25OclJ3Ui9xSzZCNXNWL01uWEw5Tmx2bEpqazBqc1YzMlJ3Z0M1U09FVndweC9PY3EwZW13bHZYbE1XTG4zNFZiQzQrYm4rZFlRYnA4UHM5RWZLUWNxaGhzMUJMYTZSZWJTdTJvWjdlZXFveFBUQnhHK09vNEpacUIyZVdudC9rSC8yeGFSTVd2TE1BeHcxOSttekRFSDFwQVAvK2tLY2pscUxhbGVrUVp1NkVhWXpqdUR4NmczUEE1WVlVbG9kdmlrZm16TzYrMjVzNVlUOW5XTjN4Wi82NS9tWEloRmZmRlpPeCtnRFl3M3NTYjVtOWd3Y1ovQklkOGJPRmhwdEhZYUhaWC81Q3Uzc1draTZleEZvQkpyV1ZmaFFHSmxXb3ZxbDNDT1hLNzBWR0pUQWRqckZDRThSNjlRZ0xTOURjRTNNbjFwcW81YW8vL0tGVHR6aVdKcEh4dXpNZS9KbDJ0L0dvaGFOZnFYUXF0ZzQ5UnBYRE1PRmhDVnlEbnplaGxzZkEyajhpbFNOZHhpMEF4NFFyd1JNR05GTXU4QlJoZVJYd1F6SXlkd09JbWNIakxGcVdidmQ2SHJsMmZTbzJqc1dHS3l0MUgxcFpMcUZMQXNVOHpwU3ZzMkNzYURSbVJVK0dzN3o5T2QxT0prS1drclJONVVhbWkwYWE4dmxjN2lhdjN1eUQxNS9OYVhMRExKVnRpUkRDNko5TEM2ck5DMDYyM0JUM05EL3hBaTVyRUVzbXFnUFVzWUtJc2ZIbkVsU0xtSUorbGJCbEQyY3FGSTd1eUhSUGtVYTF2NzIrRmFCV3lRNnFCMEx6QUI5ODFvQmtxZG9rUHBBaXhKQThhU0FWaUNjY1BmUkFOTGR5NkxLWWZpdlozN3lZTFJkTlVNb3Z2c3NBdnRIU1plcVNCRDJwcHpVOFpBTkI2R3lXOXdNU201L0o5VzFqbFkwMzY3aSsxdG5FTU1ka01xQ3hTUmszUWx1aHlnb2hORzNHeDl1UFhuRzJUNkF5S1VLUjc5V0JQNjNSejEwK01YL2pDbzhyMGpvcHpPRFM0Z1BCZDdjRkpIdEdWa1NHSmNVbzF2RFU3Mmd2dTdkWVZ3Z3VWN1dta2VNRXdvVENSUzFuc0pFTjJHZzBDTHdxUC9zRkErWmcrUkR1bVpLU3hKek9GOXlCdkYrb2hZNjVOaEh2RDgxc1M3M2dvVS9VQkhWeHJ4QlUwQW5XWFk0SlZEM05xbldSUERYdzFPOW9MN3UzV01za3o3d3dxUGdJY3ZucTFSMWV4YTNKd3FmeEhPZWZiaTZsMGc0L0FDQys8L0VuY3J5cHRlZFRleHQ+PEtleUluZm8+PFJlY2VpdmVyWDUwOUNlcnRTTj45MDg1MzM3NjYzNDc2NjI3OTM2OTQxNjA3MDc0Mjk0NDcxNzA0PC9SZWNlaXZlclg1MDlDZXJ0U04+PEVuY3J5cHRlZEtleT5GQnpFMlpWZzV1QnRJdGJRYnh2MVNUTE91Mnh4VncycU1tTXhlZG9oTHFrcDdUaUVNTzVFRit0SHNIbVFPUVpKTUQ0VEpWMW9FbnJ2YVllcHlxTlBGQzlrYnlINUtSYmF2amIxUUNHOURxWmhCbGwzWkJIOGNpUzhEQ29YaXJyaFZuay9ZUWtueEJBWUFKSkkxeStDRjJjbVRFaWJ5bjdnZTBETzhRWnRSZE09PC9FbmNyeXB0ZWRLZXk+PC9LZXlJbmZvPjwvU1RTUGFja2FnZT4=";
+        String message = "repMsg=PFNUU1BhY2thZ2U+PEVuY3J5cHRlZFRleHQ+Z2ZuR29GbXRqT2ZOTGd6SENOcitGYzExUk5CQWdVcXNDM2gzMGE1NmZPRWlsajZWS284VTErOVprWDVzOFJtZEJBN250YXc2aW1XMg0KZnVsOWo5UktsNkpnSXh5U0ZzNEE4RmF4cWg0WHUxN1k5WlhFN1ZlaVlYam5UWkhqa3dTVUZHYTIvSkhUSjJIaDNTNFRZZG9keWxkaA0KeXdwQ0FEWVZ3RzJ2bTE1alYvM25aQlY3cHhXazVDQmY4cVFLdzFLbDhTaEZ5eEMxem94TmJjTXpadXFQZzVuMVRnUGtQTitIdElKKw0KdVFnZnNtVno1QnVYVjQ0Q1M2R2JuK0dqNURFaDRWY0MyeUF0QklUSXlCTmJkamdzcmVVaEdrS3pYays1Tzd6S1dsVlZya2hHaGZ1VA0KWGczdFduL1BkMnJHeURwTlZnblM1Nzl1TTVSMThIOUUzeW1BS3Q4VnA5Y2RIN3Ywc1lxUHpOTWxDVG15akJBclI5RHZnYkkxazF5Ng0KNzhzS21GS3pXcjJMWmpHVEV4bm5oenhMTDg5MmwxcXNEYnlkdkxlWFlqOWNwY2lsb3NuMHZjSjZPV1NxaW9nRk5BWDN3RW1TQ1RSZA0KaEw2Z2Q4VXNmMUprL1llZzRpWXp5NzVnS1pHelpibVo1MkE5eXU1a1VKbzg0OFNsQndkeXpBd2ZTcW1mYzUrWjhDMmd5ZCszK0l6QQ0KZFYxVWdUMVNVbDVVRjNpL1p0WGE2ZXVZc0ZCV0xibGZyNjZTMGdVOC9xNlBqRFBUdGlFRWxsV29YY2w3dFh4NFZWb3RjVXZMUUhGLw0KSmt0eFVub2pnczFlRldXekJpUk4wTzZoWU9mY1U3eDR1RVR1dVRjbTdIYllpZ0Z2a2tBOStweWNVeXQvRFNEZWF2TG0veVBQNTU0Sw0KczBFRzN6dlYrLzZHMzBDZDgwRkJwSW9UbUdBdFkxcERCaG5yTkF4NDFlNFJ6bGlkbWRpd0NjYzl3WUpCSTRIUnVHbXRlZHlUYXEvcw0Ka1ZRbzU2N2NqaERVMnViaEFNK3h3TjR1cDFmWjlWRXJlREx5MitYQ2ZjeVB4cFFmNzVxT0lOeGNJUk9iZW16K3lWU0l3U1VmcVZ6ZA0KOElORzZoMzVFci9CdG84Nk8vcUFoL3V2YVY2UWxobVowa1BMaE9wSUcwQmgzU0lnSzVWTzRuYjY4SWxoVjVOVWt3Vk1XWDBHOXFqaQ0KTk5DcjYybVV5SWlkalRhREg1dkk1OGRnMjU3d3VVOUdKaE9rWTdGMW1oZEVQUTFGQzkxQ0p5WTZlbnRTMXh1cEduaVpEYUhXYW5aeA0KN3Vpay9HSW51c2d6YXFSdDRJNWlmV2RjYTdiemdRV0hhUml2VG5Hb0N4dmJGMW0wQTJJOFE5RHUwNU4zMFducE1vRDZhVkRrSDN6OQ0KS0FVd2hndkRSUVIwWnhjaEc2U1hnMVVKamdEbjcxR2ZTdnA2d1VwNGdMeDhqbng4QnU4MHhZV2xiS2F3Y2dLY3IzRGd4T0ZNS1Uydg0KU3k3N014eXFEQktxbG5XTUsrbXFIazVBaHQxSFFSNkVvUkQ5cnE2Tk9nNjVTMnNMbjBoRlZXSm40MnZhL2R0aHRVc3R2SmFRaUo0TQ0KL2hMK1Y3ZHBMSlVkdlJPU01hM0l1UmVZakVLVSt5b05FZ0k4bCs5MTBuWGN0c1MrSjJnNjJUdzc0V1ptaU9xeWFUaVBHdVUwTWMwPTwvRW5jcnlwdGVkVGV4dD48S2V5SW5mbz48UmVjZWl2ZXJYNTA5Q2VydFNOPjIxODIwNzM2NzQwMzEyMTA2MDc4MzE3MDcxNTQ2MjE5MDY4MTQ3PC9SZWNlaXZlclg1MDlDZXJ0U04+PEVuY3J5cHRlZEtleT5CQzlVWkZNSk9reXpJN1hXOHViRkt0dHNzUUI5SXZoZmVBSElHTjFtR2d5OFphMUkrUlZmYWRacU93UnIvV1orOXpibkEybXRoTGNBDQp4akFIU3F5cjhvbzl6RDdnUWRSZVZVS1luOEZoSDlnWHhBc29za2t3SnRqVmEvdGJOcnZwaFJubCtIOUZuU243am92a1Jxbko0TnBMDQpLVGRRQU8yejhySURvb1JndUtnPTwvRW5jcnlwdGVkS2V5PjwvS2V5SW5mbz48L1NUU1BhY2thZ2U+";
+        message = message.substring(7);
+
+        String encryptedXmlWithBase64 = Base64Utils.decode(message);
+
+        System.out.println(encryptedXmlWithBase64);
+
+        XmlHelper xmlHelper = new XmlHelper(encryptedXmlWithBase64);
+
+        String encryptedDESKeyWithBase64 = xmlHelper.getValue("/STSPackage/KeyInfo/EncryptedKey");
+
+//        String encryptedDESKey = Base64Utils.decode(encryptedDESKeyWithBase64);
+//
+//        System.out.println(encryptedDESKey);
+
+        // byte[] desKey = decrypt(getPrivateKey(), encryptedDESKey.getBytes());
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] desKey = decrypt(getPrivateKey(), decoder.decodeBuffer(encryptedDESKeyWithBase64));
+
+        SecretKey key = new SecretKeySpec(desKey, "DESede");
+
+        String encryptedDESMessageWithBase64 = xmlHelper.getValue("/STSPackage/EncryptedText");
+
+        String encryptedDESMessage = Base64Utils.decode(encryptedDESMessageWithBase64);
+
+        Cipher tCipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
+        tCipher.init(Cipher.DECRYPT_MODE, key);
+
+        BASE64Decoder base64Decoder = new BASE64Decoder();
+        byte[] tPlainText = tCipher.doFinal(base64Decoder.decodeBuffer(encryptedDESMessageWithBase64));
+        tCipher = null;
+        //modify by sam end
+        String m = new String(tPlainText, "UTF-8");
+
+        System.out.println(m);
+
+    }
+
+
+    public String decode(String message) throws Exception {
+
         message = message.substring(7);
 
         String encryptedXmlWithBase64 = Base64Utils.decode(message);
@@ -170,6 +248,7 @@ public class RSAHelper {
 
         System.out.println(m);
 
+        return m;
     }
 
 
