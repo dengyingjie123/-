@@ -26,7 +26,7 @@ public class MoneyUtils {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(MoneyUtils.format2String(0.12));
+        System.out.println(MoneyUtils.format2Fen(1.23));
     }
 
     public static double calculateProfit(double money, double profitRate, int duration, int type) {
@@ -243,9 +243,9 @@ public class MoneyUtils {
 
     }
 
-    public static double format2Fen(double money) {
-        BigDecimal m = new BigDecimal(money);
-        return m.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+    public static int format2Fen(double money) {
+        BigDecimal m = new BigDecimal(money * 100);
+        return m.setScale(2,BigDecimal.ROUND_HALF_UP).intValue();
     }
 
 
