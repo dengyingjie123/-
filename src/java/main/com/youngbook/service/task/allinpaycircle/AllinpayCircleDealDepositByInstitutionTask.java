@@ -21,7 +21,7 @@ public class AllinpayCircleDealDepositByInstitutionTask extends Task {
 
         this.setStartTime("2010-02-08 00:00:0");
         this.setStopTime("2020-02-08 00:00:0");
-        this.setRepeatSecond(5);
+        this.setRepeatSecond(30);
     }
 
     @Override

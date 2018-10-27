@@ -295,7 +295,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                     allinpayCircleReceiveRawDataPO.setStatus("2");
                     MySQLDao.insertOrUpdate(allinpayCircleReceiveRawDataPO, conn2);
 
-                    logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】", "", conn2);
+                    logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】【"+e.getMessage()+"】", "", conn2);
                 }
                 catch (Exception ex) {
                     logDao.save("异常", "AllinpayCircleDao.dealRawData", "RawDataId=" + allinpayCircleReceiveRawDataPO.getId(), conn2);
@@ -466,8 +466,33 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         return returnObject;
     }
 
-
     private String decode(String code) throws Exception {
+
+        BASE64Decoder base64 = new BASE64Decoder();
+        String xmlDecode = new String(base64.decodeBuffer(code), Consts.UTF_8);
+        System.out.println(" xmlDecode  === " + xmlDecode);
+
+
+        String encryptedText = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
+
+
+        String receiverX509CertSN = PaymentGatewayService.getNodeValue(xmlDecode, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
+        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
+
+
+        String encryptedKey = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedKey");
+
+        Key pfxKey = SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(encryptedKey),
+                SecurityUtil.getPrivateKey());
+
+        encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
+
+        System.out.println("加密后的 ==" + encryptedText);
+
+        return encryptedText;
+    }
+
+    private String decode2(String code) throws Exception {
 
         BASE64Decoder base64 = new BASE64Decoder();
 

@@ -23,7 +23,7 @@ public class AllinpayCircleDealRawDataTask extends Task {
 
         this.setStartTime("2010-02-08 00:00:0");
         this.setStopTime("2020-02-08 00:00:0");
-        this.setRepeatSecond(10);
+        this.setRepeatSecond(30);
     }
 
     @Override
