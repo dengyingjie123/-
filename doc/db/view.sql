@@ -211,3 +211,43 @@ left join CRM_SalemanGroup g on g.state=0 and g.Id=sg.saleManGroupId
 left join crm_customercertificate cc on cc.state=0 and cc.CustomerId=c.id
 where c.state=0
 ;
+
+
+create or replace view view_customer as
+SELECT
+    u.id userId,
+    cd.salesmanId,
+    u.`name` saleManName,
+    sg.Id saleGroupId,
+    sg.`Name` saleGroupName,
+    c.id, c.PersonalNumber, c.`Name`, c.LoginName, c.Mobile, c.CreateTime, c.state,
+    c.id linkCustomerId, '' IdCard,
+    cd.`Status` distributionStatus
+FROM
+    crm_customerpersonal c
+left JOIN view_salesman_customer_distribution cd on cd.CustomerId=c.id
+left JOIN system_user u on u.state=0 and u.id=cd.salesmanId
+Left join crm_saleman_salemangroup ssg on ssg.saleManId=cd.salesmanId and ssg.defaultGroup=1
+left join crm_salemangroup sg on sg.state=0 and sg.id=ssg.saleManGroupId
+WHERE
+    1 = 1
+and c.state=0
+UNION all
+SELECT
+    u.id userId,
+    cd.salesmanId,
+    u.`name` saleManName,
+    sg.id saleGroupId,
+    sg.`Name` saleGroupName,
+    c.id, '' PersonalNumber, c.`Name`, '' LoginName, c.Mobile, '' CreateTime, c.state,
+    c.id linkCustomerId, '' IdCard,
+    cd.`Status` distributionStatus
+FROM
+    crm_customerinstitution c
+left JOIN view_salesman_customer_distribution cd on cd.CustomerId=c.id
+left JOIN system_user u on u.state=0 and u.id=cd.salesmanId
+Left join crm_saleman_salemangroup ssg on ssg.saleManId=cd.salesmanId and ssg.defaultGroup=1
+left join crm_salemangroup sg on sg.state=0 and sg.id=ssg.saleManGroupId
+WHERE
+    1 = 1
+and c.state=0 
