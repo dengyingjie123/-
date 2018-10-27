@@ -1615,7 +1615,7 @@ public class OrderService extends BaseService {
         }
 
 
-        if (order.getStatus() != OrderStatus.Saled && order.getStatus() != OrderStatus.Feedback1) {
+        if (order.getStatus() != OrderStatus.Saled && order.getStatus() != OrderStatus.Feedback1 && !order.getFinanceMoneyConfirm().equals("1")) {
             MyException.newInstance("该笔订单尚未付款，无法生成兑付计划").throwException();
         }
 
