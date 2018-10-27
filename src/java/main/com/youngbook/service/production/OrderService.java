@@ -966,10 +966,7 @@ public class OrderService extends BaseService {
          * 生成兑付计划
          *
          */
-        int paymentPlanCount = this.generatePaymentPlan(order, userId, conn);
-        if (paymentPlanCount != 1) {
-            MyException.newInstance("生成兑付计划失败").throwException();
-        }
+        generatePaymentPlan(order, userId, conn);
 
 
         // 增加客户资金记录
@@ -1110,6 +1107,11 @@ public class OrderService extends BaseService {
         orderDao.insertOrUpdate(orderPO, userId, conn);
 
         orderDetailDao.saveOrderDetail(orderPO, 0, TimeUtils.getNow(), "确认日终扎帐", userId, conn);
+
+        /**
+         * 生成兑付计划
+         */
+        generatePaymentPlan(orderPO, userId, conn);
 
         return orderPO;
     }
@@ -1606,7 +1608,7 @@ public class OrderService extends BaseService {
      * @throws Exception
      * @author 邓超
      */
-    public int generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
+    public void generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
 
         if (order == null) {
             MyException.newInstance("订单数据参数为空").throwException();
@@ -1662,8 +1664,6 @@ public class OrderService extends BaseService {
                 MyException.newInstance("生成兑付计划失败").throwException();
             }
         }
-
-        return 1;
     }
 
 
