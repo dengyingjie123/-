@@ -1129,7 +1129,11 @@ public class OrderAction extends BaseAction {
 
         orderPO.setCreateTime(createTime);
         String valueDate = TimeUtils.getTime(payTime, 1, TimeUtils.DATE);
-        orderService.saleOrder(orderPO, createTime, payTime, valueDate, customerId, conn);
+
+        orderPO.setPayTime(payTime);
+        orderPO.setValueDate(valueDate);
+
+        orderService.saleOrder(orderPO, customerId, conn);
         System.out.println("结束销售订单");
 
 
@@ -1140,6 +1144,10 @@ public class OrderAction extends BaseAction {
 
     @com.youngbook.annotation.Permission(require = "销售管理_订单管理_财务二次核对")
     public String saleOrder() throws Exception {
+
+        if (getLoginUser() == null) {
+            MyException.newInstance("无法获取登录用户信息").throwException();
+        }
 
         order = HttpUtils.getInstanceFromRequest(getRequest(), "order", OrderPO.class);
 
@@ -1167,9 +1175,11 @@ public class OrderAction extends BaseAction {
             order.setValueDate(valueDate);
         }
 
+        order.setCreateTime(now);
 
 
-        int count = orderService.saleOrder(order, now, order.getPayTime(), order.getValueDate(), getLoginUser().getId(), conn);
+
+        int count = orderService.saleOrder(order, getLoginUser().getId(), conn);
 
         if (count != 1) {
             getResult().setMessage("产品销售确认失败");
@@ -1192,9 +1202,6 @@ public class OrderAction extends BaseAction {
         }
 
         order.setMoney(Double.parseDouble(moneyString));
-
-        String now = TimeUtils.getNow();
-
 
         OrderPO orderPO = orderService.financeConfirm01(order, getLoginUser().getId(), conn);
 

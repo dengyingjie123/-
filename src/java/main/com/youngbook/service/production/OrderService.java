@@ -659,7 +659,11 @@ public class OrderService extends BaseService {
         String payTime = now;
         String valueDate = TimeUtils.getTime(now, 1, TimeUtils.DATE);
 
-        return saleOrder(order, createTime, payTime, valueDate, userId, conn);
+        order.setCreateTime(createTime);
+        order.setPayTime(payTime);
+        order.setValueDate(valueDate);
+
+        return saleOrder(order, userId, conn);
     }
 
 
@@ -783,7 +787,7 @@ public class OrderService extends BaseService {
      * @return
      * @throws Exception
      */
-    public int saleOrder(OrderPO order, String createTime, String payTime, String valueDate, String userId, Connection conn) throws Exception {
+    public int saleOrder(OrderPO order, String userId, Connection conn) throws Exception {
 
 
         /**
@@ -796,8 +800,9 @@ public class OrderService extends BaseService {
             MyException.newInstance("订单数据为空").throwException();
         }
 
+
         /**
-         * 下单之前的订单若不为一下几种状态，则不能按成下单。
+         * 下单之前的订单若不为一下几种状态，则不能完成下单。
          */
         OrderPO orderTemp = orderDao.loadByOrderId(order.getId(), conn);
         if (!NumberUtils.checkNumberIn(orderTemp.getStatus(), OrderStatus.Appointment, OrderStatus.AppointmentWaiting, OrderStatus.SaleAndWaiting, OrderStatus.AppointmentCancel,OrderStatus.FinanceConfirm01)) {
@@ -826,15 +831,15 @@ public class OrderService extends BaseService {
             MyException.newInstance("保存订单时，数据库连接为空").throwException();
         }
 
-        if (StringUtils.isEmpty(payTime)) {
+        if (StringUtils.isEmpty(order.getPayTime())) {
             MyException.newInstance("保存订单时，订单支付时间为空").throwException();
         }
 
-        if (StringUtils.isEmpty(createTime)) {
+        if (StringUtils.isEmpty(order.getCreateTime())) {
             MyException.newInstance("保存订单时，订单创建时间为空").throwException();
         }
 
-        if (StringUtils.isEmpty(valueDate)) {
+        if (StringUtils.isEmpty(order.getValueDate())) {
             MyException.newInstance("保存订单时，起息日为空").throwException();
         }
 
@@ -906,13 +911,6 @@ public class OrderService extends BaseService {
             order.setSalemanId(userId);
         }
 
-        // 设置订单创建时间
-        order.setCreateTime(createTime);
-        // 设置订单起息日
-        order.setPayTime(payTime);
-        // 设置订单起息日
-        order.setValueDate(valueDate);
-
 
 
         // 订单的状态设置为已售
@@ -924,7 +922,7 @@ public class OrderService extends BaseService {
          *
          * 先保存订单详情，再确定保存订单信息
          */
-        orderDetailDao.saveOrderDetail(order, order.getMoney(), payTime, OrderStatus.Saled, "订单支付", userId, conn);
+        orderDetailDao.saveOrderDetail(order, order.getMoney(), order.getPayTime(), OrderStatus.Saled, "订单支付", userId, conn);
 
 
         /**
