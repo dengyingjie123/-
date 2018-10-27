@@ -81,8 +81,8 @@
                     <td align="right">总成本</td>
                     <td><input type="text" class="easyui-validatebox" id="totalCost<%=token %>" data-options="required:true,validType:'number'" invalidMessage="请输入大于零的整数" name="production.totalCost" style="width:120px"/>&nbsp;%
                     </td>
-                    <td align="right">&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td align="right">通联金融圈账户代码</td>
+                    <td><input type="text" class="easyui-validatebox" id="allinpayCircle_ProductCodeCashAcct<%=token %>" data-options="validType:'number'" invalidMessage="请输入大于零的整数" name="production.allinpayCircle_ProductCodeCashAcct" style="width:120px"/></td>
                     <td align="right">&nbsp;</td>
                     <td>&nbsp;</td>
                     <td align="right">&nbsp;</td>

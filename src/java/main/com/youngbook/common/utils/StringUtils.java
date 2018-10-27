@@ -33,16 +33,16 @@ public class StringUtils {
 
 
 
-        System.out.println(AesEncrypt.encrypt("800019374406012"));
-        System.out.println(AesEncrypt.encrypt("0800019374406012"));
+//        System.out.println(AesEncrypt.encrypt("800019374406012"));
+//        System.out.println(AesEncrypt.encrypt("0800019374406012"));
 
         // 103170160100150
         //
         // 1031701001
         // 1031701601
         // 1031802401
-        // 1031802401
-        String title = "1031802401";
+        // 1031600810
+        String title = "1031600810";
 
         // 1031701601
         // 1031802401
@@ -50,8 +50,8 @@ public class StringUtils {
 
 
 
-        int begin = 131;
-        int count = 10;
+        int begin = 1;
+        int count = 30;
 
 
 
