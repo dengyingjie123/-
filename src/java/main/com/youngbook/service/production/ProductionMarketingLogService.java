@@ -44,7 +44,7 @@ public class ProductionMarketingLogService {
 
 
         // 检测产品是否存在
-        ProductionPO production = productionDao.getProductionById(productionId, conn);
+        ProductionPO production = productionDao.loadProductionById(productionId, conn);
         if(production == null) {
             MyException.newInstance(ReturnObjectCode.PRODUCTION_NOT_EXISTENT, "产品不存在").throwException();
         }

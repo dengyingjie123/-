@@ -59,15 +59,15 @@ public class ProductionService extends BaseService {
         return productionDao.listProductionPOByProductionNameOrProductionNO(productionName, productionNO, conn);
     }
 
-    public ProductionPO getProductionById(String id, Connection conn) throws Exception {
-        return productionDao.getProductionById(id, conn);
+    public ProductionPO loadProductionById(String id, Connection conn) throws Exception {
+        return productionDao.loadProductionById(id, conn);
     }
 
-    public ProductionPO getProductionById(String id) throws Exception {
+    public ProductionPO loadProductionById(String id) throws Exception {
 
         Connection conn = Config.getConnection();
         try {
-            return productionDao.getProductionById(id, conn);
+            return productionDao.loadProductionById(id, conn);
         }
         catch (Exception e) {
             throw e;
@@ -1575,10 +1575,7 @@ public class ProductionService extends BaseService {
 
 
         // 构建产品
-        ProductionPO production = new ProductionPO();
-        production.setId(productionId);
-        production.setState(Config.STATE_CURRENT);
-        production = MySQLDao.load(production, ProductionPO.class, conn);
+        ProductionPO production = productionDao.loadProductionById(productionId, conn);
 
         if (production == null) {
             MyException.newInstance(Config.getWords4WebGeneralError(), "未找到产品").throwException();
@@ -1605,11 +1602,7 @@ public class ProductionService extends BaseService {
         }
 
 
-        int count = MySQLDao.insertOrUpdate(production, conn);
-
-        if (count != 1) {
-            MyException.newInstance(Config.getWords("w.production.nomoresize"), "购买产品失败").throwException();
-        }
+        productionDao.insertOrUpdate(production, conn);
 
         return 1;
     }

@@ -1428,7 +1428,7 @@ public class OrderService extends BaseService {
 
         List<PaymentPlanPO> plans = new ArrayList<PaymentPlanPO>();
 
-        ProductionPO productionPO = productionDao.getProductionById(order.getProductionId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(order.getProductionId(), conn);
 
 
         // 获得起息日
@@ -1585,7 +1585,7 @@ public class OrderService extends BaseService {
             MyException.newInstance("订单尚未支付，无法获得起息日").throwException();
         }
 
-        ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(orderPO.getProductionId(), conn);
 
         if (!StringUtils.isEmpty(productionPO.getValueDate())) {
             return productionPO.getValueDate();
@@ -1619,7 +1619,7 @@ public class OrderService extends BaseService {
 
 
         //付息类型、付息期数
-        ProductionPO production = productionDao.getProductionById(order.getProductionId(), conn);
+        ProductionPO production = productionDao.loadProductionById(order.getProductionId(), conn);
 
         if (production == null) {
             MyException.newInstance("查询产品失败").throwException();

@@ -1714,7 +1714,7 @@ public class OrderAction extends BaseAction {
         }
 
         // 查询该订单关联的产品
-        ProductionPO productionPO = productionService.getProductionById(productionId, conn);
+        ProductionPO productionPO = productionService.loadProductionById(productionId, conn);
         if (productionPO == null) {
             throw new Exception("产品信息获取有误！");
         }
@@ -1847,7 +1847,7 @@ public class OrderAction extends BaseAction {
             }
 
             // 获取产品
-            productionPO = productionService.getProductionById(orderPO.getProductionId(), conn);
+            productionPO = productionService.loadProductionById(orderPO.getProductionId(), conn);
             if(productionPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有找到订单对应的产品").throwException();
             }
@@ -1912,7 +1912,7 @@ public class OrderAction extends BaseAction {
             }
 
             // 获取产品
-            productionPO = productionService.getProductionById(productionId, conn);
+            productionPO = productionService.loadProductionById(productionId, conn);
             if(productionPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有找到订单对应的产品").throwException();
             }
