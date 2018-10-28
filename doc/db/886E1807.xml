@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="886E1807">
+SELECT
+    salesman.GroupName,
+    salesman.name,
+    (select IFNULL(sum(money),0) from view_order_open o where o.salesmanId=salesman.id
+        <if test="#{endTime} !=null">
+        and o.paytime&lt;=#{endTime} 
+        </if>
+    ) money_open,
+    (select IFNULL(sum(money * p.discountRate),0) from view_order_open o, crm_production p where p.state=0 and o.salesmanId=salesman.id and     
+        o.productionId=p.id
+        <if test="#{endTime} !=null">
+        and o.paytime&lt;=#{endTime} 
+        </if>
+    ) money_open_discountRate,
+    (select IFNULL(sum(money),0) from view_order_open o where 1=1
+        <if test="#{startTime} !=null">
+        and o.paytime&gt;=#{startTime}
+        </if>
+        <if test="#{endTime} !=null">
+        and o.paytime&lt;=#{endTime} 
+        </if>
+        and o.salesmanId=salesman.id) money_open_add,
+    (select IFNULL(sum(money * p.discountRate),0) from view_order_open o, crm_production p where 1=1 
+        <if test="#{startTime} !=null">
+        and o.paytime&gt;=#{startTime}
+        </if>
+        <if test="#{endTime} !=null">
+        and o.paytime&lt;=#{endTime} 
+        </if>
+        and p.state=0 and o.salesmanId=salesman.id and o.productionId=p.id) money_open_discountRate_add,
+    (select count(*) from view_customerpersonal c where c.distributionStatus=1 and c.salemanId=salesman.id
+        <if test="#{endTime} !=null">
+        and c.CreateTime&lt;=#{endTime} 
+        </if>
+    ) customer_count,
+    (select count(*) from view_customerpersonal c where 1=1
+        <if test="#{startTime} !=null">
+        and c.CreateTime&gt;=#{startTime}
+        </if>
+        <if test="#{endTime} !=null">
+        and c.CreateTime&lt;=#{endTime}
+        </if>
+        and c.distributionStatus=1 
+        and c.salemanId=salesman.id) customer_count_add
+FROM
+    view_salesman salesman
+ORDER BY salesman.groupName, salesman.`NAME`    
+        </select>
+    </select-sql>
+</sql>
