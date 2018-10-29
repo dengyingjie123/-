@@ -1081,6 +1081,21 @@ public class OrderService extends BaseService {
 
     public Pager getReportWeekly(String startTime, String endTime, int currentPage, int showRowCount, Connection conn) throws Exception {
 
+        showRowCount = 0;
+        OrderReportWeeklyVO orderReportWeeklyVO = new OrderReportWeeklyVO();
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("886E1807");
+        dbSQL.addParameter4All("startTime", startTime)
+                .addParameter4All("endTime", endTime);
+        dbSQL.initSQL();
+
+        Pager pager = MySQLDao.search(dbSQL, orderReportWeeklyVO, null, currentPage, showRowCount, null, conn);
+
+        return pager;
+    }
+
+
+    public Pager getReportMonthly(String startTime, String endTime, int currentPage, int showRowCount, Connection conn) throws Exception {
+
         OrderReportWeeklyVO orderReportWeeklyVO = new OrderReportWeeklyVO();
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("886E1807");
         dbSQL.addParameter4All("startTime", startTime)

@@ -142,6 +142,63 @@ var OrderClass = function (token) {
         });
     }
 
+    function initTableOrderReportMonthlyTable() {
+
+        fw.datagrid({
+            id:'orderReportMonthlyTable'+token,
+            url:WEB_ROOT + "/production/Order_getReportWeekly.action",
+            loadMsg: '数据正在加载，请稍后……',
+            rownumbers: true,
+            pagination:false,
+            loadFilter: function (data) {
+                try {
+                    data = fw.dealReturnObject(data);
+                    return data;
+                }
+                catch (e) {
+                }
+            },
+            frozenColumns:[
+                [  // 固定列，没有滚动条
+                    {field: 'ck', checkbox: true},
+                    {field: 'sid', title: '序号', hidden: true},
+                    {field: 'id', title: '编号', hidden: true},
+                    {field: 'groupName', title: '财富中心'},
+                    {field: 'name', title: '销售'}
+                ]
+            ],
+            columns: [
+                [
+                    {field: 'money_open', title: '存量金额',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_open']);
+                        }
+                    },
+                    {field: 'money_open_discountRate', title: '存量金额折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_open_discountRate']);
+                        }
+                    },
+                    {field: 'money_open_add', title: '新增金额',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_open_add']);
+                        }
+                    },
+                    {field: 'money_open_discountRate_add', title: '新增金额折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_open_discountRate_add']);
+                        }
+                    },
+                    {field: 'customer_count', title: '客户数'},
+                    {field: 'customer_count_add', title: '客户新增数'}
+                ]
+            ],
+            onLoadSuccess: function () {
+
+            }
+        });
+    }
+
 
     /**
      * 初始化表格
@@ -2211,6 +2268,15 @@ var OrderClass = function (token) {
             initTableOrderReportWeeklyTable();
 
             onClickOrderReportWeeklySearchSubmit();
+        },
+        initReportMonthly:function(){
+
+            initTableOrderReportMonthlyTable();
+
+            // initOrderReportWeeklySearch();
+            // initTableOrderReportWeeklyTable();
+            //
+            // onClickOrderReportWeeklySearchSubmit();
         },
         initModuleWithSelect: function (callback) {
             callbackfunction = callback;

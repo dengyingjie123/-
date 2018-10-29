@@ -1041,6 +1041,10 @@ var fw = (function () {
             var columns = definition['columns'];
             var onLoadSuccess = definition['onLoadSuccess'];
             var onClickCell = definition['onClickCell'];
+            var pagination = definition['pagination'];
+            if (fw.checkIsNullObject(pagination)) {
+                pagination = true;
+            }
 
             var pageSize = Math.round(getHeight(usedHeight) / 30) - 1;
             var pageList = [pageSize, pageSize * 2, pageSize * 3, 100, 200];
@@ -1059,6 +1063,7 @@ var fw = (function () {
                 singleSelect: true,
                 pageList: pageList,
                 pageSize: pageSize,
+                pagination:pagination,
                 rownumbers: true,
                 loadFilter: function (data) {
                     try {
@@ -1068,7 +1073,6 @@ var fw = (function () {
                     catch (e) {
                     }
                 },
-                pagination: true,
                 frozenColumns: frozenColumns,
                 columns:columns,
                 onLoadSuccess: function () {

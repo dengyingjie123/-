@@ -313,6 +313,13 @@ function contentTabAdd(permissionName, token) {
             orderClass.initReportWeekly();
         });
     }
+    else if (permissionName == "销售管理_销售月报_查看") {
+        using(SCRIPTS_ROOT + '/production/OrderClass.js', function () {
+            //alert("hello");
+            var orderClass = new OrderClass(token);
+            orderClass.initReportMonthly();
+        });
+    }
     else if (permissionName == "销售产品统计报表") {
         //alert("begin");
         using(SCRIPTS_ROOT + '/report/ProductionStatisticsClass.js', function () {
