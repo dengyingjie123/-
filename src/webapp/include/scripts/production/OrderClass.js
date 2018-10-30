@@ -88,7 +88,8 @@ var OrderClass = function (token) {
         fw.bindOnClick(buttonId, function (process) {
             var strTableId = "orderReportMonthlyTable" + token;
             var params = $('#' + strTableId).datagrid('options').queryParams;
-            params["selectedYearMonth"] = fw.getFormValue("search_year", fw.type_form_combotree, fw.type_get_value) + "-" + fw.getFormValue("search_month", fw.type_form_combotree, fw.type_get_value);
+            params["thisYear"] = fw.getFormValue("search_year" + token, fw.type_form_combotree, fw.type_get_value);
+            params["thisMonth"] = fw.getFormValue("search_month" + token, fw.type_form_combotree, fw.type_get_value);
             $('#' + strTableId).datagrid('load');
 
             fw.treeClear()
@@ -181,28 +182,68 @@ var OrderClass = function (token) {
             ],
             columns: [
                 [
-                    {field: 'money_open', title: '存量金额',
+                    {field: 'money_remain_year_open', title: '年初存量',
                         formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open']);
+                            return fw.formatMoney(row['money_remain_year_open']);
                         }
                     },
-                    {field: 'money_open_discountRate', title: '存量金额折标',
+                    {field: 'money_remain_year_open_discount_rate', title: '年初存量折标',
                         formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_discountRate']);
+                            return fw.formatMoney(row['money_remain_year_open_discount_rate']);
                         }
                     },
-                    {field: 'money_open_add', title: '新增金额',
+                    {field: 'money_remain_month_open', title: '月初存量',
                         formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_add']);
+                            return fw.formatMoney(row['money_remain_month_open']);
                         }
                     },
-                    {field: 'money_open_discountRate_add', title: '新增金额折标',
+                    {field: 'money_remain_month_open_discount_rate', title: '月初存量折标',
                         formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_discountRate_add']);
+                            return fw.formatMoney(row['money_remain_month_open_discount_rate']);
                         }
                     },
-                    {field: 'customer_count', title: '客户数'},
-                    {field: 'customer_count_add', title: '客户新增数'}
+                    {field: 'customer_remain_count', title: '客户存量'},
+                    {field: 'customer_new_count', title: '客户新增数'},
+                    {field: 'money_add_this_month', title: '本月募集数',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_add_this_month']);
+                        }
+                    },
+                    {field: 'money_add_this_month_discount_rate', title: '本月募集折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_add_this_month_discount_rate']);
+                        }
+                    },
+                    {field: 'money_payment_this_month', title: '本月兑付',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_payment_this_month']);
+                        }
+                    },
+                    {field: 'money_payment_this_month_discount_rate', title: '本月兑付折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_payment_this_month_discount_rate']);
+                        }
+                    },
+                    {field: 'money_new_this_month', title: '本月新增数',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_new_this_month']);
+                        }
+                    },
+                    {field: 'money_new_this_month_discount_rate', title: '本月新增数折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_new_this_month_discount_rate']);
+                        }
+                    },
+                    {field: 'money_remain_this_month_end', title: '月末存量',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_remain_this_month_end']);
+                        }
+                    },
+                    {field: 'money_remain_this_month_end_discount_rate', title: '月末存量折标',
+                        formatter: function(value,row,index){
+                            return fw.formatMoney(row['money_remain_this_month_end_discount_rate']);
+                        }
+                    }
                 ]
             ],
             onLoadSuccess: function () {

@@ -1030,9 +1030,14 @@ var fw = (function () {
 
         datagrid:function(definition) {
             var usedHeight = definition['usedHeight'];
+            var height = definition['height'];
 
             if (fw.checkIsNullObject(usedHeight)) {
                 usedHeight = 250;
+            }
+
+            if (fw.checkIsNullObject(height)) {
+                height = getHeight(usedHeight);
             }
 
             var strTableId = definition['id'];
@@ -1058,7 +1063,7 @@ var fw = (function () {
                 },
                 loadMsg: '数据正在加载，请稍后……',
                 //width:getWidth(0.838),
-                height:getHeight(usedHeight),
+                height:height,
                 fitColumns: false,
                 singleSelect: true,
                 pageList: pageList,
