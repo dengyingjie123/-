@@ -156,24 +156,30 @@ var OrderClass = function (token) {
     }
 
     function initTableOrderReportMonthlyTable() {
-
+        var tableId = 'orderReportMonthlyTable'+token;
         fw.datagrid({
-            id:'orderReportMonthlyTable'+token,
+            id:tableId,
             url:WEB_ROOT + "/production/Order_getReportMonthly.action",
             loadMsg: '数据正在加载，请稍后……',
-            rownumbers: true,
+            rownumbers: false,
             pagination:false,
             loadFilter: function (data) {
                 try {
                     data = fw.dealReturnObject(data);
-                    return data;
+
+                    // fw.alertReturnValue(data);
+
+                    // $('#thisYear' + token).text(data['thisYear']);
+                    // $('#thisMonth' + token).text(data['thisMonth']);
+                    // return data['data'];
+                    return data['d'];
                 }
                 catch (e) {
+                    // throw e;
                 }
             },
             frozenColumns:[
                 [  // 固定列，没有滚动条
-                    {field: 'ck', checkbox: true},
                     {field: 'sid', title: '序号', hidden: true},
                     {field: 'id', title: '编号', hidden: true},
                     {field: 'groupName', title: '财富中心'},
@@ -248,6 +254,8 @@ var OrderClass = function (token) {
             ],
             onLoadSuccess: function () {
 
+                // var d = $('#' + tableId).datagrid('getData');
+                // fw.alertReturnValue(d);
             }
         });
     }

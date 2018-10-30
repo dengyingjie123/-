@@ -965,7 +965,7 @@ var fw = (function () {
             data = fw.convert2Json(data);
             // TODO 判断data的值是否合法
             if (fw.checkIsNullObject(data)) {
-
+                throw new Error('data is null');
             }
             else {
                 if (data.code == 100) {
@@ -1042,6 +1042,12 @@ var fw = (function () {
 
             var strTableId = definition['id'];
             var url = definition['url'];
+            var rownumbers = definition['rownumbers'];
+
+            if (fw.checkIsNullObject(rownumbers)) {
+                rownumbers = true;
+            }
+
             var frozenColumns = definition['frozenColumns'];
             var columns = definition['columns'];
             var onLoadSuccess = definition['onLoadSuccess'];
@@ -1069,7 +1075,7 @@ var fw = (function () {
                 pageList: pageList,
                 pageSize: pageSize,
                 pagination:pagination,
-                rownumbers: true,
+                rownumbers: rownumbers,
                 loadFilter: function (data) {
                     try {
                         data = fw.dealReturnObject(data);

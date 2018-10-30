@@ -853,7 +853,15 @@ public class OrderAction extends BaseAction {
 
         Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
 
-        getResult().setReturnValue(pager.toJsonObject());
+        KVObjects kvObjects = new KVObjects();
+        kvObjects.addItem("thisYear", thisYear);
+        kvObjects.addItem("thisMonth", thisMonth);
+
+        String s = pager.toJsonObject().toString();
+        kvObjects.addItem("d", s);
+
+//        getResult().setReturnValue(kvObjects.toJSONObject());
+         getResult().setReturnValue(pager.toJsonObject());
 
         return SUCCESS;
     }
