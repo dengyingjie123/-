@@ -837,6 +837,27 @@ public class OrderAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String getReportMonthly() throws Exception {
+
+        String thisYear = getHttpRequestParameter("thisYear");
+        String thisMonth = getHttpRequestParameter("thisMonth");
+
+        if (StringUtils.isEmpty(thisYear)) {
+            thisYear = TimeUtils.getYear();
+        }
+
+        if (StringUtils.isEmpty(thisMonth)) {
+            thisMonth = TimeUtils.getMonth();
+        }
+
+
+        Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
+
+        getResult().setReturnValue(pager.toJsonObject());
+
+        return SUCCESS;
+    }
+
     public String financeMoneyConfirm() throws Exception {
 
         String orderId = getHttpRequestParameter("orderId");

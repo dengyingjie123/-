@@ -20,7 +20,7 @@
                 </td>
                 <td>
                 <td>
-                    <a id="btnSearch<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                    <a id="btnSearchOrderReportMonthly<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
                 </td>
             </tr>
         </table>

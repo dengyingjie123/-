@@ -83,6 +83,18 @@ var OrderClass = function (token) {
         });
     }
 
+    function onClickOrderReportMonthlySearchSubmit() {
+        var buttonId = "btnSearchOrderReportMonthly" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            var strTableId = "orderReportMonthlyTable" + token;
+            var params = $('#' + strTableId).datagrid('options').queryParams;
+            params["selectedYearMonth"] = fw.getFormValue("search_year", fw.type_form_combotree, fw.type_get_value) + "-" + fw.getFormValue("search_month", fw.type_form_combotree, fw.type_get_value);
+            $('#' + strTableId).datagrid('load');
+
+            fw.treeClear()
+        });
+    }
+
     function initTableOrderReportWeeklyTable() {
 
         fw.datagrid({
@@ -146,7 +158,7 @@ var OrderClass = function (token) {
 
         fw.datagrid({
             id:'orderReportMonthlyTable'+token,
-            url:WEB_ROOT + "/production/Order_getReportWeekly.action",
+            url:WEB_ROOT + "/production/Order_getReportMonthly.action",
             loadMsg: '数据正在加载，请稍后……',
             rownumbers: true,
             pagination:false,
@@ -2276,7 +2288,7 @@ var OrderClass = function (token) {
             // initOrderReportWeeklySearch();
             // initTableOrderReportWeeklyTable();
             //
-            // onClickOrderReportWeeklySearchSubmit();
+            onClickOrderReportMonthlySearchSubmit();
         },
         initModuleWithSelect: function (callback) {
             callbackfunction = callback;
