@@ -25,6 +25,12 @@ import java.util.Map;
 @Component("productionDao")
 public class ProductionDaoImpl implements IProductionDao {
 
+    public ProductionPO insertOrUpdate(ProductionPO productionPO, Connection conn) throws Exception {
+        MySQLDao.insertOrUpdate(productionPO, conn);
+
+        return productionPO;
+    }
+
     public List<ProductionPO> listProductionPOByProductionNameOrProductionNO(String productionName, String productionNO, Connection conn) throws Exception {
 
         DatabaseSQL dbSQL = new DatabaseSQL();
@@ -106,7 +112,7 @@ public class ProductionDaoImpl implements IProductionDao {
         return false;
     }
 
-    public ProductionPO getProductionById(String id, Connection conn) throws Exception {
+    public ProductionPO loadProductionById(String id, Connection conn) throws Exception {
         // 查询出订单购买了哪个产品
         ProductionPO production = new ProductionPO();
         production.setId(id);

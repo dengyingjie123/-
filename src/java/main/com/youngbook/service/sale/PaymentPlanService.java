@@ -129,7 +129,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
 
         PaymentPlanVO paymentPlanVO = paymentPlanDao.loadPaymentPlanVO(paymentPlanId, conn);
 
-        ProductionPO productionPO = productionDao.getProductionById(paymentPlanVO.getProductId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(paymentPlanVO.getProductId(), conn);
 
         double money = paymentPlanVO.getTotalPaymentPrincipalMoney() + paymentPlanVO.getTotalProfitMoney();
 

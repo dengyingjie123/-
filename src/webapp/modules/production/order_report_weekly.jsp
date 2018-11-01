@@ -15,7 +15,7 @@
             <tr>
                 <td>销售周报</td>
                 <td>
-                    <input id="searchDate<%=token%>" name="searchDate" type="text" class="easyui-datebox"></input>
+                    <input id="searchDate<%=token%>" name="searchDate" type="text" class="easyui-datebox" />
                 </td>
                 <td>
                 <td>

@@ -28,6 +28,7 @@ import com.youngbook.entity.po.sale.*;
 import com.youngbook.entity.po.sale.contract.ContractPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.production.OrderDetailVO;
+import com.youngbook.entity.vo.production.OrderReportMonthlyVO;
 import com.youngbook.entity.vo.production.OrderReportWeeklyVO;
 import com.youngbook.entity.vo.production.OrderVO;
 import com.youngbook.entity.vo.system.MenuVO;
@@ -659,7 +660,11 @@ public class OrderService extends BaseService {
         String payTime = now;
         String valueDate = TimeUtils.getTime(now, 1, TimeUtils.DATE);
 
-        return saleOrder(order, createTime, payTime, valueDate, userId, conn);
+        order.setCreateTime(createTime);
+        order.setPayTime(payTime);
+        order.setValueDate(valueDate);
+
+        return saleOrder(order, userId, conn);
     }
 
 
@@ -783,7 +788,7 @@ public class OrderService extends BaseService {
      * @return
      * @throws Exception
      */
-    public int saleOrder(OrderPO order, String createTime, String payTime, String valueDate, String userId, Connection conn) throws Exception {
+    public int saleOrder(OrderPO order, String userId, Connection conn) throws Exception {
 
 
         /**
@@ -796,8 +801,9 @@ public class OrderService extends BaseService {
             MyException.newInstance("订单数据为空").throwException();
         }
 
+
         /**
-         * 下单之前的订单若不为一下几种状态，则不能按成下单。
+         * 下单之前的订单若不为一下几种状态，则不能完成下单。
          */
         OrderPO orderTemp = orderDao.loadByOrderId(order.getId(), conn);
         if (!NumberUtils.checkNumberIn(orderTemp.getStatus(), OrderStatus.Appointment, OrderStatus.AppointmentWaiting, OrderStatus.SaleAndWaiting, OrderStatus.AppointmentCancel,OrderStatus.FinanceConfirm01)) {
@@ -826,15 +832,15 @@ public class OrderService extends BaseService {
             MyException.newInstance("保存订单时，数据库连接为空").throwException();
         }
 
-        if (StringUtils.isEmpty(payTime)) {
+        if (StringUtils.isEmpty(order.getPayTime())) {
             MyException.newInstance("保存订单时，订单支付时间为空").throwException();
         }
 
-        if (StringUtils.isEmpty(createTime)) {
+        if (StringUtils.isEmpty(order.getCreateTime())) {
             MyException.newInstance("保存订单时，订单创建时间为空").throwException();
         }
 
-        if (StringUtils.isEmpty(valueDate)) {
+        if (StringUtils.isEmpty(order.getValueDate())) {
             MyException.newInstance("保存订单时，起息日为空").throwException();
         }
 
@@ -906,13 +912,6 @@ public class OrderService extends BaseService {
             order.setSalemanId(userId);
         }
 
-        // 设置订单创建时间
-        order.setCreateTime(createTime);
-        // 设置订单起息日
-        order.setPayTime(payTime);
-        // 设置订单起息日
-        order.setValueDate(valueDate);
-
 
 
         // 订单的状态设置为已售
@@ -924,7 +923,7 @@ public class OrderService extends BaseService {
          *
          * 先保存订单详情，再确定保存订单信息
          */
-        orderDetailDao.saveOrderDetail(order, order.getMoney(), payTime, OrderStatus.Saled, "订单支付", userId, conn);
+        orderDetailDao.saveOrderDetail(order, order.getMoney(), order.getPayTime(), OrderStatus.Saled, "订单支付", userId, conn);
 
 
         /**
@@ -968,10 +967,7 @@ public class OrderService extends BaseService {
          * 生成兑付计划
          *
          */
-        int paymentPlanCount = this.generatePaymentPlan(order, userId, conn);
-        if (paymentPlanCount != 1) {
-            MyException.newInstance("生成兑付计划失败").throwException();
-        }
+        generatePaymentPlan(order, userId, conn);
 
 
         // 增加客户资金记录
@@ -1098,6 +1094,206 @@ public class OrderService extends BaseService {
     }
 
 
+
+    public Pager getReportMonthly(String thisYear, String thisMonth, Connection conn) throws Exception {
+
+        String this_year_begin_time = thisYear + "-01-01 00:00:00";
+        String this_month_begin_time = thisYear + "-" + thisMonth + "-01 00:00:00";
+        String this_month_end_time = TimeUtils.getTime(TimeUtils.getTime(this_month_begin_time, 1, TimeUtils.MONTH), -1, TimeUtils.SECOND);
+        String last_year_begin_time = "2014-01-01 00:00:00";
+        String last_year_end_time = TimeUtils.getTime(this_year_begin_time, -1, TimeUtils.SECOND);
+        String last_month_begin_time = TimeUtils.getTime(this_month_begin_time, -1, TimeUtils.MONTH);
+        String last_month_end_time = TimeUtils.getTime(this_month_begin_time, -1, TimeUtils.SECOND);
+
+
+        StringBuffer sbSQL = new StringBuffer();
+        sbSQL.append(" SELECT");
+        sbSQL.append("     s.GroupName, s.`NAME`,");
+        sbSQL.append("     (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and (");
+        sbSQL.append("             (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_year_end_time+"') or");
+        sbSQL.append("             (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_year_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+last_year_end_time+"')");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_year_open,");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money * p.discountRate),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, crm_production p");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0) and  p.state=0 and o.ProductionId=p.id");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_year_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_year_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+last_year_end_time+"')");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_year_open_discount_rate,");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_month_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_month_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+this_month_begin_time+"')");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_month_open,");
+        sbSQL.append("         ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money * p.discountRate),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, crm_production p");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0) and  p.state=0 and o.ProductionId=p.id");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_month_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_month_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+this_month_begin_time+"')");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_month_open_discount_rate,");
+        sbSQL.append(" ");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 count(DISTINCT o.CustomerId)");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_month_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_month_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+last_year_end_time+"')");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) customer_remain_count,");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 count(DISTINCT o.CustomerId)");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, view_customer c");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 o.CustomerId=c.id");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and o.PayTime>='"+this_month_begin_time+"' and o.PayTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and c.CreateTime>='"+this_month_begin_time+"' and c.CreateTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) customer_new_count,");
+        sbSQL.append("         ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1=1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and o.PayTime>='"+this_month_begin_time+"' and o.PayTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_add_this_month,");
+        sbSQL.append(" ");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money * p.discountRate),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, crm_production p");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 p.state=0");
+        sbSQL.append("         AND o.`status` not in (0) and o.ProductionId=p.id");
+        sbSQL.append("         and o.PayTime>='"+this_month_begin_time+"' and o.PayTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_add_this_month_discount_rate,");
+        sbSQL.append(" ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1=1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         AND o.paymentPlanStatus in (5)");
+        sbSQL.append("         and o.paymentPlanLastTime>='"+this_month_begin_time+"' and o.paymentPlanLastTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_payment_this_month,");
+        sbSQL.append("         ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money * p.discountRate),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, crm_production p");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 p.state=0");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         AND o.paymentPlanStatus in (5) and o.ProductionId=p.id");
+        sbSQL.append("         and o.paymentPlanLastTime>='"+this_month_begin_time+"' and o.paymentPlanLastTime<='"+this_month_end_time+"'");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_payment_this_month_discount_rate,");
+        sbSQL.append("         0 money_new_this_month,");
+        sbSQL.append("         0 money_new_this_month_discount_rate,");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0)");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+this_month_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now())");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_this_month_end,");
+        sbSQL.append("         ");
+        sbSQL.append("         (");
+        sbSQL.append("         SELECT");
+        sbSQL.append("                 IFNULL(sum(o.money * p.discountRate),0)/10000");
+        sbSQL.append("         FROM");
+        sbSQL.append("                 view_order o, crm_production p");
+        sbSQL.append("         WHERE");
+        sbSQL.append("                 1 = 1");
+        sbSQL.append("         AND o.`status` not in (0) and p.state=0 and o.ProductionId=p.id");
+        sbSQL.append("         and (");
+        sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+this_month_end_time+"') or");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now())");
+        sbSQL.append("         )");
+        sbSQL.append("         and o.salesmanId=s.id");
+        sbSQL.append("     ) money_remain_this_month_end_discount_rate");
+        sbSQL.append(" FROM");
+        sbSQL.append("     view_salesman s");
+        sbSQL.append(" ORDER BY s.groupname, s.`NAME`");
+
+
+        OrderReportMonthlyVO orderReportMonthlyVO = new OrderReportMonthlyVO();
+        DatabaseSQL dbSQL = DatabaseSQL.getInstance(sbSQL.toString());
+        dbSQL.initSQL();
+
+        Pager pager = MySQLDao.search(dbSQL, orderReportMonthlyVO, null, 0, 0, null, conn);
+
+        return pager;
+    }
+
+
     public OrderPO financeMoneyConfirm(String orderId, String userId, Connection conn) throws Exception {
         OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
 
@@ -1112,6 +1308,11 @@ public class OrderService extends BaseService {
         orderDao.insertOrUpdate(orderPO, userId, conn);
 
         orderDetailDao.saveOrderDetail(orderPO, 0, TimeUtils.getNow(), "确认日终扎帐", userId, conn);
+
+        /**
+         * 生成兑付计划
+         */
+        generatePaymentPlan(orderPO, userId, conn);
 
         return orderPO;
     }
@@ -1430,7 +1631,7 @@ public class OrderService extends BaseService {
 
         List<PaymentPlanPO> plans = new ArrayList<PaymentPlanPO>();
 
-        ProductionPO productionPO = productionDao.getProductionById(order.getProductionId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(order.getProductionId(), conn);
 
 
         // 获得起息日
@@ -1587,7 +1788,7 @@ public class OrderService extends BaseService {
             MyException.newInstance("订单尚未支付，无法获得起息日").throwException();
         }
 
-        ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(orderPO.getProductionId(), conn);
 
         if (!StringUtils.isEmpty(productionPO.getValueDate())) {
             return productionPO.getValueDate();
@@ -1608,20 +1809,20 @@ public class OrderService extends BaseService {
      * @throws Exception
      * @author 邓超
      */
-    public int generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
+    public void generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
 
         if (order == null) {
             MyException.newInstance("订单数据参数为空").throwException();
         }
 
 
-        if (order.getStatus() != OrderStatus.Saled && order.getStatus() != OrderStatus.Feedback1) {
+        if (order.getStatus() != OrderStatus.Saled && order.getStatus() != OrderStatus.Feedback1 && !order.getFinanceMoneyConfirm().equals("1")) {
             MyException.newInstance("该笔订单尚未付款，无法生成兑付计划").throwException();
         }
 
 
         //付息类型、付息期数
-        ProductionPO production = productionDao.getProductionById(order.getProductionId(), conn);
+        ProductionPO production = productionDao.loadProductionById(order.getProductionId(), conn);
 
         if (production == null) {
             MyException.newInstance("查询产品失败").throwException();
@@ -1664,8 +1865,6 @@ public class OrderService extends BaseService {
                 MyException.newInstance("生成兑付计划失败").throwException();
             }
         }
-
-        return 1;
     }
 
 

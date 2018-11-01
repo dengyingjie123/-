@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
+<%@ page import="com.youngbook.common.config.Config" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,7 +8,7 @@
 </head>
 
 <body>
-<form id="form1" name="form1" method="post" action="http://116.228.64.55:28082/AppStsWeb/service/acquireAction.action">
+<form id="form1" name="form1" method="post" action="<%=Config.getSystemConfig("allinpay_circle_action_url")%>">
   <table width="100%">
 	<tr>
       <td>URL</td>

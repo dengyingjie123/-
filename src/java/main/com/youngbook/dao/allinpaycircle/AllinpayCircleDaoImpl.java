@@ -3,17 +3,13 @@ package com.youngbook.dao.allinpaycircle;
 import com.alibaba.fastjson.JSONObject;
 import com.emulator.paymentgateway.util.PaymentGatewayService;
 import com.emulator.paymentgateway.util.SecurityUtil;
-import com.mind.platform.system.base.CMData;
-import com.mind.platform.system.base.DataRow;
-import com.youngbook.action.api.dehecircle.DeheCircleAction;
 import com.youngbook.common.Database;
-import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
 import com.youngbook.common.ReturnObject;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.XmlHelper;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.utils.HttpUtils;
+import com.youngbook.common.utils.RSAHelper;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.allinpay.AllinpayCircleUtils;
@@ -27,7 +23,6 @@ import com.youngbook.entity.po.allinpaycircle.AllinpayCircleResponseDataPO;
 import com.youngbook.entity.po.allinpaycircle.TransactionPO;
 import com.youngbook.entity.po.core.APICommandType;
 import com.youngbook.entity.po.production.OrderPO;
-import encryption.DataGramB2cUtil;
 import encryption.STSTxData;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -38,7 +33,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.poi.util.XMLHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
@@ -301,7 +295,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                     allinpayCircleReceiveRawDataPO.setStatus("2");
                     MySQLDao.insertOrUpdate(allinpayCircleReceiveRawDataPO, conn2);
 
-                    logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】", "", conn2);
+                    logDao.save("通联支付金融生态圈", "处理【"+allinpayCircleReceiveRawDataPO.getId()+"】【失败】【"+e.getMessage()+"】", "", conn2);
                 }
                 catch (Exception ex) {
                     logDao.save("异常", "AllinpayCircleDao.dealRawData", "RawDataId=" + allinpayCircleReceiveRawDataPO.getId(), conn2);
@@ -348,7 +342,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
                 "<KeyInfo>"+
                 "<ReceiverX509CertSN>"+cert.getSerialNumber().toString(10)+"</ReceiverX509CertSN>" +
                 "<EncryptedKey>"+encoder.encode(encryptedKey)+"</EncryptedKey>" +
-                "<KeyInfo>"+
+                "</KeyInfo>"+
                 "</STSPackage>";
 
 //        System.out.println("待发送组装好的数据 min 未编码 === " + xml);
@@ -371,7 +365,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 //        System.out.println("待发送加密后的xml mine ===" + signedXml);
 
 
-        String unsignXml = decode(signedXml);
+//        String unsignXml = decode(signedXml);
 //        System.out.println("解密待发送的xml====" + unsignXml);
 
 
@@ -380,7 +374,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
 
-        String url = "http://116.228.64.55:28082/AppStsWeb/service/acquireAction.action";
+        String url = Config.getSystemConfig("allinpay_circle_action_url");
 
         String bizId = transactionPO.getRequest().getItemString("req_trace_num");
 
@@ -390,7 +384,7 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String apiName = AllinpayCircleUtils.getAPIName(transactionPO.getProcessing_code());
 
-        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, unsignXml, APICommandType.Xml, url, "", "");
+        apiCommandDao.saveCommand("通联支付金融生态圈", "通联支付金融生态圈-" + apiName + "-发送", bizId, transactionPO.toXmlString(), APICommandType.Xml, url, "", "");
 
         HttpPost httpPost = new HttpPost(url);
 
@@ -403,6 +397,15 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
 
         String resultHtml = EntityUtils.toString(entity, "UTF-8");
 //        System.out.println(" resultHtml111  === " + resultHtml);
+
+
+        /**
+         *  自己实现开始
+         */
+        logDao.save("通联支付正式环境测试", "反馈", resultHtml);
+
+
+
 
         BASE64Decoder base64 = new BASE64Decoder();
         resultHtml = new String(base64.decodeBuffer(resultHtml), Consts.UTF_8);
@@ -463,7 +466,6 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         return returnObject;
     }
 
-
     private String decode(String code) throws Exception {
 
         BASE64Decoder base64 = new BASE64Decoder();
@@ -488,5 +490,60 @@ public class AllinpayCircleDaoImpl implements IAllinpayCircleDao {
         System.out.println("加密后的 ==" + encryptedText);
 
         return encryptedText;
+    }
+
+    private String decode2(String code) throws Exception {
+
+        BASE64Decoder base64 = new BASE64Decoder();
+
+        String xmlDecode = new String(base64.decodeBuffer(code), Consts.UTF_8);
+        System.out.println(" xmlDecode  === " + xmlDecode);
+
+        XmlHelper xmlHelper = new XmlHelper(xmlDecode);
+
+        String encryptedKeyWithBase64 = xmlHelper.getText("/STSPackage/KeyInfo/EncryptedKey");
+
+//        String encryptedKey = new String(base64.decodeBuffer(encryptedKeyWithBase64));
+
+//        RSAHelper.setAlias_private("allinpay_private");
+//        RSAHelper.setJks_pfx("C:\\Users\\leevits\\Desktop\\ttt\\allinpayCircle\\private.jks");
+//        RSAHelper.setPassword_private("111111");
+//
+//        String desKey = new String(RSAHelper.decrypt2(RSAHelper.getPrivateKey(), encryptedKey.getBytes()));
+//
+//        System.out.println(desKey);
+//
+//        String encryptedText = xmlHelper.getText("/STSPackage/EncryptedText");
+//
+//
+//
+//        System.out.println(encryptedText);
+//
+//        byte[] decrypt = RSAUtils.decrypt(encryptedText);
+//
+//        System.out.println(new String(decrypt));
+
+//        String encryptedText = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedText");// resultHtml.substring(resultHtml.indexOf("<EncryptedText>")+"<EncryptedText>".length(),resultHtml.indexOf("</EncryptedText>"));
+
+
+//        String receiverX509CertSN = PaymentGatewayService.getNodeValue(xmlDecode, "ReceiverX509CertSN");// resultHtml.substring(resultHtml.indexOf("<ReceiverX509CertSN>")+"<ReceiverX509CertSN>".length(),resultHtml.indexOf("</ReceiverX509CertSN>"));
+//        System.out.println("receiverX509CertSN == " + receiverX509CertSN);
+//
+////
+        String encryptedKey = PaymentGatewayService.getNodeValue(xmlDecode, "EncryptedKey");
+////
+        Key pfxKey = SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(encryptedKey),
+                SecurityUtil.getPrivateKey());
+////
+//        encryptedText = SecurityUtil.decryptSymmetry(base64.decodeBuffer(encryptedText), pfxKey);
+        SecurityUtil.decryptSymmetricKey(base64.decodeBuffer(""), null);
+        SecurityUtil.decryptSymmetry(base64.decodeBuffer(""), null);
+//
+//
+//        System.out.println("加密后的 ==" + encryptedText);
+
+
+
+        return "";
     }
 }

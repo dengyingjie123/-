@@ -16,7 +16,7 @@
     int menuToolbarIndex = 1;
     MenuToolbar menuToolbar = new MenuToolbar("toolbar1"+token, "订单管理");
     menuToolbar.newMenuButton("Sale"+token, "下单", IconStyle.ICON_005, menuToolbarIndex++)
-            .addButton("btnOrderAppointment"+token, "预约", IconStyle.BLANK, 1, "")
+            .addButton("btnOrderAppointment"+token, "预约", IconStyle.BLANK, 1, "订单管理_订单管理_预约")
 //            .addButton("btnOrderSaleAndWaiting" + token, "下单", IconStyle.BLANK, 2, "订单管理2_订单管理2_添加")
             .addButton("btnOrderEdit" + token, "打款", IconStyle.BLANK, 2, "订单管理2_订单管理2_修改")
             .addButton("btnOrderSaleAndWaitingCancel"+token, "预约作废", IconStyle.BLANK, 3, "订单管理2_订单管理2_作废");
@@ -52,6 +52,14 @@
             .addButton("btnOrderContractCancelSign" + token, "取消合同签约", IconStyle.BLANK, 3,"销售管理_订单管理_取消合同签约")
             .addButton("btnOrderSaveReferralCode"+token, "修改推荐码", IconStyle.BLANK, 4,"销售管理_订单管理_修改推荐码")
             .addButton("btnOrderGeneratePaymentPlan"+token, "生成兑付计划", IconStyle.BLANK, 5,"销售管理_订单管理_生成兑付计划");
+
+    /**
+     * 通联金融圈菜单
+     */
+    int allinpayCircleButtonIndex = 1;
+    menuToolbar.newMenuButton("allinpayCircle"+token,  "通联金融生态圈", IconStyle.ICON_001, menuToolbarIndex++)
+            .addButton("btnAllinpayCircle_DepositByInstitution" + token, "确认充值", IconStyle.BLANK, allinpayCircleButtonIndex++, "")
+            .addButton("btnAllinpayCircle_payByShare" + token, "份额支付", IconStyle.BLANK, allinpayCircleButtonIndex++, "");
 %>
 <html>
 <head>

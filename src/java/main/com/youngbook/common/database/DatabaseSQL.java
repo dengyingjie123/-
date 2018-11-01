@@ -200,7 +200,8 @@ public class DatabaseSQL {
 
     public DatabaseSQL initSQL() throws Exception {
 
-        for (Element element : elements) {
+        for (int i = 0; elements != null && i < elements.size(); i++) {
+            Element element = elements.get(i);
             String key4All =  element.attributeValue("test");
 
             // 不能同时有and和or
@@ -251,64 +252,69 @@ public class DatabaseSQL {
         }
 
 
-        Element element = xml.getElementByXPath("//sql/select-sql/select[@id='"+sqlId+"']");
 
 
-        String finalSQL = element.getStringValue();
+        if (xml != null) {
+            Element element = xml.getElementByXPath("//sql/select-sql/select[@id='"+sqlId+"']");
+            String finalSQL = element.getStringValue();
 
-        // 替换<和>符号
-        finalSQL = finalSQL.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            // 替换<和>符号
+            finalSQL = finalSQL.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 
 
-        // 构造p-statement
-        while (StringUtils.contains(REGEX_PARAMETER, finalSQL)) {
-            String parameterName = getFirstParameterName(finalSQL);
+            // 构造p-statement
+            while (StringUtils.contains(REGEX_PARAMETER, finalSQL)) {
+                String parameterName = getFirstParameterName(finalSQL);
 
-            boolean done = false;
+                boolean done = false;
 
-            for (KVObject p : parameters4All) {
-                if (p.getKey().toString().equalsIgnoreCase(parameterName)) {
+                for (KVObject p : parameters4All) {
+                    if (p.getKey().toString().equalsIgnoreCase(parameterName)) {
 
-                    String defineString = getFirstDefineString(parameterName, finalSQL);
+                        String defineString = getFirstDefineString(parameterName, finalSQL);
 
-                    if (!StringUtils.isEmpty(defineString)) {
-                        defineString = defineString.replaceAll("\\{", "\\\\{").replaceAll("\\}", "\\\\}");
-                        finalSQL = finalSQL.replaceFirst(defineString, "?");
+                        if (!StringUtils.isEmpty(defineString)) {
+                            defineString = defineString.replaceAll("\\{", "\\\\{").replaceAll("\\}", "\\\\}");
+                            finalSQL = finalSQL.replaceFirst(defineString, "?");
 
-                        if (parameters == null) {
-                            parameters = new ArrayList<KVObject>();
-                        }
+                            if (parameters == null) {
+                                parameters = new ArrayList<KVObject>();
+                            }
 
-                        String type = getAttribute("type", defineString);
-                        if (!StringUtils.isEmpty(type) && type.contains("c")) {
-                            String v  = type.replaceAll("c", p.getValue().toString());
-                            p.setValue(v);
-                        }
+                            String type = getAttribute("type", defineString);
+                            if (!StringUtils.isEmpty(type) && type.contains("c")) {
+                                String v  = type.replaceAll("c", p.getValue().toString());
+                                p.setValue(v);
+                            }
 
-                        // 模糊查询，待优化  D1C31603
+                            // 模糊查询，待优化  D1C31603
 //                    if (p.getValue().getClass().isAssignableFrom(String.class)) {
 //                        String s = p.getValue().toString();
 //                        p.setValue("%" + s + "%");
 //                    }
 
-                        int index = parameters.size() + 1;
-                        KVObject o = new KVObject(index, p.getValue());
+                            int index = parameters.size() + 1;
+                            KVObject o = new KVObject(index, p.getValue());
 
-                        parameters.add(o);
-                        done = true;
+                            parameters.add(o);
+                            done = true;
+                        }
+
+
+
                     }
+                }
 
-
-
+                if (!done) {
+                    MyException.newInstance("传入参数与SQL不匹配").throwException();
                 }
             }
 
-            if (!done) {
-                MyException.newInstance("传入参数与SQL不匹配").throwException();
-            }
+            this.sbSQL = new StringBuffer(finalSQL);
         }
 
-        this.sbSQL = new StringBuffer(finalSQL);
+
+
 
         return this;
     }

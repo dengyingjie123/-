@@ -7,6 +7,8 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerDistributionPO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
+import com.youngbook.entity.po.sale.SalemanGroupPO;
+import com.youngbook.entity.po.system.UserPositionInfoPO;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;

@@ -4,6 +4,9 @@ import com.youngbook.common.config.Config;
 import com.youngbook.service.task.FdcgCustomerAccountBindTask;
 import com.youngbook.service.task.FdcgCustomerAccountUnbindTask;
 import com.youngbook.service.task.SmsSenderTask;
+import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealDepositByInstitutionTask;
+import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealPayByShareTask;
+import com.youngbook.service.task.allinpaycircle.AllinpayCircleDealRawDataTask;
 import com.youngbook.service.task.fdcg.FdcgCustomerChangeMobileTask;
 import com.youngbook.service.task.fdcg.FdcgCustomerTask;
 
@@ -201,6 +204,17 @@ public class TimeRunner {
 //            // 短信扫描 10 秒一次
             SmsSenderTask smsSenderTask = new SmsSenderTask();
             TimeRunner.addTask(smsSenderTask);
+
+
+            AllinpayCircleDealRawDataTask allinpayCircleDealRawDataTask = new AllinpayCircleDealRawDataTask();
+            TimeRunner.addTask(allinpayCircleDealRawDataTask);
+
+
+            AllinpayCircleDealDepositByInstitutionTask allinpayCircleDealDepositByInstitutionTask = new AllinpayCircleDealDepositByInstitutionTask();
+            TimeRunner.addTask(allinpayCircleDealDepositByInstitutionTask);
+
+            AllinpayCircleDealPayByShareTask allinpayCircleDealPayByShareTask  = new AllinpayCircleDealPayByShareTask();
+            TimeRunner.addTask(allinpayCircleDealPayByShareTask);
 
 
             /**

@@ -55,7 +55,7 @@ public class CommandExecutor {
 
     UserService userService = Config.getBeanByName("userService", UserService.class);
 
-    public static void ma5in(String [] args) {
+    public static void main(String [] args) {
 
         String [] commandNames = new String[] {"OrderBuildAndPayManually", "CancelContract", "ExecutePaymentPlan", "distributeCustomerTask","TimeRunner", "Test", "FuiouPCOrderScanAndUpdateTask","FuiouOrderQueryTask", "CustomerTask","icelandCustomerImportTask", "customerMergeTask"};
 
@@ -526,7 +526,12 @@ public class CommandExecutor {
             System.out.println("开始销售订单");
 
             String valueDate = TimeUtils.getTime(payTime, 1, TimeUtils.DATE);
-            orderService.saleOrder(orderPO,createTime, payTime, valueDate, customerId, conn);
+
+            orderPO.setCreateTime(createTime);
+            orderPO.setPayTime(payTime);
+            orderPO.setValueDate(valueDate);
+
+            orderService.saleOrder(orderPO, customerId, conn);
             System.out.println("结束销售订单");
 
 

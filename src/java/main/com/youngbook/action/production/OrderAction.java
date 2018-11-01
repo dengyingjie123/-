@@ -1,5 +1,6 @@
 package com.youngbook.action.production;
 
+import bsh.StringUtil;
 import com.youngbook.action.BaseAction;
 import com.youngbook.annotation.Permission;
 import com.youngbook.annotation.Security;
@@ -20,6 +21,7 @@ import com.youngbook.entity.po.info.LegalAgreementPO;
 import com.youngbook.entity.po.production.*;
 import com.youngbook.entity.po.sale.contract.ContractPO;
 import com.youngbook.entity.vo.customer.CustomerPersonalVO;
+import com.youngbook.entity.vo.production.OrderReportMonthlyVO;
 import com.youngbook.entity.vo.production.OrderReportWeeklyVO;
 import com.youngbook.entity.vo.production.OrderVO;
 import com.youngbook.service.allinpay.AllinPayOrderService;
@@ -837,6 +839,165 @@ public class OrderAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String exportReportMonthly() throws Exception {
+
+        String thisYear = getHttpRequestParameter("thisYear");
+        String thisMonth = getHttpRequestParameter("thisMonth");
+
+
+
+
+        if (StringUtils.isEmpty(thisYear)) {
+            thisYear = TimeUtils.getYear();
+        }
+
+        if (StringUtils.isEmpty(thisMonth)) {
+            thisMonth = TimeUtils.getMonth();
+        }
+
+
+
+
+        String fileName = Config.getSystemConfig("order_report_monthly_template_name");
+        fileName = fileName.replaceAll("order_report_monthly_template_name", thisYear + "年" + thisMonth + "月");
+
+        //转换输出格式防止乱码
+        fileName = new String(fileName.getBytes("utf8"), "iso8859-1");
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/octet-stream");
+
+        //设置Excel导出文件名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
+
+        //获取输出流
+        ServletOutputStream out = response.getOutputStream();
+
+
+        try {
+
+            FileInputStream fileInputStream = new FileInputStream(Config.getSystemConfig("order_report_monthly_template"));
+            HSSFWorkbook wb = new HSSFWorkbook(fileInputStream);
+
+
+            String sheetName = "Sheet1";
+            HSSFSheet sheet = wb.getSheet(sheetName);
+            HSSFSheet sheetStyle = wb.getSheet("Template");
+            HSSFRow templateRow = ExcelUtils.getRow(1, sheetStyle);
+
+            int offset = 5;
+
+            Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
+
+
+            for (int i = 0; pager != null && pager.getData() != null && i < pager.getData().size(); i++) {
+                OrderReportMonthlyVO orderReportMonthlyVO  = (OrderReportMonthlyVO) pager.getData().get(i);
+
+
+                ExcelUtils.newRow(sheet, offset + i, templateRow);
+
+                // 基本信息
+                ExcelUtils.setCellValue("a" + (offset + i), orderReportMonthlyVO.getGroupName(), sheet);
+                ExcelUtils.setCellValue("b" + (offset + i), orderReportMonthlyVO.getName(), sheet);
+
+                // 年初
+                ExcelUtils.setCellValue("c" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open(), sheet);
+
+                ExcelUtils.setCellValue("d" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open_discount_rate(), sheet);
+
+                // 月初
+                ExcelUtils.setCellValue("e" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open(), sheet);
+                ExcelUtils.setCellValue("f" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open_discount_rate(), sheet);
+
+                // 客户数
+                ExcelUtils.setCellValue("g" + (offset + i), orderReportMonthlyVO.getCustomer_remain_count(), sheet);
+                ExcelUtils.setCellValue("h" + (offset + i), orderReportMonthlyVO.getCustomer_new_count(), sheet);
+
+                // 本月募集
+                double thisMonthAdd = orderReportMonthlyVO.getMoney_add_this_month();
+                ExcelUtils.setCellValue("i" + (offset + i), thisMonthAdd, sheet);
+
+                double thisMonthAddDiscountRate = orderReportMonthlyVO.getMoney_add_this_month_discount_rate();
+                ExcelUtils.setCellValue("j" + (offset + i), thisMonthAddDiscountRate, sheet);
+
+                // 本月兑付
+                double thisMonthPayment = orderReportMonthlyVO.getMoney_payment_this_month();
+                ExcelUtils.setCellValue("k" + (offset + i), thisMonthPayment, sheet);
+
+                double thisMonthPaymentDiscountRate = orderReportMonthlyVO.getMoney_payment_this_month_discount_rate();
+                ExcelUtils.setCellValue("l" + (offset + i), thisMonthPaymentDiscountRate, sheet);
+
+                // 本月新增
+                double thisMonthNew = thisMonthAdd - thisMonthPayment;
+                ExcelUtils.setCellValue("m" + (offset + i), thisMonthNew, sheet);
+
+                double thisMonthNewDiscountRate = thisMonthAddDiscountRate - thisMonthPaymentDiscountRate;
+                ExcelUtils.setCellValue("n" + (offset + i), thisMonthNewDiscountRate, sheet);
+
+                // 期末存量
+                ExcelUtils.setCellValue("o" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end(), sheet);
+                ExcelUtils.setCellValue("p" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end_discount_rate(), sheet);
+
+
+            }
+
+
+            ExcelUtils.removeSheetsExcept(wb, sheetName);
+            wb.write(out);
+            out.flush();
+            out.close();
+
+
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            out.flush();
+            out.close();
+        }
+
+
+
+
+
+
+
+
+
+        return SUCCESS;
+    }
+
+    public String getReportMonthly() throws Exception {
+
+        String thisYear = getHttpRequestParameter("thisYear");
+        String thisMonth = getHttpRequestParameter("thisMonth");
+
+        if (StringUtils.isEmpty(thisYear)) {
+            thisYear = TimeUtils.getYear();
+        }
+
+        if (StringUtils.isEmpty(thisMonth)) {
+            thisMonth = TimeUtils.getMonth();
+        }
+
+
+        Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
+
+        KVObjects kvObjects = new KVObjects();
+        kvObjects.addItem("thisYear", thisYear);
+        kvObjects.addItem("thisMonth", thisMonth);
+
+        String s = pager.toJsonObject().toString();
+        kvObjects.addItem("d", s);
+
+//        getResult().setReturnValue(kvObjects.toJSONObject());
+         getResult().setReturnValue(pager.toJsonObject());
+
+        return SUCCESS;
+    }
+
     public String financeMoneyConfirm() throws Exception {
 
         String orderId = getHttpRequestParameter("orderId");
@@ -911,6 +1072,9 @@ public class OrderAction extends BaseAction {
         String orderId = getHttpRequestParameter("order.id");
         orderVO = orderService.getOrderVOByOrderId(orderId, conn);
 
+        if (orderVO == null) {
+            MyException.newInstance("无法获得订单信息", "orderId=" + orderId).throwException();
+        }
 
         /**
          * 补充客户名称
@@ -1126,7 +1290,11 @@ public class OrderAction extends BaseAction {
 
         orderPO.setCreateTime(createTime);
         String valueDate = TimeUtils.getTime(payTime, 1, TimeUtils.DATE);
-        orderService.saleOrder(orderPO, createTime, payTime, valueDate, customerId, conn);
+
+        orderPO.setPayTime(payTime);
+        orderPO.setValueDate(valueDate);
+
+        orderService.saleOrder(orderPO, customerId, conn);
         System.out.println("结束销售订单");
 
 
@@ -1137,6 +1305,10 @@ public class OrderAction extends BaseAction {
 
     @com.youngbook.annotation.Permission(require = "销售管理_订单管理_财务二次核对")
     public String saleOrder() throws Exception {
+
+        if (getLoginUser() == null) {
+            MyException.newInstance("无法获取登录用户信息").throwException();
+        }
 
         order = HttpUtils.getInstanceFromRequest(getRequest(), "order", OrderPO.class);
 
@@ -1164,9 +1336,11 @@ public class OrderAction extends BaseAction {
             order.setValueDate(valueDate);
         }
 
+        order.setCreateTime(now);
 
 
-        int count = orderService.saleOrder(order, now, order.getPayTime(), order.getValueDate(), getLoginUser().getId(), conn);
+
+        int count = orderService.saleOrder(order, getLoginUser().getId(), conn);
 
         if (count != 1) {
             getResult().setMessage("产品销售确认失败");
@@ -1189,9 +1363,6 @@ public class OrderAction extends BaseAction {
         }
 
         order.setMoney(Double.parseDouble(moneyString));
-
-        String now = TimeUtils.getNow();
-
 
         OrderPO orderPO = orderService.financeConfirm01(order, getLoginUser().getId(), conn);
 
@@ -1704,7 +1875,7 @@ public class OrderAction extends BaseAction {
         }
 
         // 查询该订单关联的产品
-        ProductionPO productionPO = productionService.getProductionById(productionId, conn);
+        ProductionPO productionPO = productionService.loadProductionById(productionId, conn);
         if (productionPO == null) {
             throw new Exception("产品信息获取有误！");
         }
@@ -1837,7 +2008,7 @@ public class OrderAction extends BaseAction {
             }
 
             // 获取产品
-            productionPO = productionService.getProductionById(orderPO.getProductionId(), conn);
+            productionPO = productionService.loadProductionById(orderPO.getProductionId(), conn);
             if(productionPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有找到订单对应的产品").throwException();
             }
@@ -1902,7 +2073,7 @@ public class OrderAction extends BaseAction {
             }
 
             // 获取产品
-            productionPO = productionService.getProductionById(productionId, conn);
+            productionPO = productionService.loadProductionById(productionId, conn);
             if(productionPO == null) {
                 MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有找到订单对应的产品").throwException();
             }

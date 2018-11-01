@@ -26,6 +26,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.youngbook.common.config.Config;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -33,25 +34,18 @@ import com.emulator.fund.util.SignAndUnSign;
 
 public class SecurityUtil 
 {
-	
-	/** �Գ���Կ���� */
+
 	public static final int SYMMETRIC_KEY_LEN = 168;
 	
 	public static final String SIGNATURE_ALGORITHM = "SHA1withRSA"; //
 	 
 	public static final String KEY_GEN_ALGORITHM   = "RSA"; //
 	  
-	private static final String PASSWORD = "111111";//
-	  
 	private static final String SIGNMODE = "PKCS12";//
+
 	
-	private static String certPath = "R:\\work\\01_github\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps-111111.pfx";
-	
-	private static String certPathcer = "R:\\work\\01_github\\dehe_core_dev\\src\\resources\\config\\allinpayCircleService\\fps.cer";
-	
-	private static final String FORMAT = "X.509";//֤���ʽ��׼
-	
-	/** ����ǩ��˽Կ */
+	private static final String FORMAT = "X.509";
+
     private static HashMap aipPriKey = new HashMap();
 
 	
@@ -62,12 +56,14 @@ public class SecurityUtil
 	//add by sam end
 	
     public SecurityUtil(){}
-	
 
-    
-    /**
-     * ��ǩ����
-     */
+
+    public static String getPrivateKeyPassword() throws Exception {
+
+    	return Config.getSystemConfig("allinpay_circle_private_password");
+	}
+
+
     public static String getSignMsg(String sign)
     {
         if (null == sign || sign.trim().length() < 1)
@@ -80,10 +76,10 @@ public class SecurityUtil
         String signMsg = null;
         try
         {
-        	FileInputStream priStream = new FileInputStream(certPath);
+        	FileInputStream priStream = new FileInputStream(getPrivateKeyPath());
         	
         	KeyStore ks = KeyStore.getInstance(SIGNMODE);  
-    		ks.load(priStream, PASSWORD.toCharArray());
+    		ks.load(priStream, getPrivateKeyPassword().toCharArray());
     		priStream.close();  
     		
     		Enumeration enumas = ks.aliases();  
@@ -92,7 +88,7 @@ public class SecurityUtil
     	    {
     	          keyAlias = (String)enumas.nextElement();   
             }
-    	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, PASSWORD.toCharArray());  //�õ�˽Կ
+    	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, getPrivateKeyPassword().toCharArray());  //�õ�˽Կ
     	    
 	        Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM,"BC");  
 	        signature.initSign(priKey);
@@ -133,7 +129,7 @@ public class SecurityUtil
                     "value of param respMsg is :" + respMsg);
         }
         
-        Boolean verify = verify(certPathcer,signMsg , respMsg);
+        Boolean verify = verify(getPublicKeyPath(), signMsg , respMsg);
         return verify;
     }
     
@@ -277,7 +273,7 @@ public class SecurityUtil
 		X509Certificate cert = null;
 		try
 		{
-	    	FileInputStream inStream = new FileInputStream(getRealPath()+certPathcer);
+	    	FileInputStream inStream = new FileInputStream(getRealPath() + getPublicKeyPath());
 			
 			
 		    //��Կ
@@ -291,12 +287,21 @@ public class SecurityUtil
 		
 		return  cert;
 	}
+
+
+	public static String getPrivateKeyPath() throws Exception {
+		return Config.getSystemConfig("allinpay_circle_private_key");
+	}
+
+	public static String getPublicKeyPath() throws Exception {
+		return Config.getSystemConfig("allinpay_circle_public_key");
+	}
 	
 	public static PrivateKey getPrivateKey() throws Exception
 	{ 
-		FileInputStream priStream = new FileInputStream(getRealPath()+certPath);
+		FileInputStream priStream = new FileInputStream(getRealPath()+getPrivateKeyPath());
 		KeyStore ks = KeyStore.getInstance(SIGNMODE);  
-		ks.load(priStream, PASSWORD.toCharArray());
+		ks.load(priStream, getPrivateKeyPassword().toCharArray());
 		priStream.close();  
 		
 		Enumeration enumas = ks.aliases();  
@@ -305,7 +310,7 @@ public class SecurityUtil
 	    {  
 	          keyAlias = (String)enumas.nextElement();   
         }  
-	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, PASSWORD.toCharArray());  //�õ�˽Կ
+	    PrivateKey priKey = (PrivateKey) ks.getKey(keyAlias, getPrivateKeyPassword().toCharArray());
 	    return priKey;
 	}
 	
