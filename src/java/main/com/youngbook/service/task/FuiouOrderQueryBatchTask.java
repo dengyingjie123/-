@@ -110,7 +110,9 @@ public class FuiouOrderQueryBatchTask extends Task {
                     UserPO user = userService.loadUserByUserId(Config.getSystemConfig("web.default.operatorId"), conn);
                     // 执行业务
                     fuiouService.sellProduction(orderNum, today4Payment, conn);
-                    orderService.saleOrder(order, order.getCreateTime(), now, valueDate, user.getId(), conn);
+                    order.setValueDate(valueDate);
+
+                    orderService.saleOrder(order, user.getId(), conn);
                 } else {
                     System.out.println(">>>>>>>>>> 在富友中没有支付的订单：" + order.getId() + "，" + order.getOrderNum());
                 }

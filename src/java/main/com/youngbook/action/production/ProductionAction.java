@@ -365,7 +365,7 @@ public class ProductionAction extends BaseAction {
         }
 
         // 产品详情信息
-        ProductionPO production = productionService.getProductionById(order.getProductionId(), conn);
+        ProductionPO production = productionService.loadProductionById(order.getProductionId(), conn);
         if(production == null){
             MyException.newInstance(ReturnObjectCode.ORDER_GET_DETIAL_ERROR, "获取失败").throwException();
         }

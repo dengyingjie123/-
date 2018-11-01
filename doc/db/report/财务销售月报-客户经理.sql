@@ -41,7 +41,7 @@ SELECT
         -- 未兑付情况，包含全部在月底之前创建的订单
                 (o.paymentPlanStatus not in (5) and o.PayTime<=@last_year_end_time) or
         -- 已兑付情况，兑付日期为开始时间之前与当前时间之间
-                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@last_year_end_time and o.paymentPlanLastTime<=now())
+                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@last_year_end_time and o.paymentPlanLastTime<=now() and o.payTime<=@last_year_end_time)
         )
         and o.salesmanId=s.id
     ) '年初折标存量',

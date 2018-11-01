@@ -637,7 +637,7 @@ public class AllinpayCircleService extends BaseService {
 
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 
-        ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+        ProductionPO productionPO = productionDao.loadProductionById(productionId, conn);
 
 
 
@@ -806,7 +806,7 @@ public class AllinpayCircleService extends BaseService {
 
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 
-        ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+        ProductionPO productionPO = productionDao.loadProductionById(productionId, conn);
 
         TransactionPO transactionPO = new TransactionPO();
 
@@ -870,7 +870,7 @@ public class AllinpayCircleService extends BaseService {
 
         String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
 
-        ProductionPO productionPO = productionDao.getProductionById(productionId, conn);
+        ProductionPO productionPO = productionDao.loadProductionById(productionId, conn);
 
         TransactionPO transactionPO = new TransactionPO();
 
@@ -1036,7 +1036,7 @@ public class AllinpayCircleService extends BaseService {
 
         String supplyCode = getSupplyCode(customerAccountPO.getSupplyCode(), conn);
 
-        ProductionPO productionPO = productionDao.getProductionById(orderPO.getProductionId(), conn);
+        ProductionPO productionPO = productionDao.loadProductionById(orderPO.getProductionId(), conn);
 
         TransactionPO transactionPO = new TransactionPO();
 

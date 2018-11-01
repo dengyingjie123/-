@@ -16,7 +16,7 @@
     int menuToolbarIndex = 1;
     MenuToolbar menuToolbar = new MenuToolbar("toolbar1"+token, "订单管理");
     menuToolbar.newMenuButton("Sale"+token, "下单", IconStyle.ICON_005, menuToolbarIndex++)
-            .addButton("btnOrderAppointment"+token, "预约", IconStyle.BLANK, 1, "")
+            .addButton("btnOrderAppointment"+token, "预约", IconStyle.BLANK, 1, "订单管理_订单管理_预约")
 //            .addButton("btnOrderSaleAndWaiting" + token, "下单", IconStyle.BLANK, 2, "订单管理2_订单管理2_添加")
             .addButton("btnOrderEdit" + token, "打款", IconStyle.BLANK, 2, "订单管理2_订单管理2_修改")
             .addButton("btnOrderSaleAndWaitingCancel"+token, "预约作废", IconStyle.BLANK, 3, "订单管理2_订单管理2_作废");

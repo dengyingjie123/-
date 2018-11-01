@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface IProductionDao {
 
+    public ProductionPO insertOrUpdate(ProductionPO productionPO, Connection conn) throws Exception;
     public List<ProductionWVO> getListProductByProductionIdAndMoney(String productionId, Connection conn) throws Exception;
     public List<ProductionPO> listProductionPOByProductionNameOrProductionNO(String productionName, String productionNO, Connection conn) throws Exception;
 
@@ -19,6 +20,6 @@ public interface IProductionDao {
 //    public  boolean checkIsProductionBelongOnlineProject(String productionId, Connection conn) throws Exception;
 
 //    public boolean checkIsProductionBelongProject(String productionId, String projectId, Connection conn) throws Exception;
-    public ProductionPO getProductionById(String id, Connection conn) throws Exception;
+    public ProductionPO loadProductionById(String id, Connection conn) throws Exception;
     public ProductionWVO getProductByProductionIdAndMoney(String id, double money, Connection conn) throws Exception;
 }

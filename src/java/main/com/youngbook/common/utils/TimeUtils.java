@@ -148,6 +148,18 @@ public class TimeUtils {
         return date;
     }
 
+    public static String getYear() {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy");
+        String date = sDateFormat.format(new java.util.Date());
+        return date;
+    }
+
+    public static String getMonth() {
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("MM");
+        String date = sDateFormat.format(new java.util.Date());
+        return date;
+    }
+
     public static String getNowTimeHH24MMSS() {
         SimpleDateFormat sDateFormat = new SimpleDateFormat("HHmmss");
         String date = sDateFormat.format(new java.util.Date());

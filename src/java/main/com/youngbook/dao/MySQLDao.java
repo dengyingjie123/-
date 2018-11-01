@@ -2527,6 +2527,21 @@ public class MySQLDao {
         return search(dbSQL.getSQL(), dbSQL.getParameters(), object, conditions, currentPage, showRowCount, queryType, conn);
     }
 
+
+    /**
+     *
+     * 如果currentPage或showRowCount任意一项等于0，则不分页，显示全部内容
+     * @param sql
+     * @param parameters
+     * @param object
+     * @param conditions
+     * @param currentPage
+     * @param showRowCount
+     * @param queryType
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public static Pager search(String sql, List<KVObject> parameters, IJsonable object, List<KVObject> conditions, int currentPage, int showRowCount, QueryType queryType, Connection conn) throws Exception {
 
         // 保存查询结果
@@ -2636,8 +2651,13 @@ public class MySQLDao {
                 sbSQL.append(sbWhere.toString());
             }
 
+            String limit = "";
+            if (currentPage > 0 && showRowCount > 0) {
+                limit = " limit " +((currentPage-1)*showRowCount)+", "+showRowCount+";";
+            }
+
             sbSQL.insert(0, "select SQL_CALC_FOUND_ROWS * from (");
-            sbSQL.append(") _t limit "+((currentPage-1)*showRowCount)+", "+showRowCount+";");
+            sbSQL.append(") _t ").append(limit);
 
             LogService.info("MySQLDao.query(): " + sbSQL.toString(), MySQLDao.class);
             printParameters(parameters);

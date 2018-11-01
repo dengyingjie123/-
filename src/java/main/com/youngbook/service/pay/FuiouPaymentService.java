@@ -139,7 +139,7 @@ public class FuiouPaymentService {
         }*/
 
         // 查询产品信息
-        ProductionPO productionPO = productionService.getProductionById(order.getProductionId(), conn);
+        ProductionPO productionPO = productionService.loadProductionById(order.getProductionId(), conn);
         if(productionPO == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有查询到对应的产品").throwException();
         }
@@ -406,7 +406,7 @@ public class FuiouPaymentService {
 
         // 查询对单对应的产品
         String productionId = order.getProductionId();
-        ProductionPO production = productionService.getProductionById(productionId, conn);
+        ProductionPO production = productionService.loadProductionById(productionId, conn);
         if(production == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有查询到对应的产品").throwException();
         }

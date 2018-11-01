@@ -965,7 +965,7 @@ var fw = (function () {
             data = fw.convert2Json(data);
             // TODO 判断data的值是否合法
             if (fw.checkIsNullObject(data)) {
-
+                throw new Error('data is null');
             }
             else {
                 if (data.code == 100) {
@@ -1030,17 +1030,32 @@ var fw = (function () {
 
         datagrid:function(definition) {
             var usedHeight = definition['usedHeight'];
+            var height = definition['height'];
 
             if (fw.checkIsNullObject(usedHeight)) {
                 usedHeight = 250;
             }
 
+            if (fw.checkIsNullObject(height)) {
+                height = getHeight(usedHeight);
+            }
+
             var strTableId = definition['id'];
             var url = definition['url'];
+            var rownumbers = definition['rownumbers'];
+
+            if (fw.checkIsNullObject(rownumbers)) {
+                rownumbers = true;
+            }
+
             var frozenColumns = definition['frozenColumns'];
             var columns = definition['columns'];
             var onLoadSuccess = definition['onLoadSuccess'];
             var onClickCell = definition['onClickCell'];
+            var pagination = definition['pagination'];
+            if (fw.checkIsNullObject(pagination)) {
+                pagination = true;
+            }
 
             var pageSize = Math.round(getHeight(usedHeight) / 30) - 1;
             var pageList = [pageSize, pageSize * 2, pageSize * 3, 100, 200];
@@ -1054,12 +1069,13 @@ var fw = (function () {
                 },
                 loadMsg: '数据正在加载，请稍后……',
                 //width:getWidth(0.838),
-                height:getHeight(usedHeight),
+                height:height,
                 fitColumns: false,
                 singleSelect: true,
                 pageList: pageList,
                 pageSize: pageSize,
-                rownumbers: true,
+                pagination:pagination,
+                rownumbers: rownumbers,
                 loadFilter: function (data) {
                     try {
                         data = fw.dealReturnObject(data);
@@ -1068,7 +1084,6 @@ var fw = (function () {
                     catch (e) {
                     }
                 },
-                pagination: true,
                 frozenColumns: frozenColumns,
                 columns:columns,
                 onLoadSuccess: function () {
