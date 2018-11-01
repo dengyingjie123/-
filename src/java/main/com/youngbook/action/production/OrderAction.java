@@ -892,32 +892,47 @@ public class OrderAction extends BaseAction {
                 OrderReportMonthlyVO orderReportMonthlyVO  = (OrderReportMonthlyVO) pager.getData().get(i);
 
                 ExcelUtils.newRow(sheet, offset + i, templateRow);
+
+                // 基本信息
                 ExcelUtils.setCellValue("a" + (offset + i), orderReportMonthlyVO.getGroupName(), sheet);
                 ExcelUtils.setCellValue("b" + (offset + i), orderReportMonthlyVO.getName(), sheet);
+
+                // 年初
                 ExcelUtils.setCellValue("c" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open(), sheet);
                 ExcelUtils.setCellValue("d" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open_discount_rate(), sheet);
+
+                // 月初
                 ExcelUtils.setCellValue("e" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open(), sheet);
                 ExcelUtils.setCellValue("f" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open_discount_rate(), sheet);
+
+                // 客户数
                 ExcelUtils.setCellValue("g" + (offset + i), orderReportMonthlyVO.getCustomer_remain_count(), sheet);
                 ExcelUtils.setCellValue("h" + (offset + i), orderReportMonthlyVO.getCustomer_new_count(), sheet);
 
-                ExcelUtils.setCellValue("i" + (offset + i), orderReportMonthlyVO.getMoney_add_this_month(), sheet);
-                ExcelUtils.setCellValue("j" + (offset + i), orderReportMonthlyVO.getMoney_add_this_month_discount_rate(), sheet);
+                // 本月募集
+                double thisMonthAdd = orderReportMonthlyVO.getMoney_add_this_month();
+                ExcelUtils.setCellValue("i" + (offset + i), thisMonthAdd, sheet);
 
+                double thisMonthAddDiscountRate = orderReportMonthlyVO.getMoney_add_this_month_discount_rate();
+                ExcelUtils.setCellValue("j" + (offset + i), thisMonthAddDiscountRate, sheet);
 
-                ExcelUtils.setCellValue("k" + (offset + i), orderReportMonthlyVO.getMoney_payment_this_month(), sheet);
-                ExcelUtils.setCellValue("l" + (offset + i), orderReportMonthlyVO.getMoney_payment_this_month_discount_rate(), sheet);
+                // 本月兑付
+                double thisMonthPayment = orderReportMonthlyVO.getMoney_payment_this_month();
+                ExcelUtils.setCellValue("k" + (offset + i), thisMonthPayment, sheet);
 
+                double thisMonthPaymentDiscountRate = orderReportMonthlyVO.getMoney_payment_this_month_discount_rate();
+                ExcelUtils.setCellValue("l" + (offset + i), thisMonthPaymentDiscountRate, sheet);
 
-                ExcelUtils.setCellValue("m" + (offset + i), orderReportMonthlyVO.getMoney_new_this_month(), sheet);
-                ExcelUtils.setCellValue("n" + (offset + i), orderReportMonthlyVO.getMoney_new_this_month_discount_rate(), sheet);
+                // 本月新增
+                double thisMonthNew = thisMonthAdd - thisMonthPayment;
+                ExcelUtils.setCellValue("m" + (offset + i), thisMonthNew, sheet);
 
+                double thisMonthNewDiscountRate = thisMonthAddDiscountRate - thisMonthPaymentDiscountRate;
+                ExcelUtils.setCellValue("n" + (offset + i), thisMonthNewDiscountRate, sheet);
 
+                // 期末存量
                 ExcelUtils.setCellValue("o" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end(), sheet);
                 ExcelUtils.setCellValue("p" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end_discount_rate(), sheet);
-
-
-
 
 
             }
