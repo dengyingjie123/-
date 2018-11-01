@@ -1,5 +1,6 @@
 package com.youngbook.action.production;
 
+import bsh.StringUtil;
 import com.youngbook.action.BaseAction;
 import com.youngbook.annotation.Permission;
 import com.youngbook.annotation.Security;
@@ -888,8 +889,10 @@ public class OrderAction extends BaseAction {
 
             Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
 
+
             for (int i = 0; pager != null && pager.getData() != null && i < pager.getData().size(); i++) {
                 OrderReportMonthlyVO orderReportMonthlyVO  = (OrderReportMonthlyVO) pager.getData().get(i);
+
 
                 ExcelUtils.newRow(sheet, offset + i, templateRow);
 
@@ -899,6 +902,7 @@ public class OrderAction extends BaseAction {
 
                 // 年初
                 ExcelUtils.setCellValue("c" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open(), sheet);
+
                 ExcelUtils.setCellValue("d" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open_discount_rate(), sheet);
 
                 // 月初
