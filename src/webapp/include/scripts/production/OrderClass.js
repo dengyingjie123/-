@@ -90,6 +90,11 @@ var OrderClass = function (token) {
             var params = $('#' + strTableId).datagrid('options').queryParams;
             params["thisYear"] = fw.getFormValue("search_year" + token, fw.type_form_combotree, fw.type_get_value);
             params["thisMonth"] = fw.getFormValue("search_month" + token, fw.type_form_combotree, fw.type_get_value);
+
+
+            $('#thisYear' + token).html(params["thisYear"]);
+            $('#thisMonth' + token).html(params["thisMonth"]);
+
             $('#' + strTableId).datagrid('load');
 
             fw.treeClear()
@@ -2331,6 +2336,9 @@ var OrderClass = function (token) {
             onClickOrderReportWeeklySearchSubmit();
         },
         initReportMonthly:function(){
+
+            $('#thisYear' + token).html(fw.getTimeYearString());
+            $('#thisMonth' + token).html(fw.getTimeMonthString());
 
             initTableOrderReportMonthlyTable();
 

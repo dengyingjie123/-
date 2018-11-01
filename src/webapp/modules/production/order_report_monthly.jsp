@@ -25,7 +25,7 @@
             </tr>
         </table>
     </div>
-    <%--<div>销售月报 <span id="thisYear<%=token %>"></span>年<span id="thisMonth<%=token %>"></span>月</div>--%>
+    <div style="font-size: 20px; text-align: center">销售月报 <span id="thisYear<%=token %>">YYYY</span>年<span id="thisMonth<%=token %>">MM</span>月</div>
     <br>
     <table id="orderReportMonthlyTable<%=token%>"></table>
 </div>
