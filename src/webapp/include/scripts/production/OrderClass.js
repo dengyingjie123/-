@@ -101,6 +101,18 @@ var OrderClass = function (token) {
         });
     }
 
+    function onClickOrderReportMonthlyExportExcelSubmit() {
+        var buttonId = "btnSearchOrderReportMonthlyExportExcel" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            var thisYear = fw.getFormValue("search_year" + token, fw.type_form_combotree, fw.type_get_value);
+            var thisMonth = fw.getFormValue("search_month" + token, fw.type_form_combotree, fw.type_get_value);
+
+
+            window.open(WEB_ROOT + "/production/Order_exportReportMonthly?thisYear="+thisYear+"&thisMonth=" + thisMonth);
+
+        });
+    }
+
     function initTableOrderReportWeeklyTable() {
 
         fw.datagrid({
@@ -2346,6 +2358,7 @@ var OrderClass = function (token) {
             // initTableOrderReportWeeklyTable();
             //
             onClickOrderReportMonthlySearchSubmit();
+            onClickOrderReportMonthlyExportExcelSubmit();
         },
         initModuleWithSelect: function (callback) {
             callbackfunction = callback;

@@ -22,6 +22,9 @@
                 <td>
                     <a id="btnSearchOrderReportMonthly<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
                 </td>
+                <td>
+                    <a id="btnSearchOrderReportMonthlyExportExcel<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-print">导出</a>
+                </td>
             </tr>
         </table>
     </div>
