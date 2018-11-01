@@ -1134,7 +1134,7 @@ public class OrderService extends BaseService {
         sbSQL.append("         AND o.`status` not in (0) and  p.state=0 and o.ProductionId=p.id");
         sbSQL.append("         and (");
         sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+last_year_end_time+"') or");
-        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_year_end_time+"' and o.paymentPlanLastTime<=now())");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+last_year_end_time+"' and o.paymentPlanLastTime<=now() and o.payTime<='"+last_year_end_time+"')");
         sbSQL.append("         )");
         sbSQL.append("         and o.salesmanId=s.id");
         sbSQL.append("     ) money_remain_year_open_discount_rate,");
