@@ -1,6 +1,6 @@
 -- 1.0
 set @this_year = '2018';
-set @this_month = '07';
+set @this_month = '01';
 set @this_year_begin_time = CONCAT(@this_year,'-01-01 00:00:00');
 set @this_month_begin_time = CONCAT(@this_year,'-',@this_month,'-01 00:00:00');
 set @this_month_end_time = DATE_ADD(DATE_ADD(@this_month_begin_time, INTERVAL 1 MONTH), INTERVAL -1 SECOND);
@@ -184,7 +184,7 @@ SELECT
         -- 未兑付情况，包含全部在月底之前创建的订单
                 (o.paymentPlanStatus not in (5) and o.PayTime<=@this_month_end_time) or
         -- 已兑付情况，兑付日期为开始时间之前与当前时间之间
-                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@this_month_end_time and o.paymentPlanLastTime<=now())
+                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@this_month_end_time and o.paymentPlanLastTime<=now() and o.PayTime<=@this_month_end_time)
         )
         and o.salesmanId=s.id
     ) '期末存量',
@@ -202,11 +202,15 @@ SELECT
         -- 未兑付情况，包含全部在月底之前创建的订单
                 (o.paymentPlanStatus not in (5) and o.PayTime<=@this_month_end_time) or
         -- 已兑付情况，兑付日期为开始时间之前与当前时间之间
-                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@this_month_end_time and o.paymentPlanLastTime<=now())
+                (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>=@this_month_end_time and o.paymentPlanLastTime<=now() and o.PayTime<=@this_month_end_time)
         )
         and o.salesmanId=s.id
     ) '期末存量折标'
 FROM
     view_salesman s
 ORDER BY s.groupname, s.`NAME`
+;
+
+select @this_month_end_time this_month_end_time
+
 ;
