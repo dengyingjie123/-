@@ -1290,6 +1290,19 @@ public class OrderService extends BaseService {
 
         Pager pager = MySQLDao.search(dbSQL, orderReportMonthlyVO, null, 0, 0, null, conn);
 
+        /**
+         * 处理本月新增
+         */
+        for (int i = 0; pager != null && pager.getData() != null && i < pager.getData().size(); i++) {
+            OrderReportMonthlyVO vo = (OrderReportMonthlyVO) pager.getData().get(i);
+
+            double thisMonthNew = vo.getMoney_add_this_month() - vo.getMoney_payment_this_month();
+            vo.setMoney_new_this_month(thisMonthNew);
+
+            double thisMonthNew_discountRate = vo.getMoney_add_this_month_discount_rate() - vo.getMoney_payment_this_month_discount_rate();
+            vo.setMoney_new_this_month_discount_rate(thisMonthNew_discountRate);
+        }
+
         return pager;
     }
 
