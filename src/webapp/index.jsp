@@ -31,13 +31,6 @@
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/lib/moment.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/lang/zh-cn.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/callcenter/callcenter.js"></script>
-
-
-    <%--呼叫中心--%>
-    <link href="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/css/pages.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/js/icallcenter/global.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/framework/7moor/edb_bar/hojo/hojo.js" djConfig="isDebug:false, parseOnLoad:false"></script>
 
     <script type="text/javascript">
         var hmMenu = null;
@@ -56,28 +49,7 @@
             if (thisBroswer['name'] != 'chrome' && thisBroswer['name'] != 'mozilla') {
                 fw.alert('提示', '推荐使用chrome内核浏览器');
             }
-
-
-            //call("13888888888");
-            onUpdatePassword(<%=isUpdatePassword%>,null);
         });
-        function onUpdatePassword(isUpdate,token){
-            var SCRIPTS_ROOT = "../scripts";
-            var url =  WEB_ROOT + "/modules/system/PersonalInfo_Main.jsp?token="+token;
-            var windowId = "personalInfoWindow";
-// TODO：2015-9-7 | 去掉最新的用户需重置密码的提示
-//            if (isUpdate) {
-//                fw.window(windowId, "重置密码", 350, 180, url, function () {
-//                    if(token==null) {
-//                        $(".panel-tool").empty();
-//                    }
-//                    using(SCRIPTS_ROOT + '/system/PersonalInfoClass.js', function () {
-//                        var personalInfo = new PersonalInfoClass(token);
-//                        personalInfo.initModule();
-//                    });
-//                }, null)
-//            }
-        }
     </script>
 </head>
 <body class="easyui-layout">
