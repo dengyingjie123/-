@@ -1260,7 +1260,7 @@ public class OrderService extends BaseService {
         sbSQL.append("         AND o.`status` not in (0)");
         sbSQL.append("         and (");
         sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+this_month_end_time+"') or");
-        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now())");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now()  and o.PayTime<=@this_month_end_time)");
         sbSQL.append("         )");
         sbSQL.append("         and o.salesmanId=s.id");
         sbSQL.append("     ) money_remain_this_month_end,");
@@ -1275,7 +1275,7 @@ public class OrderService extends BaseService {
         sbSQL.append("         AND o.`status` not in (0) and p.state=0 and o.ProductionId=p.id");
         sbSQL.append("         and (");
         sbSQL.append("                 (o.paymentPlanStatus not in (5) and o.PayTime<='"+this_month_end_time+"') or");
-        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now())");
+        sbSQL.append("                 (o.paymentPlanStatus in (5) and o.paymentPlanLastTime>='"+this_month_end_time+"' and o.paymentPlanLastTime<=now()  and o.PayTime<=@this_month_end_time)");
         sbSQL.append("         )");
         sbSQL.append("         and o.salesmanId=s.id");
         sbSQL.append("     ) money_remain_this_month_end_discount_rate");
@@ -1289,6 +1289,19 @@ public class OrderService extends BaseService {
         dbSQL.initSQL();
 
         Pager pager = MySQLDao.search(dbSQL, orderReportMonthlyVO, null, 0, 0, null, conn);
+
+        /**
+         * 处理本月新增
+         */
+        for (int i = 0; pager != null && pager.getData() != null && i < pager.getData().size(); i++) {
+            OrderReportMonthlyVO vo = (OrderReportMonthlyVO) pager.getData().get(i);
+
+            double thisMonthNew = vo.getMoney_add_this_month() - vo.getMoney_payment_this_month();
+            vo.setMoney_new_this_month(thisMonthNew);
+
+            double thisMonthNew_discountRate = vo.getMoney_add_this_month_discount_rate() - vo.getMoney_payment_this_month_discount_rate();
+            vo.setMoney_new_this_month_discount_rate(thisMonthNew_discountRate);
+        }
 
         return pager;
     }
