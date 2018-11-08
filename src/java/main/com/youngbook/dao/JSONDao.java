@@ -6,6 +6,7 @@ import com.youngbook.annotation.IgnoreJson;
 import com.youngbook.annotation.Table;
 import com.youngbook.common.*;
 import com.youngbook.common.utils.ObjectUtils;
+import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.common.utils.Utils;
 import com.youngbook.entity.po.BasePO;
@@ -120,6 +121,10 @@ public class JSONDao {
     }
 
     public static List<KVObjects> getListKVObjects(String jsonString) throws Exception {
+
+        if (StringUtils.isEmpty(jsonString)) {
+            return null;
+        }
 
         JSONArray jsonArray = JSONArray.fromObject(jsonString);
 

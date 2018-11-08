@@ -54,7 +54,10 @@ public class SmsSenderTask extends Task {
             UserPO user = new UserPO();
             user.setId("0");
 
-            smsService.send(smses, user, conn);
+
+            if ("0".equals(Config.getSystemConfig("system.debug.sms"))) {
+                smsService.send(smses, user, conn);
+            }
 
             conn.commit();
         }

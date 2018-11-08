@@ -601,6 +601,10 @@ public class AllinpayCircleService extends BaseService {
 
     /**
      * 充值-机构自付
+     *
+     * 机构自付对应的底层产品是通联货币基金
+     * 所以产品编号和账号使用货币基金的配置
+     *
      * @param accountId
      * @param productionId
      * @param orderId
@@ -648,6 +652,12 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.setProcessing_code("2080");
 
 
+        /**
+         * 获得货币基金信息
+         */
+        String allinpay_circle_monetary_fund = Config.getSystemConfig("allinpay_circle_monetary_fund");
+        KVObjects monetaryFundParameters = StringUtils.getUrlParameters(allinpay_circle_monetary_fund);
+
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
         transactionPO.getRequest().addItem("pay_mode", "4");
@@ -658,7 +668,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("product_code_cash_acct", productionPO.getAllinpayCircle_ProductCodeCashAcct());
+        transactionPO.getRequest().addItem("product_code_cash_acct", monetaryFundParameters.getItemString("product_code_cash_acct"));
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
