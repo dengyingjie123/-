@@ -184,10 +184,11 @@ public class PaymentGatewayService
 		return signformat;
 	}
 	
-	public static String getNodeValue(String returnStr, String tagName) 
-	{
+	public static String getNodeValue(String returnStr, String tagName)  {
         String beginTag = "<" + tagName + ">";
         String endTag = "</" + tagName + ">";
+
+
         returnStr = returnStr.substring(returnStr.indexOf(beginTag)+beginTag.length(),returnStr.indexOf(endTag));
         return returnStr;
     }

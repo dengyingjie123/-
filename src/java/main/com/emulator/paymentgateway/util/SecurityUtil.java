@@ -282,7 +282,7 @@ public class SecurityUtil
 	    } 
 		catch (Exception e) 
 		{
-	        throw new RuntimeException("��ȡ��Կʱ��������[" + e.getMessage() + "]");
+	        throw new RuntimeException("安全异常 [" + e.getMessage() + "]");
 	    }
 		
 		return  cert;

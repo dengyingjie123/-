@@ -88,7 +88,7 @@ var KVClass  = function(token){
           //alert('token:'+token);
           $('#search_K'+token).val("");
           $('#search_V'+token).val("");
-          $('#search_paramter'+token).val("");
+          $('#search_parameter'+token).val("");
           if (fw.checkIsTextEmpty(initGroupName)) {
               $('#search_GroupName'+token).val("");
           }
