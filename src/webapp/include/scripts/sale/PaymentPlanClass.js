@@ -112,10 +112,15 @@ var PaymentPlanClass = function (token, permissionName) {
                 id:'btnDoPaymentPlanDone'+token,
                 iconCls: 'icon-edit',
                 text:'兑付'
+            },{
+                id:'btnAllinpayCirclePaymentPlanDone'+token,
+                iconCls: 'icon-edit',
+                text:'通联生态圈兑付'
             }],
             onLoadSuccess: function () {
                 onClickPaymentPlanEdit();
                 onClickDoPaymentPlanDoneSubmit();
+                onClickAllinpayCirclePaymentPlanDoneSubmit();
             }
         });
     }
@@ -858,7 +863,37 @@ var PaymentPlanClass = function (token, permissionName) {
             fw.datagridGetSelected('PaymentPlanDetailTable'+token, function(selected){
                 fw.confirm('提示', '是否确定兑付此笔兑付计划？', function() {
 
-                    var url = WEB_ROOT + "/sale/PaymentPlan_doPaymnetDone.action?paymentPlanId="+selected.id;
+                    var url = WEB_ROOT + "/sale/PaymentPlan_doPaymentDone.action?paymentPlanId="+selected.id;
+
+                    fw.post(url, null, function(data){
+                        if (data == "1") {
+
+                            fw.alert('提示','手动兑付成功');
+
+                            fw.datagridReload("PaymentPlanDetailTable" + token);
+                            fw.windowClose('PaymentPlanWindow' + token);
+                        }
+                    },null);
+
+                }, null);
+            });
+        });
+    }
+
+
+
+
+    function onClickAllinpayCirclePaymentPlanDoneSubmit() {
+        var buttonId = "btnAllinpayCirclePaymentPlanDone" + token;
+
+
+
+        fw.bindOnClick(buttonId, function(){
+
+            fw.datagridGetSelected('PaymentPlanDetailTable'+token, function(selected){
+                fw.confirm('通联金融生态圈 - 提示', '是否确定兑付此笔兑付计划？', function() {
+
+                    var url = WEB_ROOT + "/sale/PaymentPlan_allinpayCirclePaymentDone.action?paymentPlanId="+selected.id;
 
                     fw.post(url, null, function(data){
                         if (data == "1") {

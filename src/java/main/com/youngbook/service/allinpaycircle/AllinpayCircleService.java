@@ -756,7 +756,7 @@ public class AllinpayCircleService extends BaseService {
 
 
 
-    public ReturnObject payment2Share(String accountId, String productionId, String paymentPlanId, String operatorId, Connection conn) throws Exception {
+    public ReturnObject payment2Share(String paymentPlanId, String operatorId, Connection conn) throws Exception {
 
         PaymentPlanVO paymentPlanVO = paymentPlanDao.loadPaymentPlanVO(paymentPlanId, conn);
 
@@ -765,9 +765,12 @@ public class AllinpayCircleService extends BaseService {
         }
 
         String orderId = paymentPlanVO.getOrderId();
+        String productionId = paymentPlanVO.getProductId();
+
 
         OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
 
+        String accountId = orderPO.getAccountId();
         /**
          * 检查订单状态
          */
@@ -775,8 +778,8 @@ public class AllinpayCircleService extends BaseService {
             MyException.newInstance("已打款订单才能进行充值确认", "orderId=" + orderId).throwException();
         }
 
-        if (!StringUtils.isEmpty(orderPO.getAllinpayCircle_deposit_status()) && !orderPO.getAllinpayCircle_deposit_status().equals("0")) {
-            MyException.newInstance("该订单已经进行充值确认，请不要重复充值！", "orderId=" + orderId).throwException();
+        if (StringUtils.isEmpty(orderPO.getAllinpayCircle_deposit_status()) || orderPO.getAllinpayCircle_deposit_status().equals("0")) {
+            MyException.newInstance("该订单尚未充值，请检查！", "orderId=" + orderId).throwException();
         }
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
@@ -797,7 +800,7 @@ public class AllinpayCircleService extends BaseService {
         KVObjects productionParameter = getProductionParameter(productionPO.getProductHomeId(), conn);
         String product_num = productionParameter.getItemString("product_num");
 
-        double money = 0;
+        double money = paymentPlanVO.getTotalPaymentPrincipalMoney() + paymentPlanVO.getTotalProfitMoney();
 
         TransactionPO transactionPO = new TransactionPO();
 

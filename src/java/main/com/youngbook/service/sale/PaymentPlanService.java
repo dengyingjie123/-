@@ -882,7 +882,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
         /**
          * 兑付完成以后，修改各种状态
          */
-        doPaymnetDone(paymentPlanPO, "0000", conn);
+        doPaymentDone(paymentPlanPO, "0000", conn);
 
 
         return 1;
@@ -910,7 +910,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
      * @return
      * @throws Exception
      */
-    public int doPaymnetDone(PaymentPlanPO paymentPlanPO, String userId, Connection conn) throws Exception {
+    public int doPaymentDone(PaymentPlanPO paymentPlanPO, String userId, Connection conn) throws Exception {
 
         // 修改兑付计划状态
         paymentPlanPO.setStatus(PaymentPlanStatus.Paid);

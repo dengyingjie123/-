@@ -17,6 +17,7 @@ import com.youngbook.entity.vo.customer.CustomerMoneyLogVO;
 import com.youngbook.entity.vo.customer.CustomerPersonalVO;
 import com.youngbook.entity.vo.production.OrderVO;
 import com.youngbook.entity.vo.production.ProductionVO;
+import com.youngbook.service.allinpaycircle.AllinpayCircleService;
 import com.youngbook.service.customer.CustomerMoneyLogService;
 import com.youngbook.service.customer.CustomerScoreService;
 import com.youngbook.service.report.SimpleReportService;
@@ -56,6 +57,9 @@ public class PaymentPlanAction extends BaseAction {
 
     @Autowired
     CustomerScoreService customerScoreService;
+
+    @Autowired
+    AllinpayCircleService allinpayCircleService;
 
 
     public String exportReportMonth() throws Exception {
@@ -238,7 +242,7 @@ public class PaymentPlanAction extends BaseAction {
     }
 
     @Permission(require = "兑付计划_兑付计划修改")
-    public String doPaymnetDone() throws Exception {
+    public String doPaymentDone() throws Exception {
 
         String paymentPlanId = getHttpRequestParameter("paymentPlanId");
 
@@ -246,7 +250,30 @@ public class PaymentPlanAction extends BaseAction {
         PaymentPlanPO paymentPlanPO = paymentPlanService.loadPaymentPlanPO(paymentPlanId, getConnection());
 
         if (paymentPlanPO != null) {
-            paymentPlanService.doPaymnetDone(paymentPlanPO, getLoginUser().getId(), getConnection());
+            paymentPlanService.doPaymentDone(paymentPlanPO, getLoginUser().getId(), getConnection());
+            getResult().setReturnValue("1");
+        }
+
+        return SUCCESS;
+    }
+
+
+    @Permission(require = "兑付计划_兑付计划修改")
+    public String allinpayCirclePaymentDone() throws Exception {
+
+        String paymentPlanId = getHttpRequestParameter("paymentPlanId");
+
+
+        PaymentPlanPO paymentPlanPO = paymentPlanService.loadPaymentPlanPO(paymentPlanId, getConnection());
+
+        if (paymentPlanPO != null) {
+            ReturnObject returnObject = allinpayCircleService.payment2Share(paymentPlanPO.getId(), getLoginUser().getId(), getConnection());
+
+            if (returnObject.getCode() != 100) {
+                MyException.newInstance("通联生态圈兑付失败【"+returnObject.getMessage()+"】", "paymentPlanId=" + paymentPlanId).throwException();
+            }
+
+            paymentPlanService.doPaymentDone(paymentPlanPO, getLoginUser().getId(), getConnection());
             getResult().setReturnValue("1");
         }
 
