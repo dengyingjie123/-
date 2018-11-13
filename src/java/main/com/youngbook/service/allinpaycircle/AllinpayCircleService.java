@@ -20,6 +20,7 @@ import com.youngbook.dao.production.IOrderDao;
 import com.youngbook.dao.production.IOrderDetailDao;
 import com.youngbook.dao.production.IProductPropertyDao;
 import com.youngbook.dao.production.IProductionDao;
+import com.youngbook.dao.sale.IPaymentPlanDao;
 import com.youngbook.dao.system.IKVDao;
 import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.allinpaycircle.AllinpayCircleReceiveRawDataPO;
@@ -97,6 +98,9 @@ public class AllinpayCircleService extends BaseService {
 
     @Autowired
     IOrderDao orderDao;
+
+    @Autowired
+    IPaymentPlanDao paymentPlanDao;
 
     @Autowired
     IOrderDetailDao orderDetailDao;
@@ -599,6 +603,27 @@ public class AllinpayCircleService extends BaseService {
 
     }
 
+    public String getMonetaryFund_product_code_cash_acct() throws Exception {
+        /**
+         * 获得货币基金信息
+         */
+        String allinpay_circle_monetary_fund = Config.getSystemConfig("allinpay_circle_monetary_fund");
+        KVObjects monetaryFundParameters = StringUtils.getUrlParameters(allinpay_circle_monetary_fund);
+
+        return monetaryFundParameters.getItemString("product_code_cash_acct");
+    }
+
+
+    public String getMonetaryFund_product_num() throws Exception {
+        /**
+         * 获得货币基金信息
+         */
+        String allinpay_circle_monetary_fund = Config.getSystemConfig("allinpay_circle_monetary_fund");
+        KVObjects monetaryFundParameters = StringUtils.getUrlParameters(allinpay_circle_monetary_fund);
+
+        return monetaryFundParameters.getItemString("product_num");
+    }
+
     /**
      * 充值-机构自付
      *
@@ -652,11 +677,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.setProcessing_code("2080");
 
 
-        /**
-         * 获得货币基金信息
-         */
-        String allinpay_circle_monetary_fund = Config.getSystemConfig("allinpay_circle_monetary_fund");
-        KVObjects monetaryFundParameters = StringUtils.getUrlParameters(allinpay_circle_monetary_fund);
+
 
         transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
         transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
@@ -668,7 +689,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("product_code_cash_acct", monetaryFundParameters.getItemString("product_code_cash_acct"));
+        transactionPO.getRequest().addItem("product_code_cash_acct", getMonetaryFund_product_code_cash_acct());
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
@@ -728,6 +749,131 @@ public class AllinpayCircleService extends BaseService {
             returnObject.setMessage(e.getMessage());
         }
 
+
+
+        return returnObject;
+    }
+
+
+
+    public ReturnObject payment2Share(String accountId, String productionId, String paymentPlanId, String operatorId, Connection conn) throws Exception {
+
+        PaymentPlanVO paymentPlanVO = paymentPlanDao.loadPaymentPlanVO(paymentPlanId, conn);
+
+        if (paymentPlanVO == null) {
+            MyException.newInstance("无法找到兑付计划", "paymentPlanId=" + paymentPlanId).throwException();
+        }
+
+        String orderId = paymentPlanVO.getOrderId();
+
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        /**
+         * 检查订单状态
+         */
+        if (orderPO.getStatus() != OrderStatus.SaleAndWaiting) {
+            MyException.newInstance("已打款订单才能进行充值确认", "orderId=" + orderId).throwException();
+        }
+
+        if (!StringUtils.isEmpty(orderPO.getAllinpayCircle_deposit_status()) && !orderPO.getAllinpayCircle_deposit_status().equals("0")) {
+            MyException.newInstance("该订单已经进行充值确认，请不要重复充值！", "orderId=" + orderId).throwException();
+        }
+
+        CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
+
+        String customerId = customerAccountPO.getCustomerId();
+
+        CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
+
+        String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
+        String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
+
+        CustomerCertificatePO customerCertificatePO = customerCertificateDao.loadByCustomerId(customerId, conn);
+
+        String customerCertificateNumber = AesEncrypt.decrypt(customerCertificatePO.getNumber());
+
+        ProductionPO productionPO = productionDao.loadProductionById(productionId, conn);
+
+        KVObjects productionParameter = getProductionParameter(productionPO.getProductHomeId(), conn);
+        String product_num = productionParameter.getItemString("product_num");
+
+        double money = 0;
+
+        TransactionPO transactionPO = new TransactionPO();
+
+        transactionPO.setProcessing_code("2294");
+
+        String supplyCode = getSupplyCode(customerAccountPO.getSupplyCode(), conn);
+
+        transactionPO.getRequest().addItem("req_trace_num", IdUtils.getNewLongIdString());
+        transactionPO.getRequest().addItem("sign_num", customerPersonalPO.getAllinpayCircle_SignNum());
+        transactionPO.getRequest().addItem("repayment_type", "1");
+        transactionPO.getRequest().addItem("pay_mode", "3");
+        transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
+        transactionPO.getRequest().addItem("acct_type", "1");
+        transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
+        transactionPO.getRequest().addItem("cur_type", "156");
+        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("prod_import_flag", "1");
+        transactionPO.getRequest().addItem("supply_inst_code", supplyCode);
+        transactionPO.getRequest().addItem("product_num", product_num);
+        transactionPO.getRequest().addItem("product_code_cash_acct", getMonetaryFund_product_code_cash_acct());
+        transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
+
+
+        ReturnObject returnObject = new ReturnObject();
+
+        try {
+
+            returnObject = allinpayCircleDao.sendTransaction(transactionPO, conn);
+
+            KVObjects kvObjects = JSONDao.toKVObjects(returnObject.getReturnValue().toString());
+
+            String responseCode = kvObjects.getItemString("responseCode");
+            String responseMessage = kvObjects.getItemString("responseMessage");
+
+            if (returnObject.getCode() == 100) {
+
+
+                returnObject.setMessage(responseMessage);
+
+
+                XmlHelper helper = getResponseXmlHelper(returnObject);
+
+                String signNum = helper.getValue("/transaction/response/sign_num");
+
+                customerPersonalPO.setAllinpayCircle_SignNum(signNum);
+
+                customerPersonalPO = customerPersonalDao.insertOrUpdate(customerPersonalPO, operatorId, conn);
+
+
+                String acctSubNo = helper.getValue("/transaction/response/acct_sub_no");
+
+
+                customerAccountPO.setAllinpayCircle_AcctSubNo(acctSubNo);
+
+                customerAccountPO = customerAccountDao.inertOrUpdate(customerAccountPO, operatorId, conn);
+
+
+                orderPO.setAllinpayCircle_req_trace_num(transactionPO.getRequest().getItemString("req_trace_num"));
+
+                orderPO.setAllinpayCircle_deposit_status("2");
+
+                orderDao.insertOrUpdate(orderPO, operatorId, conn);
+
+                orderDetailDao.saveOrderDetail(orderPO, orderPO.getMoney(), TimeUtils.getNow(), "通联金融圈单笔还款【"+responseMessage+"】", operatorId, conn);
+
+            }
+            else {
+                returnObject.setCode(5000);
+                returnObject.setMessage(responseMessage);
+            }
+        }
+        catch (Exception e) {
+            returnObject.setCode(-1);
+            returnObject.setMessage(e.getMessage());
+        }
 
 
         return returnObject;
@@ -1074,7 +1220,7 @@ public class AllinpayCircleService extends BaseService {
         // KPL555
         transactionPO.getRequest().addItem("product_num", product_num);
         // 000709
-        transactionPO.getRequest().addItem("product_code_cash_acct", product_code_cash_acct);
+        transactionPO.getRequest().addItem("product_code_cash_acct", getMonetaryFund_product_code_cash_acct());
         transactionPO.getRequest().addItem("order_num", orderPO.getId());
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 

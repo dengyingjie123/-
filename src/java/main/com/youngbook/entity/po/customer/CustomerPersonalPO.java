@@ -10,7 +10,7 @@ import com.youngbook.entity.po.BasePO;
  * Time: 上午12:58
  * To change this template use File | Settings | File Templates.
  */
-@Table(name = "crm_customerpersonal", jsonPrefix = "personal")
+@Table(name = "crm_customerpersonal", jsonPrefix = "personal", backupTableName = "crm_customerpersonal_archive")
 public class CustomerPersonalPO extends BasePO {
 
     // sid

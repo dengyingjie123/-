@@ -41,8 +41,8 @@ public class StringUtils {
         // 1031701001
         // 1031701601
         // 1031802401
-        // 1031600810
-        String title = "1031600810";
+        // 1031802701
+        String title = "1031802701";
 
         // 1031701601
         // 1031802401
@@ -50,8 +50,8 @@ public class StringUtils {
 
 
 
-        int begin = 1;
-        int count = 30;
+        int begin = 101;
+        int count = 50;
 
 
 

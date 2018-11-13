@@ -1186,6 +1186,7 @@ public class OrderAction extends BaseAction {
 
     public String appointmentOrderCancel() throws Exception {
 
+
         order = HttpUtils.getInstanceFromRequest(getRequest(), "order", OrderPO.class);
 
         int count = orderService.appointmentOrderCancel(order.getId(), getLoginUser().getId(), getConnection());
