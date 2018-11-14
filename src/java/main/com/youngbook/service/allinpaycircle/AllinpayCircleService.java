@@ -788,6 +788,7 @@ public class AllinpayCircleService extends BaseService {
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(customerId, conn);
 
+
         String bankNumber = AesEncrypt.decrypt(customerAccountPO.getNumber());
         String allinpayCircleBankCode = customerAccountDao.getBankCodeInKVParameter(accountId, "allinpayCircleBankCode", conn);
 
@@ -815,9 +816,10 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("bnk_id", allinpayCircleBankCode);
         transactionPO.getRequest().addItem("acct_type", "1");
         transactionPO.getRequest().addItem("acct_num", bankNumber);
+        transactionPO.getRequest().addItem("acct_sub_no", customerAccountPO.getAllinpayCircle_AcctSubNo());
         transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
-        transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
+        transactionPO.getRequest().addItem("trans_units", money);
         transactionPO.getRequest().addItem("prod_import_flag", "1");
         transactionPO.getRequest().addItem("supply_inst_code", supplyCode);
         transactionPO.getRequest().addItem("product_num", product_num);
