@@ -11,7 +11,7 @@ import com.youngbook.entity.vo.BaseVO;
  * Time: 上午12:54
  * To change this template use File | Settings | File Templates.
  */
-@Table(name = "crm_customerpersonal", jsonPrefix = "customerpersonal")
+@Table(name = "crm_customerpersonal", jsonPrefix = "customerpersonal",backupTableName = "crm_customerpersonal_archive")
 public class CC_CustomerPersonalVO extends BaseVO {
 
     private int sid = Integer.MAX_VALUE;

@@ -7,7 +7,7 @@ import com.youngbook.annotation.Table;
 import com.youngbook.entity.po.BasePO;
 
 
-@Table(name = "crm_production", jsonPrefix = "production")
+@Table(name = "crm_production", jsonPrefix = "production",backupTableName = "crm_production_archive")
 public class ProductionPO extends BasePO {
     // sid
     @Id

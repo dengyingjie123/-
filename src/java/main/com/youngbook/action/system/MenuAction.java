@@ -4,6 +4,7 @@ import com.youngbook.annotation.Permission;
 import com.youngbook.common.*;
 
 import com.youngbook.common.config.Config;
+import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MenuDao;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.MenuPO;
@@ -31,7 +32,10 @@ public class MenuAction extends BaseAction {
         result = new ReturnObject();
         try {
             //menu.setId(id);
-            menu = MySQLDao.load(menu, MenuPO.class);
+            KVObject kvObject = new KVObject("state","0");
+            List condition = new ArrayList();
+            condition.add(kvObject);
+            menu = MySQLDao.load(menu,condition, MenuPO.class);
 
             if (menu != null) {
                 result.setMessage("操作成功");
@@ -65,6 +69,8 @@ public class MenuAction extends BaseAction {
             conn = Database.getConnection();
             conn.setAutoCommit(false);
             dao.delete(menu, conn);
+            //逻辑删除菜单，修改state=0，添加operateId.
+//            MySQLDao.remove(menu,getLoginUser().getId(),conn);
 
             PermissionPO permissionPO = new PermissionPO();
             permissionPO.setMenuId(menu.getId());
@@ -115,6 +121,10 @@ public class MenuAction extends BaseAction {
         try {
             if (menu.getId() == null || menu.getId().equalsIgnoreCase("")) {
                 menu.setId(IdUtils.getUUID36());
+                menu.setSid((int)IdUtils.newLongId());
+                menu.setState(0);
+                menu.setOperatorId(getLoginUser().getId());
+                menu.setOperateTime(TimeUtils.getNow());
                 MySQLDao.insert(menu);
             }
             else {

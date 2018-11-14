@@ -344,7 +344,9 @@ public class MenuDao {
 
                 // 组织删除SQL语句
                 StringBuffer sbSQL = new StringBuffer();
-                sbSQL.append("DELETE FROM system_menu WHERE id='" + po.getId() + "'");
+//                sbSQL.append("DELETE FROM system_menu WHERE id='" + po.getId() + "'");
+                //逻辑删除
+                sbSQL.append("UPDATE system_menu SET state=0 WHERE id='" + po.getId() + "'");
 
                 // 打印日志
                 System.out.println("MenuDao.delete(): " + sbSQL.toString());

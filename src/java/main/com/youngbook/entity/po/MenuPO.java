@@ -1,5 +1,7 @@
 package com.youngbook.entity.po;
 
+import com.youngbook.annotation.DataAdapter;
+import com.youngbook.annotation.FieldType;
 import com.youngbook.annotation.Id;
 import com.youngbook.annotation.Table;
 import net.sf.json.JSONObject;
@@ -10,8 +12,17 @@ public class MenuPO extends BasePO {
 
 
     // 编号
-    @Id
     private String id = new String();
+    // SID
+    @Id
+    private int sid = Integer.MAX_VALUE;
+    // State
+    private int state = Integer.MAX_VALUE;
+    // 操作ID
+    private String operatorId = new String();
+    // 操作时间
+    @DataAdapter(fieldType = FieldType.DATE)
+    private String operateTime = new String();
 
     // 图标
     private String icon = new String();
@@ -113,5 +124,37 @@ public class MenuPO extends BasePO {
 
     public void setOrders(int orders) {
         this.orders = orders;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getOperateTime() {
+        return operateTime;
+    }
+
+    public void setOperateTime(String operateTime) {
+        this.operateTime = operateTime;
     }
 }

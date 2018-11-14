@@ -4,7 +4,7 @@ import com.youngbook.annotation.*;
 import com.youngbook.entity.po.BasePO;
 
 
-@Table(name = "crm_order", jsonPrefix = "order")
+@Table(name = "crm_order", jsonPrefix = "order",backupTableName = "crm_order_archive")
 public class OrderPO extends BasePO {
     // sid
     @Id
