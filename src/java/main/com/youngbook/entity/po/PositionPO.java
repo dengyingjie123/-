@@ -1,5 +1,7 @@
 package com.youngbook.entity.po;
 
+import com.youngbook.annotation.DataAdapter;
+import com.youngbook.annotation.FieldType;
 import com.youngbook.annotation.Id;
 import com.youngbook.annotation.Table;
 import net.sf.json.JSONObject;
@@ -10,9 +12,20 @@ import net.sf.json.JSONObject;
  */
 @Table(name="system_position",jsonPrefix="position")
 public class PositionPO extends BasePO {
-    // 编号
+
+    // sid
     @Id
+    private int sid = Integer.MAX_VALUE;
+    // id
     private String id = new String();
+    // state
+    private int state = Integer.MAX_VALUE;
+    // 操作人
+    private String operatorId = new String();
+    // 操作时间
+    @DataAdapter(fieldType = FieldType.DATE)
+    private String operateTime = new String();
+
 
     // 名称
     private String name = new String();
@@ -64,4 +77,20 @@ public class PositionPO extends BasePO {
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
+
+    public int getSid() {return sid;}
+
+    public void setSid(int sid) {this.sid = sid;}
+
+    public int getState() {return state;}
+
+    public void setState(int state) {this.state = state;}
+
+    public String getOperatorId() {return operatorId;}
+
+    public void setOperatorId(String operatorId) {this.operatorId = operatorId;}
+
+    public String getOperateTime() {return operateTime;}
+
+    public void setOperateTime(String operateTime) {this.operateTime = operateTime;}
 }
