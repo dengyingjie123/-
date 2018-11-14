@@ -1,5 +1,7 @@
 package com.youngbook.dao.system;
 
+import com.youngbook.common.Pager;
+import com.youngbook.entity.po.MenuPO;
 import com.youngbook.entity.po.UserPO;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +25,7 @@ public interface IUserDao {
     public UserPO loadUserByMobile(String mobile, Connection conn) throws Exception;
 
     public UserPO loadUserByName(String mobile, Connection conn) throws Exception;
+
+    public List<MenuPO> checkPermission(String userId,Connection connection)throws  Exception;
 
 }

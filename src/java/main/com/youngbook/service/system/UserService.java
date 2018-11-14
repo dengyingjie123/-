@@ -14,6 +14,8 @@ import com.youngbook.dao.system.IFilesDao;
 import com.youngbook.dao.system.IPositionUserDao;
 import com.youngbook.dao.system.IUserDao;
 import com.youngbook.entity.po.DepartmentPO;
+import com.youngbook.entity.po.MenuPO;
+import com.youngbook.entity.po.PermissionPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.FilesPO;
@@ -358,5 +360,11 @@ public class UserService extends BaseService {
         return pager;
 
     }
+    /**
+     * 获取用户权限
+     */
+    public  List<MenuPO> checkPermission (String userId, Connection conn) throws Exception{
 
+        return userDao.checkPermission(userId,conn);
+    }
 }

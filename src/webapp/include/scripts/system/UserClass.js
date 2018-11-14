@@ -1,4 +1,4 @@
-/**
+ /**
  * Created by 张舜清 on 2015/4/10.
  */
 var UserClass = function(token){
@@ -76,10 +76,64 @@ var UserClass = function(token){
                 onUserDelete();
                 //修改事件跳转
                 onUserEdit();
+                //查看权限
+                checkPermission();
+
             }
         });
     }
+    //查看权限
+     function checkPermission(){
+         var buttonId = "btnUserPermission" + token;
+         fw.bindOnClick(buttonId,function () {
+             fw.datagridGetSelected('UserTable'+token, function(selected){
+                 var id = selected.id;
+                 var url = WEB_ROOT + "/system/User_checkPermission.action?user.id="+id;
+                 fw.post(url, null, function(data){
+                    initPermissionWindow();
+                 })
+             })
+         })
+     }
 
+     function initPermissionWindow() {
+         var strTableId = "PermissionTable" + token;
+         var url =  WEB_ROOT +"/modules/system/User_Permission.jsp?token="+token;
+         $('#' + strTableId).datagrid({
+             title: '权限明细',
+             url: url,
+             queryParams: {
+                 // 此处可定义默认的查询条件
+             },
+             loadMsg: '数据正在加载，请稍后……',
+             fitColumns: true,
+             singleSelect: true,
+             pageList: [10, 15, 20],
+             pageSize: 10,
+             rownumbers: true,
+             loadFilter: function (data) {
+                 try {
+                     data = fw.dealReturnObject(data);
+                     return data;
+                 }
+                 catch (e) {
+                 }
+             },
+             pagination: true,
+             frozenColumns: [
+                 [  // 固定列，没有滚动条
+                     {field: 'ck', checkbox: true},
+                 ]
+             ],
+             columns: [
+                 [
+                     { field: 'id', title: '编号', hidden: true },
+                     { field: 'name', title: '菜单名' },
+                     { field: 'permissionName', title: '权限名', hidden: true },
+                 ]
+             ]
+         });
+     }
     /**
      * 添加事件
      */
@@ -164,7 +218,6 @@ var UserClass = function(token){
             fw.formLoad('formUser'+token, data);
         }, null);
     }
-
     /**
      * 数据提交事件
      */
