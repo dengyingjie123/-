@@ -2,9 +2,11 @@ package com.youngbook.action.system;
 
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
+import com.youngbook.common.config.Config;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.StringUtils;
+import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.DepartmentTypeStatus;
@@ -81,7 +83,9 @@ public class DepartmentAction extends BaseAction {
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
         if (StringUtils.isEmpty(department.getId())) {
+
             department.setId(IdUtils.getUUID32());
+
             MySQLDao.insert(department, getConnection());
         }
         else {
@@ -92,10 +96,24 @@ public class DepartmentAction extends BaseAction {
     }
 
     public String delete() throws Exception {
-        DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
+        department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
-        MySQLDao.deletePhysically(department);
-
+        result = new ReturnObject();
+        try {
+            int count = departmentService.remove(department,getLoginUser().getId(),getConnection());
+            if (count >= 1) {
+                result.setMessage("操作成功");
+                result.setCode(ReturnObject.CODE_SUCCESS);
+            } else {
+                result.setMessage("删除失败");
+                result.setCode(ReturnObject.CODE_EXCEPTION);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ReturnObject.CODE_EXCEPTION);
+            result.setMessage("操作失败");
+            result.setException(e);
+        }
         return SUCCESS;
     }
 

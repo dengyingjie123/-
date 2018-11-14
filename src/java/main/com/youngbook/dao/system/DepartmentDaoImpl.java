@@ -1,13 +1,19 @@
 package com.youngbook.dao.system;
 
+import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.entity.po.DepartmentPO;
+import com.youngbook.entity.po.PositionPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,5 +101,45 @@ public class DepartmentDaoImpl implements IDepartmentDao {
         }
 
         return null;
+    }
+
+    @Override
+    public int remove(DepartmentPO department, String id,Connection conn) throws Exception {
+
+        int count = MySQLDao.remove(department,id,conn);
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("52798D01");
+        dbSQL.addParameter4All("DepartmentId",department.getId());
+        dbSQL.initSQL();
+        List<PositionPO> list = MySQLDao.search(dbSQL, PositionPO.class, conn);
+
+        String sql = "update system_position SET state = 2 WHERE DepartmentId = ?";
+        String sql1 = "update system_positionpermission SET state = 2 WHERE positionId=?";
+        String sql2 = "update system_positionuser SET state = 2 WHERE positionId=?";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+        PreparedStatement statement1 = conn.prepareStatement(sql1);
+        PreparedStatement statement2 = conn.prepareStatement(sql2);
+
+        // 设置name字段
+        statement.setString(1, department.getId());
+        // 执行更新操作
+        statement.executeUpdate();
+
+        for (PositionPO po: list ) {
+            // 设置name字段
+            statement1.setString(1, po.getId());
+            // 执行更新操作
+            statement1.executeUpdate();
+        }
+
+        for (PositionPO po1: list ) {
+            // 设置name字段
+            statement2.setString(1, po1.getId());
+            // 执行更新操作
+            statement2.executeUpdate();
+        }
+
+        return count;
     }
 }

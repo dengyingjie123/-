@@ -105,4 +105,10 @@ public class DepartmentService extends BaseService {
     }
 
 
+    public int remove(DepartmentPO department, String id, Connection conn) throws Exception {
+
+        return departmentDao.remove(department,id,conn);
+
+
+    }
 }
