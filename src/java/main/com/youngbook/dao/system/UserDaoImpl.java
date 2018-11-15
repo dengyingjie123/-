@@ -124,7 +124,7 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Pager checkPermission(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
+    public Pager getPermissionName(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
         MenuPO po = new MenuPO();
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("skrskr");
         dbSQL.addParameter4All("userId",userId);

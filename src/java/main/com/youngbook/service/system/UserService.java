@@ -367,6 +367,6 @@ public class UserService extends BaseService {
         if(StringUtils.isEmpty(userId)){
             MyException.newInstance("无法获得用户编号").throwException();
         }
-        return userDao.checkPermission(userId,permissionName,currentPage,showRowCount,conn);
+        return userDao.getPermissionName(userId,permissionName,currentPage,showRowCount,conn);
     }
 }
