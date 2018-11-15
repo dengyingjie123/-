@@ -1,9 +1,6 @@
 package com.youngbook.entity.po;
 
-import com.youngbook.annotation.DataAdapter;
-import com.youngbook.annotation.FieldType;
-import com.youngbook.annotation.Id;
-import com.youngbook.annotation.Table;
+import com.youngbook.annotation.*;
 import net.sf.json.JSONObject;
 
 /**
@@ -13,19 +10,17 @@ import net.sf.json.JSONObject;
 @Table(name="system_position",jsonPrefix="position")
 public class PositionPO extends BasePO {
 
-    // sid
-    @Id
-    private int sid = Integer.MAX_VALUE;
-    // id
-    private String id = new String();
-    // state
+    @Id(type = IdType.LONG)
+    private long sid = Long.MAX_VALUE;
+
     private int state = Integer.MAX_VALUE;
-    // 操作人
+    // 操作ID
     private String operatorId = new String();
     // 操作时间
     @DataAdapter(fieldType = FieldType.DATE)
     private String operateTime = new String();
-
+    // 编号
+    private String id = new String();
 
     // 名称
     private String name = new String();
@@ -78,9 +73,13 @@ public class PositionPO extends BasePO {
         this.departmentName = departmentName;
     }
 
-    public int getSid() {return sid;}
+    public long getSid() {
+        return sid;
+    }
 
-    public void setSid(int sid) {this.sid = sid;}
+    public void setSid(long sid) {
+        this.sid = sid;
+    }
 
     public int getState() {return state;}
 

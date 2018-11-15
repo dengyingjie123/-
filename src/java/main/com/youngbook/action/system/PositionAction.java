@@ -9,8 +9,10 @@ import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.PositionPO;
 import com.youngbook.entity.po.PositionUserPO;
 import com.youngbook.entity.po.UserPO;
+import com.youngbook.service.system.PositionService;
 import net.sf.json.JSONArray;
 import org.omg.PortableServer.POA;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.util.List;
@@ -27,16 +29,15 @@ public class PositionAction extends BaseAction {
     private PositionPO position;
     private PositionUserPO positionUser = new PositionUserPO();
 
+    @Autowired
+    PositionService positionService;
+
     public String insertOrUpdate() throws Exception {
 
         PositionPO position = HttpUtils.getInstanceFromRequest(getRequest(), "position", PositionPO.class);
 
-        if (position.getId().equals("")) {
-            position.setId(IdUtils.getUUID32());
-            MySQLDao.insert(position);
-        } else {
-            MySQLDao.update(position);
-        }
+        positionService.insertOrUpdate(position, getConnection());
+
         return SUCCESS;
     }
 
@@ -74,7 +75,7 @@ public class PositionAction extends BaseAction {
         PositionPO position = new PositionPO();
         position.setDepartmentId(departmentId);
 
-        List<PositionPO> positionList = MySQLDao.query(position, PositionPO.class, null, queryType, getConnection());
+        List<PositionPO> positionList = MySQLDao.search(position, PositionPO.class, null, queryType, getConnection());
 
         if (positionList != null && positionList.size() != 0) {
             Tree menuRoot = TreeOperator.createForest();
@@ -224,16 +225,19 @@ public class PositionAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String delete() {
+    public String delete() throws Exception{
+
+        PositionPO position = HttpUtils.getInstanceFromRequest(getRequest(), "position", PositionPO.class);
+
         result = new ReturnObject();
         try {
-            int count = MySQLDao.deletePhysically(position);
-            if (count != 1) { //删除失败
-                result.setMessage("删除失成功");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            } else {//删除成功
-                result.setMessage("操作失败");
+            int count = positionService.remove( position,getLoginUser().getId(),getConnection());
+            if (count >= 1) {
+                result.setMessage("操作成功");
                 result.setCode(ReturnObject.CODE_SUCCESS);
+            } else {
+                result.setMessage("删除失败");
+                result.setCode(ReturnObject.CODE_EXCEPTION);
             }
         } catch (Exception e) {
             e.printStackTrace();
