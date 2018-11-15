@@ -3,10 +3,8 @@ package com.youngbook.action.system;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
 import com.youngbook.common.utils.HttpUtils;
-import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.PositionUserPO;
-import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.vo.system.PositionUserVO;
 import com.youngbook.service.system.PositionUserService;
 import com.youngbook.service.system.UserService;
@@ -30,17 +28,16 @@ public class PositionUserAction extends BaseAction {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PositionUserService positionUserService;
+
 
     public String insertOrUpdate() throws Exception {
 
-        PositionUserPO positionUser = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser", PositionUserPO.class);
+        com.youngbook.entity.po.system.PositionUserPO positionUserPO1 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
+                com.youngbook.entity.po.system.PositionUserPO.class);
 
-        if (positionUser.getId().equals("")) {
-            positionUser.setId(IdUtils.getUUID32());
-            MySQLDao.insert(positionUser);
-        } else {
-            MySQLDao.update(positionUser);
-        }
+        positionUserService.insertOrUpdate(positionUserPO1,getConnection());
 
         return SUCCESS;
     }
@@ -99,15 +96,18 @@ public class PositionUserAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String delete() {
+    public String delete() throws Exception{
+        com.youngbook.entity.po.system.PositionUserPO positionUser1 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
+                com.youngbook.entity.po.system.PositionUserPO.class);
+
         result = new ReturnObject();
         try {
-            int count = MySQLDao.deletePhysically(positionUser);
+            int count = positionUserService.remove(positionUser1,getLoginUser().getId(),getConnection());
             if (count >= 1) {
                 result.setMessage("操作成功");
                 result.setCode(ReturnObject.CODE_SUCCESS);
             } else {
-                result.setMessage("删除失失败");
+                result.setMessage("删除失败");
                 result.setCode(ReturnObject.CODE_EXCEPTION);
             }
         } catch (Exception e) {

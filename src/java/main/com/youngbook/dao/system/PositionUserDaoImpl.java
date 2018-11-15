@@ -1,12 +1,17 @@
 package com.youngbook.dao.system;
 
+import com.youngbook.common.KVObject;
+import com.youngbook.common.QueryType;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.entity.po.PositionPO;
 import com.youngbook.entity.po.system.PositionUserPO;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Created by Lee on 10/25/2017.
@@ -26,5 +31,34 @@ public class PositionUserDaoImpl implements IPositionUserDao {
 
         MySQLDao.insert(positionUserPO, conn);
 
+    }
+
+    @Override
+    public int remove(PositionUserPO positionUser, String id, Connection conn) throws Exception {
+        int count = MySQLDao.remove(positionUser,id,conn);
+        return count;
+    }
+
+    @Override
+    public List<PositionUserPO> search(PositionUserPO positionUser, Class<PositionUserPO> positionUserPOClass, List<KVObject> conditions, QueryType queryType, Connection conn) throws Exception {
+        List<PositionUserPO> positionList = MySQLDao.search(positionUser, PositionUserPO.class,conditions, queryType, conn);
+
+        return positionList;
+    }
+
+    @Override
+    public void insertOrUpdate(PositionUserPO positionUser, Connection conn)  throws Exception{
+        MySQLDao.insertOrUpdate(positionUser, conn);
+    }
+
+    @Override
+    public List<PositionUserPO> searchByPosition(PositionPO position, Connection conn) throws Exception{
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("12ds14q2");
+        databaseSQL.addParameter4All("positionId",position.getId());
+        databaseSQL.initSQL();
+        List<PositionUserPO> search = MySQLDao.search(databaseSQL, PositionUserPO.class, conn);
+
+        return search;
     }
 }
