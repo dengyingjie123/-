@@ -7,24 +7,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
 </head>
 <html>
 <head>
 </head>
 <body>
-<form id="formPermission<%=token%>" name="formPermission" action="" method="post">
-<div id="updateTabs<%=token%>" class="easyui-tabs">
-        <div title="权限明细" style="padding:10px;background:#fff;border:0px solid #ccc;">
-            <div style="height: 263px" align="center">
-                <table id="PermissionTable" border="0" cellspacing="5" cellpadding="0">
-                </table>
-            </div>
-        </div>
-</div>
-</form>
-<div region="south" border="false" style="text-align:right;padding:6px;background:#F4F4F4">
-    <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('PermissionWindow<%=token%>')">取消</a>
+<div style="padding:5px;">
+    <div class="easyui-panel" title="查询" iconCls="icon-search" >
+        <table border="0" cellpadding="3" cellspacing="0">
+            <tr>
+                <td>权限名</td>
+                <td><input type="text" id="search_permission_name<%=token %>" name="menu.permissionName" style="width:100px;" /></td>
+                <td>
+                    <a id="btnSearchPermissionSubmit<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                </td>
+                <td>
+                    <a id="btnSearchPermissionReset<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut">重置</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br />
+        <table id="PermissionTable<%=token%>" name="PermissionTable" border="0" cellspacing="5" cellpadding="0">
+        </table>
 </div>
 </body>
 </html>

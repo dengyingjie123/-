@@ -21,6 +21,7 @@ import com.youngbook.entity.po.system.LogPO;
 import com.youngbook.entity.vo.customer.CustomerInstitutionAuditVO;
 import com.youngbook.entity.vo.customer.CustomerPersonalAuditVO;
 import com.youngbook.service.BaseService;
+import com.youngbook.service.system.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +57,7 @@ public class CustomerDistributionService extends BaseService {
 
     @Autowired
     IUserDao userDao;
+
 
 
     @Autowired

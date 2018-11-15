@@ -26,6 +26,6 @@ public interface IUserDao {
 
     public UserPO loadUserByName(String mobile, Connection conn) throws Exception;
 
-    public List<MenuPO> checkPermission(String userId,Connection connection)throws  Exception;
+    public Pager checkPermission(String userId,String permissionName,int currentPage, int showRowCount,Connection connection)throws  Exception;
 
 }

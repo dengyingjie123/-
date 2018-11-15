@@ -4,6 +4,7 @@ import com.youngbook.common.Database;
 import com.youngbook.common.Pager;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.NumberUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.Struts2Utils;
@@ -123,12 +124,14 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public List<MenuPO> checkPermission(String userId,  Connection connection) throws Exception {
-        PermissionPO po = new PermissionPO();
+    public Pager checkPermission(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
+        MenuPO po = new MenuPO();
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("skrskr");
         dbSQL.addParameter4All("userId",userId);
+        dbSQL.addParameter4All("permissionName",permissionName);
         dbSQL.initSQL();
-        return MySQLDao.search(dbSQL, MenuPO.class, connection);
-
+        dbSQL.init4Pager();
+        Pager search = MySQLDao.search(dbSQL, po, null, currentPage, showRowCount, null, connection);
+        return search;
     }
 }

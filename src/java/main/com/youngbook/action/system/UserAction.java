@@ -7,10 +7,7 @@ import com.youngbook.common.config.Config;
 import com.youngbook.common.config.SessionConfig;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
-import com.youngbook.entity.po.DepartmentPO;
-import com.youngbook.entity.po.PermissionPO;
-import com.youngbook.entity.po.UserPO;
-import com.youngbook.entity.po.UserType;
+import com.youngbook.entity.po.*;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.system.UserVO;
@@ -391,12 +388,13 @@ public class UserAction extends BaseAction {
 
         return SUCCESS;
     }
-    public String checkPermission ()throws  Exception{
+    public String getPagerUserPermissionPo ()throws  Exception{
         String userId = HttpUtils.getParameter(getRequest(), "user.id");
-        if(StringUtils.isEmpty(userId)){
-            MyException.newInstance("无法获得客户编号").throwException();
-        }
-        getResult().setReturnValue(userService.checkPermission(userId,getConnection()));
+        String permissionName = HttpUtils.getParameter(getRequest(), "menuPO.permissionName");
+        Pager instance = Pager.getInstance(getRequest());
+
+        Pager pager = userService.getPagerUserPermissionPo(userId,permissionName,instance.getCurrentPage(),instance.getShowRowCount(), getConnection());
+        getResult().setReturnValue(pager.toJsonObject());
         return SUCCESS;
     }
 

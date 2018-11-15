@@ -363,8 +363,10 @@ public class UserService extends BaseService {
     /**
      * 获取用户权限
      */
-    public  List<MenuPO> checkPermission (String userId, Connection conn) throws Exception{
-
-        return userDao.checkPermission(userId,conn);
+    public  Pager getPagerUserPermissionPo (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
+        if(StringUtils.isEmpty(userId)){
+            MyException.newInstance("无法获得用户编号").throwException();
+        }
+        return userDao.checkPermission(userId,permissionName,currentPage,showRowCount,conn);
     }
 }
