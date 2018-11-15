@@ -35,7 +35,7 @@ public class DatabaseSQL {
 
     public static DatabaseSQL getInstance(String sql) {
         DatabaseSQL dbSQL = new DatabaseSQL();
-        dbSQL.newSQL(sql);
+            dbSQL.newSQL(sql);
         return dbSQL;
     }
 

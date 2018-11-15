@@ -110,24 +110,6 @@ public class MySQLDao {
         return null;
     }
 
-    /**
-     *
-     * @param object
-     * @param kvObjects
-     * @param clazz
-     * @param <T>
-     * @return
-     * @throws Exception
-     * 重载load方法加入限制条件
-     */
-    public static <T> T load(T object, List<KVObject> kvObjects, Class<T> clazz) throws Exception{
-        List<T> list = MySQLDao.search(object, clazz, kvObjects, null);
-        if (list != null && list.size() == 1) {
-            return list.get(0);
-        }
-        return null;
-    }
-
     public static <T> T load(T object, Class<T> clazz, Connection conn) throws Exception{
         List<T> list = MySQLDao.search(object, clazz, null, null, conn);
         if (list != null && list.size() == 1) {

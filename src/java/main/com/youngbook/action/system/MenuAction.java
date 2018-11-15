@@ -4,6 +4,8 @@ import com.youngbook.annotation.Permission;
 import com.youngbook.common.*;
 
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MenuDao;
 import com.youngbook.dao.MySQLDao;
@@ -12,7 +14,9 @@ import com.youngbook.entity.po.PermissionPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.service.system.LogService;
+import com.youngbook.service.system.MenuService;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,19 +27,19 @@ public class MenuAction extends BaseAction {
     private ReturnObject result;
     private MenuPO menu = new MenuPO();
 
+    @Autowired
+    private MenuService menuService;
+
 
     public String load() {
 //        String id = getRequest().getParameter("menu.id");
 //        HttpServletRequest request = getRequest();
 //        String name = request.getParameter("menu.name");
-//        System.out.println(id + " " + name);
+//        System.out.println(id + " " + name);x
         result = new ReturnObject();
         try {
             //menu.setId(id);
-            KVObject kvObject = new KVObject("state","0");
-            List condition = new ArrayList();
-            condition.add(kvObject);
-            menu = MySQLDao.load(menu,condition, MenuPO.class);
+            menu = menuService.loadMenu(menu, MenuPO.class);
 
             if (menu != null) {
                 result.setMessage("操作成功");
@@ -61,16 +65,19 @@ public class MenuAction extends BaseAction {
 
         MenuDao dao = new MenuDao();
 
+
         result = new ReturnObject();
 
         Connection conn = null;
 
         try {
-            conn = Database.getConnection();
-            conn.setAutoCommit(false);
-            dao.delete(menu, conn);
-            //逻辑删除菜单，修改state=0，添加operateId.
-//            MySQLDao.remove(menu,getLoginUser().getId(),conn);
+//            conn = Database.getConnection();
+//            conn = getConnection();
+//            conn.setAutoCommit(false);
+//            dao.delete(menu, conn);
+//            逻辑删除菜单，修改state=0，添加operateId.
+            MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
+            menuService.deleteMenu(menu,getLoginUser().getId(),getConnection());
 
             PermissionPO permissionPO = new PermissionPO();
             permissionPO.setMenuId(menu.getId());
@@ -115,21 +122,22 @@ public class MenuAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String save() {
-
+    public String save() throws Exception{
+        MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
         result = new ReturnObject();
         try {
-            if (menu.getId() == null || menu.getId().equalsIgnoreCase("")) {
-                menu.setId(IdUtils.getUUID36());
-                menu.setSid((int)IdUtils.newLongId());
-                menu.setState(0);
-                menu.setOperatorId(getLoginUser().getId());
-                menu.setOperateTime(TimeUtils.getNow());
-                MySQLDao.insert(menu);
-            }
-            else {
-                MySQLDao.update(menu);
-            }
+//            if (this.menu.getId() == null || this.menu.getId().equalsIgnoreCase("")) {
+//                this.menu.setId(IdUtils.getUUID36());
+//                this.menu.setSid((int)IdUtils.newLongId());
+//                this.menu.setState(0);
+//                this.menu.setOperatorId(getLoginUser().getId());
+//                this.menu.setOperateTime(TimeUtils.getNow());
+//                MySQLDao.insert(this.menu);
+//            }
+//            else {
+//                MySQLDao.update(this.menu);
+//            }
+            menuService.saveMenu(menu,getLoginUser().getOperatorId(),getConnection());
             result.setMessage("操作成功");
             result.setCode(ReturnObject.CODE_SUCCESS);
             result.setReturnValue("");
@@ -178,12 +186,13 @@ public class MenuAction extends BaseAction {
 
         MenuPO menu = new MenuPO();
         //menu.setType(1);
-        QueryType queryType = new QueryType(Database.QUERY_EXACTLY, Database.NUMBER_EQUAL);
-        List<KVObject> conditions =new ArrayList<KVObject>();
-        conditions.add(new KVObject(Database.CONDITION_TYPE_ORDERBY,"orders "+Database.ORDERBY_ASC));
-
-        List<MenuPO> menus = MySQLDao.query(menu, MenuPO.class,conditions, queryType);
-        //List<MenuPO> menus = Config.getUserMenus("961778ddb8e1484ea44186c663f52166");
+//        QueryType queryType = new QueryType(Database.QUERY_EXACTLY, Database.NUMBER_EQUAL);
+//        List<KVObject> conditions =new ArrayList<KVObject>();
+//        conditions.add(new KVObject(Database.CONDITION_TYPE_ORDERBY,"orders "+Database.ORDERBY_ASC));
+//
+//        List<MenuPO> menus = MySQLDao.query(menu, MenuPO.class,conditions, queryType);
+//        List<MenuPO> menus = Config.getUserMenus("961778ddb8e1484ea44186c663f52166");
+        List<MenuPO> menus = menuService.listMenu(MenuPO.class,getConnection());
 
         Tree menuRoot = TreeOperator.createForest();
         for(MenuPO tempMenu : menus) {
