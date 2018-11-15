@@ -5,7 +5,13 @@ import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.system.IDepartmentDao;
+import com.youngbook.dao.system.IPositionDao;
+import com.youngbook.dao.system.IPositionPermissionDao;
+import com.youngbook.dao.system.IPositionUserDao;
 import com.youngbook.entity.po.DepartmentPO;
+import com.youngbook.entity.po.PositionPO;
+import com.youngbook.entity.po.PositionPermissionPO;
+import com.youngbook.entity.po.system.PositionUserPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.service.BaseService;
 import net.sf.json.JSONObject;
@@ -27,7 +33,12 @@ public class DepartmentService extends BaseService {
 
     @Autowired
     IDepartmentDao departmentDao;
-
+    @Autowired
+    IPositionDao positionDao;
+    @Autowired
+    IPositionUserDao positionUserDao;
+    @Autowired
+    IPositionPermissionDao positionPermissionDao;
 
     public String getDepartments4FortuneCenter(DepartmentPO department, Connection conn) throws Exception {
 
@@ -105,10 +116,51 @@ public class DepartmentService extends BaseService {
     }
 
 
+    /**
+     * 级联删除
+     * @param department
+     * @param id
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public int remove(DepartmentPO department, String id, Connection conn) throws Exception {
+
+        //通过department查询PositionPO，在遍历后更改状态
+        List<PositionPO> positionList = positionDao.searchByDepartment(department,conn);
+
+        if (null != positionList && positionList.size() > 0){
+            for (PositionPO position: positionList) {
+                //通过position查询PositionUserPO，在遍历后更改状态
+                List<PositionUserPO> positionUserList = positionUserDao.searchByPosition(position,conn);
+                if (null != positionUserList && positionUserList.size() > 0){
+                    for (PositionUserPO positionUser:positionUserList) {
+                        positionUserDao.remove(positionUser,id,conn);
+                    }
+                }
+                //通过position查询positionPermissionPO，在遍历后更改状态
+                List<PositionPermissionPO> positionPermissionList = positionPermissionDao.searchByPosition(position,conn);
+                if (null != positionPermissionList && positionPermissionList.size() > 0){
+                    for (PositionPermissionPO positionPermission:positionPermissionList) {
+                        positionPermissionDao.remove(positionPermission,id,conn);
+                    }
+                }
+            }
+        }
 
         return departmentDao.remove(department,id,conn);
 
 
+    }
+
+    public List<DepartmentPO> search(DepartmentPO department, Class<DepartmentPO> departmentPOClass, List<KVObject> conditions, QueryType queryType, Connection conn) throws  Exception
+    {
+
+        return departmentDao.search(department, DepartmentPO.class,conditions, queryType, conn);
+
+    }
+
+    public void insertOrUpdate(DepartmentPO department, Connection conn) throws Exception {
+        departmentDao.insertOrUpdate(department, conn);
     }
 }

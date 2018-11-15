@@ -82,20 +82,13 @@ public class DepartmentAction extends BaseAction {
 
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
-        if (StringUtils.isEmpty(department.getId())) {
-
-            department.setId(IdUtils.getUUID32());
-
-            MySQLDao.insert(department, getConnection());
-        }
-        else {
-            MySQLDao.update(department, getConnection());
-        }
+        departmentService.insertOrUpdate(department, getConnection());
 
         return SUCCESS;
     }
 
     public String delete() throws Exception {
+
         department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
         result = new ReturnObject();
@@ -126,7 +119,9 @@ public class DepartmentAction extends BaseAction {
         QueryType queryType = new QueryType(Database.NUMBER_EQUAL, Database.QUERY_EXACTLY);
         List<KVObject> conditions = new ArrayList<KVObject>();
         conditions.add(new KVObject(Database.CONDITION_TYPE_ORDERBY, " orders "));
-        List<DepartmentPO> departmentList = MySQLDao.query(department, DepartmentPO.class,conditions, queryType, conn);
+
+        List<DepartmentPO> departmentList = departmentService.search(department, DepartmentPO.class,conditions, queryType, conn);
+
 
         if (departmentList == null && departmentList.size() == 0) {
             MyException.newInstance("部门加载失败").throwException();
@@ -137,6 +132,7 @@ public class DepartmentAction extends BaseAction {
             Tree tree = new Tree(departmentpo.getId(),departmentpo.getName(),departmentpo.getParentId(),departmentpo);
             TreeOperator.add(root,tree);
         }
+
         JSONObject json = TreeOperator.getJson4Tree(root);
         String jsonStr = json.getJSONArray("children").toString();
 
