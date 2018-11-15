@@ -1,11 +1,8 @@
 package com.youngbook.entity.po;
 
 import com.youngbook.annotation.*;
-import com.youngbook.dao.MySQLDao;
 import net.sf.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "system_department", jsonPrefix = "department")
 public class DepartmentPO extends BasePO {

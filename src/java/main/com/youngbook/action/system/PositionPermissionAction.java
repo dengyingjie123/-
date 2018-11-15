@@ -3,6 +3,7 @@ package com.youngbook.action.system;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.JSONDao;
@@ -10,7 +11,9 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.MenuPO;
 import com.youngbook.entity.po.PositionPermissionPO;
 import com.youngbook.service.system.LogService;
+import com.youngbook.service.system.PositionPermissionService;
 import net.sf.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.util.List;
@@ -20,30 +23,13 @@ public class PositionPermissionAction extends BaseAction {
     private ReturnObject result;
     private PositionPermissionPO positionPermission;
 
-    public String insertOrUpdate() throws Exception {
-        result = new ReturnObject();
-        int count = 0;
-        try{
-            if (positionPermission.getId().equals("")) {
-                positionPermission.setId(IdUtils.getUUID32());
-                count = MySQLDao.insert(positionPermission);
-            }
-            else {
-                count = MySQLDao.update(positionPermission);
-            }
+    @Autowired
+    PositionPermissionService positionPermissionService;
 
-            if(count == 1){
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-            }else{
-                result.setMessage("操作失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            }
-        }catch (Exception e){
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
-        }
+    public String insertOrUpdate() throws Exception {
+        PositionPermissionPO positionPermission = HttpUtils.getInstanceFromRequest(getRequest(), "positionPermission", PositionPermissionPO.class);
+
+        positionPermissionService.insertOrUpdate(positionPermission, getConnection());
         return SUCCESS;
     }
 

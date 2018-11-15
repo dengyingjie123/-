@@ -131,6 +131,8 @@ public class DepartmentService extends BaseService {
 
         if (null != positionList && positionList.size() > 0){
             for (PositionPO position: positionList) {
+                //更改状态
+                positionDao.remove(position,id,conn);
                 //通过position查询PositionUserPO，在遍历后更改状态
                 List<PositionUserPO> positionUserList = positionUserDao.searchByPosition(position,conn);
                 if (null != positionUserList && positionUserList.size() > 0){

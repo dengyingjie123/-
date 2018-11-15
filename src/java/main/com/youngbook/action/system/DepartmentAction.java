@@ -89,23 +89,12 @@ public class DepartmentAction extends BaseAction {
 
     public String delete() throws Exception {
 
-        department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
+        DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
-        result = new ReturnObject();
-        try {
-            int count = departmentService.remove(department,getLoginUser().getId(),getConnection());
-            if (count >= 1) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-            } else {
-                result.setMessage("删除失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
+        int count = departmentService.remove(department,getLoginUser().getId(),getConnection());
+
+        if (count != 1) {
+            throw new Exception("操作失败");
         }
         return SUCCESS;
     }
