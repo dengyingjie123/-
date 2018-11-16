@@ -79,17 +79,30 @@ public class DepartmentService extends BaseService {
 
     public DepartmentPO load(String departmentId, Connection conn) throws Exception{
 
+
         DatabaseSQL dbSQL = new DatabaseSQL();
+
         dbSQL.newSQL("SELECT * from system_department where id=?");
+
         dbSQL.addParameter(1, departmentId);
+
+
 
         List<DepartmentPO> list = MySQLDao.search(dbSQL.getSQL(), dbSQL.getParameters(), DepartmentPO.class, null, conn);
 
+
+
         if (list != null && list.size() == 1) {
+
             return list.get(0);
+
         }
 
+
+
         return null;
+
+
     }
 
 
@@ -164,5 +177,10 @@ public class DepartmentService extends BaseService {
 
     public void insertOrUpdate(DepartmentPO department, Connection conn) throws Exception {
         departmentDao.insertOrUpdate(department, conn);
+    }
+
+    public List<DepartmentPO> searchByStateCondition(DepartmentPO department, Connection conn)throws Exception {
+
+        return departmentDao.searchByStateCondition(department,conn);
     }
 }

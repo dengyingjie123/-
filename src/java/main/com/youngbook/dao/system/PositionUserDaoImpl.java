@@ -61,4 +61,17 @@ public class PositionUserDaoImpl implements IPositionUserDao {
 
         return search;
     }
+
+    @Override
+    public List<PositionUserPO>
+    searchByPositionAndUser(PositionUserPO positionUserPO, Class<PositionUserPO> positionUserPOClass, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("12ds14q4");
+        databaseSQL.addParameter4All("positionId",positionUserPO.getPositionId());
+        databaseSQL.addParameter4All("userId",positionUserPO.getUserId());
+        databaseSQL.initSQL();
+        List<PositionUserPO> search = MySQLDao.search(databaseSQL, PositionUserPO.class, conn);
+
+        return search;
+    }
 }

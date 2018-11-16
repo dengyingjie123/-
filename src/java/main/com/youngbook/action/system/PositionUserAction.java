@@ -89,55 +89,35 @@ public class PositionUserAction extends BaseAction {
         String positionId = getHttpRequestParameter("positionUser.positionId");
 
         Pager pager = Pager.getInstance(getRequest());
+
         pager = userService.listPagerUserPOs(positionId, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
         getResult().setReturnValue(pager.toJsonObject());
-
 
         return SUCCESS;
     }
 
     public String delete() throws Exception{
+
         com.youngbook.entity.po.system.PositionUserPO positionUser1 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
                 com.youngbook.entity.po.system.PositionUserPO.class);
 
-        result = new ReturnObject();
-        try {
-            int count = positionUserService.remove(positionUser1,getLoginUser().getId(),getConnection());
-            if (count >= 1) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-            } else {
-                result.setMessage("删除失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
-        }
+        int count = positionUserService.remove(positionUser1,getLoginUser().getId(),getConnection());
+
         return SUCCESS;
+
     }
 
-    public String deleteByIds() {
-        result = new ReturnObject();
-        try {
-            String sql = "delete from system_positionuser where positionId='" +Database.encodeSQL( positionUser.getPositionId())
-                    + "' and userId='" +Database.encodeSQL( positionUser.getUserId()) + "'";
-            int count = MySQLDao.update(sql);
-            if (count >= 1) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-            } else {
-                result.setMessage("删除失失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
+    public String deleteByIds() throws Exception {
+        com.youngbook.entity.po.system.PositionUserPO positionUser2 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
+                com.youngbook.entity.po.system.PositionUserPO.class);
+        List<com.youngbook.entity.po.system.PositionUserPO> positionUserList= positionUserService.searchByPositionAndUser(positionUser2,com.youngbook.entity.po.system.PositionUserPO.class,getConnection());
+
+        if (null != positionUserList && positionUserList.size() > 0) {
+            for (com.youngbook.entity.po.system.PositionUserPO positionU : positionUserList) {
+                positionUserService.remove(positionU,getLoginUser().getId(),getConnection());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
         }
+
         return SUCCESS;
     }
 

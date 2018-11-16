@@ -210,7 +210,6 @@ var PositionUserClass = function (token) {
         fw.bindOnClick(buttonId, function(process){
             var formId = 'formPositionUser' + token;
             fw.confirm('更改提示', '归属状态已改变，是否更改？', function() {
-            var url = WEB_ROOT + '/system/PositionUser_updatePositionUser.action';
             fw.bindOnSubmitForm(formId, url, function(){
                 process.beforeClick();
             }, function() {

@@ -4,6 +4,7 @@ import com.youngbook.common.*;
 import com.youngbook.dao.system.IPositionDao;
 import com.youngbook.dao.system.IPositionPermissionDao;
 import com.youngbook.dao.system.IPositionUserDao;
+import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.PositionPO;
 import com.youngbook.entity.po.PositionPermissionPO;
 import com.youngbook.entity.po.system.PositionUserPO;
@@ -59,5 +60,11 @@ public class PositionService extends BaseService {
     public void insertOrUpdate(PositionPO position, Connection conn) throws Exception{
 
         positionDao.insertOrUpdate(position, conn);
+    }
+
+    public List<PositionPO> searchByDepartment(String departmentId, Connection conn)throws Exception {
+        DepartmentPO departmentPO = new DepartmentPO();
+        departmentPO.setId(departmentId);
+        return positionDao.searchByDepartment(departmentPO,conn);
     }
 }

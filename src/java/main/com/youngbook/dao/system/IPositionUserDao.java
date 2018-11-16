@@ -23,4 +23,6 @@ public interface IPositionUserDao {
     void insertOrUpdate(PositionUserPO positionUser, Connection conn) throws Exception;
 
     List<PositionUserPO> searchByPosition(PositionPO position, Connection conn) throws Exception;
+
+    List<PositionUserPO> searchByPositionAndUser(PositionUserPO positionUserPO, Class<PositionUserPO> positionUserPOClass, Connection conn) throws Exception;
 }

@@ -20,4 +20,8 @@ public interface IDepartmentDao {
     List<DepartmentPO> search(DepartmentPO department, Class<DepartmentPO> departmentPOClass, List<KVObject> conditions, QueryType queryType, Connection conn) throws Exception;
 
     void insertOrUpdate(DepartmentPO department, Connection conn) throws Exception;
+
+    DepartmentPO load(String departmentId, Class clazz) throws Exception;
+
+    List<DepartmentPO> searchByStateCondition(DepartmentPO department, Connection conn)throws Exception;
 }

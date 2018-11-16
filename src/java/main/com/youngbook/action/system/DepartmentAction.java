@@ -3,6 +3,7 @@ package com.youngbook.action.system;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.StringUtils;
@@ -73,9 +74,13 @@ public class DepartmentAction extends BaseAction {
      }
 
     public String load() throws Exception {
+
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
+
         department = MySQLDao.load(department,DepartmentPO.class);
+
         result.setReturnValue(department.toJsonObject4Form());
+
         return SUCCESS;
     }
     public String insertOrUpdate() throws Exception {
@@ -103,13 +108,15 @@ public class DepartmentAction extends BaseAction {
 
         Connection conn = getConnection();
         result = new ReturnObject();
-        department = new DepartmentPO();
+        DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
         QueryType queryType = new QueryType(Database.NUMBER_EQUAL, Database.QUERY_EXACTLY);
         List<KVObject> conditions = new ArrayList<KVObject>();
         conditions.add(new KVObject(Database.CONDITION_TYPE_ORDERBY, " orders "));
 
-        List<DepartmentPO> departmentList = departmentService.search(department, DepartmentPO.class,conditions, queryType, conn);
+        List<DepartmentPO> departmentList = departmentService.searchByStateCondition(department,conn);
+
+        //List<DepartmentPO> departmentList = departmentService.search(department, DepartmentPO.class,conditions, queryType, conn);
 
 
         if (departmentList == null && departmentList.size() == 0) {

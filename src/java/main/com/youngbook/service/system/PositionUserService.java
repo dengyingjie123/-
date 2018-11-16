@@ -48,4 +48,8 @@ public class PositionUserService extends BaseService {
     public void insertOrUpdate(PositionUserPO positionUser, Connection conn) throws Exception {
         positionUserDao.insertOrUpdate(positionUser, conn);
     }
+
+    public List<PositionUserPO> searchByPositionAndUser(PositionUserPO positionUserPO, Class<PositionUserPO> positionUserPOClass, Connection conn)throws Exception {
+        return positionUserDao.searchByPositionAndUser(positionUserPO,positionUserPOClass,conn);
+    }
 }

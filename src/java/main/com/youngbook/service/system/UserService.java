@@ -88,11 +88,12 @@ public class UserService extends BaseService {
 
     public Pager listPagerUserPOs(String positionId, int currentPage, int showRowCount, Connection conn) throws Exception {
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("listPagerUserPOs", this);
+        UserPO userPO = new UserPO();
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("12ds14q7");
         dbSQL.addParameter4All("positionId", positionId);
         dbSQL.initSQL();
-
-        Pager pager = MySQLDao.search(dbSQL.getSQL(), dbSQL.getParameters(), UserPO.class, currentPage, showRowCount, conn);
+        Pager pager = MySQLDao.search(dbSQL, userPO, null, currentPage, showRowCount, null, conn);
+        //Pager pager = MySQLDao.search(dbSQL, dbSQL.getParameters(), UserPO.class, currentPage, showRowCount, conn);
 
         return pager;
     }

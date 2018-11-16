@@ -2,6 +2,7 @@ package com.youngbook.action.system;
 
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
@@ -10,6 +11,7 @@ import com.youngbook.entity.po.PositionPO;
 import com.youngbook.entity.po.PositionUserPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.service.system.PositionService;
+import com.youngbook.service.system.UserService;
 import net.sf.json.JSONArray;
 import org.omg.PortableServer.POA;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,11 +73,7 @@ public class PositionAction extends BaseAction {
 
         String departmentId = getHttpRequestParameter("position.DepartmentId");
 
-
-        PositionPO position = new PositionPO();
-        position.setDepartmentId(departmentId);
-
-        List<PositionPO> positionList = MySQLDao.search(position, PositionPO.class, null, queryType, getConnection());
+        List<PositionPO> positionList =positionService.searchByDepartment(departmentId, getConnection());
 
         if (positionList != null && positionList.size() != 0) {
             Tree menuRoot = TreeOperator.createForest();

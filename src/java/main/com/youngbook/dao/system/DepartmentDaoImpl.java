@@ -125,4 +125,18 @@ public class DepartmentDaoImpl implements IDepartmentDao {
     public void insertOrUpdate(DepartmentPO department, Connection conn) throws Exception {
         MySQLDao.insertOrUpdate(department, conn);
     }
+
+    @Override
+    public DepartmentPO load(String departmentId, Class clazz) throws Exception {
+
+        return null;
+    }
+
+    @Override
+    public List<DepartmentPO> searchByStateCondition(DepartmentPO department, Connection conn) throws Exception {
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("12ds14q6");
+        databaseSQL.initSQL();
+        List<DepartmentPO> search = MySQLDao.search(databaseSQL, DepartmentPO.class, conn);
+        return search;
+    }
 }

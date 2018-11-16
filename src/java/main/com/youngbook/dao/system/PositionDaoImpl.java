@@ -49,7 +49,7 @@ public class PositionDaoImpl implements IPositionDao {
     @Override
     public List<PositionPO> searchByDepartment(DepartmentPO department, Connection conn) throws Exception {
 
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("12ds14q1");
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("12ds14q5");
         databaseSQL.addParameter4All("DepartmentId",department.getId());
         databaseSQL.initSQL();
         List<PositionPO> search = MySQLDao.search(databaseSQL, PositionPO.class, conn);
