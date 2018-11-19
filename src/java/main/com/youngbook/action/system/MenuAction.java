@@ -1,26 +1,23 @@
 package com.youngbook.action.system;
+
 import com.youngbook.action.BaseAction;
 import com.youngbook.annotation.Permission;
 import com.youngbook.common.*;
-
 import com.youngbook.common.config.Config;
-import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
-import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MenuDao;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.MenuPO;
 import com.youngbook.entity.po.PermissionPO;
 import com.youngbook.entity.po.UserPO;
-import com.youngbook.common.utils.IdUtils;
 import com.youngbook.service.system.LogService;
 import com.youngbook.service.system.MenuService;
+import com.youngbook.service.system.PermissionService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAction extends BaseAction {
@@ -29,6 +26,9 @@ public class MenuAction extends BaseAction {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private PermissionService permissionService;
 
 
     public String load() {
@@ -75,20 +75,30 @@ public class MenuAction extends BaseAction {
 //            conn = getConnection();
 //            conn.setAutoCommit(false);
 //            dao.delete(menu, conn);
-//            逻辑删除菜单，修改state=0，添加operateId.
+//
+//            PermissionPO permissionPO = new PermissionPO();
+//            permissionPO.setMenuId(menu.getId());
+//
+//            List<PermissionPO> listPermissionPOs = MySQLDao.query(permissionPO, PermissionPO.class, null, null);
+//            for (int i = 0; i < listPermissionPOs.size(); i++) {
+//                PermissionPO temp = listPermissionPOs.get(i);
+//                MySQLDao.deletePhysically(temp, conn);
+//            }
+//            conn.commit();
+
+            // 逻辑删除菜单，修改state=2，添加operateId.
             MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
             menuService.deleteMenu(menu,getLoginUser().getId(),getConnection());
 
-            PermissionPO permissionPO = new PermissionPO();
-            permissionPO.setMenuId(menu.getId());
+            //s删除相关权限
+            if(menu.getId()!=null){
+                List<PermissionPO> listPermissionPOs = permissionService.listById(menu.getId(),getConnection());
 
-            List<PermissionPO> listPermissionPOs = MySQLDao.query(permissionPO, PermissionPO.class, null, null);
-            for (int i = 0; i < listPermissionPOs.size(); i++) {
-                PermissionPO temp = listPermissionPOs.get(i);
-                MySQLDao.deletePhysically(temp, conn);
+                for (int i = 0; i < listPermissionPOs.size(); i++) {
+                    PermissionPO temp = listPermissionPOs.get(i);
+                    MySQLDao.remove(temp, getLoginUser().getId(), getConnection());
+                }
             }
-
-            conn.commit();
 
             result.setCode(ReturnObject.CODE_SUCCESS);
             result.setMessage("删除成功");

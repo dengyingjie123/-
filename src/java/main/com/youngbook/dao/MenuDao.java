@@ -1,7 +1,9 @@
 package com.youngbook.dao;
 
 import com.youngbook.common.Database;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.entity.po.MenuPO;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class MenuDao {
     /**
      * 精确查询
@@ -569,8 +571,6 @@ public class MenuDao {
     }
 
 
-
-
     /**
      * 按ID更新数据
      * Version: 0.1.5
@@ -707,6 +707,7 @@ public class MenuDao {
         return intCount;
     }
 
+
     /**
      * 从Request构建对象实例
      * Version: 0.1.5
@@ -749,5 +750,25 @@ public class MenuDao {
 
         // 返回实例
         return po;
+    }
+
+    public MenuPO loadMenu(MenuPO menu,Class<MenuPO> clazz)throws Exception{
+        MenuPO menus = MySQLDao.load(menu, MenuPO.class);
+        return menus;
+    }
+
+    public int deleteMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
+        return MySQLDao.remove(menu,operatorID,conn);
+    }
+
+    public int saveMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
+        return MySQLDao.insertOrUpdate(menu,operatorID,conn);
+    }
+
+    public List<MenuPO> listMenu(Class<MenuPO> clazz,Connection conn)throws Exception{
+        DatabaseSQL dbSQL = DatabaseSQL.getInstance("select * from system_menu where state=0 ORDER BY orders asc");
+        dbSQL.initSQL();
+        List<MenuPO> menus = MySQLDao.search(dbSQL,clazz,conn);
+        return menus;
     }
 }
