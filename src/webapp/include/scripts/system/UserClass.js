@@ -93,14 +93,13 @@ var UserClass = function(token){
                  fw.window('permissionWindow'+token,'权限明细',600,450,url,function () {
                      initPermissionTable(userid);
                  })
-                // $('userid').val(userid);
              })
          })
      }
 
      function initPermissionTable(userid) {
          var strTableId = "PermissionTable" + token;
-         var url = WEB_ROOT + "/system/User_getPagerUserPermissionPo.action?user.id="+userid;
+         var url = WEB_ROOT + "/system/User_getPagerMenuPo.action?user.id="+userid;
          $('#' + strTableId).datagrid({
              title: '',
              url: url,

@@ -363,7 +363,7 @@ public class UserService extends BaseService {
     /**
      * 获取用户权限
      */
-    public  Pager getPagerUserPermissionPo (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
+    public  Pager getPagerMenuPo (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
         if(StringUtils.isEmpty(userId)){
             MyException.newInstance("无法获得用户编号").throwException();
         }

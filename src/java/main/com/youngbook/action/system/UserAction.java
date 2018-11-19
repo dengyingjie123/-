@@ -388,12 +388,12 @@ public class UserAction extends BaseAction {
 
         return SUCCESS;
     }
-    public String getPagerUserPermissionPo ()throws  Exception{
+    public String getPagerMenuPo ()throws  Exception{
         String userId = HttpUtils.getParameter(getRequest(), "user.id");
         String permissionName = HttpUtils.getParameter(getRequest(), "menuPO.permissionName");
         Pager instance = Pager.getInstance(getRequest());
 
-        Pager pager = userService.getPagerUserPermissionPo(userId,permissionName,instance.getCurrentPage(),instance.getShowRowCount(), getConnection());
+        Pager pager = userService.getPagerMenuPo(userId,permissionName,instance.getCurrentPage(),instance.getShowRowCount(), getConnection());
         getResult().setReturnValue(pager.toJsonObject());
         return SUCCESS;
     }
