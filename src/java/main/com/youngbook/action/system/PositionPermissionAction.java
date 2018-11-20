@@ -3,8 +3,8 @@ package com.youngbook.action.system;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
-import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.JSONDao;
 import com.youngbook.dao.MySQLDao;
@@ -73,12 +73,11 @@ public class PositionPermissionAction extends BaseAction {
 
         for (int i = 0; permissionIdsArray != null && i < permissionIdsArray.length; i++) {
             String permissionId = permissionIdsArray[i];
+            
             PositionPermissionPO po = new PositionPermissionPO();
-            po.setId(IdUtils.getUUID32());
             po.setPermissionId(permissionId);
             po.setPositionId(positionId);
-
-            count = MySQLDao.insert(po, conn);
+            count = MySQLDao.insertOrUpdate(po,conn);
 
             if (count != 1) {
                 getResult().setCode(ReturnObject.CODE_EXCEPTION);
