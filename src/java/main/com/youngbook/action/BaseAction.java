@@ -128,8 +128,10 @@ public class BaseAction extends ActionSupport {
             return user;
         }
         catch (Exception e) {
-            return null;
+            MyException.newInstance("获取登录用户失败", e.getMessage()).throwException();
         }
+
+        return null;
     }
 
     public CustomerPersonalPO getLoginCustomer() throws Exception{

@@ -17,11 +17,11 @@ var MenuClass = function(token) {
         var buttonId = 'submit'+token1;
 
         fw.bindOnClick(buttonId, function(process){
-            var formId = "formMenu"+token1;
+            var formId = "formMenu" + token1;
             var urlForm = WEB_ROOT+'/system/Menu_save.action';
 
             fw.formSubmit(formId, urlForm, buttonId, null, function() {
-                var tree = '#systemMenu'+token;
+                var tree = '#systemMenu' + token;
                 initMenuTree(tree);
                 $("#winMenu"+token1).window("close");
             });
@@ -66,8 +66,10 @@ var MenuClass = function(token) {
                         //process.beforeClick();
                         initWindowMenu([data]);
                     }
-                    catch (e) {}
-                    process.afterClick()
+                    catch (e) {
+
+                        process.afterClick()
+                    }
 
                 }, function() {
                     process.errorClick();
@@ -87,8 +89,9 @@ var MenuClass = function(token) {
                             var tree = '#systemMenu'+token;
                             initMenuTree(tree);
                         }
-                        catch (e) {}
-                        process.afterClick();
+                        catch (e) {
+                            process.afterClick();
+                        }
                     }, function() {
                         process.errorClick();
                     })

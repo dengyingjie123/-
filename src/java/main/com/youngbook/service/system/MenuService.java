@@ -20,16 +20,25 @@ public class MenuService extends BaseService {
     @Autowired
     private MenuDao menuDao;
 
-    public MenuPO loadMenu(MenuPO menu,Class<MenuPO> clazz)throws Exception{
-        return menuDao.loadMenu(menu, MenuPO.class);
+    public MenuPO loadMenuPO (MenuPO menu, Connection conn)throws Exception{
+        return menuDao.loadMenuPO(menu, conn);
     }
 
     public int deleteMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
+
+        /**
+         * 如果有岗位权限用到此菜单，则需要首选删除权限内容
+         *
+         *
+         *
+         */
+
+
         return menuDao.deleteMenu(menu,operatorID,conn);
     }
 
-    public int saveMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
-        return menuDao.saveMenu(menu,operatorID,conn);
+    public MenuPO saveMenu(MenuPO menu, String operatorId, Connection conn) throws Exception {
+        return menuDao.saveMenu(menu, operatorId, conn);
     }
 
     public List<MenuPO> listMenu(Class<MenuPO> clazz,Connection conn)throws Exception{

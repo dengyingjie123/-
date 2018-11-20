@@ -31,131 +31,66 @@ public class MenuAction extends BaseAction {
     private PermissionService permissionService;
 
 
-    public String load() {
-//        String id = getRequest().getParameter("menu.id");
-//        HttpServletRequest request = getRequest();
-//        String name = request.getParameter("menu.name");
-//        System.out.println(id + " " + name);x
-        result = new ReturnObject();
-        try {
-            //menu.setId(id);
-            menu = menuService.loadMenu(menu, MenuPO.class);
+    public String load() throws Exception {
 
-            if (menu != null) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-                result.setReturnValue(menu.toJsonObject4Form());
-            }
-            else {
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-                result.setMessage("查询菜单失败");
-            }
+        menu = menuService.loadMenuPO(menu, getConnection());
 
-
-        } catch (Exception e) {
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
-        }
-        return SUCCESS;
-    }
-
-
-    public String delete() {
-
-        MenuDao dao = new MenuDao();
-
-
-        result = new ReturnObject();
-
-        Connection conn = null;
-
-        try {
-//            conn = Database.getConnection();
-//            conn = getConnection();
-//            conn.setAutoCommit(false);
-//            dao.delete(menu, conn);
-//
-//            PermissionPO permissionPO = new PermissionPO();
-//            permissionPO.setMenuId(menu.getId());
-//
-//            List<PermissionPO> listPermissionPOs = MySQLDao.query(permissionPO, PermissionPO.class, null, null);
-//            for (int i = 0; i < listPermissionPOs.size(); i++) {
-//                PermissionPO temp = listPermissionPOs.get(i);
-//                MySQLDao.deletePhysically(temp, conn);
-//            }
-//            conn.commit();
-
-            // 逻辑删除菜单，修改state=2，添加operateId.
-            MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
-            menuService.deleteMenu(menu,getLoginUser().getId(),getConnection());
-
-            //s删除相关权限
-            if(menu.getId()!=null){
-                List<PermissionPO> listPermissionPOs = permissionService.listById(menu.getId(),getConnection());
-
-                for (int i = 0; i < listPermissionPOs.size(); i++) {
-                    PermissionPO temp = listPermissionPOs.get(i);
-                    MySQLDao.remove(temp, getLoginUser().getId(), getConnection());
-                }
-            }
-
-            result.setCode(ReturnObject.CODE_SUCCESS);
-            result.setMessage("删除成功");
-        } catch (Exception e) {
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
-            if (conn != null) {
-                try {
-                    LogService.debug("回滚数据库", this.getClass());
-                    conn.rollback();
-                } catch (SQLException e1) {
-                    result.setCode(ReturnObject.CODE_DB_EXCEPTION);
-                    result.setMessage("数据库回滚异常");
-                    result.setException(e1);
-                }
-            }
-        }
-        finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    result.setCode(ReturnObject.CODE_DB_EXCEPTION);
-                    result.setMessage("数据库关闭异常");
-                    result.setException(e);
-                }
-            }
-        }
+        getResult().setReturnValue(menu.toJsonObject4Form());
 
         return SUCCESS;
     }
 
-    public String save() throws Exception{
+
+    public String delete() throws Exception {
+
+
+        // 逻辑删除菜单，修改state=2，添加operateId.
         MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
-        result = new ReturnObject();
-        try {
-//            if (this.menu.getId() == null || this.menu.getId().equalsIgnoreCase("")) {
-//                this.menu.setId(IdUtils.getUUID36());
-//                this.menu.setSid((int)IdUtils.newLongId());
-//                this.menu.setState(0);
-//                this.menu.setOperatorId(getLoginUser().getId());
-//                this.menu.setOperateTime(TimeUtils.getNow());
-//                MySQLDao.insert(this.menu);
+        menuService.deleteMenu(menu, getLoginUser().getId(), getConnection());
+
+
+//        // 删除相关权限
+//        if(menu.getId() != null){
+//            List<PermissionPO> listPermissionPOs = permissionService.listPermissionPOById(menu.getId(),getConnection());
+//
+//            for (int i = 0; listPermissionPOs != null && i < listPermissionPOs.size(); i++) {
+//                PermissionPO temp = listPermissionPOs.get(i);
+//                MySQLDao.remove(temp, getLoginUser().getId(), getConnection());
 //            }
-//            else {
-//                MySQLDao.update(this.menu);
-//            }
-            menuService.saveMenu(menu,getLoginUser().getOperatorId(),getConnection());
-            result.setMessage("操作成功");
-            result.setCode(ReturnObject.CODE_SUCCESS);
-            result.setReturnValue("");
-        } catch (Exception e) {
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
-        }
+//        }
+
+        return SUCCESS;
+    }
+
+
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    public String save() throws Exception {
+        /**
+         * 获取需要修改的菜单数据
+         */
+        MenuPO menu = HttpUtils.getInstanceFromRequest(getRequest(), "menu", MenuPO.class);
+
+
+
+
+        /**
+         *
+         * 保存菜单数据
+         */
+        menuService.saveMenu(menu, getLoginUser().getOperatorId(), getConnection());
+
+
+
+
+        /**
+         *
+         */
+        getResult().setReturnValue("1");
+
         return SUCCESS;
     }
 

@@ -1,6 +1,7 @@
 package com.youngbook.dao;
 
 import com.youngbook.common.Database;
+import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.entity.po.MenuPO;
 import org.springframework.stereotype.Component;
@@ -752,17 +753,22 @@ public class MenuDao {
         return po;
     }
 
-    public MenuPO loadMenu(MenuPO menu,Class<MenuPO> clazz)throws Exception{
-        MenuPO menus = MySQLDao.load(menu, MenuPO.class);
-        return menus;
+    public MenuPO loadMenuPO(MenuPO menu, Connection conn) throws Exception {
+
+        menu.setState(Config.STATE_CURRENT);
+        MenuPO menuPO = MySQLDao.load(menu, MenuPO.class, conn);
+        return menuPO;
     }
 
     public int deleteMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
         return MySQLDao.remove(menu,operatorID,conn);
     }
 
-    public int saveMenu(MenuPO menu, String operatorID, Connection conn)throws Exception{
-        return MySQLDao.insertOrUpdate(menu,operatorID,conn);
+    public MenuPO saveMenu(MenuPO menu, String operatorId, Connection conn) throws Exception {
+
+        MySQLDao.insertOrUpdate(menu, operatorId, conn);
+
+        return menu;
     }
 
     public List<MenuPO> listMenu(Class<MenuPO> clazz,Connection conn)throws Exception{

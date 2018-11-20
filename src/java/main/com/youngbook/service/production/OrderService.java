@@ -904,7 +904,6 @@ public class OrderService extends BaseService {
             order.setOrderNum(getOrderNum4Web(conn));
         }
 
-
         /**
          * 当订单里没有销售人员的时候，才重置销售
          */

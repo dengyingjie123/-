@@ -13,7 +13,7 @@ public class PermissionService extends BaseService {
 
     private PermissionDao permissionDao;
 
-    public List<PermissionPO> listById(String id, Connection conn) throws Exception{
+    public List<PermissionPO> listPermissionPOById(String id, Connection conn) throws Exception{
         return permissionDao.listById(id,conn);
     }
 }
