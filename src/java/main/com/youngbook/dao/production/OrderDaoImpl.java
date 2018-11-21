@@ -4,6 +4,7 @@ import com.youngbook.common.Database;
 import com.youngbook.common.MyException;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.MD5Utils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
@@ -11,6 +12,7 @@ import com.youngbook.entity.po.common.TimePO;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.vo.production.OrderVO;
+import org.apache.struts2.RequestUtils;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -217,6 +219,10 @@ public class OrderDaoImpl implements IOrderDao {
         return orderPO;
     }
 
+
+
+
+
     public List<OrderPO> getListOrderPOByCustomerId (String customerId, Connection conn) throws Exception {
 
         String sql = "select * from crm_order o where o.state=0 and o.customerId=?";
@@ -226,6 +232,7 @@ public class OrderDaoImpl implements IOrderDao {
 
         return orders;
     }
+
 
 
     public OrderPO loadByOrderId(String orderId, Connection conn) throws Exception {

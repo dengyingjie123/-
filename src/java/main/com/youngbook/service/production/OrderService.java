@@ -39,6 +39,7 @@ import com.youngbook.service.core.IMoneyTransferService;
 import com.youngbook.service.customer.CustomerDistributionService;
 import com.youngbook.service.pay.FuiouDirectService;
 import net.sf.json.JSONArray;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -129,6 +130,60 @@ public class OrderService extends BaseService {
 
 
         orderDao.insertOrUpdate(order, userId, conn);
+        return 1;
+    }
+
+
+    /**
+     * 修改订单产品
+     *
+     * @param orderId
+     * @param productionId
+     * @param productionCompositionId
+     * @param money
+     * @param id
+     * @param connection
+     * @return
+     * @throws Exception
+     */
+    public int updateOrderProduction(String orderId, String productionId, String productionCompositionId, double money, String id, Connection connection) throws  Exception {
+
+
+       //查询是否有该订单，若没有则不能修改
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, connection);
+        if (orderPO == null) {
+            MyException.newInstance("暂无该订单信息，修改失败", "订单号：" + orderId).throwException();
+        }
+
+
+
+
+        //允许修改的订单状态
+        switch (orderPO.getStatus()){
+            case 23 :
+                MyException.newInstance("当前订单已被第一次回访，无法修改", "订单号：" + orderId).throwException();
+                break;
+            case 8 :
+                MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
+                break;
+            case 5 :
+                MyException.newInstance("当前订单已全部兑付，无法修改", "订单号：" + orderId).throwException();
+                break;
+             default:
+                 //设置产品相关的信息
+                 ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money,connection);
+                 double expectedYield = compositionPO.getExpectedYield();
+                 orderPO.setProductionId(productionId);
+                 orderPO.setProductionCompositionId(productionCompositionId);
+                 orderPO.setExpectedYield(expectedYield);
+
+                 OrderPO result = orderDao.insertOrUpdate(orderPO, id, connection);
+
+                 break;
+        }
+
+
+
         return 1;
     }
 

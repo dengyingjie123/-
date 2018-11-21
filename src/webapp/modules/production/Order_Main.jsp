@@ -51,7 +51,8 @@
             .addButton("btnOrderContractSigned" + token, "合同签约", IconStyle.BLANK, 2, "销售管理_订单管理_合同签约")
             .addButton("btnOrderContractCancelSign" + token, "取消合同签约", IconStyle.BLANK, 3,"销售管理_订单管理_取消合同签约")
             .addButton("btnOrderSaveReferralCode"+token, "修改推荐码", IconStyle.BLANK, 4,"销售管理_订单管理_修改推荐码")
-            .addButton("btnOrderGeneratePaymentPlan"+token, "生成兑付计划", IconStyle.BLANK, 5,"销售管理_订单管理_生成兑付计划");
+            .addButton("btnOrderGeneratePaymentPlan"+token, "生成兑付计划", IconStyle.BLANK, 5,"销售管理_订单管理_生成兑付计划")
+            .addButton("btnOrderEditProduction"+token, "修改订单产品", IconStyle.BLANK, 6,"销售管理_订单管理_修改订单产品");
 
     /**
      * 通联金融圈菜单

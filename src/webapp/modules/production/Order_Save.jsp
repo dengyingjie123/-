@@ -49,7 +49,7 @@
                     <td><input class="easyui-combotree"  id="status<%=token %>" name="order.status" data-options="required:true"  editable="false" missingmessage="必须填写" style="width:250px"/>
                         <input type="hidden" id="statusNumber<%=token %>" name="statusNumber" readonly="readonly" style="width:250px"/></td>
                     <td align="right">操作金额</td>
-                    <td><input class="easyui-validatebox" validType="FloatOrCurrency" data-options="required:true" type="text" id="operationMoney<%=token %>" name="operationMoney" missingmessage="必须填写" editable="true" style="width:205px"/>
+                    <td><input class="easyui-validatebox" validType="FloatOrCurrency" required="true" type="text" id="operationMoney<%=token %>" name="operationMoney" missingmessage="必须填写" editable="true" style="width:205px"/>
                         &nbsp;&nbsp;元
                     </td>
                 </tr>
