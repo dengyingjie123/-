@@ -752,7 +752,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("tel_num", customerAccountPO.getMobile());
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("product_code_cash_acct", Config.getSystemConfig("allinpay_circle_product_code_cash_acct"));
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
@@ -823,7 +823,7 @@ public class AllinpayCircleService extends BaseService {
         transactionPO.getRequest().addItem("cur_type", "156");
         transactionPO.getRequest().addItem("hld_name", customerPersonalPO.getName());
         transactionPO.getRequest().addItem("amt_tran", MoneyUtils.format2Fen(money));
-        transactionPO.getRequest().addItem("product_code_cash_acct", "000709");
+        transactionPO.getRequest().addItem("product_code_cash_acct", Config.getSystemConfig("allinpay_circle_product_code_cash_acct"));
         transactionPO.getRequest().addItem("resp_url", getCallbackUrl());
 
 
