@@ -399,7 +399,7 @@ var OrderClass = function (token) {
 
                 onClickOrderEdit();
 
-                onClickOrderEditPeoduction();
+                onClickOrderProductionEdit();
 
                 onClickOrderGeneratePaymentPlan();
 
@@ -1671,9 +1671,9 @@ var OrderClass = function (token) {
 
     //修改订单产品
     var Action_EditOrderProduction = "Action_EditOrderProduction";
-    function onClickOrderEditPeoduction() {
-        var butttonId = "btnOrderEditProduction" + token;
-        fw.bindOnClick4Any(butttonId, function () {
+    function onClickOrderProductionEdit() {
+        var buttonId = "btnOrderEditProduction" + token;
+        fw.bindOnClick4Any(buttonId, function () {
             fw.datagridGetSelected('OrderTable' + token, function (selected) {
 
                 var id = selected.id;
@@ -2238,7 +2238,10 @@ var OrderClass = function (token) {
             })
 
         });
-    }/**
+    }
+
+
+    /**
      * 修改产品数据提交
      */
     function onClickOrderEditProductionSubmit() {

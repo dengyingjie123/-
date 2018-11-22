@@ -141,12 +141,12 @@ public class OrderService extends BaseService {
      * @param productionId
      * @param productionCompositionId
      * @param money
-     * @param id
+     * @param userId
      * @param connection
      * @return
      * @throws Exception
      */
-    public int updateOrderProduction(String orderId, String productionId, String productionCompositionId, double money, String id, Connection connection) throws  Exception {
+    public OrderPO updateOrderProduction(String orderId, String productionId, String productionCompositionId, double money, String userId, Connection connection) throws  Exception {
 
 
        //查询是否有该订单，若没有则不能修改
@@ -171,20 +171,20 @@ public class OrderService extends BaseService {
                 break;
              default:
                  //设置产品相关的信息
-                 ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money,connection);
+                 ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money, connection);
                  double expectedYield = compositionPO.getExpectedYield();
                  orderPO.setProductionId(productionId);
                  orderPO.setProductionCompositionId(productionCompositionId);
                  orderPO.setExpectedYield(expectedYield);
 
-                 OrderPO result = orderDao.insertOrUpdate(orderPO, id, connection);
+                 orderPO = orderDao.insertOrUpdate(orderPO, userId, connection);
 
                  break;
         }
 
 
 
-        return 1;
+        return orderPO;
     }
 
 

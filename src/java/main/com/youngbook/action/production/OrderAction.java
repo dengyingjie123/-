@@ -790,7 +790,7 @@ public class OrderAction extends BaseAction {
     public String updateOrderProduction() throws Exception {
 
 
-        String orderId = HttpUtils.getParameter(getRequest(), "orderId");
+        String orderId = getHttpRequestParameter("order.id");
         String productionId = HttpUtils.getParameter(getRequest(), "order.productionId");
         String productionCompositionId = HttpUtils.getParameter(getRequest(), "order.productionCompositionId");
         String operationMoney = HttpUtils.getParameter(getRequest(), "operationMoney");
