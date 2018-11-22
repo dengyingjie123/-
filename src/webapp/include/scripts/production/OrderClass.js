@@ -981,13 +981,16 @@ var OrderClass = function (token) {
         productionCompositionMenu(data["order.productionId"], data["order.productionCompositionId"]);
 
         fw.combotreeClear('contractNo' + token);
-        $('#contractNo'+token).combotree('setValue', data["order.contractNo"]);
-
-
-        //$('#production' + token).attr("readonly", false);
+        $('#contractNo'+ token).combotree('setValue', data["order.contractNo"]);
+        $('#customerName' + token).unbind();
         $('#customerName' + token).attr("readonly", true);
         $('#operationMoney' + token).attr("readonly", true);
         $('#statusName' + token).attr("readonly", true);
+        $('#tr_orderConfirm01' + token).attr("hidden", true);
+        $('#tr_orderConfirm02' + token).attr("hidden", true);
+        $('#tr_payChannel' + token).attr("hidden", true);
+
+
 
         fw.combotreeSetReadOnly('referralCode' + token);
 
@@ -1452,7 +1455,7 @@ var OrderClass = function (token) {
         data["order.OperatorId"] = loginUser.getId();
 
         var url = WEB_ROOT + "/modules/production/Order_Save.jsp?token=" + token;
-        var windowId = "OrderEditPeoductionWindow" + token;
+        var windowId = "OrderWindow" + token;
         fw.window(windowId, '修改订单产品信息', 780, 430, url, function () {
 
             initWindowOrderWindowForm_SetFormsReadOnly();
@@ -2258,7 +2261,7 @@ var OrderClass = function (token) {
                 }, function () {
                     process.afterClick();
                     fw.datagridReload("OrderTable" + token);
-                    fw.windowClose('OrderEditPeoductionWindow' + token);
+                    fw.windowClose('OrderWindow' + token);
                 }, function () {
                     process.afterClick();
                 });
@@ -2268,7 +2271,7 @@ var OrderClass = function (token) {
     }
 
     //查询客户事件
-    function onClickCheckCustomer() {
+        function onClickCheckCustomer() {
 
         $('#customerName' + token).bind('click', function () {
             // var url = WEB_ROOT + "/modules/production/Select_Customer.jsp?token=" + token;

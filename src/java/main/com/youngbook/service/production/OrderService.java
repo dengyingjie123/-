@@ -158,29 +158,45 @@ public class OrderService extends BaseService {
 
 
 
-        //允许修改的订单状态
-        switch (orderPO.getStatus()){
-            case 23 :
-                MyException.newInstance("当前订单已被第一次回访，无法修改", "订单号：" + orderId).throwException();
-                break;
-            case 8 :
-                MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
-                break;
-            case 5 :
-                MyException.newInstance("当前订单已全部兑付，无法修改", "订单号：" + orderId).throwException();
-                break;
-             default:
-                 //设置产品相关的信息
-                 ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money, connection);
-                 double expectedYield = compositionPO.getExpectedYield();
-                 orderPO.setProductionId(productionId);
-                 orderPO.setProductionCompositionId(productionCompositionId);
-                 orderPO.setExpectedYield(expectedYield);
-
-                 orderPO = orderDao.insertOrUpdate(orderPO, userId, connection);
-
-                 break;
+        //判断订单状态，以下状态订单不能修改产品信息
+        if (orderPO.getStatus() == 23) {
+            MyException.newInstance("当前订单已被第一次回访，无法修改", "订单号：" + orderId).throwException();
         }
+        if (orderPO.getStatus() == 8) {
+            MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
+        }
+        if (orderPO.getStatus() == 5) {
+            MyException.newInstance("当前订单已全部兑付，无法修改", "订单号：" + orderId).throwException();
+        }
+
+
+
+
+
+        //查询产品构成对象
+        ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money, connection);
+        if(compositionPO == null ){
+            MyException.newInstance("暂无相关产品构成信息,请确认后再操作", "订单号：" + orderId).throwException();
+        }
+
+
+
+        //获取预期收益率
+        double expectedYield = compositionPO.getExpectedYield();
+
+
+
+
+        //设置产品相关的信息
+        orderPO.setProductionId(productionId);
+        orderPO.setProductionCompositionId(productionCompositionId);
+        orderPO.setExpectedYield(expectedYield);
+
+
+
+
+        orderPO = orderDao.insertOrUpdate(orderPO, userId, connection);
+
 
 
 
