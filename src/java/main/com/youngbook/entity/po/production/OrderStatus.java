@@ -11,6 +11,10 @@ public class OrderStatus {
      * 预约、未付款
      */
     public static final int Appointment = 0;
+
+    /**
+     * 前预约（未进入流程）
+     */
     public static final int Preappointment = 22;
 
     /**
@@ -46,10 +50,14 @@ public class OrderStatus {
      */
     public static final int PaybackSomePart = 8;
 
+
+    /**
+     * 预约等待状态（未进入流程）
+     */
     public static final int AppointmentWaiting = 9;
 
     /**
-     * 已返佣
+     * 已返佣（未进入流程）
      */
     public static final int Rebate = 10;
 
@@ -82,12 +90,20 @@ public class OrderStatus {
 
 
     /**
-     * 已转让
+     * 已转让（未进入流程）
      */
     public static final int Transfered = 11;
 
 
+    /**
+     * 客户回访 1
+     */
     public static final int Feedback1 = 23;
+
+
+    /**
+     * 客户回访 2
+     */
     public static final int Feedback2 = 24;
 
 

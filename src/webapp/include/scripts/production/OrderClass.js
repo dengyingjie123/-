@@ -399,6 +399,8 @@ var OrderClass = function (token) {
 
                 onClickOrderEdit();
 
+                onClickOrderProductionEdit();
+
                 onClickOrderGeneratePaymentPlan();
 
                 onClickOrderContractSigned();
@@ -972,6 +974,40 @@ var OrderClass = function (token) {
 
     }
 
+    //初始化修改订单产品窗口
+    function initWindowOrderWindowForm_OrderEditProduction(data) {
+
+        initWindowOrderWindowForm_SetCustomerEnable();
+        productionCompositionMenu(data["order.productionId"], data["order.productionCompositionId"]);
+
+        fw.combotreeClear('contractNo' + token);
+        $('#contractNo'+ token).combotree('setValue', data["order.contractNo"]);
+        $('#customerName' + token).unbind();
+        $('#customerName' + token).attr("readonly", true);
+        $('#operationMoney' + token).attr("readonly", true);
+        $('#statusName' + token).attr("readonly", true);
+        $('#tr_orderConfirm01' + token).attr("hidden", true);
+        $('#tr_orderConfirm02' + token).attr("hidden", true);
+        $('#tr_payChannel' + token).attr("hidden", true);
+
+
+
+        fw.combotreeSetReadOnly('referralCode' + token);
+
+
+        fw.formLoad('formOrder' + token, data);
+
+
+        var referralCode = loginUser.getReferralCode();
+        if (!fw.checkIsTextEmpty(data["order.referralCode"])) {
+            referralCode = data["order.referralCode"];
+        }
+
+        initRefreeCodeCombotree(referralCode);
+
+    }
+
+
 
     /**
      * 初始化 销售订单
@@ -1372,6 +1408,11 @@ var OrderClass = function (token) {
                 initWindowOrderWindowForm_Appointment(data);
 
             }
+            //修改订单产品
+
+            else if(actionName == Action_EditOrderProduction){
+                initWindowOrderWindowForm_OrderEditProduction(data);
+            }
             // 初始化表单提交事件
             onClickOrderSubmit();
 
@@ -1404,6 +1445,28 @@ var OrderClass = function (token) {
 
         }, null);
     }
+
+
+    /**
+     * 初始化弹出窗口
+     */
+    function initWindowOrderEditProductionWindow(data) {
+
+        data["order.OperatorId"] = loginUser.getId();
+
+        var url = WEB_ROOT + "/modules/production/Order_Save.jsp?token=" + token;
+        var windowId = "OrderWindow" + token;
+        fw.window(windowId, '修改订单产品信息', 780, 430, url, function () {
+
+            initWindowOrderWindowForm_SetFormsReadOnly();
+
+            initWindowOrderWindowForm_OrderEditProduction(data);
+
+            onClickOrderEditProductionSubmit();
+
+        }, null);
+    }
+
 
 
     /**
@@ -1607,6 +1670,35 @@ var OrderClass = function (token) {
 
         });
     }
+
+
+    //修改订单产品
+    var Action_EditOrderProduction = "Action_EditOrderProduction";
+    function onClickOrderProductionEdit() {
+        var buttonId = "btnOrderEditProduction" + token;
+        fw.bindOnClick4Any(buttonId, function () {
+            fw.datagridGetSelected('OrderTable' + token, function (selected) {
+
+                var id = selected.id;
+                var url = WEB_ROOT + "/production/Order_load.action?order.id=" + id;
+                fw.post(url, null, function (data) {
+                    //fw.alertReturnValue(data);
+                    data["loginName"] = selected.loginName;
+                    data["customerName"] = selected.customerName;
+                    data["productionName"] = selected.productionName;
+                    data["operationMoney"] = selected.money;
+                    initWindowOrderEditProductionWindow(data);
+
+
+                }, function () {
+                    initWindowOrderWindow({}, Action_EditOrderProduction);
+                });
+            })
+
+
+        });
+    }
+
 
 
     var Action_Edit = "Action_Edit";
@@ -1916,7 +2008,7 @@ var OrderClass = function (token) {
             });
         });
     }
-
+    //预约
     var Action_Appointment = "Action_Appointment";
     function onClickOrderAppointment() {
         var butttonId = "btnOrderAppointment" + token;
@@ -1926,6 +2018,7 @@ var OrderClass = function (token) {
 
         });
     }
+
 
     var Action_SaleAndWaiting = "Action_SaleAndWaiting";
     function onClickOrderSaleAndWaiting() {
@@ -2150,8 +2243,35 @@ var OrderClass = function (token) {
         });
     }
 
+
+    /**
+     * 修改产品数据提交
+     */
+    function onClickOrderEditProductionSubmit() {
+        var buttonId = "btnOrderSubmit" + token;
+
+        fw.bindOnClick(buttonId, function (process) {
+
+            fw.confirm("通知", "是否确认修改该订单产品信息", function () {
+                var orderId = $('#ID'+token).val();
+                var formId = "formOrder" + token;
+                var url = WEB_ROOT + "/production/Order_updateOrderProduction.action?orderId="+orderId;
+                fw.bindOnSubmitForm(formId, url, function () {
+                    process.beforeClick();
+                }, function () {
+                    process.afterClick();
+                    fw.datagridReload("OrderTable" + token);
+                    fw.windowClose('OrderWindow' + token);
+                }, function () {
+                    process.afterClick();
+                });
+            })
+
+        });
+    }
+
     //查询客户事件
-    function onClickCheckCustomer() {
+        function onClickCheckCustomer() {
 
         $('#customerName' + token).bind('click', function () {
             // var url = WEB_ROOT + "/modules/production/Select_Customer.jsp?token=" + token;

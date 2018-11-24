@@ -49,11 +49,11 @@
                     <td><input class="easyui-combotree"  id="status<%=token %>" name="order.status" data-options="required:true"  editable="false" missingmessage="必须填写" style="width:250px"/>
                         <input type="hidden" id="statusNumber<%=token %>" name="statusNumber" readonly="readonly" style="width:250px"/></td>
                     <td align="right">操作金额</td>
-                    <td><input class="easyui-validatebox" validType="FloatOrCurrency" data-options="required:true" type="text" id="operationMoney<%=token %>" name="operationMoney" missingmessage="必须填写" editable="true" style="width:205px"/>
+                    <td><input class="easyui-validatebox" validType="FloatOrCurrency" required="true" type="text" id="operationMoney<%=token %>" name="operationMoney" missingmessage="必须填写" editable="true" style="width:205px"/>
                         &nbsp;&nbsp;元
                     </td>
                 </tr>
-                <tr>
+                <tr id="tr_orderConfirm01<%=token%>">
                     <td align="right">财务信息确认人</td>
                     <td>
                         <input class="easyui-validatebox" readonly="true" type="text" id="orderConfirmUserName01<%=token %>" name="order.orderConfirmUserName01" editable="false" style="width:245px"/>
@@ -62,7 +62,7 @@
                     <td align="right">财务信息确认时间</td>
                     <td><input class="easyui-datetimebox" id="orderConfirmUserTime01<%=token %>" data-options="editable:false" name="order.orderConfirmUserTime01" style="width:150px"/></td>
                 </tr>
-                <tr>
+                <tr id="tr_orderConfirm02<%=token%>">
                     <td align="right">财务信息复核人</td>
                     <td>
                         <input class="easyui-validatebox" readonly="true" type="text" id="orderConfirmUserName02<%=token %>" name="order.orderConfirmUserName02" editable="false" style="width:245px"/>
@@ -71,7 +71,7 @@
                     <td align="right">财务信息复核时间</td>
                     <td><input class="easyui-datetimebox" id="orderConfirmUserTime02<%=token %>" data-options="editable:false" name="order.orderConfirmUserTime02" style="width:150px"/></td>
                 </tr>
-                <tr>
+                <tr id = "tr_payChannel<%=token%>">
                     <td align="right">支付渠道</td>
                     <td><input class="easyui-combotree" id="payChannel<%=token %>" name="order.payChannel" editable="false" style="width:250px"/></td>
                     <td align="right"></td>

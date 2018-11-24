@@ -786,6 +786,39 @@ public class OrderAction extends BaseAction {
     }
 
 
+    /**
+     * 修改订单产品
+     *
+     * @return
+     * @throws Exception
+     */
+    @Permission(require = "销售管理_订单管理_修改订单产品")
+    public String updateOrderProduction() throws Exception {
+
+        //获取修改的数据，订单ID、产品ID、产品构成ID
+        String orderId = getHttpRequestParameter("order.id");
+        String productionId = getHttpRequestParameter("order.productionId");
+        String productionCompositionId = getHttpRequestParameter("order.productionCompositionId");
+
+
+
+
+        //用于查询产品构成
+        String operationMoney = getHttpRequestParameter("operationMoney");
+        double money = Double.parseDouble(operationMoney);
+
+
+
+
+        orderService.updateOrderProduction(orderId, productionId, productionCompositionId, money,getLoginUser().getId(), getConnection());
+
+
+
+
+        return SUCCESS;
+    }
+
+
 
     // 读取 Order_load 原有代码
 //    public String load() throws Exception {
