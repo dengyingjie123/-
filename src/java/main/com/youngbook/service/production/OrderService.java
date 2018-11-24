@@ -159,9 +159,6 @@ public class OrderService extends BaseService {
 
 
         //判断订单状态，以下状态订单不能修改产品信息
-        if (orderPO.getStatus() == 23) {
-            MyException.newInstance("当前订单已被第一次回访，无法修改", "订单号：" + orderId).throwException();
-        }
         if (orderPO.getStatus() == 8) {
             MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
         }
