@@ -107,6 +107,16 @@ public class OrderService extends BaseService {
     @Autowired
     ILogDao logDao;
 
+
+    /**
+     *
+     * @param orderId
+     * @param referralCode
+     * @param userId
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public int saveReferralCode(String orderId, String referralCode, String userId, Connection conn) throws Exception {
 
         OrderPO order = orderDao.loadByOrderId(orderId, conn);
@@ -180,7 +190,7 @@ public class OrderService extends BaseService {
 
 
 
-        //查询产品构成对象
+        // 查询产品构成对象
         ProductionCompositionPO compositionPO = productionCompositionDao.getProductionCompositionPOByProductionIdAndMoney(productionId, money, connection);
         if(compositionPO == null ){
             MyException.newInstance("暂无相关产品构成信息,请确认后再操作", "订单号：" + orderId).throwException();
