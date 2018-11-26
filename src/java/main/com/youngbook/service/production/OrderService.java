@@ -137,19 +137,25 @@ public class OrderService extends BaseService {
     /**
      * 修改订单产品
      *
-     * @param orderId
-     * @param productionId
-     * @param productionCompositionId
-     * @param money
-     * @param userId
-     * @param connection
-     * @return
-     * @throws Exception
+     * 订单没有兑付的情况下，可以修改订单所对应的产品
+     *
+     * @author leevits
+     *
+     * @param orderId 订单编号
+     * @param productionId 产品编号
+     * @param productionCompositionId 产品构成编号
+     * @param money 订单金额
+     * @param userId 操作员编号
+     * @param connection 数据库连接
+     * @return 更新后的订单对象
+     * @throws Exception 常规异常
      */
     public OrderPO updateOrderProduction(String orderId, String productionId, String productionCompositionId, double money, String userId, Connection connection) throws  Exception {
 
 
-       //查询是否有该订单，若没有则不能修改
+        /**
+         * 查询是否有该订单，若没有则不能修改
+         */
         OrderPO orderPO = orderDao.loadByOrderId(orderId, connection);
         if (orderPO == null) {
             MyException.newInstance("暂无该订单信息，修改失败", "订单号：" + orderId).throwException();
@@ -158,7 +164,11 @@ public class OrderService extends BaseService {
 
 
 
-        //判断订单状态，以下状态订单不能修改产品信息
+        /**
+         * 判断订单状态，以下状态订单不能修改产品信息
+         *
+         * 部分兑付或已兑付的订单，不能修改订单产品
+         */
         if (orderPO.getStatus() == 8) {
             MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
         }
