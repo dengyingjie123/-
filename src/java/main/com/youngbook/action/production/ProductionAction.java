@@ -734,6 +734,7 @@ public class ProductionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 添加或修改
      * <p/>
@@ -764,6 +765,7 @@ public class ProductionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 删除
      *
@@ -784,6 +786,7 @@ public class ProductionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 删除
      *
@@ -794,6 +797,7 @@ public class ProductionAction extends BaseAction {
         productionService.delete(production, productionInfo, getLoginUser(), getConnection());
         return SUCCESS;
     }
+
 
     /**
      * 读取
@@ -822,6 +826,7 @@ public class ProductionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 列出数据
      *
@@ -829,14 +834,37 @@ public class ProductionAction extends BaseAction {
      * @throws Exception
      */
     public String list() throws Exception {
-
         productionVO = HttpUtils.getInstanceFromRequest(getRequest(), "productionVO", ProductionVO.class);
-
         Pager pager = Pager.getInstance(getRequest());
         pager = productionService.getProductions(productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
         getResult().setReturnValue(pager.toJsonObject());
         return SUCCESS;
     }
+
+
+    /**
+     * @description 获取在售产品信息
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/11/27 14:09
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String getPagerProductionVO() throws Exception {
+
+        productionVO = HttpUtils.getInstanceFromRequest(getRequest(), "productionVO", ProductionVO.class);
+        Pager pager = Pager.getInstance(getRequest());
+        pager = productionService.getPagerProductionVO(productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+        getResult().setReturnValue(pager.toJsonObject());
+
+
+
+
+        return SUCCESS;
+    }
+
 
     public String listProductionVO4modern() throws Exception {
         List<ProductionVO> listProductionVOs = productionService.getListProductionVO(null, getConnection());
@@ -844,6 +872,7 @@ public class ProductionAction extends BaseAction {
 
         return SUCCESS;
     }
+
 
     /**
      * 根据产品类型构建产品清单，用于移动端

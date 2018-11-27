@@ -2364,7 +2364,7 @@ var OrderClass = function (token) {
             var swindowId = "ProductionWindow" + outerToken;
             fw.window(swindowId, '选择产品', 930, 560, url, function () {
                 //加载js
-                using(SCRIPTS_ROOT + '/production/ProductionClass.js', function () {
+                using(SCRIPTS_ROOT + '/production/ProductionOnSaleClass.js', function () {
                     //alert("loaded...");
                     var production = new ProductionClass(outerToken, 123, "order");
                     production.initModuleWithSelect(function (data) {

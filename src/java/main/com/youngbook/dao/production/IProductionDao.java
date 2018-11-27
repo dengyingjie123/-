@@ -1,5 +1,6 @@
 package com.youngbook.dao.production;
 
+import com.youngbook.common.Pager;
 import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.vo.production.ProductionVO;
 import com.youngbook.entity.wvo.production.ProductionWVO;
@@ -22,4 +23,7 @@ public interface IProductionDao {
 //    public boolean checkIsProductionBelongProject(String productionId, String projectId, Connection conn) throws Exception;
     public ProductionPO loadProductionById(String id, Connection conn) throws Exception;
     public ProductionWVO getProductByProductionIdAndMoney(String id, double money, Connection conn) throws Exception;
+
+    public Pager getPagerProductionVO (ProductionVO productionVO, int currentPage, int showRowCount, Connection conn) throws  Exception;
+
 }

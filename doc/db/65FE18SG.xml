@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="65FE18SG">
+SELECT
+    sum(d_sale.money) saleMoney,
+    kvProductionStatus.V statusName,
+    u.`name` operatorName,
+    home.ProductionName productName,
+    kvProjectType.k ProjectType,
+	kvProjectType.v ProjectTypeName,
+    p.*
+FROM
+    crm_production p
+left join crm_order o on o.state=0 and o.ProductionId=p.id
+LEFT JOIN crm_orderdetail d_sale ON d_sale.state = 0 AND d_sale.ProductionId = p.id AND d_sale.`status` IN (1) and d_sale.OrderId=o.id
+LEFT JOIN system_kv kvProductionStatus ON kvProductionStatus.GroupName = 'ProductionStatus' AND kvProductionStatus.k = p. STATUS
+LEFT JOIN crm_productionhome home ON home.State = 0 AND home.id = p.productHomeId
+LEFT JOIN system_user u on u.state=0 and p.OperatorId=u.Id
+LEFT JOIN crm_project project on project.state=0 and project.id=home.ProjectId
+left join system_kv kvProjectType on kvProjectType.GroupName='Project_Type' and kvProjectType.k=project.TypeId
+WHERE
+    1 = 1
+AND p.state = 0
+AND p.status = 2
+GROUP BY
+    kvProductionStatus.V,
+    p.`Name`,
+    p.ValueDate,
+    home.ProductionName
+ORDER BY
+    p.operateTime DESC
+        </select>
+    </select-sql>
+</sql>

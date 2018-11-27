@@ -3,6 +3,7 @@ package com.youngbook.dao.production;
 import com.youngbook.common.Database;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.MyException;
+import com.youngbook.common.Pager;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.NumberUtils;
@@ -138,6 +139,33 @@ public class ProductionDaoImpl implements IProductionDao {
             return list.get(0);
         }
         return null;
+    }
+
+    /**
+     * @description 获取在售产品信息
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/11/27 14:10
+     * @param productionVO
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return com.youngbook.common.Pager
+     * @throws Exception
+     */
+    @Override
+    public Pager getPagerProductionVO(ProductionVO productionVO,int currentPage, int showRowCount, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("65FE18SG");
+        databaseSQL.initSQL();
+        databaseSQL.init4Pager();
+        Pager pager = MySQLDao.search(databaseSQL,productionVO,null,currentPage,showRowCount,null,conn);
+
+
+
+
+        return pager;
     }
 
 
