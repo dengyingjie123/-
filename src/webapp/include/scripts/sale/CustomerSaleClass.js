@@ -28,23 +28,22 @@ var CustomerSaleClass = function (token, customerId, remark, data) {
         });
     }
 
-
     function initCustomerDistributeWindow(data) {
 
         var url = WEB_ROOT + "/modules/sale/CustomerSale_Save.jsp?token=" + token;
         var windowId = "CustomerSaleWindow" + token;
+
         fw.window(windowId, '销售分配管理', 500, 200, url, function () {
 
-            fw.jsonJoin(data, {'departmentId':'-2'}, false);
-            fw.jsonJoin(data, {'saleGroupId':'-2'}, false);
-            fw.jsonJoin(data, {'saleManId':'-2'}, false);
+            fw.jsonJoin(data, {'departmentId': '-2'}, false);
+            fw.jsonJoin(data, {'saleGroupId': '-2'}, false);
+            fw.jsonJoin(data, {'saleManId': '-2'}, false);
             //fw.jsonJoin(data, {'id':''},false);
 
             var selectIndexDepartmentId = data["departmentId"];
             var selectIndexSaleManGroupId = data["saleGroupId"];
             var selectIndexSaleManId = data["saleManId"];
             //var uid=data["id"];
-
 
             // 初始化查询事件
             fw.combotreeBuild4FortuneCenter("departmentId" + token, selectIndexDepartmentId, function (node) {
@@ -56,15 +55,25 @@ var CustomerSaleClass = function (token, customerId, remark, data) {
                 if (!fw.checkIsJsonObject(selectIndexSaleManId)) {
                     selectSalemanTree(selectIndexSaleManId);
                 }
-
             });
 
             onClickCustomerPersonalSubmit();
             onClickCustomerPersonalDelete();
-            $('#customerId' + token).val(customerId);
+
+
+            /**
+             * 把响应回来的json对象遍历并赋值到customerIds中，通过post提交到后端
+             * @type {string}
+             */
+            var customerIds = '';
+            for (var i = 0; i < data.length; i++) {
+                customerIds += data[i].id+',' ;
+            }
+            $('#customerIds' + token).val(customerIds);
             $('#remark' + token).val(remark);
-            //$('#uid' + token).val(uid);
+
         }, null);
+
     }
 
     /**
@@ -78,7 +87,6 @@ var CustomerSaleClass = function (token, customerId, remark, data) {
             fw.bindOnSubmitForm(formId, url, function () {
                 process.beforeClick();
             }, function () {
-                //alert('done');
                 process.afterClick();
                 fw.datagridReload("CustomerPersonalTable" + token);
                 fw.datagridReload("CustomerInstitutionTable" + token);
@@ -95,45 +103,44 @@ var CustomerSaleClass = function (token, customerId, remark, data) {
      */
     function onClickCustomerPersonalDelete() {
         var buttonId = "btnCustomerSaleDelete" + token;
-            fw.bindOnClick(buttonId, function(process) {
-                fw.confirm('删除确认', '是否确认删除数据？', function(){
-                        var formId = "formCustomer" + token;
-                        var url = WEB_ROOT + "/customer/CustomerDistribution_remove.action";
-                        fw.bindOnSubmitForm(formId, url, function () {
-                            process.beforeClick();
-                        }, function () {
-                            //alert('done');
-                            process.afterClick();
-                            fw.datagridReload("CustomerPersonalTable" + token);
-                            fw.windowClose('CustomerSaleWindow' + token);
-                        }, function () {
-                            process.afterClick();
-                        });
-                }, function(){
+        fw.bindOnClick(buttonId, function (process) {
+            fw.confirm('删除确认', '是否确认删除数据？', function () {
+                var formId = "formCustomer" + token;
+                var url = WEB_ROOT + "/customer/CustomerDistribution_remove.action";
+                fw.bindOnSubmitForm(formId, url, function () {
+                    process.beforeClick();
+                }, function () {
+                    //alert('done');
+                    process.afterClick();
+                    fw.datagridReload("CustomerPersonalTable" + token);
+                    fw.windowClose('CustomerSaleWindow' + token);
+                }, function () {
                     process.afterClick();
                 });
+            }, function () {
+                process.afterClick();
             });
+        });
 
-      /*  var buttonId = "btnCustomerSaleDelete" + token;
-        fw.bindOnClick(buttonId, function (process) {
-            var formId = "formCustomer" + token;
-            var url = WEB_ROOT + "/customer/CustomerDistribution_delete.action";
-            fw.bindOnSubmitForm(formId, url, function () {
-                process.beforeClick();
-            }, function () {
-                //alert('done');
-                process.afterClick();
-                fw.datagridReload("CustomerPersonalTable" + token);
-                fw.windowClose('CustomerSaleWindow' + token);
-            }, function () {
-                process.afterClick();
-            });
-        });*/
+        /*  var buttonId = "btnCustomerSaleDelete" + token;
+          fw.bindOnClick(buttonId, function (process) {
+              var formId = "formCustomer" + token;
+              var url = WEB_ROOT + "/customer/CustomerDistribution_delete.action";
+              fw.bindOnSubmitForm(formId, url, function () {
+                  process.beforeClick();
+              }, function () {
+                  //alert('done');
+                  process.afterClick();
+                  fw.datagridReload("CustomerPersonalTable" + token);
+                  fw.windowClose('CustomerSaleWindow' + token);
+              }, function () {
+                  process.afterClick();
+              });
+          });*/
     }
 
 
-
-    return{
+    return {
         /**
          * boot.js加载时调用的初始化方法
          */

@@ -31,7 +31,7 @@
 
             </table>
 
-            <input type="hidden" name="customerDistribution.customerId"  id="customerId<%=token %>" readonly="readonly" style="width:200px"/>
+            <input type="hidden" name="customerIds"  id="customerIds<%=token %>" readonly="readonly" style="width:200px"/>
             <input type="hidden" name="customerDistribution.remark"  id="remark<%=token %>" readonly="readonly" style="width:200px"/>
             <input type="hidden" name="customerDistribution.id"  id="id<%=token %>" readonly="readonly" style="width:200px"/>
        </form>

@@ -1,11 +1,15 @@
 package com.youngbook.action.customer;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.Pager;
 import com.youngbook.common.ReturnObject;
+import com.youngbook.common.utils.JSONUtils;
 import com.youngbook.entity.po.customer.CustomerDistributionPO;
 import com.youngbook.entity.vo.customer.CustomerInstitutionAuditVO;
 import com.youngbook.entity.vo.customer.CustomerPersonalAuditVO;
+import com.youngbook.entity.vo.customer.CustomerPersonalVO;
 import com.youngbook.service.customer.CustomerDistributionService;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,54 +43,73 @@ public class CustomerDistributionAction extends BaseAction {
      * 修改内容：重新写了service.saveCustomerDistribution服务
      * 修改时间：2015.7.7
      *
+     * 修改人：胡超怡
+     * 修改内容：重新写了service.saveCustomerDistribution服务，修改为批量修改的功能
+     * 修改时间：2018.11.27
+     *
      * @return 适用于 easyui 的 JSON，类似 {code:100, message:'操作成功'}
      * @throws Exception
-     * @author 姚章鹏
+     * @author 胡超怡
      */
     public String saveCustomerDistribution() throws Exception {
         int count = 0;
-        count = customerDistributionService.distributeToOneSalesman(customerDistribution, getLoginUser().getId(), getConnection());
-        if (count != 1 && count < 1) {
-            result.setMessage("操作失败");
-        } else {
-            result.setMessage(count == 0 ? "已经分配" : "分配成功");
+
+
+        /**
+         * 接收前端传来的客户ids，并进行处理
+         */
+        String customerArray = getHttpRequestParameter("customerIds");
+        String[] customerIds = customerArray.split(",");
+
+
+
+
+        /**
+         * @description
+         * 遍历ids分配客户的销售人员，实现了批量修改的功能，其中每次创建CustomerDistributionPO对象
+         * 是为了防止第二次遍历时customerDistribution会把上一次的对象初始化过来而带上id，造成第二次遍历只会修改而不是新增分配
+         * 其中customerIds必定有值，因为在前台时就会过滤掉
+         *
+         * @author 胡超怡
+         *
+         * @date 2018/11/27 16:12
+         * @param  CustomerDistributionPO
+         * @return java.lang.String
+         * @throws Exception
+         */
+        for (String customer: customerIds ) {
+
+            CustomerDistributionPO customerPO = new CustomerDistributionPO();
+            customerPO.setCustomerId(customer);
+            customerPO.setSaleManId(customerDistribution.getSaleManId());
+            customerPO.setDepartmentId(customerDistribution.getDepartmentId());
+            customerPO.setSaleGroupId(customerDistribution.getSaleGroupId());
+
+            customerDistributionService.distributeToOneSalesman(customerPO, getLoginUser().getId(), getConnection());
         }
+
+
+        /**
+         * 成功返回
+         */
         return SUCCESS;
     }
 
     /**
-     * 创建人：张舜清
-     * 时间：2015.7.7
-     * 内容：新增load.action为客户加载之前的公司、销售组、销售员
+     * @description 加载分配客户功能
      *
-     * @return
+     * @author 胡超怡
+     *
+     * @date 2018/11/27 17:38
+     *
+     * @return java.lang.String
      * @throws Exception
      */
     public String load() throws Exception {
-        /*StringBuffer sqlDB = new StringBuffer();
-        sqlDB.append(" SELECT ");
-        sqlDB.append("     DepartmentId, ");
-        sqlDB.append("     SaleGroupId, ");
-        sqlDB.append("     id, ");
-        sqlDB.append("     SaleManId ");
-        sqlDB.append(" FROM ");
-        sqlDB.append("     crm_CustomerDistribution ");
-        sqlDB.append(" WHERE ");
-        sqlDB.append("     1 = 1 ");
-        sqlDB.append(" AND state = 0 ");
-        sqlDB.append(" AND saleManId = '" + customerDistribution.getSaleManId() + "' ");
-        sqlDB.append(" AND customerId = '" + customerDistribution.getCustomerId() + "' ");
-        List list = MySQLDao.query(sqlDB.toString(), CustomerDistributionPO.class, null, getConnection());*/
 
-        List list=customerDistributionService.load(customerDistribution,getConnection());
+        String customers = getRequest().getParameter("customers");
+        getResult().setReturnValue(customers);
 
-        Iterator customerDistributions = list.iterator();
-        while (customerDistributions.hasNext()) {
-            customerDistribution = (CustomerDistributionPO) customerDistributions.next();
-
-            getResult().setReturnValue(customerDistribution.toJsonObject());
-
-        }
         result.setMessage("操作成功");
 
         return SUCCESS;
@@ -161,7 +184,7 @@ public class CustomerDistributionAction extends BaseAction {
     }
 
 
-    /***
+    /**
      * 删除
      * @return
      * @throws Exception

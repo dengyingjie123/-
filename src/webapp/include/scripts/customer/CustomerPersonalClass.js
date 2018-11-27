@@ -43,7 +43,6 @@ var CustomerPersonalClass = function (token) {
     function initTableCustomerPersonalTable() {
         var strTableId = 'CustomerPersonalTable' + token;
         var url = WEB_ROOT + "/customer/CustomerPersonal_list.action";
-
         $('#' + strTableId).datagrid({
             title: '个人客户信息',
             url: url,
@@ -52,7 +51,7 @@ var CustomerPersonalClass = function (token) {
             },
             loadMsg: '数据正在加载，请稍后……',
             rownumbers: true,
-            singleSelect: true,
+            singleSelect: false,
             pageList: [10, 30, 60],
             pageSize: 10,
             remoteSort: true,//是否从数据库排序
@@ -610,29 +609,35 @@ var CustomerPersonalClass = function (token) {
         });
     }
 
-    // 客户分配
+    /**
+     * @description
+     * 修改了提交数据方式，改为json提交
+     * @author 胡超怡
+     *
+     * @date 2018/11/27 16:18
+     */
     function onClickCustomerDistribution() {
+
         var buttonId = "btnCustomerDistribution" + token;
         fw.bindOnClick(buttonId, function (process) {
-            fw.datagridGetSelected('CustomerPersonalTable' + token, function (selected) {
+            fw.datagridGetSelections('CustomerPersonalTable' + token, function (selections) {
                 process.beforeClick();
-                var customerId = selected.id;
-                var saleManId=selected.saleManId;
-
-                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action?customerDistribution.saleManId=' + saleManId+'&customerDistribution.customerId='+customerId;
-                fw.post(url, null, function (data) {
-                    using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
-                        var customerSaleClass = new CustomerSaleClass(token, customerId, remark,  data);
-                        customerSaleClass.initModule();
-
+                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
+                fw.post(url,
+                    {
+                        "customers": JSON.stringify(selections)
+                    }, function (data) {
+                        using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
+                            var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
+                            customerSaleClass.initModule();
+                            process.afterClick();
+                        }, function () {
+                            process.afterClick();
+                        });
                         process.afterClick();
                     }, function () {
                         process.afterClick();
-                    });
-                    process.afterClick();
-                }, function () {
-                    process.afterClick();
-                }, null)
+                    }, null)
             });
 
         });
@@ -674,7 +679,7 @@ var CustomerPersonalClass = function (token) {
             params["personalVO.workAddress"] = $("#search_WorkAddress" + token).val();
             params["personalVO.groupName"] = $("#search_GroupName" + token).val();
             params["personalVO.saleManName"] = $("#search_SaleManName" + token).val();
-            $('#' + strTableId).datagrid('load');                         //加载第一页的行
+            $('#' + strTableId).datagrid('load');//加载第一页的行
             // alert(ids);
             fw.treeClear()
         });
@@ -715,7 +720,6 @@ var CustomerPersonalClass = function (token) {
                         allinpayCircleQueryCashShareClass.openWindow(selected.id);
                     });
                 });
-
 
 
             }
