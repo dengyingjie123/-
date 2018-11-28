@@ -142,8 +142,8 @@ SELECT
     o.financeMoneyConfirmUserId,
     (select name from system_user where state=0 and id=o.financeMoneyConfirmUserId) financeMoneyConfirmUserName,
     o.financeMoneyConfirmTime,
-    o.allinpayCircle_deposit_status,	
-    o.allinpayCircle_payByShare_status,	
+    o.allinpayCircle_deposit_status,    
+    o.allinpayCircle_payByShare_status,    
     o.allinpayCircle_payByShare_time
 FROM
     crm_order o
@@ -258,20 +258,32 @@ and c.state=0
 -- 兑付计划视图
 create or replace view view_paymentPlan as
 SELECT
-	plan.id paymentPlanId,
-	o.id orderId,
-	o.CustomerId customerId,
-	o.CustomerName,
-	o.ProductionId,
-	o.productionName,
-	plan.PaymentTime,
-	plan.TotalPaymentPrincipalMoney,
-	plan.TotalProfitMoney,
-	plan.PaiedPrincipalMoney,
-	plan.PaiedProfitMoney,
-	plan.PaiedPaymentTime
+    -- 兑付计划编号
+    plan.id paymentPlanId,
+    -- 订单编号
+    o.id orderId,
+    -- 客户编号
+    o.CustomerId customerId,
+    -- 客户姓名
+    o.CustomerName,
+    -- 产品编号
+    o.ProductionId,
+    -- 产品名称
+    o.productionName,
+    -- 应兑付时间
+    plan.PaymentTime,
+    -- 应兑付本金金额
+    plan.TotalPaymentPrincipalMoney,
+    -- 应兑付收益金额
+    plan.TotalProfitMoney,
+    -- 实际兑付本金金额
+    plan.PaiedPrincipalMoney,
+    -- 实际兑付收益金额
+    plan.PaiedProfitMoney,
+    -- 实际兑付时间
+    plan.PaiedPaymentTime
 FROM
-	core_paymentplan plan
+    core_paymentplan plan
 left join view_order o on plan.OrderId=o.id
 WHERE
-	plan.state = 0
+    plan.state = 0
