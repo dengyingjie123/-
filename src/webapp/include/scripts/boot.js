@@ -121,7 +121,7 @@ function initSystem() {
 
     // 可在此处增加默认的模块 [24611604]
     // 右侧面板显示公告
-    // loadWorkSpace('modules/system/message/Message_Main.jsp','公告管理','公告管理','','System_Message_123456');
+    //loadWorkSpace('modules/system/Calendar_Main.jsp','个人日历','个人日历管理','','5cbcd591-fbd6-4773-81b8-f05f154c8c04');
 }
 
 

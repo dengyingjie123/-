@@ -3,14 +3,22 @@ package com.youngbook.service.calendar;
 import com.youngbook.common.Database;
 import com.youngbook.common.MyException;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.dao.system.ICalendarDao;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.calendar.EventPO;
 import com.youngbook.entity.po.calendar.EventSourcePO;
 import com.youngbook.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.sql.Connection;
 import java.util.List;
 
+@Component("calendarService")
 public class CalendarService extends BaseService {
+
+    @Autowired
+    private ICalendarDao calendarDao;
 
     public EventSourcePO getCustomerBirthdays4MonthView(String intervalStart, UserPO saleMan) throws Exception {
         // SQL 编码
@@ -122,5 +130,11 @@ public class CalendarService extends BaseService {
         }
 
         return eventSource;
+    }
+
+    public List<EventPO> getEventPO(String intervalStart, Connection conn) throws Exception {
+
+        return calendarDao.getEventPO(intervalStart,conn);
+
     }
 }
