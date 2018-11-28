@@ -746,15 +746,15 @@ public class ProductionService extends BaseService {
      * @return com.youngbook.common.Pager
      * @throws Exception
      */
-    public Pager getPagerProductionVO ( ProductionVO productionVO,int currentPage, int showRowCount, Connection conn) throws Exception {
+    public Pager getPagerProductionVO ( ProductionVO productionVO, int currentPage, int showRowCount, Connection conn ) throws Exception {
 
-        Pager pager = productionDao.getPagerProductionVO(productionVO,currentPage,showRowCount,conn);
+        Pager pager = productionDao.getPagerProductionVO( productionVO, currentPage, showRowCount,conn );
 
 
 
 
         if( pager == null ){
-            MyException.newInstance("当前暂无在售产品").throwException();
+            MyException.newInstance( "当前暂无在售产品" ).throwException();
         }
 
 

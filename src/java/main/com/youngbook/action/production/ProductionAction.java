@@ -854,10 +854,10 @@ public class ProductionAction extends BaseAction {
      */
     public String getPagerProductionVO() throws Exception {
 
-        productionVO = HttpUtils.getInstanceFromRequest(getRequest(), "productionVO", ProductionVO.class);
-        Pager pager = Pager.getInstance(getRequest());
-        pager = productionService.getPagerProductionVO(productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
-        getResult().setReturnValue(pager.toJsonObject());
+        productionVO = HttpUtils.getInstanceFromRequest( getRequest(), "productionVO", ProductionVO.class );
+        Pager pager = Pager.getInstance( getRequest() );
+        pager = productionService.getPagerProductionVO( productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection() );
+        getResult().setReturnValue( pager.toJsonObject() );
 
 
 

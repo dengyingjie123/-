@@ -73,7 +73,7 @@ var ProductionClass = function (token, my, obj) {
         fw.combotreeClear('#search_Status' + token);
         var strTableId = 'ProductionTable' + token;
         var pageSize = 10;
-        var pageList = [10, 20, 30]
+        var pageList = [10]
         var url = WEB_ROOT + "/production/Production_getPagerProductionVO.action";
         //alert(pageSize);
         $('#' + strTableId).datagrid({
@@ -96,6 +96,8 @@ var ProductionClass = function (token, my, obj) {
                 catch (e) {
                 }
             },
+            toolbar:[
+            ],
             pagination: true,
             frozenColumns: [
                 [  // 固定列，没有滚动条
