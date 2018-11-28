@@ -8,7 +8,7 @@ SELECT
     c.id, c.PersonalNumber, c.`Name`, c.LoginName, c.Mobile, c.CreateTime, c.state,
     c.id linkCustomerId, '' IdCard,
     cd.`Status` distributionStatus
-FROM
+FROMv
     crm_customerpersonal c
 left JOIN crm_customerdistribution cd on cd.state=0 and cd.CustomerId=c.id
 left JOIN system_user u on u.state=0 and u.id=cd.SaleManId
@@ -250,4 +250,28 @@ Left join crm_saleman_salemangroup ssg on ssg.saleManId=cd.salesmanId and ssg.de
 left join crm_salemangroup sg on sg.state=0 and sg.id=ssg.saleManGroupId
 WHERE
     1 = 1
-and c.state=0 
+and c.state=0
+
+
+;
+
+-- 兑付计划视图
+create view view_paymentPlan as
+SELECT
+	plan.id paymentPlanId,
+	o.id orderId,
+	o.CustomerId customerId,
+	o.CustomerName,
+	o.ProductionId,
+	o.productionName,
+	plan.PaymentTime,
+	plan.TotalPaymentPrincipalMoney,
+	plan.TotalPaymentMoney,
+	plan.PaiedPrincipalMoney,
+	plan.PaiedProfitMoney,
+	plan.PaiedPaymentTime
+FROM
+	core_paymentplan plan
+left join view_order o on plan.OrderId=o.id
+WHERE
+	plan.state = 0
