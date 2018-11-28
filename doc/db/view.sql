@@ -256,7 +256,7 @@ and c.state=0
 ;
 
 -- 兑付计划视图
-create view view_paymentPlan as
+create or replace view view_paymentPlan as
 SELECT
 	plan.id paymentPlanId,
 	o.id orderId,
@@ -266,7 +266,7 @@ SELECT
 	o.productionName,
 	plan.PaymentTime,
 	plan.TotalPaymentPrincipalMoney,
-	plan.TotalPaymentMoney,
+	plan.TotalProfitMoney,
 	plan.PaiedPrincipalMoney,
 	plan.PaiedProfitMoney,
 	plan.PaiedPaymentTime
