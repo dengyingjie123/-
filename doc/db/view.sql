@@ -130,6 +130,7 @@ SELECT
     o.sid, o.id, o.operatorId, o.operateTime, o.OrderNum, o.CustomerName, o.CustomerId, o.ProductionId, o.ProductionCompositionId,
     o.accountId, o.createtime,
     p.`Name` productionName,
+		p.discountRate,
     pc.`Name` productionCompositionName,
     o.Money, o.appointmentTime, o.PayTime, o.contractNo, o.referralCode, o.`Status` status,
     o.orderConfirmUserId01,
