@@ -288,3 +288,12 @@ FROM
 left join view_order o on plan.OrderId=o.id
 WHERE
     plan.state = 0
+    
+;
+
+-- 销售名下客户的投资汇总
+CREATE or replace view view_order_totoal_money as
+select o.CustomerId, o.salesmanId, sum(o.Money) totalMoney 
+from view_order o 
+where 1=1
+GROUP BY o.CustomerId, o.salesmanId
