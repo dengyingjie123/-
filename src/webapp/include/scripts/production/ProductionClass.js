@@ -517,8 +517,11 @@ var ProductionClass = function (token, my, obj) {
             fw.datagridGetSelected('ProductionTable' + token, function (selected) {
                 process.beforeClick();
                 var id = selected.id;
-
-                if(selected.status == 0){
+                /*
+                * 判断产品的状态
+                * */
+                var status = selected.status;
+                if(status == 0){
                     var url = WEB_ROOT + "/production/Production_load.action?production.id=" + id;
                     fw.post(url, null, function (data) {
 //                    fw.alertReturnValue(data);

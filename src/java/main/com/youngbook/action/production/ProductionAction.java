@@ -756,17 +756,6 @@ public class ProductionAction extends BaseAction {
 
 
 
-        /**
-         * 获取传递的status，判断是否可修改
-         */
-         int status = production.getStatus();
-        if(status != 0){
-            MyException.newInstance("当前状态订单无法修改，请审核为草稿再进行修改操作"  ).throwException();
-        }
-
-
-
-
         int count = 0;
         count = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
         /**
