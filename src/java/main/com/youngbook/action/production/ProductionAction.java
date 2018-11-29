@@ -753,13 +753,32 @@ public class ProductionAction extends BaseAction {
         production = HttpUtils.getInstanceFromRequest(getRequest(), "production", ProductionPO.class);
         Connection conn = getConnection();
 
+
+
+
+        /**
+         * 获取传递的status，判断是否可修改
+         */
+         int status = production.getStatus();
+        if(status != 0){
+            MyException.newInstance("当前状态订单无法修改，请审核为草稿再进行修改操作"  ).throwException();
+        }
+
+
+
+
         int count = 0;
         count = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
-
-        // 创建产品失败
+        /**
+         * 创建产品失败
+         */
         if (count != 1) {
             MyException.newInstance("创建产品失败").throwException();
         }
+
+
+
+
 
         return SUCCESS;
     }

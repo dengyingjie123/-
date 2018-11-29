@@ -517,14 +517,21 @@ var ProductionClass = function (token, my, obj) {
             fw.datagridGetSelected('ProductionTable' + token, function (selected) {
                 process.beforeClick();
                 var id = selected.id;
-                var url = WEB_ROOT + "/production/Production_load.action?production.id=" + id;
-                fw.post(url, null, function (data) {
+
+                if(selected.status == 0){
+                    var url = WEB_ROOT + "/production/Production_load.action?production.id=" + id;
+                    fw.post(url, null, function (data) {
 //                    fw.alertReturnValue(data);
-                    initWindowProductionWindow(data, id, WindowType_Edit);
-                    process.afterClick();
-                }, function () {
-                    process.afterClick();
-                });
+                        initWindowProductionWindow(data, id, WindowType_Edit);
+                        process.afterClick();
+                    }, function () {
+                        process.afterClick();
+                    });
+                }else{
+                    alert("当前状态订单无法修改，请审核为草稿再进行修改操作");
+                    initTableProductionTable();
+                }
+
             })
 
         });
