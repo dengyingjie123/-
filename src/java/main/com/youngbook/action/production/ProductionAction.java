@@ -756,15 +756,42 @@ public class ProductionAction extends BaseAction {
 
 
 
-        int count = 0;
-        count = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
+        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
+
+
+
+
+        return SUCCESS;
+    }
+
+    /**
+     * @description 修改产品，当产品分期为草稿状态(status == 0)才允许修改
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/3 9:15
+     * @param
+     * @return com.youngbook.entity.po.production.ProductionPO
+     * @throws Exception
+     */
+    public String editProduction() throws Exception {
+
+        production = HttpUtils.getInstanceFromRequest(getRequest(), "production", ProductionPO.class);
+        Connection conn = getConnection();
+
+
         /**
-         * 创建产品失败
+         * 状态为草稿(status == 0) 的产品才能进行修改操作
          */
-        if (count != 1) {
-            MyException.newInstance("创建产品失败").throwException();
+        int status = production.getStatus();
+        if(status != 0){
+            MyException.newInstance("当前状态产品分期无法修改，请改为草稿后执行修改操作");
         }
 
+
+
+
+        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
 
 
 

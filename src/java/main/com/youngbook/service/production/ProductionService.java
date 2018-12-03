@@ -849,7 +849,7 @@ public class ProductionService extends BaseService {
      * @return
      * @throws Exception
      */
-    public int insertOrUpdate(ProductionPO production, String userId, Connection conn) throws Exception {
+    public ProductionPO insertOrUpdate(ProductionPO production, String userId, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(userId)) {
             userId = Config.getDefaultOperatorId();
@@ -869,12 +869,9 @@ public class ProductionService extends BaseService {
             MyException.newInstance("创建产品失败").throwException();
         }
 
-        if (count != 1) {
-            MyException.newInstance("创建产品失败").throwException();
-        }
 
 
-        return 1;
+        return production;
     }
 
     /**
