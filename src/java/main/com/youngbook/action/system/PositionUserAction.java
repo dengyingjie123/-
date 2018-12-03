@@ -32,6 +32,15 @@ public class PositionUserAction extends BaseAction {
     PositionUserService positionUserService;
 
 
+    /**
+     * @description
+     * 添加和修改，注意PO是po.system里面的PO
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:39
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String insertOrUpdate() throws Exception {
 
         com.youngbook.entity.po.system.PositionUserPO positionUserPO1 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
@@ -84,8 +93,21 @@ public class PositionUserAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 获取列表（state=0）
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:40
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String listUsers() throws Exception {
 
+        /**
+         * 获取列表并响应json
+         */
         String positionId = getHttpRequestParameter("positionUser.positionId");
 
         Pager pager = Pager.getInstance(getRequest());
@@ -96,6 +118,16 @@ public class PositionUserAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 删除user
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:41
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String delete() throws Exception{
 
         com.youngbook.entity.po.system.PositionUserPO positionUser1 = HttpUtils.getInstanceFromRequest(getRequest(), "positionUser",
@@ -103,6 +135,9 @@ public class PositionUserAction extends BaseAction {
 
         int count = positionUserService.remove(positionUser1,getLoginUser().getId(),getConnection());
 
+        if (count != 1) {
+            throw new Exception("操作失败");
+        }
         return SUCCESS;
 
     }

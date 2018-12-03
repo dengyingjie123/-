@@ -73,29 +73,67 @@ public class DepartmentAction extends BaseAction {
          return tree;
      }
 
+
+    /**
+     * @description
+     * 根据departmentId获取相应的部门数据和加载出修改窗口
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 9:49
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String load() throws Exception {
 
+
+        /**
+         * 获取departmentId，并根据id查询出所有数据并响应回浏览器
+         */
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
-
         department = MySQLDao.load(department,DepartmentPO.class);
-
         result.setReturnValue(department.toJsonObject4Form());
 
         return SUCCESS;
     }
+
+
+    /**
+     * @description
+     * 添加或修改部门
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 9:59
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String insertOrUpdate() throws Exception {
 
-        DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
+        /**
+         * 根据部门id来修改或添加部门
+         */
+        DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
         departmentService.insertOrUpdate(department, getConnection());
 
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 根据部门id来删除（把state变为2，级联删除，附属的position和position对应的user和permission也会被删除）
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:01
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String delete() throws Exception {
 
+        /**
+         * 根据部门id删除
+         */
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
-
         int count = departmentService.remove(department,getLoginUser().getId(),getConnection());
 
         if (count != 1) {
@@ -104,34 +142,56 @@ public class DepartmentAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 读取所有的state=0的部门列表
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:21
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String list() throws Exception {
 
-        Connection conn = getConnection();
+        /**
+         * 获取部门id和创建
+         */
         result = new ReturnObject();
         DepartmentPO department = HttpUtils.getInstanceFromRequest(getRequest(), "department", DepartmentPO.class);
 
-        QueryType queryType = new QueryType(Database.NUMBER_EQUAL, Database.QUERY_EXACTLY);
-        List<KVObject> conditions = new ArrayList<KVObject>();
-        conditions.add(new KVObject(Database.CONDITION_TYPE_ORDERBY, " orders "));
 
-        List<DepartmentPO> departmentList = departmentService.searchByStateCondition(department,conn);
-
-        //List<DepartmentPO> departmentList = departmentService.search(department, DepartmentPO.class,conditions, queryType, conn);
+        /**
+         * 根据department获取state=0的数据
+         */
+        List<DepartmentPO> departmentList = departmentService.searchByStateCondition(department,getConnection());
 
 
+        /**
+         * 判断部门集合的是否为空，为空则抛出异常
+         */
         if (departmentList == null && departmentList.size() == 0) {
             MyException.newInstance("部门加载失败").throwException();
         }
 
+
+
+
+        /**
+         * 创建树并赋值departmentpo
+         */
         Tree root = TreeOperator.createForest();
         for(DepartmentPO departmentpo : departmentList){
             Tree tree = new Tree(departmentpo.getId(),departmentpo.getName(),departmentpo.getParentId(),departmentpo);
             TreeOperator.add(root,tree);
         }
 
+
+        /**
+         * 处理树并转换为json响应会浏览器
+         */
         JSONObject json = TreeOperator.getJson4Tree(root);
         String jsonStr = json.getJSONArray("children").toString();
-
         result.setCode(ReturnObject.CODE_SUCCESS);
         result.setReturnValue(jsonStr);
 

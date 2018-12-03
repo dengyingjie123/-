@@ -34,15 +34,37 @@ public class PositionAction extends BaseAction {
     @Autowired
     PositionService positionService;
 
+
+    /**
+     * @description
+     * 根据id添加或修改岗位
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:27
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String insertOrUpdate() throws Exception {
 
+        /**
+         * 根据id添加或修改岗位
+         */
         PositionPO position = HttpUtils.getInstanceFromRequest(getRequest(), "position", PositionPO.class);
-
         positionService.insertOrUpdate(position, getConnection());
 
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 根据positionId获取相应的岗位数据和加载出修改窗口
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:28
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String load() throws Exception {
 
         PositionPO position = HttpUtils.getInstanceFromRequest(getRequest(), "position", PositionPO.class);
@@ -67,14 +89,36 @@ public class PositionAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 加载出所有state=0和departmentId的相应的岗位数据
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:32
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String list() throws Exception {
 
-        QueryType queryType = new QueryType(Database.QUERY_EXACTLY, Database.NUMBER_EQUAL);
-
+        /**
+         * 查询出岗位集合
+         */
         String departmentId = getHttpRequestParameter("position.DepartmentId");
-
         List<PositionPO> positionList =positionService.searchByDepartment(departmentId, getConnection());
 
+
+
+
+        /**
+         * @description
+         * 处理岗位集合并赋值给tree并转换为json响应给浏览器
+         * @author 胡超怡
+         *
+         * @date 2018/12/3 10:34
+         * @return java.lang.String
+         * @throws Exception
+         */
         if (positionList != null && positionList.size() != 0) {
             Tree menuRoot = TreeOperator.createForest();
 
@@ -223,26 +267,25 @@ public class PositionAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 根据positionId删除（级联删除，附属的user和permission也会被删除）
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:35
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String delete() throws Exception{
 
         PositionPO position = HttpUtils.getInstanceFromRequest(getRequest(), "position", PositionPO.class);
+        int count = positionService.remove(position, getLoginUser().getId(), getConnection());
 
-        result = new ReturnObject();
-        try {
-            int count = positionService.remove( position,getLoginUser().getId(),getConnection());
-            if (count >= 1) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-            } else {
-                result.setMessage("删除失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode(ReturnObject.CODE_EXCEPTION);
-            result.setMessage("操作失败");
-            result.setException(e);
+        if (count != 1) {
+            throw new Exception("操作失败");
         }
+
         return SUCCESS;
     }
 

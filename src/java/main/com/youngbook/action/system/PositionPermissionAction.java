@@ -26,7 +26,18 @@ public class PositionPermissionAction extends BaseAction {
     @Autowired
     PositionPermissionService positionPermissionService;
 
+
+    /**
+     * @description
+     * 添加或修改
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:42
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String insertOrUpdate() throws Exception {
+
         PositionPermissionPO positionPermission = HttpUtils.getInstanceFromRequest(getRequest(), "positionPermission", PositionPermissionPO.class);
 
         positionPermissionService.insertOrUpdate(positionPermission, getConnection());
@@ -48,7 +59,23 @@ public class PositionPermissionAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description
+     * 添加或修改方法，先根据岗位的id获取以前的权限并且删除掉以前的权限
+     * 再根据permissionIds添加到positionPermission表
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:43
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String saveAll() throws Exception{
+
+
+        /**
+         * 删除以前的映射关系
+         */
         result = new ReturnObject();
         String permissionIds = getRequest().getParameter("permissionIds");
 
@@ -67,6 +94,12 @@ public class PositionPermissionAction extends BaseAction {
 
         LogService.debug("已删除原有映射关系："+ count, this.getClass());
 
+
+
+
+        /**
+         * 添加现有的映射关系
+         */
         String [] permissionIdsArray = permissionIds.split(Config.SPLIT_LETTER);
 
         LogService.debug("现有映射关系有：" + permissionIdsArray.length, this.getClass());

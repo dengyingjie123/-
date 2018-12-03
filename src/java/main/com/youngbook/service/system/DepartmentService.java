@@ -79,18 +79,13 @@ public class DepartmentService extends BaseService {
 
     public DepartmentPO load(String departmentId, Connection conn) throws Exception{
 
-
         DatabaseSQL dbSQL = new DatabaseSQL();
 
         dbSQL.newSQL("SELECT * from system_department where id=?");
 
         dbSQL.addParameter(1, departmentId);
 
-
-
         List<DepartmentPO> list = MySQLDao.search(dbSQL.getSQL(), dbSQL.getParameters(), DepartmentPO.class, null, conn);
-
-
 
         if (list != null && list.size() == 1) {
 
@@ -98,10 +93,7 @@ public class DepartmentService extends BaseService {
 
         }
 
-
-
         return null;
-
 
     }
 
@@ -130,49 +122,56 @@ public class DepartmentService extends BaseService {
 
 
     /**
+     * @description
      * 级联删除
+     * @author 胡超怡
+     *
+     * @date 2018/12/3 10:08
      * @param department
      * @param id
      * @param conn
-     * @return
+     * @return int
      * @throws Exception
      */
     public int remove(DepartmentPO department, String id, Connection conn) throws Exception {
 
-        //通过department查询PositionPO，在遍历后更改状态
-        List<PositionPO> positionList = positionDao.searchByDepartment(department,conn);
+        //删除部门
+        int count = departmentDao.remove(department, id, conn);
 
-        if (null != positionList && positionList.size() > 0){
-            for (PositionPO position: positionList) {
+
+        /**
+         * 通过department查询PositionPO，在遍历后更改状态
+         */
+        List<PositionPO> positionList = positionDao.searchByDepartment(department, conn);
+
+        if (null != positionList && positionList.size() > 0) {
+            for (PositionPO position : positionList) {
                 //更改状态
-                positionDao.remove(position,id,conn);
+                positionDao.remove(position, id, conn);
                 //通过position查询PositionUserPO，在遍历后更改状态
-                List<PositionUserPO> positionUserList = positionUserDao.searchByPosition(position,conn);
-                if (null != positionUserList && positionUserList.size() > 0){
-                    for (PositionUserPO positionUser:positionUserList) {
-                        positionUserDao.remove(positionUser,id,conn);
+                List<PositionUserPO> positionUserList = positionUserDao.searchByPosition(position, conn);
+                if (null != positionUserList && positionUserList.size() > 0) {
+                    for (PositionUserPO positionUser : positionUserList) {
+                        positionUserDao.remove(positionUser, id, conn);
                     }
                 }
                 //通过position查询positionPermissionPO，在遍历后更改状态
-                List<PositionPermissionPO> positionPermissionList = positionPermissionDao.searchByPosition(position,conn);
-                if (null != positionPermissionList && positionPermissionList.size() > 0){
-                    for (PositionPermissionPO positionPermission:positionPermissionList) {
-                        positionPermissionDao.remove(positionPermission,id,conn);
+                List<PositionPermissionPO> positionPermissionList = positionPermissionDao.searchByPosition(position, conn);
+                if (null != positionPermissionList && positionPermissionList.size() > 0) {
+                    for (PositionPermissionPO positionPermission : positionPermissionList) {
+                        positionPermissionDao.remove(positionPermission, id, conn);
                     }
                 }
             }
         }
 
-        return departmentDao.remove(department,id,conn);
-
+        return count;
 
     }
 
     public List<DepartmentPO> search(DepartmentPO department, Class<DepartmentPO> departmentPOClass, List<KVObject> conditions, QueryType queryType, Connection conn) throws  Exception
     {
-
         return departmentDao.search(department, DepartmentPO.class,conditions, queryType, conn);
-
     }
 
     public void insertOrUpdate(DepartmentPO department, Connection conn) throws Exception {
@@ -180,7 +179,6 @@ public class DepartmentService extends BaseService {
     }
 
     public List<DepartmentPO> searchByStateCondition(DepartmentPO department, Connection conn)throws Exception {
-
         return departmentDao.searchByStateCondition(department,conn);
     }
 }
