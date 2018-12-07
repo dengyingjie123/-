@@ -13,7 +13,6 @@ var CalendarClass = function(token) {
      * 初始化主页面控件
      */
     function initAll() {
-
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -42,11 +41,10 @@ var CalendarClass = function(token) {
                 fw.post(WEB_ROOT + "/system/Calendar_listCustomerBirthdays.action", {"intervalStart":view.intervalStart.format()}, function(data) {
                     callback(data);
                 }, null);
-            }
+            },
         });
 
-
-
+        iniTableRaiseInfoTable();
 
     }
 
@@ -148,6 +146,44 @@ var CalendarClass = function(token) {
 
         });
     }
+    /**
+     * @description 初始化募集资金信息显示
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/4 10:13
+     * @param null
+     * @return 
+     * @throws Exception
+     */
+    function iniTableRaiseInfoTable() {
+        var today = fw.getTimeToday();
+        var strTableId = "raiseInfoTable" + token;
+        var url = WEB_ROOT+"/system/Calendar_getCurrentMonthRaise.action?today="+today;
+
+        $('#'+strTableId).datagrid({
+            url:url,
+            rownumbers:false,
+            loadFilter:function(data){
+                try {
+                    data = fw.dealReturnObject(data);
+                    return data;
+                }
+                catch(e) {
+                }
+            },
+            frozenColumns:[[  // 固定列，没有滚动条
+
+            ]],
+            columns: [[
+                { field:'money',title:'当月募集资金总额'}
+            ]]
+        });
+    }
+
+
+
+
     return{
         /**
          * boot.js加载时调用的初始化方法

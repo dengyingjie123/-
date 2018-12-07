@@ -1,13 +1,21 @@
 package com.youngbook.action.system;
 
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.Database;
+import com.youngbook.common.Pager;
+import com.youngbook.common.ReturnObject;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.calendar.EventPO;
 import com.youngbook.entity.po.calendar.EventSourcePO;
+import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.service.calendar.CalendarService;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,6 +45,50 @@ public class CalendarAction extends BaseAction {
 
         return SUCCESS;
     }
+
+
+    /**
+     * @description 获取当前用户本月募集资金总额(打款后)
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/4 11:14
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String getCurrentMonthRaise () throws Exception {
+
+        OrderPO orderPO = new OrderPO();
+        String today = getRequest().getParameter("today");
+        String id = getLoginUser().getId();
+        List<OrderPO> raises = service.getCurrentMonthRaise(today, id, getConnection());
+
+
+
+
+        Double raise = 0.0;
+        for (OrderPO o : raises) {
+            double money = o.getMoney();
+            raise += money;
+        }
+
+
+
+
+        orderPO.setMoney(raise);
+        Pager pager = new Pager();
+        ArrayList list = new ArrayList();
+        list.add(orderPO);
+        pager.setData(list);
+        getResult().setReturnValue(pager.toJsonObject());
+
+
+
+
+        return SUCCESS;
+    }
+
 
     public String listCustomerBirthdays() throws Exception {
 

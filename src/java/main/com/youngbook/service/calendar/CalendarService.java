@@ -1,13 +1,17 @@
 package com.youngbook.service.calendar;
 
 import com.youngbook.common.Database;
+import com.youngbook.common.KVObjects;
 import com.youngbook.common.MyException;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.calendar.EventPO;
 import com.youngbook.entity.po.calendar.EventSourcePO;
+import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.service.BaseService;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class CalendarService extends BaseService {
@@ -122,5 +126,32 @@ public class CalendarService extends BaseService {
         }
 
         return eventSource;
+    }
+
+    /**
+     * @description 获取当前用户本月募集资金总额(打款后)
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/4 13:46
+     * @param today
+     * @param userId
+     * @param connection
+     * @return java.util.List<com.youngbook.entity.po.production.OrderPO>
+     * @throws Exception
+     */
+    public List<OrderPO> getCurrentMonthRaise(String today , String userId , Connection connection) throws Exception {
+
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("53I25CYF");
+        databaseSQL.addParameter4All("userId",userId);
+        databaseSQL.addParameter4All("today",today);
+        databaseSQL.initSQL();
+        List<OrderPO> search = MySQLDao.search(databaseSQL, OrderPO.class, connection);
+
+
+
+
+        return search;
     }
 }
