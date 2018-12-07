@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="822E1801">
+
+		SELECT
+			DISTINCT 
+			plan.id,
+			c.`Name` customerName,
+			p.name productionName,
+			o.PayTime,
+			o.money,
+			plan.CurrentInstallment,
+			plan.PaymentTime,
+			plan.TotalPaymentPrincipalMoney,
+			plan.TotalProfitMoney,
+			p.interestCycle,
+			p.interestTimes,
+			p.interestUnit,
+			c.saleManName,
+			c.saleGroupName
+		FROM
+			core_paymentplan plan
+		LEFT JOIN v_customer_saleman c on c.state=0 and c.id=plan.CustomerId
+		LEFT JOIN crm_production p on p.state=0 and plan.ProductId=p.id
+		LEFT JOIN crm_order o on o.state=0 and o.id=plan.OrderId
+		WHERE 1=1
+		
+			And plan.state = 0
+			And DATE_FORMAT(PaymentTime, '%Y-%m')=#{paymentTime}        
+
+		order by plan.PaymentTime
+		
+        </select>
+    </select-sql>
+</sql>

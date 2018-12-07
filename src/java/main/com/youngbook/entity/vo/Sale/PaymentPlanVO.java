@@ -165,7 +165,8 @@ public class PaymentPlanVO extends BaseVO {
     private String bankBranchName = "";
 
 
-    private String salesmanName = "";
+    private String saleManName = "";
+    private String saleGroupName= "";
     private String mobile = "";
 
     public String getTotalPaymentPrincipalMoneyFormatted() {
@@ -192,12 +193,20 @@ public class PaymentPlanVO extends BaseVO {
         this.totalPaymentMoneyFormatted = totalPaymentMoneyFormatted;
     }
 
-    public String getSalesmanName() {
-        return salesmanName;
+    public String getSaleManName() {
+        return saleManName;
     }
 
-    public void setSalesmanName(String salesmanName) {
-        this.salesmanName = salesmanName;
+    public void setSaleManName(String saleManName) {
+        this.saleManName = saleManName;
+    }
+
+    public String getSaleGroupName() {
+        return saleGroupName;
+    }
+
+    public void setSaleGroupName(String saleGroupName) {
+        this.saleGroupName = saleGroupName;
     }
 
     public String getMobile() {

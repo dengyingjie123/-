@@ -309,4 +309,17 @@ public class PaymentPlanDaoImpl implements IPaymentPlanDao {
         List<PaymentPlanVO> paymentPlanVOs = MySQLDao.search(sbSQL.toString(),dbSQL.getParameters(),PaymentPlanVO.class,null,conn);
         return paymentPlanVOs;
     }
+
+
+    @Override
+    public List<PaymentPlanVO> getListPaymentPlanVO(String paymentTime,Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("822E1801");
+        dbSQL.addParameter4All("paymentTime", paymentTime);
+        dbSQL.initSQL();
+
+        List<PaymentPlanVO> list = MySQLDao.search(dbSQL, PaymentPlanVO.class, conn);
+
+        return list;
+    }
 }

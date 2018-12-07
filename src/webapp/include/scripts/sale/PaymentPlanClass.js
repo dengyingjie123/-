@@ -486,7 +486,9 @@ var PaymentPlanClass = function (token, permissionName) {
                         formatter: function(value,row,index) {
                             return fw.formatMoney(row['totalPaymentMoney']);
                         }
-                    }
+                    },
+                    { field: 'saleManName', title: '销售人员'},
+                    { field: 'saleGroupName', title: '机构'}
                 ]
             ],
             toolbar: [{
