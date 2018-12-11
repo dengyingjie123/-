@@ -4,7 +4,7 @@ import com.youngbook.annotation.*;
 import com.youngbook.entity.po.BasePO;
 
 
-@Table(name = "crm_order", jsonPrefix = "order")
+@Table(name = "crm_order", jsonPrefix = "order",backupTableName = "crm_order_archive")
 public class OrderPO extends BasePO {
     // sid
     @Id
@@ -126,6 +126,7 @@ public class OrderPO extends BasePO {
      */
     private String orderConfirmUserId01 = "";
 
+    //财务确认时间01
     @DataAdapter(fieldType = FieldType.DATE)
     private String orderConfirmUserTime01 = new String();
 
@@ -134,6 +135,7 @@ public class OrderPO extends BasePO {
      */
     private String orderConfirmUserId02 = "";
 
+    //财务确认时间02
     @DataAdapter(fieldType = FieldType.DATE)
     private String orderConfirmUserTime02 = new String();
 

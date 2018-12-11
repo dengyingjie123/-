@@ -836,7 +836,7 @@ public class OrderAction extends BaseAction {
 
         getResult().setReturnValue(pager.toJsonObject());
 
-        return SUCCESS;
+            return SUCCESS;
     }
 
     public String exportReportMonthly() throws Exception {
@@ -958,13 +958,119 @@ public class OrderAction extends BaseAction {
             out.close();
         }
 
+        return SUCCESS;
+    }
+
+    public String exportReportWeekly() throws Exception {
+
+        String orderReportTime = getHttpRequestParameter("orderReportTime");
+        if(StringUtils.isEmpty(orderReportTime)){
+            orderReportTime = TimeUtils.getNow();
+        }
+        String thisMonth = getHttpRequestParameter("thisMonth");
+        String thisYear = null;
 
 
 
+        String fileName = Config.getSystemConfig("order_report_monthly_template_name");
+        fileName = fileName.replaceAll("order_report_monthly_template_name", thisYear + "年" + thisMonth + "月");
+
+        //转换输出格式防止乱码
+        fileName = new String(fileName.getBytes("utf8"), "iso8859-1");
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setContentType("application/octet-stream");
+
+        //设置Excel导出文件名称
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
+
+        //获取输出流
+        ServletOutputStream out = response.getOutputStream();
+
+
+        try {
+
+            FileInputStream fileInputStream = new FileInputStream(Config.getSystemConfig("order_report_monthly_template"));
+            HSSFWorkbook wb = new HSSFWorkbook(fileInputStream);
+
+
+            String sheetName = "Sheet1";
+            HSSFSheet sheet = wb.getSheet(sheetName);
+            HSSFSheet sheetStyle = wb.getSheet("Template");
+            HSSFRow templateRow = ExcelUtils.getRow(1, sheetStyle);
+
+            int offset = 5;
+
+            Pager pager = orderService.getReportMonthly(thisYear, thisMonth, getConnection());
+
+
+            for (int i = 0; pager != null && pager.getData() != null && i < pager.getData().size(); i++) {
+                OrderReportMonthlyVO orderReportMonthlyVO  = (OrderReportMonthlyVO) pager.getData().get(i);
+
+
+                ExcelUtils.newRow(sheet, offset + i, templateRow);
+
+                // 基本信息
+                ExcelUtils.setCellValue("a" + (offset + i), orderReportMonthlyVO.getGroupName(), sheet);
+                ExcelUtils.setCellValue("b" + (offset + i), orderReportMonthlyVO.getName(), sheet);
+
+                // 年初
+                ExcelUtils.setCellValue("c" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open(), sheet);
+
+                ExcelUtils.setCellValue("d" + (offset + i), orderReportMonthlyVO.getMoney_remain_year_open_discount_rate(), sheet);
+
+                // 月初
+                ExcelUtils.setCellValue("e" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open(), sheet);
+                ExcelUtils.setCellValue("f" + (offset + i), orderReportMonthlyVO.getMoney_remain_month_open_discount_rate(), sheet);
+
+                // 客户数
+                ExcelUtils.setCellValue("g" + (offset + i), orderReportMonthlyVO.getCustomer_remain_count(), sheet);
+                ExcelUtils.setCellValue("h" + (offset + i), orderReportMonthlyVO.getCustomer_new_count(), sheet);
+
+                // 本月募集
+                double thisMonthAdd = orderReportMonthlyVO.getMoney_add_this_month();
+                ExcelUtils.setCellValue("i" + (offset + i), thisMonthAdd, sheet);
+
+                double thisMonthAddDiscountRate = orderReportMonthlyVO.getMoney_add_this_month_discount_rate();
+                ExcelUtils.setCellValue("j" + (offset + i), thisMonthAddDiscountRate, sheet);
+
+                // 本月兑付
+                double thisMonthPayment = orderReportMonthlyVO.getMoney_payment_this_month();
+                ExcelUtils.setCellValue("k" + (offset + i), thisMonthPayment, sheet);
+
+                double thisMonthPaymentDiscountRate = orderReportMonthlyVO.getMoney_payment_this_month_discount_rate();
+                ExcelUtils.setCellValue("l" + (offset + i), thisMonthPaymentDiscountRate, sheet);
+
+                // 本月新增
+                double thisMonthNew = thisMonthAdd - thisMonthPayment;
+                ExcelUtils.setCellValue("m" + (offset + i), thisMonthNew, sheet);
+
+                double thisMonthNewDiscountRate = thisMonthAddDiscountRate - thisMonthPaymentDiscountRate;
+                ExcelUtils.setCellValue("n" + (offset + i), thisMonthNewDiscountRate, sheet);
+
+                // 期末存量
+                ExcelUtils.setCellValue("o" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end(), sheet);
+                ExcelUtils.setCellValue("p" + (offset + i), orderReportMonthlyVO.getMoney_remain_this_month_end_discount_rate(), sheet);
+
+
+            }
+
+
+            ExcelUtils.removeSheetsExcept(wb, sheetName);
+            wb.write(out);
+            out.flush();
+            out.close();
 
 
 
-
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            out.flush();
+            out.close();
+        }
 
         return SUCCESS;
     }

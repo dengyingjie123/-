@@ -28,6 +28,17 @@ public class StringUtils {
     public static final String Encode_UTF_8 = "UTF-8";
     public static final String Encode_GBK = "GBK";
 
+
+    public static String httpEncodeConversion (String original, String type) throws Exception {
+        if(type == Encode_ISO_8859_1){
+            return new String(original.getBytes(Encode_ISO_8859_1), Encode_UTF_8);
+        }else if (type == Encode_UTF_8){
+            return new String(original.getBytes(Encode_UTF_8), Encode_ISO_8859_1);
+        }
+        return original;
+    }
+
+
     public static void main(String [] args) throws Exception {
 
 

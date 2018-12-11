@@ -13,9 +13,9 @@
     <div class="easyui-panel" title="查询" iconCls="icon-search">
         <table border="0" cellpadding="3" cellspacing="0">
             <tr>
-                <td>周报日期</td>
+                <td>销售人员查询</td>
                 <td>
-                    <input id="searchDate<%=token%>" name="searchDate" type="text" class="easyui-datebox" />
+                    <input id="searchSaleman<%=token%>" name="searchSaleman" type="text" />
                 </td>
                 <td>
                     <a id="btnSearch<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
@@ -24,7 +24,7 @@
         </table>
     </div>
     <br>
-    <table id="orderReportWeeklyTable<%=token%>"></table>
+    <table id="specificSalemanStockTable<%=token%>"></table>
 
 </div>
 </body>

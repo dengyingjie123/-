@@ -6,6 +6,7 @@ import com.youngbook.annotation.Permission;
 import com.youngbook.common.*;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.customer.CustomerScorePO;
@@ -13,6 +14,7 @@ import com.youngbook.entity.po.jeasyui.DataGridColumnPO;
 import com.youngbook.entity.po.sale.PaymentPlanPO;
 import com.youngbook.entity.po.sale.PaymentPlanStatus;
 import com.youngbook.entity.vo.Sale.PaymentPlanVO;
+import com.youngbook.entity.vo.Sale.SpecificPaymentPlanVO;
 import com.youngbook.entity.vo.customer.CustomerMoneyLogVO;
 import com.youngbook.entity.vo.customer.CustomerPersonalVO;
 import com.youngbook.entity.vo.production.OrderVO;
@@ -57,6 +59,28 @@ public class PaymentPlanAction extends BaseAction {
     @Autowired
     CustomerScoreService customerScoreService;
 
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/11 9:15
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String specificPaymentPlanByname() throws Exception {
+
+        String selectName = getHttpRequestParameter("selectName");
+        if(selectName != null){
+            selectName = new String(selectName.getBytes(StringUtils.Encode_ISO_8859_1),StringUtils.Encode_UTF_8);
+        }
+        DatabaseSQL databaseSQL = DatabaseSQL.getInstance("select * from view_paymentPlan");
+        databaseSQL.initSQL();
+
+        List<SpecificPaymentPlanVO> specificPaymentPlanVOList = MySQLDao.search(databaseSQL, SpecificPaymentPlanVO.class, getConnection());
+        getResult().setReturnValue(specificPaymentPlanVOList);
+        return SUCCESS;
+    }
+
 
     public String exportReportMonth() throws Exception {
 
@@ -79,6 +103,7 @@ public class PaymentPlanAction extends BaseAction {
 
 
         try {
+            String a = Config.getSystemConfig("order_report_monthly_template");
             FileInputStream fileInputStream = new FileInputStream(Config.getSystemConfig("reportPaymentPlanMonth_template"));
             HSSFWorkbook wb = new HSSFWorkbook(fileInputStream);
 

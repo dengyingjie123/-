@@ -25,6 +25,7 @@ var OrderClass = function (token) {
         initSelect();
     }
 
+
     function initSearchArea() {
         //var treeID = $('#search_status'+token).combotree('tree');
         //statusMenu(treeID)
@@ -61,13 +62,15 @@ var OrderClass = function (token) {
     function initOrderReportWeeklySearch() {
         var dataId = '#searchDate' + token;
         $(dataId).datebox({
-            editable:false
+            editable: false,
         });
 
         var c = $(dataId).datebox('calendar');
         c.calendar({
             firstDay: 1
         });
+        // fw.setFormValue(dataId, fw.getDate(), fw.type_form_datetimebox, '');
+        $(dataId).datebox('setValue',  fw.getDate());
 
     }
 
@@ -113,16 +116,26 @@ var OrderClass = function (token) {
         });
     }
 
-    function initTableOrderReportWeeklyTable() {
 
-        fw.datagrid({
-            id:'orderReportWeeklyTable'+token,
-            url:WEB_ROOT + "/production/Order_getReportWeekly.action",
+    //初始化周报表格
+    function initTableOrderReportWeeklyTable() {
+        var strTableId = 'orderReportWeeklyTable' + token;
+        var url = WEB_ROOT + "/production/Order_getReportWeekly.action";
+
+        $('#' + strTableId).datagrid({
+            title: '周报表',
+            url: url,
+            queryParams: {
+                // 此处可定义默认的查询条件
+                "selectedDate": fw.getDate(),
+            },
             loadMsg: '数据正在加载，请稍后……',
             rownumbers: true,
-            singleSelect: true,
-            pageList: [100],
-            pageSize: 100,
+            singleSelect: false,
+            pagination: true,
+            pageList: [10,20,50,100],
+            pageSize: 10,
+            fitColumns: true,
             loadFilter: function (data) {
                 try {
                     data = fw.dealReturnObject(data);
@@ -136,45 +149,69 @@ var OrderClass = function (token) {
                     {field: 'ck', checkbox: true},
                     {field: 'sid', title: '序号', hidden: true},
                     {field: 'id', title: '编号', hidden: true},
-                    {field: 'groupName', title: '财富中心'},
-                    {field: 'name', title: '销售'}
+                    {field: 'money_open_add', title: '产品名称', align: "center"},
+                    {field: 'money_open_add', title: '募集总额', align: "center"},
+                    {field: 'money_open_add', title: '存续规模', align: "center"},
+                    {field: 'money_open_add', title: '本年募集总额', align: "center", width: 100},
+                    {field: 'money_open_add', title: '年度新增', align: "center"},
                 ]
             ],
+            // columns: [
+            //     [
+            //         {field: 'money_open', title: '存量金额',
+            //             formatter: function(value,row,index){
+            //                 return fw.formatMoney(row['money_open']);
+            //             }
+            //         },
+            //         {field: 'money_open_discountRate', title: '存量金额折标',
+            //             formatter: function(value,row,index){
+            //                 return fw.formatMoney(row['money_open_discountRate']);
+            //             }
+            //         },
+            //         {field: 'money_open_add', title: '新增金额',
+            //             formatter: function(value,row,index){
+            //                 return fw.formatMoney(row['money_open_add']);
+            //             }
+            //         },
+            //         {field: 'money_open_discountRate_add', title: '新增金额折标',
+            //             formatter: function(value,row,index){
+            //                 return fw.formatMoney(row['money_open_discountRate_add']);
+            //             }
+            //         },
+            //         {field: 'customer_count', title: '客户数'},
+            //         {field: 'customer_count_add', title: '客户新增数'}
+            //     ]
+            // ],
             columns: [
-                [
-                    {field: 'money_open', title: '存量金额',
-                        formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open']);
-                        }
-                    },
-                    {field: 'money_open_discountRate', title: '存量金额折标',
-                        formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_discountRate']);
-                        }
-                    },
-                    {field: 'money_open_add', title: '新增金额',
-                        formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_add']);
-                        }
-                    },
-                    {field: 'money_open_discountRate_add', title: '新增金额折标',
-                        formatter: function(value,row,index){
-                            return fw.formatMoney(row['money_open_discountRate_add']);
-                        }
-                    },
-                    {field: 'customer_count', title: '客户数'},
-                    {field: 'customer_count_add', title: '客户新增数'}
-                ]
-            ],
+                [{"title":"本金对付","colspan":2},
+                    {"title":"利息兑付","colspan":2}],
+                [{"field":"uname0","title":"本年已兑付","rowspan":1},
+                    {"field":"config_gender1","title":"已兑付总额","rowspan":1},
+                    {"field":"config_gender2","title":"本年已兑付","rowspan":1},
+                    {"field":"config_datatype0","title":"已兑付总额","rowspan":1}]],
+            rownumbers: true,
+            toolbar:[{
+                iconCls: 'icon-print', id: 'btnExport'+token, text: '导出'
+            }],
             onLoadSuccess: function () {
-
+                onClickReportWeeklyExport();
             }
+        });
+    }
+
+    function onClickReportWeeklyExport() {
+        // exportReportMonth
+        var buttonId = "btnExport" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            var orderReportTime = $('#searchDate' + token).datebox('getValue');
+            window.open(WEB_ROOT + "/production/Order_exportReportWeekly?orderReportTime="+orderReportTime);
         });
     }
 
     function initTableOrderReportMonthlyTable() {
         var tableId = 'orderReportMonthlyTable'+token;
         fw.datagrid({
+            fit:true,
             id:tableId,
             url:WEB_ROOT + "/production/Order_getReportMonthly.action",
             loadMsg: '数据正在加载，请稍后……',
@@ -2354,9 +2391,6 @@ var OrderClass = function (token) {
 
             initTableOrderReportMonthlyTable();
 
-            // initOrderReportWeeklySearch();
-            // initTableOrderReportWeeklyTable();
-            //
             onClickOrderReportMonthlySearchSubmit();
             onClickOrderReportMonthlyExportExcelSubmit();
         },

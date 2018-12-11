@@ -313,6 +313,19 @@ function contentTabAdd(permissionName, token) {
             orderClass.initReportWeekly();
         });
     }
+    else if (permissionName == "销售管理_报表管理_销售人员客户存量_查看") {
+        using(SCRIPTS_ROOT + '/sale/report/SpecificSalemanClass.js', function () {
+            //alert("hello");
+            var specificSalemanClass = new SpecificSalemanClass(token)
+            specificSalemanClass.initAll();
+        });
+    }else if (permissionName == "产品兑付计划") {
+        using(SCRIPTS_ROOT + '/sale/PaymentPlanClass.js', function () {
+            //alert("hello");
+            var paymentPlanClass = new PaymentPlanClass(token);
+            paymentPlanClass.initModule(token);
+        });
+    }
     else if (permissionName == "销售管理_销售月报_查看") {
         using(SCRIPTS_ROOT + '/production/OrderClass.js', function () {
             //alert("hello");
@@ -368,7 +381,7 @@ function contentTabAdd(permissionName, token) {
     else if (permissionName == "兑付计划月报表") {
         using(SCRIPTS_ROOT + '/sale/PaymentPlanClass.js', function () {
             var paymentPlanClass = new PaymentPlanClass(token);
-            paymentPlanClass.initModulePaymentPlanReportMonth();
+            paymentPlanClass.initPaymentTable();
         });
     }
     else if (permissionName == "用章情况") {

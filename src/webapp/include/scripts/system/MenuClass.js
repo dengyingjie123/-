@@ -66,8 +66,8 @@ var MenuClass = function(token) {
                         //process.beforeClick();
                         initWindowMenu([data]);
                     }
-                    catch (e) {}
-                    process.afterClick()
+                    catch (e) {process.afterClick()
+                    }
 
                 }, function() {
                     process.errorClick();
@@ -87,8 +87,8 @@ var MenuClass = function(token) {
                             var tree = '#systemMenu'+token;
                             initMenuTree(tree);
                         }
-                        catch (e) {}
-                        process.afterClick();
+                        catch (e) {process.afterClick();
+                        }
                     }, function() {
                         process.errorClick();
                     })

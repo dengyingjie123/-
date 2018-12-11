@@ -24,6 +24,15 @@ var PaymentPlanClass = function (token, permissionName) {
             initTablePaymentPlanTable2();
 
         }
+        /**
+        * @description 初始化特定时间兑付
+        * @author 徐明煜
+        * @date 2018/12/4 11:02
+         * @param null
+        * @return
+        * @throws Exception
+        */
+        initspecificPaymentTable();
 
         onClickPaymentPlanSearch();
     }
@@ -471,7 +480,7 @@ var PaymentPlanClass = function (token, permissionName) {
                     },
                     { field: 'interestDescription', title: '兑付频率及次数'},
                     { field: 'paymentTime', title: '兑付日'},
-                    { field: 'weekOfDay', title: '兑付星期'},
+                        { field: 'weekOfDay', title: '兑付星期'},
                     { field: 'totalPaymentPrincipalMoney', title: '兑付本金',
                         formatter: function(value,row,index) {
                             return fw.formatMoney(row['totalPaymentPrincipalMoney']);
@@ -932,6 +941,160 @@ var PaymentPlanClass = function (token, permissionName) {
         });
     }
 
+
+
+    /**
+    * @description 特定时间产品兑付表格
+    * @author 徐明煜
+    * @date 2018/12/4 11:05
+     * @param null
+    * @return
+    * @throws Exception
+    */
+    function initspecificPaymentTable(startTime, endTime, productionName) {
+
+        var strTableId = 'specificPaymentTable' + token;
+        var url = WEB_ROOT + "/sale/PaymentPlan_specificPaymentPlanByname.action";
+
+        //设置datagrid
+        $('#' + strTableId).datagrid({
+            title: '客户存量',
+            url: url,
+            queryParams: {
+                // 此处可定义默认的查询条件
+            },
+            loadMsg: '数据正在加载，请稍后……',
+            rownumbers: true,
+            singleSelect: false,
+            pagination: true,
+            pageList: [10,20,50,100],
+            pageSize: 10,
+            rownumbers: true,//是否显示行号
+            remoteSort: true,//是否从数据库排序
+            loadFilter: function (data) {
+                try {
+                    data = fw.dealReturnObject(data);
+                    return data;
+                    console.log(data);
+                }
+                catch (e) {
+                }
+            },
+            frozenColumns:[
+                [  // 固定列，没有滚动条
+                    {field: 'ck', checkbox: true},
+                    {field: 'sid', title: '序号', hidden: true},
+                    {field: 'id', title: '编号', hidden: true},
+                ]
+            ],
+            columns:[
+                [
+                    {field: 'paymentPlanId', title: '兑付计划编号', align: "center"},
+                    {field: 'orderId', title: '订单编号', align: "center"},
+                    {field: 'customerId', title: '客户编号', align: "center"},
+                    {field: 'customerName', title: '客户姓名', align: "center"},
+                    {field: 'productionId', title: '产品编号', align: "center"},
+                    {field: 'productionName', title: '产品名称', align: "center"},
+                    {field: 'paymentTime', title: '应兑付时间', align: "center"},
+                    {field: 'totalPaymentPrincipalMoney', title: '应兑付本金金额', align: "center",
+                        formatter:function(value,row,index){
+                            return fw.formatMoney(row['money'])
+                        }},
+                    {field: 'totalProfitMoney', title: '应兑付收益金额', align: "center",
+                        formatter:function(value,row,index){
+                            return fw.formatMoney(row['money'])
+                        }},
+                    {field: 'paiedPrincipalMoney', title: '实际兑付本金金额', align: "center",
+                        formatter:function(value,row,index){
+                            return fw.formatMoney(row['money'])
+                        }},
+                    {field: 'paiedProfitMoney', title: '实际兑付收益金额', align: "center",
+                        formatter:function(value,row,index){
+                            return fw.formatMoney(row['money'])
+                        }},
+                    {field: 'paiedPaymentTime', title: '实际兑付时间', align: "center"}
+                ]
+            ],
+            toolbar:[{
+                iconCls: 'icon-print', id: 'btnExport'+token, text: '导出'
+            }],
+            onLoadSuccess: function () {
+                onClickSearchPaymentBynameAndTime();
+                onClickExportPayment();
+                onClickSearchReset()
+            }
+        });
+    }
+
+
+    /**
+     * @description 导出特定时间段内产品兑付计划
+     * @author 徐明煜
+     * @date 2018/12/4 14:17
+     * @param null
+     * @return
+     * @throws
+     */
+    function onClickExportPayment() {
+
+        var buttonId = "btnExport" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            var startTime = $('#Search_Start_Time' + token).val();
+            var endTime = $('#Search_Start_Time' + token).val();
+            var productionName = $('#Search_Production_Name' + token).val();
+            if(startTime == "" || endTime == "" || productionName == ""){
+                fw.alert("提示", "搜索不能为空")
+            }else{
+                window.open(WEB_ROOT + "/sale/report/Saleman_exportSalemanStock.action?selectName="+ selectName);
+            }
+        });
+    }
+
+
+    /**
+     * @description 搜索特定时间段内产品兑付计划
+     * @author 徐明煜
+     * @date 2018/12/4 14:17
+     * @param null
+     * @return
+     * @throws
+     */
+    function  onClickSearchPaymentBynameAndTime() {
+
+        var buttonId = "btnSearch" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            var startTime = $('#Search_Start_Time' + token).datebox('getValue');
+            var endTime = $('#Search_Start_Time' + token).datebox('getValue');
+            var productionName = $('#Search_Production_Name' + token).val();
+            alert(startTime);
+            if(startTime == "" || endTime == "" || productionName == ""){
+                fw.alert("提示", "三项均不能为空")
+            }else{
+                );
+            }
+        });
+    }
+
+
+    /**
+    * @description 重置搜索栏
+    * @author 徐明煜
+    * @date 2018/12/4 14:55
+     * @param null
+    * @return
+    * @throws
+    */
+    function  onClickSearchReset() {
+
+        var buttonId = "btnSearchReset" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            $('#Search_Start_Time' + token).combo('setText','');
+            $('#Search_End_Time' + token).combo('setText','');
+            $('#Search_Production_Name' + token).val("");
+        });
+    }
+
+
 ///  事件定义 结束  /////////////////////////////////////////////////////////////////
 
 
@@ -958,6 +1121,12 @@ var PaymentPlanClass = function (token, permissionName) {
 
             onClickReportMonthSearch();
 
+        },
+        initPaymentTable(){
+            var startTime = null;
+            var endTime = null;
+            var productionName = null;
+            initspecificPaymentTable(startTime, endTime, productionName)
         }
     };
 }

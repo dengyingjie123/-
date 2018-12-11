@@ -1,7 +1,9 @@
 package com.youngbook.dao;
 
 import com.youngbook.common.Database;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.entity.po.MenuPO;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Component
 public class MenuDao {
     /**
      * 精确查询
@@ -344,7 +346,9 @@ public class MenuDao {
 
                 // 组织删除SQL语句
                 StringBuffer sbSQL = new StringBuffer();
-                sbSQL.append("DELETE FROM system_menu WHERE id='" + po.getId() + "'");
+//                sbSQL.append("DELETE FROM system_menu WHERE id='" + po.getId() + "'");
+                //逻辑删除
+                sbSQL.append("UPDATE system_menu SET state=0 WHERE id='" + po.getId() + "'");
 
                 // 打印日志
                 System.out.println("MenuDao.delete(): " + sbSQL.toString());
@@ -567,8 +571,6 @@ public class MenuDao {
     }
 
 
-
-
     /**
      * 按ID更新数据
      * Version: 0.1.5
@@ -705,6 +707,7 @@ public class MenuDao {
         return intCount;
     }
 
+
     /**
      * 从Request构建对象实例
      * Version: 0.1.5
@@ -747,5 +750,73 @@ public class MenuDao {
 
         // 返回实例
         return po;
+    }
+
+
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/3 13:30
+     * @param menu
+     * @param clazz
+     * @param conn
+     * @return com.youngbook.entity.po.MenuPO
+     * @throws Exception
+     */
+    public MenuPO loadMenuPO(MenuPO menu, Class<MenuPO> clazz, Connection conn) throws Exception {
+        MenuPO menuPO = MySQLDao.load(menu, clazz, conn);
+        return menuPO;
+    }
+
+
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/3 13:30
+     * @param menu
+     * @param operatorId
+     * @param conn
+     * @return com.youngbook.entity.po.MenuPO
+     * @throws Exception
+     */
+    public MenuPO deleteMenuPO(MenuPO menu, String operatorId, Connection conn) throws Exception {
+
+        MySQLDao.remove(menu, operatorId, conn);
+        return menu;
+    }
+
+
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/3 13:31
+     * @param menu
+     * @param operatorId
+     * @param conn
+     * @return com.youngbook.entity.po.MenuPO
+     * @throws Exception
+     */
+    public MenuPO saveMenuPO(MenuPO menu, String operatorId, Connection conn) throws Exception {
+
+        MySQLDao.insertOrUpdate(menu, operatorId, conn);
+        return menu;
+    }
+
+
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/3 13:31
+     * @param clazz
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.MenuPO>
+     * @throws Exception
+     */
+    public List<MenuPO> listMenuPO(Class<MenuPO> clazz, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.getInstance("select * from system_menu where state=0 ORDER BY orders asc");
+        dbSQL.initSQL();
+        List<MenuPO> menus = MySQLDao.search(dbSQL, clazz, conn);
+        return menus;
     }
 }

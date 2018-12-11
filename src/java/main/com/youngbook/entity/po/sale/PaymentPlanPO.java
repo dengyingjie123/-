@@ -38,7 +38,7 @@ public class PaymentPlanPO extends BasePO {
     //产品编号
     private String productId = new String();
 
-    //产品构成编号ProductCompositionId
+    //产品构成编号
     private String productCompositionId = new String();
     //客户编号
     private String customerId = new String();
@@ -69,12 +69,14 @@ public class PaymentPlanPO extends BasePO {
     //备注
     private String comment = new String();
 
-    //以兑付时间
+    //已兑付时间
     @DataAdapter(fieldType = FieldType.DATE)
     private String paiedPaymentTime= new String();
 
     // 审核人编号
     private String confirmorId = new String();
+
+    // 审核时间
     @DataAdapter(fieldType = FieldType.DATE)
     private String confirmTime = new String();
 

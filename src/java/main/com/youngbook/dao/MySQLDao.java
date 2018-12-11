@@ -1257,7 +1257,7 @@ public class MySQLDao {
 
     }
 
-    public static <T> int insertOrUpdate(T object, Connection conn) throws Exception {
+        public static <T> int insertOrUpdate(T object, Connection conn) throws Exception {
         return insertOrUpdate(object, Config.getDefaultOperatorId(), conn);
     }
 

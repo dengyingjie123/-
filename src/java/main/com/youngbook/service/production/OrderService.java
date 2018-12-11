@@ -1093,8 +1093,15 @@ public class OrderService extends BaseService {
         return pager;
     }
 
-
-
+    /**
+     * @author: mojiayi
+     * @version: 1.1
+     * @param thisYear
+     * @param thisMonth
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public Pager getReportMonthly(String thisYear, String thisMonth, Connection conn) throws Exception {
 
         String this_year_begin_time = thisYear + "-01-01 00:00:00";
