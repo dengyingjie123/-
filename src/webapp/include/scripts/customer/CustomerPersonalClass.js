@@ -628,8 +628,6 @@ var CustomerPersonalClass = function (token) {
                 var params = {"customers": JSON.stringify(selections)}
 
 
-
-
                 /**
                  * @description
                  * 获得客户的所有数据的json

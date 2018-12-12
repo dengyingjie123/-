@@ -410,8 +410,14 @@ var CustomerInstitutionClass = function(token) {
         });
     }
 
+
     /**
-     * 机构客户分配
+     * @description 机构客户分配
+     * 修改为批量分配
+     * @author 胡超怡
+     *
+     * @date 2018/12/12 18:04
+     * @throws Exception
      */
     function onClickCustomerInstitutionDistribution(){
         var buttonId = "btnInstitutionDistribution" + token;
@@ -421,8 +427,6 @@ var CustomerInstitutionClass = function(token) {
                 var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
 
                 var params = {"customers": JSON.stringify(selections)}
-
-
 
 
                 /**
