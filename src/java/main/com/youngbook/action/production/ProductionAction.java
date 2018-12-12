@@ -764,6 +764,7 @@ public class ProductionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * @description 修改产品，当产品分期为草稿状态(status == 0)才允许修改
      *
@@ -777,7 +778,6 @@ public class ProductionAction extends BaseAction {
     public String editProduction() throws Exception {
 
         production = HttpUtils.getInstanceFromRequest(getRequest(), "production", ProductionPO.class);
-        Connection conn = getConnection();
 
 
 
@@ -787,19 +787,20 @@ public class ProductionAction extends BaseAction {
          */
         int status = production.getStatus();
         if(status != 0){
-            MyException.newInstance("当前状态产品分期无法修改，请改为草稿后执行修改操作");
+            MyException.newInstance("当前状态订单无法修改，请审批为草稿再进行修改操作");
         }
 
 
 
 
-        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
+        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), getConnection());
 
 
 
 
         return SUCCESS;
     }
+
 
     /**
      * 删除

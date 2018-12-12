@@ -515,9 +515,6 @@ var ProductionClass = function (token, my, obj) {
 
 
     /**
-     *
-     */
-    /**
      * @description 修改事件
      *
      * @author 苟熙霖
@@ -536,7 +533,7 @@ var ProductionClass = function (token, my, obj) {
 
                 var status = selected.status;
                 if(status != 0) {
-                    fw.alert('提示',"当前状态订单无法修改，请审核为草稿再进行修改操作");
+                    fw.alert('提示',"当前状态订单无法修改，请审批为草稿再进行修改操作");
                     process.afterClick();
                     return;
                 }
@@ -550,19 +547,11 @@ var ProductionClass = function (token, my, obj) {
                     process.afterClick();
                 });
 
-                /*
-                * 判断产品的状态
-                * */
-
-                // }else{
-                //
-                //     //initTableProductionTable();
-                // }
-
             })
 
         });
     }
+
 
     function onClickProductionView() {
         var buttonId = "btnProductionView" + token;
@@ -582,6 +571,8 @@ var ProductionClass = function (token, my, obj) {
 
         });
     }
+
+
     /**
      * 审核事件
      *

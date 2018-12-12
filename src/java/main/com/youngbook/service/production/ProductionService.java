@@ -842,11 +842,15 @@ public class ProductionService extends BaseService {
 
 
     /**
-     * 新增或修改
-     *
+     * @description 新增或修改
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 14:05
      * @param production
+     * @param userId
      * @param conn
-     * @return
+     * @return com.youngbook.entity.po.production.ProductionPO
      * @throws Exception
      */
     public ProductionPO insertOrUpdate(ProductionPO production, String userId, Connection conn) throws Exception {
@@ -855,14 +859,19 @@ public class ProductionService extends BaseService {
             userId = Config.getDefaultOperatorId();
         }
 
-        int count = 0;
 
+
+
+
+        int count = 0;
         if (StringUtils.isEmpty(production.getProductionNo())) {
             // 获得产品编号
             String productionNo = ProductionService.getNewProductionNo(production, conn);
-
             production.setProductionNo(productionNo);
         }
+
+
+
 
         count = MySQLDao.insertOrUpdate(production, userId, conn);
         if (count != 1) {
