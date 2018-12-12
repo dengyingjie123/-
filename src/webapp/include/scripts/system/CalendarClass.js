@@ -48,6 +48,7 @@ var CalendarClass = function(token) {
 
     }
 
+
     /**
      * 初始化用户购买产品信息的窗口
      * @param customerName
@@ -157,9 +158,14 @@ var CalendarClass = function(token) {
      * @throws Exception
      */
     function iniTableRaiseInfoTable() {
+
         var today = fw.getTimeToday();
         var strTableId = "raiseInfoTable" + token;
         var url = WEB_ROOT+"/system/Calendar_getCurrentMonthRaise.action?today="+today;
+
+
+
+
 
         $('#'+strTableId).datagrid({
             url:url,
@@ -176,7 +182,7 @@ var CalendarClass = function(token) {
 
             ]],
             columns: [[
-                { field:'money',title:'当月募集资金总额'}
+                { field:'money',title:'当月募集资金总额(元)'}
             ]]
         });
     }

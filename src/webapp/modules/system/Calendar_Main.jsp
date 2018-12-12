@@ -14,13 +14,20 @@
 	}
 </style>
 </head>
-<body>
-<table  id="raiseInfoTable<%=token%>">
-</table>
 <br />
 <br />
-<div style="max-width:800px; margin: 0 auto;" id='calendar'></div>
-<br/>
-
+<div>
+    <table>
+        <th style="width: 145px;">
+        </th>
+        <th>
+            <div style="max-width:800px; margin: 0 auto;" id='calendar'>
+            </div>
+        </th>
+        <th>
+            <table  id="raiseInfoTable<%=token%>"style="width: 130px; height:555px"></table>
+        </th>
+    </table>
+</div>
 </body>
 </html>

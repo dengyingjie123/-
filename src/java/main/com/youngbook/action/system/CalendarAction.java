@@ -62,11 +62,16 @@ public class CalendarAction extends BaseAction {
         OrderPO orderPO = new OrderPO();
         String today = getRequest().getParameter("today");
         String id = getLoginUser().getId();
+
+
+
+
         List<OrderPO> raises = service.getCurrentMonthRaise(today, id, getConnection());
 
 
-
-
+        /**
+         * 计算返回的数据
+         */
         Double raise = 0.0;
         for (OrderPO o : raises) {
             double money = o.getMoney();
