@@ -391,6 +391,21 @@ public class UserAction extends BaseAction {
         return SUCCESS;
     }
 
+    /**
+     * @description 员工离职
+     * @author 徐明煜
+     * @date 2018/12/12 18:00
+     * @param
+     * @return
+     * @throws Exception
+     */
+    @Permission(require = "系统管理-用户管理-删除")
+    public String dimiss() throws Exception {
+
+        String userId = getHttpRequestParameter("user.id");
+        return SUCCESS;
+    }
+
 
     public ReturnObject getResult() {
         return result;

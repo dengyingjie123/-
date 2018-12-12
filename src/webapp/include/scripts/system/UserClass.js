@@ -76,6 +76,8 @@ var UserClass = function(token){
                 onUserDelete();
                 //修改事件跳转
                 onUserEdit();
+                //员工离职跳转
+                onUserDimissio();
             }
         });
     }
@@ -129,6 +131,31 @@ var UserClass = function(token){
                     initUserWindow(data,1);
                     process.afterClick();
                 }, function () {
+                    process.afterClick();
+                });
+            })
+        });
+    }
+
+    /**
+    * @description 人员离职
+    * @author 徐明煜
+    * @date 2018/12/12 17:30
+    * @param null
+    * @return
+    * @throws
+    */
+    function onUserDimissio() {
+        var butttonId = "btnUserDimission" + token;
+        fw.bindOnClick(butttonId, function(process) {
+            fw.datagridGetSelected('UserTable'+token, function(selected){
+                fw.confirm('员工离职确认', '是否确认该员工离职？', function(){
+                    // 更改url
+                    var url = WEB_ROOT + "/system/User_dimiss.action?user.id="+selected.id;
+                    fw.post(url, null, function(data) {
+                        fw.datagridReload('UserTable'+token);
+                    }, null);
+                }, function(){
                     process.afterClick();
                 });
             })
