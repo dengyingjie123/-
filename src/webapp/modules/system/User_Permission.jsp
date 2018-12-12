@@ -12,7 +12,6 @@
 <head>
 </head>
 <body>
-<div style="padding:5px;">
     <div class="easyui-panel" title="查询" iconCls="icon-search" >
         <table border="0" cellpadding="3" cellspacing="0">
             <tr>
@@ -26,10 +25,11 @@
                 </td>
             </tr>
         </table>
-    </div>
-    <br />
         <table id="PermissionTable<%=token%>" name="PermissionTable" border="0" cellspacing="5" cellpadding="0">
         </table>
+    </div>
+<div region="south" border="false" style="text-align:right;padding:6px;background:#F4F4F4">
+    <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('permissionWindow<%=token%>')">取消</a>
 </div>
 </body>
 </html>

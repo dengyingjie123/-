@@ -361,12 +361,34 @@ public class UserService extends BaseService {
 
     }
     /**
-     * 获取用户权限
+     * @description  获取对应用户的权限
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 11:38
+     * @param userId
+     * @param permissionName
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return com.youngbook.common.Pager
+     * @throws Exception
      */
-    public  Pager getPagerMenuPo (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
+    public  Pager getPagerMenuPos (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
+
+
         if(StringUtils.isEmpty(userId)){
             MyException.newInstance("无法获得用户编号").throwException();
         }
-        return userDao.getPermissionName(userId,permissionName,currentPage,showRowCount,conn);
+
+
+
+
+        Pager pagerMenuPos = userDao.getPagerMenuPos(userId, permissionName, currentPage, showRowCount, conn);
+
+
+
+
+        return pagerMenuPos;
     }
 }

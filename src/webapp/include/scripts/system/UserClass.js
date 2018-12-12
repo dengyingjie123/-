@@ -83,30 +83,64 @@ var UserClass = function(token){
             }
         });
     }
-    //查看权限
+    
+    
+    /**
+     * @description 查看用户权限
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 11:23
+     * @param null
+     * @return 
+     * @throws Exception
+     */
      function onClickUserPermissionSearch(){
+         /*
+          * 绑定点击事件，获取查询需要的数据
+          */
          var buttonId = "btnUserPermission" + token;
          fw.bindOnClick(buttonId,function () {
              fw.datagridGetSelected('UserTable'+token, function(selected){
                  var userid = selected.id;
                  var url =  WEB_ROOT +"/modules/system/User_Permission.jsp?token="+token;
-                 fw.window('permissionWindow'+token,'权限明细',600,450,url,function () {
+
+
+
+
+                /*
+                * 初始化权限窗口
+                */
+                 fw.window('permissionWindow'+token,'权限明细',520,465,url,function () {
                      initPermissionTable(userid);
-                 })
-             })
-         })
+                 });
+             });
+         });
      }
 
+     /**
+      * @description 获取数据初始化表格
+      * 
+      * @author 苟熙霖 
+      * 
+      * @date 2018/12/12 11:26
+      * @param null
+      * @return 
+      * @throws Exception
+      */
      function initPermissionTable(userid) {
+         /*
+          * 初始化表格，获取返回数据
+          */
          var strTableId = "PermissionTable" + token;
          var url = WEB_ROOT + "/system/User_getPagerMenuPo.action?user.id="+userid;
          $('#' + strTableId).datagrid({
-             title: '',
+             title: '权限列表',
              url: url,
              loadMsg: '数据正在加载，请稍后……',
              fitColumns: true,
              singleSelect: true,
-             pageList: [10, 15, 20],
+             pageList: [10],
              pageSize: 10,
              rownumbers: true,
              loadFilter: function (data) {
@@ -118,46 +152,76 @@ var UserClass = function(token){
                  }
              },
              pagination: true,
-             frozenColumns: [
-                 [  // 固定列，没有滚动条
+             frozenColumns: [[
+                    // 固定列，没有滚动条
                      {field: 'ck', checkbox: true},
-                     { field: 'id', title: '编号', hidden: true },
-                 ]
-             ],
-             columns: [
-                 [
+                     { field: 'id', title: '编号', hidden: true }
+                 ]],
+             columns: [[
                      { field: 'name', title: '菜单名' , hidden: false},
-                     { field: 'permissionName', title: '权限名', hidden: false },
-                 ]
-             ]
+                     { field: 'permissionName', title: '权限名', hidden: false }
+                 ]],
 
+
+
+
+             /*
+              * 初始化搜索事件和重置事件
+              */
+             onLoadSuccess:function() {
+                 onClickPermissionSearch();
+                 onClickPermissionReset();
+             }
          });
-         onClickPermissionSearch();
-         onClickPermissionReset();
      }
      /**
       * 权限名查询
       */
      function onClickPermissionSearch(){
+
          var buttonId = "btnSearchPermissionSubmit" + token;
+
+
+
+
+         /*
+         * 绑定查询事件
+         * */
          fw.bindOnClick(buttonId,function(){
              var strTableId = "PermissionTable"+token;
              var params = $( '#' + strTableId).datagrid('options').queryParams;
-             //获取名称
+
+
+
+
+             /*
+             * 获取名称
+             * */
              params["menuPO.permissionName"] = $('#search_permission_name'+token).val();
              $( '#' + strTableId).datagrid('load');
          })
      }
 
+
      /**
       * 权限名重置查询事件
       */
      function onClickPermissionReset() {
+
          var buttonId = "btnSearchPermissionReset" + token;
+
+
+
+
+         /*
+         * 绑定重置事件
+         * */
          fw.bindOnClick(buttonId, function(process) {
              $('#search_permission_name' + token).val('');
          });
      }
+
+
     /**
      * 添加事件
      */

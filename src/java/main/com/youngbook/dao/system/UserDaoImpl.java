@@ -124,14 +124,29 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public Pager getPermissionName(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
+    public Pager getPagerMenuPos(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
+        /*
+        * 初始化DatabaseSQL
+        * */
         MenuPO po = new MenuPO();
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("skrskr");
         dbSQL.addParameter4All("userId",userId);
         dbSQL.addParameter4All("permissionName",permissionName);
         dbSQL.initSQL();
         dbSQL.init4Pager();
-        Pager search = MySQLDao.search(dbSQL, po, null, currentPage, showRowCount, null, connection);
-        return search;
+
+
+
+
+        /*
+        * 查询数据
+        * */
+        Pager pagerMenuPos = MySQLDao.search(dbSQL, po, null, currentPage, showRowCount, null, connection);
+
+
+
+
+
+        return pagerMenuPos;
     }
 }

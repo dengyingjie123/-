@@ -388,15 +388,44 @@ public class UserAction extends BaseAction {
 
         return SUCCESS;
     }
-    public String getPagerMenuPo ()throws  Exception{
+
+    /**
+     * @description 获取对应用户的权限
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/12 11:31
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String getPagerMenuPo() throws  Exception{
+        /*
+        * 初始化数据
+        * */
         String userId = HttpUtils.getParameter(getRequest(), "user.id");
         String permissionName = HttpUtils.getParameter(getRequest(), "menuPO.permissionName");
-        Pager instance = Pager.getInstance(getRequest());
+        Pager pagerMenuPos = Pager.getInstance(getRequest());
 
-        Pager pager = userService.getPagerMenuPo(userId,permissionName,instance.getCurrentPage(),instance.getShowRowCount(), getConnection());
-        getResult().setReturnValue(pager.toJsonObject());
+
+
+
+        /**
+         *  获取对应用户的权限
+         */
+        pagerMenuPos = userService.getPagerMenuPos(userId, permissionName, pagerMenuPos.getCurrentPage(), pagerMenuPos.getShowRowCount(), getConnection());
+
+
+
+
+        getResult().setReturnValue(pagerMenuPos.toJsonObject());
+
+
+
+
         return SUCCESS;
     }
+
 
     public ReturnObject getResult() {
         return result;
