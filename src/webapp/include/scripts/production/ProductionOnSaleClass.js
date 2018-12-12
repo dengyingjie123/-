@@ -527,6 +527,7 @@ var ProductionClass = function (token, my, obj) {
         });
     }
 
+
     function onClickProductionView() {
         var buttonId = "btnProductionView" + token;
         fw.bindOnClick(buttonId, function (process) {
@@ -579,6 +580,7 @@ var ProductionClass = function (token, my, obj) {
 
         });
     }
+
 
     /**
      * 根据产品列出客户信息

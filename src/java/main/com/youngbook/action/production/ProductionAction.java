@@ -856,6 +856,10 @@ public class ProductionAction extends BaseAction {
 
         productionVO = HttpUtils.getInstanceFromRequest( getRequest(), "productionVO", ProductionVO.class );
         Pager pager = Pager.getInstance( getRequest() );
+
+
+
+
         pager = productionService.getPagerProductionVO( productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection() );
         getResult().setReturnValue( pager.toJsonObject() );
 

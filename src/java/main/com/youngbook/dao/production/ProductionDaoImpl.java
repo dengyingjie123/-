@@ -113,6 +113,7 @@ public class ProductionDaoImpl implements IProductionDao {
         return false;
     }
 
+
     public ProductionPO loadProductionById(String id, Connection conn) throws Exception {
         // 查询出订单购买了哪个产品
         ProductionPO production = new ProductionPO();
@@ -121,6 +122,7 @@ public class ProductionDaoImpl implements IProductionDao {
         production = MySQLDao.load(production,ProductionPO.class,conn);
         return production;
     }
+
 
     public ProductionWVO getProductByProductionIdAndMoney(String productionId, double money, Connection conn) throws Exception {
 
@@ -140,6 +142,7 @@ public class ProductionDaoImpl implements IProductionDao {
         }
         return null;
     }
+
 
     /**
      * @description 获取在售产品信息
