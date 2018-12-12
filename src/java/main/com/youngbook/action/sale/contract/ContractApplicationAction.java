@@ -10,15 +10,19 @@ import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
+import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.po.sale.contract.ContractApplicationPO;
+import com.youngbook.entity.po.sale.contract.ContractPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.Sale.contract.ContractApplicationVO;
+import com.youngbook.service.production.ProductionService;
 import com.youngbook.service.sale.contract.ContractService;
 import com.youngbook.service.system.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +35,8 @@ public class ContractApplicationAction extends BaseAction {
     //销售合同业务类
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private ProductionService productionService;
     //销售合同申请对象
     private ContractApplicationPO contractApplicationPO = new ContractApplicationPO();
     private ContractApplicationVO contractApplicationVO = new ContractApplicationVO();
@@ -120,6 +126,7 @@ public class ContractApplicationAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 获取销售和同事申请的列表数据
      * 调用 业务类的 listApplications 获取销售合同列表数据
@@ -137,6 +144,7 @@ public class ContractApplicationAction extends BaseAction {
         getResult().setReturnValue(page.toJsonObject());
         return SUCCESS;
     }
+
 
     /**
      * 审批销售合同申请
@@ -165,6 +173,56 @@ public class ContractApplicationAction extends BaseAction {
 
 
         contractService.checkApplication(contractApplicationPO, passOrNot, NumberUtils.parse2Int(beginNumber), checkUser, departmentPO, conn);
+        return SUCCESS;
+    }
+
+
+    /**
+     * @description 生成合同号
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 16:34
+     * @param 
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String createContractNum() throws Exception {
+
+        String contracts = getHttpRequestParameter("contracts");
+        String productionId = getHttpRequestParameter("productionId");
+        String counts = getHttpRequestParameter("counts");
+        String[] split = contracts.split("-");
+        long begin = Long.valueOf(split[0]);
+
+
+        ArrayList list = new ArrayList();
+        Pager pager = new Pager();
+
+
+        ProductionPO productionPO = productionService.loadProductionById(productionId, getConnection());
+        int contractCopies = productionPO.getContractCopies();
+
+
+
+
+        String contractNum ;
+        for(int i =0 ; i<=Integer.valueOf(counts) ; i++){
+
+            for(int j = 1 ; j<=contractCopies ; j++){
+                contractNum = String.valueOf(begin)+ "-" + String.valueOf(j);
+                ContractPO contractPO = new ContractPO();
+                contractPO.setContractNo(contractNum);
+                list.add(contractPO);
+            }
+            
+            begin++;
+        }
+        pager.setData(list);
+
+
+
+        getResult().setReturnValue(pager);
         return SUCCESS;
     }
 
