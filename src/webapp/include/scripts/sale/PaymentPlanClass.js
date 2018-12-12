@@ -24,6 +24,7 @@ var PaymentPlanClass = function (token, permissionName) {
             initTablePaymentPlanTable2();
 
         }
+        onClickPaymentPlanSearch();
         /**
         * @description 初始化特定时间兑付
         * @author 徐明煜
@@ -32,9 +33,12 @@ var PaymentPlanClass = function (token, permissionName) {
         * @return
         * @throws Exception
         */
-        initspecificPaymentTable();
-
-        onClickPaymentPlanSearch();
+        var startTime = null;
+        var endTime = null;
+        initspecificPaymentTable(startTime, endTime);
+        onClickSearchPaymentByTime();
+        onClickExportPayment();
+        onClickSearchReset()
     }
 
     //初始化兑付状态
@@ -951,14 +955,14 @@ var PaymentPlanClass = function (token, permissionName) {
     * @return
     * @throws Exception
     */
-    function initspecificPaymentTable(startTime, endTime, productionName) {
+    function initspecificPaymentTable(startTime, endTime) {
 
         var strTableId = 'specificPaymentTable' + token;
-        var url = WEB_ROOT + "/sale/PaymentPlan_specificPaymentPlanByname.action";
+        var url = WEB_ROOT + "/sale/PaymentPlan_specificPaymentPlanByTime.action?startTime=" + startTime + "&endTime=" + endTime;
 
         //设置datagrid
         $('#' + strTableId).datagrid({
-            title: '客户存量',
+            title: '特定时间段内产品兑付计划',
             url: url,
             queryParams: {
                 // 此处可定义默认的查询条件
@@ -989,37 +993,23 @@ var PaymentPlanClass = function (token, permissionName) {
             ],
             columns:[
                 [
-                    {field: 'paymentPlanId', title: '兑付计划编号', align: "center"},
-                    {field: 'orderId', title: '订单编号', align: "center"},
-                    {field: 'customerId', title: '客户编号', align: "center"},
-                    {field: 'customerName', title: '客户姓名', align: "center"},
-                    {field: 'productionId', title: '产品编号', align: "center"},
+                    {field: 'PaymentTime', title: '支付月份', align: "center"},
                     {field: 'productionName', title: '产品名称', align: "center"},
-                    {field: 'paymentTime', title: '应兑付时间', align: "center"},
-                    {field: 'totalPaymentPrincipalMoney', title: '应兑付本金金额', align: "center",
+                    {field: 'PrincipalMoney', title: '兑付本金总额', align: "center",
                         formatter:function(value,row,index){
                             return fw.formatMoney(row['money'])
                         }},
-                    {field: 'totalProfitMoney', title: '应兑付收益金额', align: "center",
+                    {field: 'ProfitMoney', title: '兑付利息总额', align: "center",
                         formatter:function(value,row,index){
                             return fw.formatMoney(row['money'])
                         }},
-                    {field: 'paiedPrincipalMoney', title: '实际兑付本金金额', align: "center",
-                        formatter:function(value,row,index){
-                            return fw.formatMoney(row['money'])
-                        }},
-                    {field: 'paiedProfitMoney', title: '实际兑付收益金额', align: "center",
-                        formatter:function(value,row,index){
-                            return fw.formatMoney(row['money'])
-                        }},
-                    {field: 'paiedPaymentTime', title: '实际兑付时间', align: "center"}
                 ]
             ],
             toolbar:[{
                 iconCls: 'icon-print', id: 'btnExport'+token, text: '导出'
             }],
             onLoadSuccess: function () {
-                onClickSearchPaymentBynameAndTime();
+                onClickSearchPaymentByTime();
                 onClickExportPayment();
                 onClickSearchReset()
             }
@@ -1059,18 +1049,16 @@ var PaymentPlanClass = function (token, permissionName) {
      * @return
      * @throws
      */
-    function  onClickSearchPaymentBynameAndTime() {
+    function  onClickSearchPaymentByTime() {
 
         var buttonId = "btnSearch" + token;
         fw.bindOnClick(buttonId, function (process) {
             var startTime = $('#Search_Start_Time' + token).datebox('getValue');
             var endTime = $('#Search_Start_Time' + token).datebox('getValue');
-            var productionName = $('#Search_Production_Name' + token).val();
-            alert(startTime);
-            if(startTime == "" || endTime == "" || productionName == ""){
-                fw.alert("提示", "三项均不能为空")
+            if(startTime == "" || endTime == ""){
+                fw.alert("提示", "请输入起始时间和结束时间")
             }else{
-                );
+                initspecificPaymentTable(startTime, endTime)
             }
         });
     }
@@ -1090,7 +1078,6 @@ var PaymentPlanClass = function (token, permissionName) {
         fw.bindOnClick(buttonId, function (process) {
             $('#Search_Start_Time' + token).combo('setText','');
             $('#Search_End_Time' + token).combo('setText','');
-            $('#Search_Production_Name' + token).val("");
         });
     }
 
@@ -1122,11 +1109,5 @@ var PaymentPlanClass = function (token, permissionName) {
             onClickReportMonthSearch();
 
         },
-        initPaymentTable(){
-            var startTime = null;
-            var endTime = null;
-            var productionName = null;
-            initspecificPaymentTable(startTime, endTime, productionName)
-        }
     };
 }

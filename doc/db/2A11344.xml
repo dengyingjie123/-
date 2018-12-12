@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="2A11344">
+
+            SELECT
+            t.PaymentTime,
+            t.productionName,
+            sum( t.TotalPaymentPrincipalMoney ) AS PrincipalMoney,
+            sum( t.TotalProfitMoney ) AS ProfitMoney
+            FROM
+            (
+            SELECT
+            plan.productionName,
+            DATE_FORMAT( plan.PaymentTime, '%m' ) PaymentTime,
+            sum( plan.TotalPaymentPrincipalMoney ) TotalPaymentPrincipalMoney,
+            sum( plan.TotalProfitMoney ) TotalProfitMoney
+            FROM
+            view_paymentPlan plan
+            WHERE
+            1 = 1
+            <if test="#{startTime} !=null">
+                AND plan.PaymentTime >= #{startTime}
+            </if>
+            <if test="#{endTime} !=null">
+                AND plan.PaymentTime <= #{endTime}
+            </if>
+
+            GROUP BY
+            PaymentTime,
+            plan.productionName
+            ORDER BY
+            plan.productionName
+            ) t
+            GROUP BY
+            PaymentTime,
+            productionName
+
+        </select>
+    </select-sql>
+</sql>

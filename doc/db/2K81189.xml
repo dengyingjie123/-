@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="2K81189">
+            SELECT
+            saleorder.OrderNum,
+            saleorder.CustomerName,
+            saleorder.productionname,
+            saleorder.Money,
+            saleorder.paymentPlanLastTime,
+            saleorder.Paytime
+            FROM
+            view_order saleorder
+            WHERE
+            saleorder.paymentPlanStatus != 5
+            <if test="#{selectName} !=null">
+                AND saleorder.salesmanName = #{selectName}
+            </if>
+            ORDER BY
+            saleorder.paymentPlanLasttime
+        </select>
+    </select-sql>
+</sql>

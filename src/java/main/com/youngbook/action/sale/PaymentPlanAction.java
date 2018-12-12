@@ -67,17 +67,20 @@ public class PaymentPlanAction extends BaseAction {
      * @return java.lang.String
      * @throws Exception
      */
-    public String specificPaymentPlanByname() throws Exception {
+    public String specificPaymentPlanByTime() throws Exception {
 
-        String selectName = getHttpRequestParameter("selectName");
-        if(selectName != null){
-            selectName = new String(selectName.getBytes(StringUtils.Encode_ISO_8859_1),StringUtils.Encode_UTF_8);
-        }
-        DatabaseSQL databaseSQL = DatabaseSQL.getInstance("select * from view_paymentPlan");
+        String startTime = getHttpRequestParameter("startTime");
+        String endTime = getHttpRequestParameter("endTime");
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11344");
+        databaseSQL.addParameter4All("startTime", startTime);
+        databaseSQL.addParameter4All("endTime", endTime);
         databaseSQL.initSQL();
 
-        List<SpecificPaymentPlanVO> specificPaymentPlanVOList = MySQLDao.search(databaseSQL, SpecificPaymentPlanVO.class, getConnection());
-        getResult().setReturnValue(specificPaymentPlanVOList);
+        Pager pager = Pager.getInstance(getRequest());
+        SpecificPaymentPlanVO specificPaymentPlanVO = new SpecificPaymentPlanVO();
+        Pager specificPaymentPlanVOPager = MySQLDao.search(databaseSQL, specificPaymentPlanVO,null,pager.getCurrentPage(),pager.getShowRowCount(),null,getConnection());
+        getResult().setReturnValue(specificPaymentPlanVOPager);
         return SUCCESS;
     }
 

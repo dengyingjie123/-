@@ -20,8 +20,6 @@
                 <td><input type="text" class="easyui-datebox" id="Search_Start_Time<%=token %>" style="width:100px;" /></td>
                 <td>结束日期</td>
                 <td><input type="text" class="easyui-datebox" id="Search_End_Time<%=token %>" style="   width:100px;" /></td>
-                <td>产品名</td>
-                <td><input type="text"  id="Search_Production_Name<%=token %>" style="width:100px;" /></td>
                 <td>
                     <a id="btnSearch<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
                 </td>
