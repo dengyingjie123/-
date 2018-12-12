@@ -24,7 +24,11 @@
             <tr>
                 <td>用户名称</td>
                 <td>
-                    <input type="text" name="PositionUserVO.UserName" id="Search_UserName<%=token %>" style="width:100px"/>
+                    <input type="text" name="PositionUserVO.userName" id="Search_userName<%=token %>" style="width:100px"/>
+                </td>
+                <td>手机号码</td>
+                <td>
+                    <input type="text" name="PositionUserVO.mobile" id="Search_mobile<%=token %>" style="width:100px"/>
                 </td>
                 <td>
                     <a id="btnPositionUserSearchSubmit<%=token %>" href="javascript:void(0)" class="easyui-linkbutton"

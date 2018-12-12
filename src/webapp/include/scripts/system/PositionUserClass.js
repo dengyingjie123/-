@@ -235,7 +235,8 @@ var PositionUserClass = function (token) {
             var strTableId = 'PositionUserTable'+token;
             var params = $( '#' + strTableId).datagrid('options').queryParams;
 
-            params["PositionUserVO.UserName"] = $('#Search_UserName'+token).val();
+            params["PositionUserVO.userName"] = $('#Search_userName'+token).val();
+            params["PositionUserVO.mobile"] = $('#Search_mobile'+token).val();
             $( '#' + strTableId).datagrid('load');
         });
     }
@@ -247,7 +248,9 @@ var PositionUserClass = function (token) {
         var buttonId = 'btnPositionUserSearchReset' + token;
         fw.bindOnClick(buttonId, function(process) {
             // 清空事件文本框
-            $('#Search_UserName'+ token).val('');
+            $('#Search_userName'+ token).val('');
+            $('#Search_mobile'+ token).val('');
+
         });
     }
     return{

@@ -1,5 +1,8 @@
 package com.youngbook.dao.system;
 
+import com.youngbook.common.Pager;
+import com.youngbook.entity.vo.system.PositionUserVO;
+
 import java.sql.Connection;
 
 /**
@@ -7,5 +10,7 @@ import java.sql.Connection;
  */
 public interface IPositionUserDao {
 
-    public void setDefaultFinanceCircle(String userId, Connection conn) throws Exception;
+    void setDefaultFinanceCircle(String userId, Connection conn) throws Exception;
+
+    Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception;
 }

@@ -1,9 +1,12 @@
 package com.youngbook.dao.system;
 
+import com.youngbook.common.Pager;
 import com.youngbook.common.config.Config;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.system.PositionUserPO;
+import com.youngbook.entity.vo.system.PositionUserVO;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -26,5 +29,19 @@ public class PositionUserDaoImpl implements IPositionUserDao {
 
         MySQLDao.insert(positionUserPO, conn);
 
+    }
+
+    @Override
+    public Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("822A1600");
+        dbSQL.addParameter4All("userName",positionUserVO.getUserName());
+        dbSQL.addParameter4All("mobile",positionUserVO.getMobile());
+        dbSQL.initSQL();
+        dbSQL.init4Pager();
+
+        Pager search = MySQLDao.search(dbSQL, positionUserVO, null, currentPage, showRowCount, null, conn);
+
+        return search;
     }
 }
