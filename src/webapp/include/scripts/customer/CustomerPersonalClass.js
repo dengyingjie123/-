@@ -609,9 +609,10 @@ var CustomerPersonalClass = function (token) {
         });
     }
 
+
     /**
-     * @description
-     * 修改了提交数据方式，改为json提交
+     * @description 客户分配管理
+     * 批量分配客户，通过ids来分配
      * @author 胡超怡
      *
      * @date 2018/11/27 16:18
@@ -623,25 +624,39 @@ var CustomerPersonalClass = function (token) {
             fw.datagridGetSelections('CustomerPersonalTable' + token, function (selections) {
                 process.beforeClick();
                 var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
-                fw.post(url,
-                    {
-                        "customers": JSON.stringify(selections)
-                    }, function (data) {
-                        using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
-                            var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
-                            customerSaleClass.initModule();
-                            process.afterClick();
-                        }, function () {
-                            process.afterClick();
-                        });
+
+                var params = {"customers": JSON.stringify(selections)}
+
+
+
+
+                /**
+                 * @description
+                 * 获得客户的所有数据的json
+                 * @author 胡超怡
+                 *
+                 * @date 2018/12/12 17:40
+                 * @throws Exception
+                 */
+                fw.post(url, params, function (data) {
+                    using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
+
+                        var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
+                        customerSaleClass.initModule();
                         process.afterClick();
+
                     }, function () {
                         process.afterClick();
-                    }, null)
-            });
+                    });
+                    process.afterClick();
+                }, function () {
+                    process.afterClick();
+                }, null)
 
+            });
         });
     }
+
 
     /**
      * 密码管理
@@ -684,6 +699,7 @@ var CustomerPersonalClass = function (token) {
             fw.treeClear()
         });
     }
+
 
     /**
      * 查询重置事件

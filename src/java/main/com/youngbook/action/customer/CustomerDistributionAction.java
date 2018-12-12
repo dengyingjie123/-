@@ -29,31 +29,32 @@ public class CustomerDistributionAction extends BaseAction {
     CustomerDistributionService customerDistributionService;
     private ReturnObject result;
 
+
     /**
      * 新增或修改验证码的数据
      * 把页面请求过来的数据进行持久化，如果存在 ID，则修改，否则会新增一条记录
      * 修改是把原来的数据状态修改为 update 状态的代号，再新增一条状态为当前的新记录
      * 用法：前台的 URL 指向 /core/customer/CustomerDistribution_load.action，如未成功，请检查 struts 配置
-     * <p/>
-     * 修改：姚章鹏
-     * 内容：修改 saveCustomerDistribution() 方法，关联销售负责人
-     * 时间：2015-6-3
-     * <p/>
-     * 修改人：张舜清
-     * 修改内容：重新写了service.saveCustomerDistribution服务
-     * 修改时间：2015.7.7
      *
      * 修改人：胡超怡
      * 修改内容：重新写了service.saveCustomerDistribution服务，修改为批量修改的功能
      * 修改时间：2018.11.27
+     *
+     * <p/>
+     * 修改：姚章鹏
+     * 内容：修改 saveCustomerDistribution() 方法，关联销售负责人
+     * 时间：2015-6-3
+     *
+     * <p/>
+     * 修改人：张舜清
+     * 修改内容：重新写了service.saveCustomerDistribution服务
+     * 修改时间：2015.7.7
      *
      * @return 适用于 easyui 的 JSON，类似 {code:100, message:'操作成功'}
      * @throws Exception
      * @author 胡超怡
      */
     public String saveCustomerDistribution() throws Exception {
-        int count = 0;
-
 
         /**
          * 接收前端传来的客户ids，并进行处理
@@ -65,7 +66,7 @@ public class CustomerDistributionAction extends BaseAction {
 
 
         /**
-         * @description
+         * @description 客户分配
          * 遍历ids分配客户的销售人员，实现了批量修改的功能，其中每次创建CustomerDistributionPO对象
          * 是为了防止第二次遍历时customerDistribution会把上一次的对象初始化过来而带上id，造成第二次遍历只会修改而不是新增分配
          * 其中customerIds必定有值，因为在前台时就会过滤掉
@@ -77,7 +78,20 @@ public class CustomerDistributionAction extends BaseAction {
          * @return java.lang.String
          * @throws Exception
          */
-        for (String customer: customerIds ) {
+        for (int i = 0; i < customerIds.length; i++) {
+
+            /**
+             * 给客户分配实体赋值
+             */
+            CustomerDistributionPO customerPO = new CustomerDistributionPO();
+            customerPO.setCustomerId(customerIds[i]);
+            customerPO.setSaleManId(customerDistribution.getSaleManId());
+            customerPO.setDepartmentId(customerDistribution.getDepartmentId());
+            customerPO.setSaleGroupId(customerDistribution.getSaleGroupId());
+
+            int count = customerDistributionService.distributeToOneSalesman(customerPO, getLoginUser().getId(), getConnection());
+        }
+        /*for (String customer: customerIds ) {
 
             CustomerDistributionPO customerPO = new CustomerDistributionPO();
             customerPO.setCustomerId(customer);
@@ -86,7 +100,7 @@ public class CustomerDistributionAction extends BaseAction {
             customerPO.setSaleGroupId(customerDistribution.getSaleGroupId());
 
             customerDistributionService.distributeToOneSalesman(customerPO, getLoginUser().getId(), getConnection());
-        }
+        }*/
 
 
         /**
@@ -94,6 +108,7 @@ public class CustomerDistributionAction extends BaseAction {
          */
         return SUCCESS;
     }
+
 
     /**
      * @description 加载分配客户功能
@@ -115,6 +130,7 @@ public class CustomerDistributionAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 取消客户所分配的销售员
      */
@@ -131,6 +147,7 @@ public class CustomerDistributionAction extends BaseAction {
         }
         return SUCCESS;
     }
+
 
     /**
      * 修改：姚章鹏

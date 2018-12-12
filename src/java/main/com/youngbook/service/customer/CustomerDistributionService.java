@@ -81,32 +81,44 @@ public class CustomerDistributionService extends BaseService {
 
 
     /**
-     * 只分配给一个销售人员
+     * @description 客户分配
+     * 先检测客户id是否为空，再检测是否分配
+     * @author 胡超怡
+     *
+     * @date 2018/12/12 16:01
      * @param customerDistribution
      * @param operatorId
      * @param conn
-     * @return
+     * @return int
      * @throws Exception
      */
     public int distributeToOneSalesman(CustomerDistributionPO customerDistribution, String operatorId, Connection conn) throws Exception {
 
+        /**
+         * 判断
+         */
         String customerId = customerDistribution.getCustomerId();
-
         StringUtils.checkIsEmpty(customerId, "客户编号为空");
+
 
         /**
          * 如果已有分配，则删除原来的分配记录，保证只分配给一个销售
          */
         List<CustomerDistributionPO> customerDistributionPOs = getCustomerDistributionsByCustomerId(customerId, conn);
 
+
+        /**
+         * 循环删除分配关系
+         */
         for (int i = 0; customerDistributionPOs != null && i < customerDistributionPOs.size(); i++) {
             CustomerDistributionPO customerDistributionPO = customerDistributionPOs.get(i);
 
             remove(customerDistributionPO.getCustomerId(), customerDistributionPO.getSaleManId(), conn);
 
         }
+        int count = customerDistributionDao.distributeToSalesman(customerDistribution, operatorId, conn);
 
-        return customerDistributionDao.distributeToSalesman(customerDistribution, operatorId, conn);
+        return count;
     }
 
 

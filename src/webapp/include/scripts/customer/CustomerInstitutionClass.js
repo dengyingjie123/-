@@ -33,7 +33,7 @@ var CustomerInstitutionClass = function(token) {
             },
             loadMsg:'数据正在加载，请稍后……',
             fitColumns:true,
-            singleSelect:true,
+            singleSelect:false,
             pageList:[15,30,60],
             pageSize: 15,
             rownumbers:true,
@@ -416,21 +416,38 @@ var CustomerInstitutionClass = function(token) {
     function onClickCustomerInstitutionDistribution(){
         var buttonId = "btnInstitutionDistribution" + token;
         fw.bindOnClick(buttonId,function(process){
-            fw.datagridGetSelected('CustomerInstitutionTable'+token, function(selected){
+            fw.datagridGetSelections('CustomerInstitutionTable'+token, function(selections){
                 process.beforeClick();
-                var customerId = selected.id;
-                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action?customerDistribution.customerId=' + customerId;
+                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
 
+                var params = {"customers": JSON.stringify(selections)}
+
+
+
+
+                /**
+                 * @description
+                 * 获得客户的所有数据的json
+                 * @author 胡超怡
+                 *
+                 * @date 2018/12/12 17:52
+                 * @throws Exception
+                 */
                 using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
-                    fw.post(url, null, function (data) {
 
-                        var customerSaleClass = new CustomerSaleClass(token, customerId, remark, data);
-                        customerSaleClass.initModule();
+                    fw.post(url,params, function (data) {
 
-                        process.afterClick();
-                    }, function () {
-                        process.afterClick();
-                    }, buttonId);
+                            var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
+                            customerSaleClass.initModule();
+                            process.afterClick();
+
+                        }, function () {
+                            process.afterClick();
+
+                        }, function () {
+                            process.afterClick();
+                        }, buttonId);
+
                 });
             });
         });

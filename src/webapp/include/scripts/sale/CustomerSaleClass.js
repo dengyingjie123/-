@@ -61,6 +61,8 @@ var CustomerSaleClass = function (token, customerId, remark, data) {
             onClickCustomerPersonalDelete();
 
 
+
+
             /**
              * 把响应回来的json对象遍历并赋值到customerIds中，通过post提交到后端
              * @type {string}
