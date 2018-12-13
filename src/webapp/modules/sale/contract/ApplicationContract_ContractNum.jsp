@@ -16,9 +16,7 @@
 </head>
 <body>
 <div class="easyui-layout" fit="true">
-    <div region="center" border="false" style="padding:10px;background:#fff;border:0px solid #ccc;">
-        <textarea  type="text"id="contractNum<%=token %>"  readonly="readonly" name="order.description" style="width:560px;height: 354px ;resize: none"></textarea>
-    </div>
+        <textarea  type="text" id="contractNum<%=token %>"  readonly="readonly"  style="width:580px;height: 374px ;resize: none"></textarea>
     <div region="south" border="false" style="text-align:right;padding:5px;background:#F4F4F4">
         <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)"
            onClick="fwCloseWindow('ContractNumWindow<%=token%>')">取消</a>

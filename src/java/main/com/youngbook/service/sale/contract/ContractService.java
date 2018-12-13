@@ -1,5 +1,6 @@
 package com.youngbook.service.sale.contract;
 
+import com.alibaba.fastjson.JSONObject;
 import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
@@ -25,7 +26,6 @@ import com.youngbook.service.system.DepartmentService;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.util.Calendar;
@@ -2913,4 +2913,50 @@ public class ContractService {
         //返回结果
         return pager;
     }
+
+
+    /**
+     * @description 生成合同号
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/13 12:42
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public JSONObject createContractNum(String contracts, ProductionPO productionPO, String counts) throws Exception {
+
+        String[] split = contracts.split("-");
+        long begin = Long.valueOf(split[0]);
+        JSONObject jsonObject = new JSONObject();
+        com.alibaba.fastjson.JSONArray jsonArray = new com.alibaba.fastjson.JSONArray();
+        int contractCopies = productionPO.getContractCopies();
+
+
+
+
+        /*
+        * 根据参数生成合同号
+        * */
+        StringBuffer contractNum = new StringBuffer();
+        for (int i = 0; i < Integer.valueOf(counts); i++) {
+            for (int j = 1; j <= contractCopies; j++) {
+                contractNum.append(String.valueOf(begin) + "-" + String.valueOf(j) + " ");
+            }
+            begin++;
+        }
+
+
+
+
+        jsonObject.put("contractNum", contractNum);
+
+
+
+
+
+        return jsonObject;
+    }
+
 }
