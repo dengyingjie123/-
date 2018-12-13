@@ -146,7 +146,7 @@ var UserClass = function(token){
     * @throws
     */
     function onUserDimissio() {
-        var butttonId = "btnUserDimission" + token;
+        var butttonId = "btnUserDimiss" + token;
         fw.bindOnClick(butttonId, function(process) {
             fw.datagridGetSelected('UserTable'+token, function(selected){
                 fw.confirm('员工离职确认', '是否确认该员工离职？', function(){

@@ -5,6 +5,7 @@ import com.youngbook.annotation.Permission;
 import com.youngbook.common.*;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.SessionConfig;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.DepartmentPO;
@@ -403,6 +404,13 @@ public class UserAction extends BaseAction {
     public String dimiss() throws Exception {
 
         String userId = getHttpRequestParameter("user.id");
+
+        /**
+         * 客户分配，在用户分配表中查找相应用户，设置state=3
+         */
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("")
+
+
         return SUCCESS;
     }
 
