@@ -25,10 +25,15 @@ var CustomerPersonalClass = function (token) {
 
         // 初始化表格
         initTableCustomerPersonalTable();
+        /*
+        * 初始化快速添加客户事件
+        * */
+        initAddCustomerPersonalQuickWindow();
 
     }
 
     function initCustomerPersonalSearch() {}
+
 
     /**
      * 初始化表格
@@ -189,6 +194,7 @@ var CustomerPersonalClass = function (token) {
         });
     }
 
+
     /**
      * 初始化弹出窗口
      * @param data
@@ -267,6 +273,7 @@ var CustomerPersonalClass = function (token) {
         }, null);
     }
 
+
     /**
      * 初始化产品列表
      * @param customerId
@@ -332,6 +339,7 @@ var CustomerPersonalClass = function (token) {
         });
     }
 
+
     function onClickShowDetail4Production() {
         var buttonId = "btnShowDetail4Production" + token;
         fw.bindOnClick(buttonId, function () {
@@ -360,6 +368,7 @@ var CustomerPersonalClass = function (token) {
 
         });
     }
+
 
     function openWindowPatchSendSms(data) {
         //alert(data["sms.id"]);
@@ -715,9 +724,6 @@ var CustomerPersonalClass = function (token) {
                         allinpayCircleQueryCashShareClass.openWindow(selected.id);
                     });
                 });
-
-
-
             }
             catch (e) {
 
@@ -913,6 +919,70 @@ var CustomerPersonalClass = function (token) {
 
         });
     }
+
+/**
+ * @description 初始化快速添加窗口
+ * 
+ * @author 苟熙霖 
+ * 
+ * @date 2018/12/14 14:39
+ * @param null
+ * @return 
+ * @throws Exception
+ */
+    function initAddCustomerPersonalQuickWindow(){
+        var buttonId = "btnCustomerPersonalQuickAdd" + token;
+        fw.bindOnClick(buttonId,function () {
+
+
+
+
+                var url =  WEB_ROOT +"/modules/customer/CustomerPersonal_Quick_Save.jsp?token="+token;
+                fw.window('customerPersonalQuickWindow'+token,'快速添加客户',400,250,url,function () {
+                    onClickAddCustomerPersonalQuickSubmit();
+                });
+            });
+    }
+
+    
+    /**
+     * @description 绑定提交事件
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/14 14:41
+     * @param null
+     * @return 
+     * @throws Exception
+     */
+    function onClickAddCustomerPersonalQuickSubmit() {
+
+        var buttonId = "btnQuickAddSubmit" + token;
+        fw.bindOnClick(buttonId, function (process) {
+
+
+
+
+            fw.confirm("通知", "是否确认快速添加客户", function () {
+                var formId = "formCustomerPersonalQuick" + token;
+                var url = WEB_ROOT + "/customer/CustomerPersonal_addCustomerPersonalQuick.action";
+
+
+
+
+                fw.bindOnSubmitForm(formId, url, function () {
+                    process.beforeClick();
+                }, function () {
+                    process.afterClick();
+                    fw.datagridReload("CustomerPersonalTable" + token);
+                    fw.windowClose('customerPersonalQuickWindow' + token);
+                }, function () {
+                    process.afterClick();
+                });
+            });
+        });
+    }
+
 
     function initCallCenter() {
 

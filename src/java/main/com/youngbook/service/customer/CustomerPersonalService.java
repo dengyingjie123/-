@@ -2371,5 +2371,70 @@ public class CustomerPersonalService extends BaseService {
     }
 
 
+    /**
+     * @description  根据name查询CustomerPersonalPO
+     * 
+     * @author
+     * 
+     * @date 2018/12/14 9:37
+     * @param name
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public int loadCustomerByName(String name, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DE");
+        databaseSQL.addParameter4All("name", name);
+        databaseSQL.initSQL();
+
+
+
+
+        List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
+
+        if(search.size()==0){
+            return 0;
+        }
+
+
+
+
+        return 1;
+    }
+
+
+
+    /**
+     * @description  根据name查询CustomerPersonalPO
+     *
+     * @author
+     *
+     * @date 2018/12/14 9:37
+     * @param idCardNumber
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public int loadCustomerByIdCardNumber(String idCardNumber, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DA");
+        databaseSQL.addParameter4All("idCardNumber", AesEncrypt.encrypt(idCardNumber));
+        databaseSQL.initSQL();
+
+
+
+
+        List<CustomerCertificatePO> search = MySQLDao.search(databaseSQL, CustomerCertificatePO.class, conn);
+        if(search.size()==0){
+            return 0;
+        }
+
+
+
+
+        return 1;
+    }
+
 }
 

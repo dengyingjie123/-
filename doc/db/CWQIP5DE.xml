@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="CWQIP5DE">
+SELECT
+	*
+FROM
+    	crm_customerpersonal
+WHERE
+    1 = 1
+AND state = 0
+<if test="#{name} != null">
+    AND name = #{name}
+</if>
+        </select>
+    </select-sql>
+</sql>
