@@ -621,36 +621,39 @@ var CustomerPersonalClass = function (token) {
 
         var buttonId = "btnCustomerDistribution" + token;
         fw.bindOnClick(buttonId, function (process) {
-            fw.datagridGetSelections('CustomerPersonalTable' + token, function (selections) {
-                process.beforeClick();
-                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
+            fw.confirm("提醒", "是否进行客户分配", function () {
 
-                var params = {"customers": JSON.stringify(selections)}
+                fw.datagridGetSelections('CustomerPersonalTable' + token, function (selections) {
+
+                    process.beforeClick();
+                    var url = WEB_ROOT + '/customer/CustomerDistribution_load.action';
+                    var params = {"customers": JSON.stringify(selections)}
 
 
-                /**
-                 * @description
-                 * 获得客户的所有数据的json
-                 * @author 胡超怡
-                 *
-                 * @date 2018/12/12 17:40
-                 * @throws Exception
-                 */
-                fw.post(url, params, function (data) {
-                    using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
+                    /**
+                     * @description
+                     * 获得客户的所有数据的json
+                     * @author 胡超怡
+                     *
+                     * @date 2018/12/12 17:40
+                     * @throws Exception
+                     */
+                    fw.post(url, params, function (data) {
+                        using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
 
-                        var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
-                        customerSaleClass.initModule();
+                            var customerSaleClass = new CustomerSaleClass(token, null, remark, data);
+                            customerSaleClass.initModule();
+                            process.afterClick();
+
+                        }, function () {
+                            process.afterClick();
+                        });
                         process.afterClick();
-
                     }, function () {
                         process.afterClick();
-                    });
-                    process.afterClick();
-                }, function () {
-                    process.afterClick();
-                }, null)
+                    }, null)
 
+                });
             });
         });
     }

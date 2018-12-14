@@ -91,16 +91,6 @@ public class CustomerDistributionAction extends BaseAction {
 
             int count = customerDistributionService.distributeToOneSalesman(customerPO, getLoginUser().getId(), getConnection());
         }
-        /*for (String customer: customerIds ) {
-
-            CustomerDistributionPO customerPO = new CustomerDistributionPO();
-            customerPO.setCustomerId(customer);
-            customerPO.setSaleManId(customerDistribution.getSaleManId());
-            customerPO.setDepartmentId(customerDistribution.getDepartmentId());
-            customerPO.setSaleGroupId(customerDistribution.getSaleGroupId());
-
-            customerDistributionService.distributeToOneSalesman(customerPO, getLoginUser().getId(), getConnection());
-        }*/
 
 
         /**
