@@ -5,7 +5,9 @@ import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.common.utils.StringUtils;
+import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.sale.SalemanGroupPO;
 import com.youngbook.entity.po.sale.SalemanSalemangroupPO;
 import org.springframework.stereotype.Component;
@@ -20,7 +22,7 @@ import java.util.List;
 @Component("salemanGroupDao")
 public class SalemanGroupDaoImpl implements ISalemanGroupDao {
 
-    public void setDefaultFinanceCircle(String userId, Connection conn) throws Exception {
+    public void setDefaultFinanceCircle(String userId, String operatorId, Connection conn) throws Exception {
 
         SalemanSalemangroupPO salemanSalemangroupPO = new SalemanSalemangroupPO();
         salemanSalemangroupPO.setId(IdUtils.getUUID32());
@@ -28,6 +30,14 @@ public class SalemanGroupDaoImpl implements ISalemanGroupDao {
         salemanSalemangroupPO.setSaleManId(userId);
         salemanSalemangroupPO.setSaleManStatus(1);
         salemanSalemangroupPO.setDefaultGroup(1);
+        /**
+         * 2018.12.14 9:54
+         * 徐明煜
+         * 新增字段的默认值
+         */
+        salemanSalemangroupPO.setOperateTime(TimeUtils.getNow());
+        salemanSalemangroupPO.setState(0);
+        salemanSalemangroupPO.setOperatorId(operatorId);
 
         int count = MySQLDao.insert(salemanSalemangroupPO, conn);
 
@@ -112,5 +122,43 @@ public class SalemanGroupDaoImpl implements ISalemanGroupDao {
 
         return list.get(0);
 
+    }
+
+
+    @Override
+    public SalemanSalemangroupPO loadSalemanSalemangroupPO(SalemanSalemangroupPO saleman_salemangroup, Connection conn) throws Exception {
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11125");
+        databaseSQL.addParameter4All("groupId", saleman_salemangroup.getSaleManGroupId());
+        databaseSQL.addParameter4All("saleManId", saleman_salemangroup.getSaleManId());
+        databaseSQL.initSQL();
+        List<SalemanSalemangroupPO> list=  MySQLDao.search(databaseSQL, SalemanSalemangroupPO.class, conn);
+        if(list.size()<0){
+            throw new Exception("销售小组查询错误");
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public List<SalemanSalemangroupPO> listSalemanSalemangroupPO(String saleManId, Connection conn) throws Exception {
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11125");
+        databaseSQL.addParameter4All("saleManId", saleManId);
+        databaseSQL.initSQL();
+        List<SalemanSalemangroupPO> list=  MySQLDao.search(databaseSQL, SalemanSalemangroupPO.class, conn);
+        if(list.size()<0){
+            throw new Exception("销售小组查询错误");
+        }
+        return list;
+    }
+
+    @Override
+    public SalemanSalemangroupPO deleteSalemanSalemangroupPO(SalemanSalemangroupPO Saleman_salemangroup, String operatorId, Connection conn) throws Exception {
+        MySQLDao.remove(Saleman_salemangroup, operatorId, conn);
+        return Saleman_salemangroup;
+    }
+
+    @Override
+    public SalemanSalemangroupPO insertOrUpdateSalemanSalemangroupPO(SalemanSalemangroupPO Saleman_salemangroup, String operatorId, Connection conn) throws Exception {
+        MySQLDao.insertOrUpdate(Saleman_salemangroup, operatorId, conn);
+        return Saleman_salemangroup;
     }
 }

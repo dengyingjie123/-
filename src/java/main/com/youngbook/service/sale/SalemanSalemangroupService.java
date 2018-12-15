@@ -1,16 +1,13 @@
 package com.youngbook.service.sale;
 
 import com.youngbook.common.KVObject;
-import com.youngbook.common.MyException;
-import com.youngbook.common.ReturnObject;
-import com.youngbook.common.ReturnObjectCode;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
-import com.youngbook.entity.po.sale.SalemanGroupPO;
+import com.youngbook.dao.sale.SalemanGroupDaoImpl;
 import com.youngbook.entity.po.sale.SalemanSalemangroupPO;
 import com.youngbook.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -26,109 +23,74 @@ import java.util.List;
 @Component("salemanSalemangroupService")
 public class SalemanSalemangroupService extends BaseService {
 
+    @Autowired
+    private SalemanGroupDaoImpl salemanGroupDao;
+
+
     /**
-     * 添加数据
-     * @param Saleman_salemangrou
+     * @description 逻辑删除销售人员销售组关系
+     * @author 徐明煜
+     * @date 2018/12/14 15:26
+     * @param Saleman_salemangroup
+     * @param operatorId
      * @param conn
-     * @return
+     * @return com.youngbook.entity.po.sale.SalemanSalemangroupPO
      * @throws Exception
      */
-    public int insert(SalemanSalemangroupPO Saleman_salemangrou,  Connection conn) throws Exception {
-        int count = 0;
-        // 新增
-        Saleman_salemangrou.setId(IdUtils.getUUID32());
-        Saleman_salemangrou.setSaleManStatus(1);
+    public SalemanSalemangroupPO delete(SalemanSalemangroupPO Saleman_salemangroup, String operatorId, Connection conn) throws Exception {
 
-        count = MySQLDao.insert(Saleman_salemangrou, conn);
-        if (count != 1) {
-            throw new Exception("数据库异常");
-        }
-        return count;
+        salemanGroupDao.deleteSalemanSalemangroupPO(Saleman_salemangroup, operatorId, conn);
+        return Saleman_salemangroup;
     }
 
-    /**
-     * 删除销售小组人员
-     * @param Saleman_salemangrou
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    public int delete(SalemanSalemangroupPO Saleman_salemangrou,  Connection conn) throws Exception {
-        int count = 0;
-        // 删除
-        count = MySQLDao.deletePhysically(Saleman_salemangrou, conn);
-        if (count != 1) {
-            throw new Exception("数据库异常");
-        }
-        return count;
-    }
 
     /**
-     * 获取小组对象
+     * @description 加载一个SalemanSalemangroupPO对象
+     * @author 徐明煜
+     * @date 2018/12/14 15:37
      * @param saleman_salemangroup
-     * @param conditions
-     * @param connection
-     * @return
+     * @param conn
+     * @return com.youngbook.entity.po.sale.SalemanSalemangroupPO
      * @throws Exception
      */
-    public SalemanSalemangroupPO load(SalemanSalemangroupPO saleman_salemangroup,List<KVObject> conditions, Connection connection) throws Exception {
-        StringBuffer SQL =new StringBuffer();
-        SQL.append("select * from CRM_SaleMan_SaleManGroup");
-        SQL.append(" where  SaleManGroupId = '"+saleman_salemangroup.getSaleManGroupId());
-        SQL.append("' AND  SaleManId ='"+saleman_salemangroup.getSaleManId()+"'");
-         List<SalemanSalemangroupPO>  ls = MySQLDao.query(SQL.toString(),SalemanSalemangroupPO.class,conditions);
-       if(ls.size()<0){
-          throw new Exception("销售小组查询错误");
-       }
-        return ls.get(0);
+    public SalemanSalemangroupPO load(SalemanSalemangroupPO saleman_salemangroup, Connection conn) throws Exception {
+
+        SalemanSalemangroupPO salemanSalemangroupPO = salemanGroupDao.loadSalemanSalemangroupPO(saleman_salemangroup,conn);
+        return salemanSalemangroupPO;
     }
 
+
     /**
-     * 修改成员的身份
+     * @description 对新增SalemanSalemangroupPO或修改后的SalemanSalemangroupPO对象进行保存
+     * @author 徐明煜
+     * @date 2018/12/14 15:55
      * @param SalemanSalemangroup
-     * @param connection
-     * @return
+     * @param operatorId
+     * @param conn
+     * @return com.youngbook.entity.po.sale.SalemanSalemangroupPO
+     * @throws Exception
      */
-    public int updateSaleMan(SalemanSalemangroupPO SalemanSalemangroup, Connection connection) throws Exception{
-        StringBuffer SQL= new StringBuffer();
-        int count =  MySQLDao.update(SalemanSalemangroup,connection);
-        return count;
+    public SalemanSalemangroupPO insertOrUpdate(SalemanSalemangroupPO SalemanSalemangroup, String operatorId, Connection conn) throws Exception{
+
+        salemanGroupDao.insertOrUpdateSalemanSalemangroupPO(SalemanSalemangroup, operatorId, conn);
+        return SalemanSalemangroup;
     }
 
 
     /**
-     * 通过saleManId查找该销售的所有销售组信息
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/14 16:02
      * @param saleManId
      * @param conn
-     * @return
+     * @return java.util.List<com.youngbook.entity.po.sale.SalemanSalemangroupPO>
      * @throws Exception
      */
     public List<SalemanSalemangroupPO> getSalemanSalemangroupsBySalemanId(String saleManId, Connection conn) throws Exception {
-        //组装SQL
-        StringBuffer sbSQL = new StringBuffer();
-        sbSQL.append("select * from CRM_SaleMan_SaleManGroup where saleManId = ? ");
-        DatabaseSQL dbSQL = new DatabaseSQL();
-        dbSQL.newSQL(sbSQL.toString());
-        dbSQL.addParameter(1, saleManId);
 
+        List<SalemanSalemangroupPO> list = salemanGroupDao.listSalemanSalemangroupPO(saleManId, conn);
+        return list;
 
-        //查询
-        List<SalemanSalemangroupPO> salemanSalemangroups = new ArrayList<SalemanSalemangroupPO>();
-        salemanSalemangroups = MySQLDao.search(dbSQL, SalemanSalemangroupPO.class, conn);
-
-
-        return salemanSalemangroups;
     }
 
-    /**
-     * 设置销售的默认销售组
-     * @param saleManSaleManGroup
-     * @param conn
-     * @return
-     * @throws Exception
-     */
-    public int updateDefaultGroup(SalemanSalemangroupPO saleManSaleManGroup, Connection conn) throws Exception {
-        int count = MySQLDao.update(saleManSaleManGroup, conn);
-        return count;
-    }
 }

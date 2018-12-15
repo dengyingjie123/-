@@ -97,7 +97,7 @@ public class UserService extends BaseService {
         return pager;
     }
 
-    public UserPO register(String name, String mobile, String password, String referralCode, String userType, Connection conn) throws Exception {
+    public UserPO register(String name, String mobile, String password, String referralCode, String operatorId, String userType, Connection conn) throws Exception {
 
         if (StringUtils.isEmptyAny(name, mobile, password, userType)) {
             MyException.newInstance("用户参数不完整", "name="+name+"&mobile="+mobile+"&password="+password+"&userType="+userType).throwException();
@@ -143,7 +143,7 @@ public class UserService extends BaseService {
         /**
          * 设置默认理财圈销售组
          */
-        salemanGroupDao.setDefaultFinanceCircle(user.getId(), conn);
+        salemanGroupDao.setDefaultFinanceCircle(user.getId(), operatorId, conn);
 
         if (count == 1) {
             return user;

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="2A11123">
+            select sid,id,state,salemanId from crm_customerdistribution where state=0
+            <if test="#{userId} !=null">
+                AND SaleManId = #{userId}
+            </if>
+        </select>
+    </select-sql>
+</sql>

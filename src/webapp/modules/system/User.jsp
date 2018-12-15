@@ -10,14 +10,14 @@
     ButtonPO btnAdd = new ButtonPO("btnUserAdd" + token, "添加", "icon-add", "系统管理-用户管理-新增");
     ButtonPO btnEdit = new ButtonPO("btnUserEdit" + token, "修改", "icon-edit","系统管理-用户管理-修改");
     ButtonPO btnDel = new ButtonPO("btnUserDelete" + token, "删除", "icon-cut","系统管理-用户管理-删除");
-    ButtonPO btnDimiss = new ButtonPO("btnUserDimiss" + token, "离职", "icon-remove","系统管理-用户管理-删除");
+    ButtonPO btnDismiss = new ButtonPO("btnUserDismiss" + token, "离职", "icon-remove","系统管理-用户管理-删除");
 // 创建Toolbar，并受权限控制
     ToolbarPO toolbar = ToolbarPO.getInstance(request);
 // 直接添加按钮，后台程序会自动判断，有权限则添加，没有权限则不添加
     toolbar.addButton(btnAdd);
     toolbar.addButton(btnEdit);
     toolbar.addButton(btnDel);
-    toolbar.addButton(btnDimiss);
+    toolbar.addButton(btnDismiss);
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

@@ -11,6 +11,7 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.UserType;
+import com.youngbook.entity.po.customer.CustomerDistributionPO;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.system.UserVO;
@@ -70,7 +71,7 @@ public class UserAction extends BaseAction {
             MyException.newInstance("密码不能为空").throwException();
         }
         password = StringUtils.md5(password);
-        UserPO userPO = userService.register(name, mobile, password, referralCode, UserType.FinanceCircleUser, getConnection());
+        UserPO userPO = userService.register(name, mobile, password, referralCode, getUser().getId(), UserType.FinanceCircleUser, getConnection());
 
         if (userPO != null) {
             getResult().setReturnValue(userPO);
@@ -254,6 +255,30 @@ public class UserAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2018/12/13 14:10
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    @Permission(require = "系统管理-用户管理-删除")
+    public String dismiss() throws Exception {
+        String userId = getHttpRequestParameter("userId");
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11123");
+        databaseSQL.addParameter4All("userId", userId);
+        databaseSQL.initSQL();
+        List<CustomerDistributionPO> list = MySQLDao.search(databaseSQL, CustomerDistributionPO.class,getConnection());
+        if(list.size()>0){
+            result.setMessage("该员工仍有客户分配，请重新分配后进行离职操作");
+        }
+
+        
+        return SUCCESS;
+    }
+
     public String searchReferralCode() throws Exception {
         result = new ReturnObject();
         String code = HttpUtils.getParameter(getRequest(), "code");
@@ -388,28 +413,6 @@ public class UserAction extends BaseAction {
         String userType = user.getUserType();
         Pager pager = userService.list(userVO,conditions,userType,request,getConnection());
         getResult().setReturnValue(pager.toJsonObject());
-
-        return SUCCESS;
-    }
-
-    /**
-     * @description 员工离职
-     * @author 徐明煜
-     * @date 2018/12/12 18:00
-     * @param
-     * @return
-     * @throws Exception
-     */
-    @Permission(require = "系统管理-用户管理-删除")
-    public String dimiss() throws Exception {
-
-        String userId = getHttpRequestParameter("user.id");
-
-        /**
-         * 客户分配，在用户分配表中查找相应用户，设置state=3
-         */
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("")
-
 
         return SUCCESS;
     }
