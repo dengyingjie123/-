@@ -8,7 +8,7 @@ SELECT
     c.id, c.PersonalNumber, c.`Name`, c.LoginName, c.Mobile, c.CreateTime, c.state,
     c.id linkCustomerId, '' IdCard,
     cd.`Status` distributionStatus
-FROMv
+FROM
     crm_customerpersonal c
 left JOIN crm_customerdistribution cd on cd.state=0 and cd.CustomerId=c.id
 left JOIN system_user u on u.state=0 and u.id=cd.SaleManId
