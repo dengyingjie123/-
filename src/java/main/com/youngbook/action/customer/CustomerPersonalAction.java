@@ -5232,6 +5232,8 @@ public class CustomerPersonalAction extends BaseAction {
         String idCardNumber = getHttpRequestParameter("idCardNumber");
 
 
+
+
         int checkName = customerPersonalService.loadCustomerByName(name, getConnection());
         CustomerPersonalPO customerPersonalPO = customerPersonalService.loadCustomerByMobile(mobile, getConnection());
         int checkIdCardNumber = customerPersonalService.loadCustomerByIdCardNumber(idCardNumber, getConnection());
@@ -5240,7 +5242,7 @@ public class CustomerPersonalAction extends BaseAction {
 
 
         /*
-         * 判断是否重名
+         * 判断客户姓名、身份证号、移动号码是否已经存在
          * */
         if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(idCardNumber)) {
             if (checkName == 1) {
@@ -5261,17 +5263,20 @@ public class CustomerPersonalAction extends BaseAction {
             customerCertificatePO.setName("98");
             customerCertificateService.insertOrUpdate(customerCertificatePO, getLoginUser().getId(), getConnection());
         } else if (StringUtils.isEmpty(idCardNumber)) {
-            if (customerPersonalPO==null) {
+            if (customerPersonalPO!=null) {
+                MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
+            }else  {
                 personalPO.setName(name);
                 personalPO.setMobile(mobile);
                 customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
-            }else if (mobile.equals(customerPersonalPO.getMobile())) {
-                MyException.newInstance("该号码已存在，请查证后再操作", "").throwException();
             }
-            personalPO.setName(name);
-            personalPO.setMobile(mobile);
-            customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
         }else{
+            if (checkIdCardNumber == 1) {
+                MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
+            }
+            if (customerPersonalPO!=null) {
+                MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
+            }
             CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
             personalPO.setName(name);
             personalPO.setMobile(mobile);

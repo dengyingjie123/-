@@ -2392,7 +2392,6 @@ public class CustomerPersonalService extends BaseService {
 
 
         List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
-
         if(search.size()==0){
             return 0;
         }

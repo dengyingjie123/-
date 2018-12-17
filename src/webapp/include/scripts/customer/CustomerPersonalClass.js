@@ -936,9 +936,11 @@ var CustomerPersonalClass = function (token) {
 
 
 
-
+                /*
+                * 初始化窗口
+                * */
                 var url =  WEB_ROOT +"/modules/customer/CustomerPersonal_Quick_Save.jsp?token="+token;
-                fw.window('customerPersonalQuickWindow'+token,'快速添加客户',400,250,url,function () {
+                fw.window('customerPersonalQuickWindow'+ token, '快速添加客户', 400, 250, url, function () {
                     onClickAddCustomerPersonalQuickSubmit();
                 });
             });
