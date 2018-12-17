@@ -12,10 +12,12 @@ import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.UserType;
 import com.youngbook.entity.po.customer.CustomerDistributionPO;
+import com.youngbook.entity.po.sale.SalemanSalemangroupPO;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.system.UserVO;
 import com.youngbook.service.customer.AuthenticationCodeService;
+import com.youngbook.service.sale.SalemanSalemangroupService;
 import com.youngbook.service.sale.SalesmanService;
 import com.youngbook.service.system.DepartmentService;
 import com.youngbook.service.system.TokenService;
@@ -46,6 +48,9 @@ public class UserAction extends BaseAction {
 
     @Autowired
     AuthenticationCodeService authenticationCodeService;
+
+    @Autowired
+    SalemanSalemangroupService salemanSalemangroupService;
 
     private ReturnObject result;
     private UserPO user = new UserPO();
@@ -270,10 +275,25 @@ public class UserAction extends BaseAction {
         DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11123");
         databaseSQL.addParameter4All("userId", userId);
         databaseSQL.initSQL();
+        //查找和该销售人员绑定的客户分配
         List<CustomerDistributionPO> list = MySQLDao.search(databaseSQL, CustomerDistributionPO.class,getConnection());
+        //如有客户分配，不允该销售离职
         if(list.size()>0){
-            result.setMessage("该员工仍有客户分配，请重新分配后进行离职操作");
+            MyException.newInstance("该员工仍有客户分配，请重新分配后进行离职操作").throwException();
         }
+        //查找相关销售组分配
+        List<SalemanSalemangroupPO> salemangrouplist  = salemanSalemangroupService.listSalemanSalemangroupsPOBySalemanId(userId, getConnection());
+        if (salemangrouplist.size() > 0){
+            //删除销售组
+            for(SalemanSalemangroupPO temp: salemangrouplist){
+                salemanSalemangroupService.delete(temp, getUser().getId(), getConnection());
+            }
+        }
+
+
+
+
+
 
         
         return SUCCESS;

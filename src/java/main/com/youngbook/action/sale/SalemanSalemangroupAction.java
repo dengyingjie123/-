@@ -26,7 +26,7 @@ public class SalemanSalemangroupAction extends BaseAction {
     public String Insert() throws Exception{
 
         //判断该销售是否已经有分配销售组，如果有则defaultGroup为0（不是默认销售组）没有则defaultGroup为1（是默认销售组）
-        List<SalemanSalemangroupPO> salemanSalemangroups = salemanSalemangroupService.getSalemanSalemangroupsBySalemanId(saleManSaleManGroup.getSaleManId(), getConnection());
+        List<SalemanSalemangroupPO> salemanSalemangroups = salemanSalemangroupService.listSalemanSalemangroupsPOBySalemanId(saleManSaleManGroup.getSaleManId(), getConnection());
         if (salemanSalemangroups.size() > 0){
             saleManSaleManGroup.setDefaultGroup(0);
         }else {

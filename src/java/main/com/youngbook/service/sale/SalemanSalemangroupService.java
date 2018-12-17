@@ -78,7 +78,7 @@ public class SalemanSalemangroupService extends BaseService {
 
 
     /**
-     * @description 方法实现说明
+     * @description 根据销售人员 id 查找销售分组关系
      * @author 徐明煜
      * @date 2018/12/14 16:02
      * @param saleManId
@@ -86,7 +86,7 @@ public class SalemanSalemangroupService extends BaseService {
      * @return java.util.List<com.youngbook.entity.po.sale.SalemanSalemangroupPO>
      * @throws Exception
      */
-    public List<SalemanSalemangroupPO> getSalemanSalemangroupsBySalemanId(String saleManId, Connection conn) throws Exception {
+    public List<SalemanSalemangroupPO> listSalemanSalemangroupsPOBySalemanId(String saleManId, Connection conn) throws Exception {
 
         List<SalemanSalemangroupPO> list = salemanGroupDao.listSalemanSalemangroupPO(saleManId, conn);
         return list;
