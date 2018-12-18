@@ -51,6 +51,13 @@ public class ArticlePO extends BasePO {
     // 操作人
     private String operatorId = new String();
 
+    //新闻的时间
+    @DataAdapter(fieldType = FieldType.DATE)
+    private String newsTime = new String();
+
+    //资源网址名
+    private String source = new String();
+
     // 操作时间
     @DataAdapter(fieldType = FieldType.DATE)
     private String operateTime = new String();
@@ -64,6 +71,22 @@ public class ArticlePO extends BasePO {
 
     //是否显示
     private int isDisplay = Integer.MAX_VALUE;
+
+    public String getNewsTime() {
+        return newsTime;
+    }
+
+    public void setNewsTime(String newsTime) {
+        this.newsTime = newsTime;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 
     public String getImage() {
         return image;

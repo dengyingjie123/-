@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -391,4 +392,27 @@ public class ArticleService extends BaseService {
         return pager;
     }
 
+
+    /**
+     * @description
+     * 获取新闻
+     * @author 胡超怡
+     *
+     * @date 2018/12/18 18:11
+     * @param newsSet
+     * @param conn
+     * @return java.util.HashSet<com.youngbook.entity.po.cms.ArticlePO>
+     * @throws Exception
+     */
+    public HashSet<ArticlePO> insertNews(HashSet<ArticlePO> newsSet, Connection conn) throws Exception {
+
+        if (newsSet != null && newsSet.size() > 0) {
+            for (ArticlePO newsPO : newsSet) {
+                articleDao.insertNews(newsPO, conn);
+            }
+        }
+
+        return newsSet;
+
+    }
 }

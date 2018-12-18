@@ -5,6 +5,7 @@ import com.youngbook.entity.po.cms.ArticlePO;
 import com.youngbook.entity.vo.cms.ArticleVO;
 
 import java.sql.Connection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -14,4 +15,6 @@ public interface IArticleDao {
     public List<ArticleVO> getListArticleVO(ArticleVO articleVO,  Connection conn) throws Exception;
     public ArticlePO loadByArticleId(String articleId, Connection conn) throws Exception;
     public Pager getPagerArticleVO(ArticleVO articleVO, int currentPage, int showRowCount, Connection conn) throws Exception;
+
+    void insertNews(ArticlePO newsPO, Connection conn) throws Exception;
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -78,6 +79,13 @@ public class ArticleDaoImpl implements IArticleDao {
         }
 
         return pager;
+    }
+
+    @Override
+    public void insertNews(ArticlePO newsPO, Connection conn) throws Exception {
+
+        MySQLDao.insertOrUpdate(newsPO,conn);
+
     }
 
     public ArticlePO loadByArticleId(String articleId, Connection conn) throws Exception {
