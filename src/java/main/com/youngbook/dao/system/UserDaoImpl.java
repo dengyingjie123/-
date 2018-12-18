@@ -118,4 +118,11 @@ public class UserDaoImpl implements IUserDao {
         }
         return null;
     }
+
+
+    @Override
+    public UserPO insertOrUpdate(UserPO userPO, String operatorId, Connection conn) throws Exception {
+        MySQLDao.insertOrUpdate(userPO, operatorId, conn);
+        return userPO;
+    }
 }

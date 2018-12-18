@@ -338,4 +338,9 @@ public class CustomerDistributionService extends BaseService {
     }
 
 
+    public List<CustomerDistributionPO> listCustomerDistributionPOByUserId(String userId, Connection conn) throws Exception {
+        return customerDistributionDao.getListCustomerDistrbutionPOByUserId(userId, conn);
+    }
+
+
 }

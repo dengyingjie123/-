@@ -1,6 +1,7 @@
 package com.youngbook.dao.system;
 
 import com.youngbook.entity.po.UserPO;
+import org.apache.axis.constants.Use;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -23,5 +24,7 @@ public interface IUserDao {
     public UserPO loadUserByMobile(String mobile, Connection conn) throws Exception;
 
     public UserPO loadUserByName(String mobile, Connection conn) throws Exception;
+
+    public UserPO insertOrUpdate(UserPO userPO, String operatorId, Connection conn) throws Exception;
 
 }

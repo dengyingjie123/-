@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="2A11125">
+            SELECT * from system_positionuser WHERE state = 0
+            <if test="#{userId} !=null">
+                and userId = #{userId}
+            </if>
+        </select>
+    </select-sql>
+</sql>

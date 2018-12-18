@@ -124,4 +124,25 @@ public class CustomerDistributionDaoImpl implements ICustomerDistributionDao {
 
         return 1;
     }
+
+
+    /**
+     * @description 根据销售人员Id查询
+     * @author 徐明煜
+     * @date 2018/12/17 22:30
+     * @param userId
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.customer.CustomerDistributionPO>
+     * @throws Exception
+     */
+    @Override
+    public List<CustomerDistributionPO> getListCustomerDistrbutionPOByUserId(String userId, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11123");
+        databaseSQL.addParameter4All("userId", userId);
+        databaseSQL.initSQL();
+        //查找和该销售人员绑定的客户分配
+        List<CustomerDistributionPO> list = MySQLDao.search(databaseSQL, CustomerDistributionPO.class,conn);
+        return list;
+    }
 }

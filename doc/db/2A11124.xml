@@ -2,9 +2,9 @@
 <sql>
     <select-sql>
         <select id="2A11124">
-            select * from sale_contract where state=0
-            <if test="#{userId} !=null">
-                AND receiveUserId = #{userId}
+            select * from crm_saleman_salemangroup where state=0
+            <if test="#{salemanId} !=null">
+                AND salemanId = #{salemanId}
             </if>
         </select>
     </select-sql>

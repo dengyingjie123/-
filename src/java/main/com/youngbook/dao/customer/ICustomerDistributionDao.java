@@ -15,4 +15,16 @@ public interface ICustomerDistributionDao {
     public int distributeToSalesman(CustomerDistributionPO customerDistribution, String operatorId, Connection conn) throws Exception;
     public int remove (String customerPersonalId, String userId,Connection conn) throws  Exception;
     public List<CustomerDistributionPO> getListCustomerDistrbutionPO (String customerId, Connection conn) throws Exception;
+
+
+    /**
+     * @description 根据销售人员Id查询
+     * @author 徐明煜
+     * @date 2018/12/17 22:24
+     * @param customerId
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.customer.CustomerDistributionPO>
+     * @throws Exception
+     */
+    public List<CustomerDistributionPO> getListCustomerDistrbutionPOByUserId (String customerId, Connection conn) throws Exception;
 }

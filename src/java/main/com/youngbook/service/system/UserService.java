@@ -359,4 +359,10 @@ public class UserService extends BaseService {
 
     }
 
+
+    public UserPO insertOrUpdate (UserPO userPO, String operatorId, Connection conn) throws Exception{
+        userDao.insertOrUpdate(userPO, operatorId, conn);
+        return userPO;
+    }
+
 }

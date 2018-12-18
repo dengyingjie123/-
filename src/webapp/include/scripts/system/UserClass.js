@@ -66,7 +66,16 @@ var UserClass = function(token){
                 { field: 'address', title: '地址'},
                 { field: 'birthday', title: '生日'},
                 { field: 'jointime', title: '入职时间'},
-                { field: 'leftTime', title: '离职时间'},
+                { field: 'leftTime', title: '离职时间',
+                    formatter: function(value) {
+                        /**
+                         * 徐明煜
+                         * 保留日期，除去小时时间
+                         * 2018.12.18
+                         */
+                        return value.substr(0,10)
+                    }
+                },
                 { field: 'operateTime', title: '操作时间'}
             ]],
             onLoadSuccess:function() {

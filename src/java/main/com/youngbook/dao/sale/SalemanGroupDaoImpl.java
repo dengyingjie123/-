@@ -139,14 +139,12 @@ public class SalemanGroupDaoImpl implements ISalemanGroupDao {
     }
 
     @Override
-    public List<SalemanSalemangroupPO> listSalemanSalemangroupPO(String saleManId, Connection conn) throws Exception {
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11125");
-        databaseSQL.addParameter4All("saleManId", saleManId);
+    public List<SalemanSalemangroupPO> listSalemanSalemangroupPO(String salemanId, Connection conn) throws Exception {
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("2A11124");
+        databaseSQL.addParameter4All("salemanId", salemanId);
         databaseSQL.initSQL();
         List<SalemanSalemangroupPO> list=  MySQLDao.search(databaseSQL, SalemanSalemangroupPO.class, conn);
-        if(list.size()<0){
-            throw new Exception("销售小组查询错误");
-        }
+
         return list;
     }
 
