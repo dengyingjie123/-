@@ -8,8 +8,6 @@
 <%@ page import="com.youngbook.common.utils.MoneyUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  %>
 <%
-    String type = com.youngbook.common.utils.HttpUtils.getParameter(request, "type");
-    String loginCustomerId = Config.getLoginCustomerInSession(request).getId();
 
     List<ArticleVO> listArticleVO = (List<ArticleVO>)request.getAttribute("listArticleVO");
     List<ArticleVO> listArticleVONews = (List<ArticleVO>)request.getAttribute("listArticleVONews");

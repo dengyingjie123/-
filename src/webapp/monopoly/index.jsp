@@ -4,13 +4,6 @@
 <%@ page import="com.youngbook.common.utils.NumberUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-  CustomerPersonalPO loginCustomer = Config.getLoginCustomerInSession(request);
-  if (loginCustomer == null) {
-      out.println("<script>window.location='"+Config.getWebMonopoly()+"/login/login_mobile_code.jsp'</script>");
-      return;
-  }
-%>
-<%
   String version = request.getParameter("version");
   System.out.println("version: " + version);
   String show = request.getParameter("show");

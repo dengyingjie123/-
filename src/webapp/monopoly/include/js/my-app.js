@@ -20,7 +20,13 @@ var myApp = new Framework7({
     preroute: function (view, options) {
 
         console.log("preroute")
+        console.log(view);
+        console.log(view['selector']);
         console.log(loginCustomer);
+
+        if (view['selector'] == '#view-home') {
+            return true;
+        }
 
         var url = WEB_ROOT + "/system/checkLoginCustomer";
         fm.f7_post(myApp, url, null, function (data) {
@@ -145,7 +151,7 @@ function initApp() {
         dynamicNavbar: true
     });
     // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
-    viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
+    // viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
 
 
     viewMore = myApp.addView('#view-more',{
@@ -153,7 +159,7 @@ function initApp() {
         dynamicNavbar: true
     });
     // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
-    viewMore.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_more_list");
+    // viewMore.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_more_list");
 
     // viewMine = myApp.addView('#view-5',{
     //     domCache:false
