@@ -79,8 +79,7 @@ var ProductionClass = function (token, my, obj) {
             url = WEB_ROOT + "/production/Production_list.action?productionStatus='2'";
             pageSize = 10;
             pageList = [10]
-        }
-        //alert(pageSize);
+        };
         $('#' + strTableId).datagrid({
             title: '产品分期信息',
             url: url,

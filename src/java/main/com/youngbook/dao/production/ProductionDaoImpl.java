@@ -144,34 +144,6 @@ public class ProductionDaoImpl implements IProductionDao {
     }
 
 
-    /**
-     * @description 获取在售产品信息
-     *
-     * @author 苟熙霖
-     *
-     * @date 2018/11/27 14:10
-     * @param productionVO
-     * @param currentPage
-     * @param showRowCount
-     * @param conn
-     * @return com.youngbook.common.Pager
-     * @throws Exception
-     */
-    @Override
-    public Pager getPagerProductionVO( ProductionVO productionVO, int currentPage, int showRowCount, Connection conn ) throws Exception {
-
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance( "65FE18SG" );
-        databaseSQL.initSQL();
-        databaseSQL.init4Pager();
-        Pager pager = MySQLDao.search( databaseSQL, productionVO,null, currentPage,showRowCount,null,conn );
-
-
-
-
-        return pager;
-    }
-
-
     public List<ProductionWVO> getListProductByProductionIdAndMoney(String productionId, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(productionId)) {

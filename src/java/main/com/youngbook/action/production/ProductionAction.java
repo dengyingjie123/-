@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -838,34 +839,6 @@ public class ProductionAction extends BaseAction {
         Pager pager = Pager.getInstance(getRequest());
         pager = productionService.getProductions(productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
         getResult().setReturnValue(pager.toJsonObject());
-        return SUCCESS;
-    }
-
-
-    /**
-     * @description 获取在售产品信息
-     *
-     * @author 苟熙霖
-     *
-     * @date 2018/11/27 14:09
-     * @param
-     * @return java.lang.String
-     * @throws Exception
-     */
-    public String getPagerProductionVO() throws Exception {
-
-        productionVO = HttpUtils.getInstanceFromRequest( getRequest(), "productionVO", ProductionVO.class );
-        Pager pager = Pager.getInstance( getRequest() );
-
-
-
-
-        pager = productionService.getPagerProductionVO( productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection() );
-        getResult().setReturnValue( pager.toJsonObject() );
-
-
-
-
         return SUCCESS;
     }
 

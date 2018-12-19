@@ -24,6 +24,5 @@ public interface IProductionDao {
     public ProductionPO loadProductionById(String id, Connection conn) throws Exception;
     public ProductionWVO getProductByProductionIdAndMoney(String id, double money, Connection conn) throws Exception;
 
-    public Pager getPagerProductionVO (ProductionVO productionVO, int currentPage, int showRowCount, Connection conn) throws  Exception;
 
 }

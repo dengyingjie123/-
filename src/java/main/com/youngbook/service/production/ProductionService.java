@@ -734,37 +734,6 @@ public class ProductionService extends BaseService {
 
 
     /**
-     * @description 获取在售产品信息
-     *
-     * @author 苟熙霖
-     *
-     * @date 2018/11/27 14:11
-     * @param productionVO
-     * @param currentPage
-     * @param showRowCount
-     * @param conn
-     * @return com.youngbook.common.Pager
-     * @throws Exception
-     */
-    public Pager getPagerProductionVO ( ProductionVO productionVO, int currentPage, int showRowCount, Connection conn ) throws Exception {
-
-        Pager pager = productionDao.getPagerProductionVO( productionVO, currentPage, showRowCount,conn );
-
-
-
-
-        if( pager == null ){
-            MyException.newInstance( "当前暂无在售产品" ).throwException();
-        }
-
-
-
-
-        return pager;
-    }
-
-
-    /**
      * 网站：根据产品获取所有订单
      *
      * @param productionWVO
