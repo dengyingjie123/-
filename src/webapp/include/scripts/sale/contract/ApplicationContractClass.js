@@ -13,9 +13,11 @@ var ApplicationContractClass = function (token) {
         onClickContractApplicationSearchReset();
         // 初始化表格
         initContractApplicationTable();
-        /*
-        * 生成合同号
-        * */
+
+
+        /**
+         * 生成合同号
+         */
         onClickCreateContractNum();
     }
 
@@ -393,7 +395,7 @@ var ApplicationContractClass = function (token) {
         * 请求并返回数据，渲染到testArea
         * */
         fw.post(url,null,function (data) {
-            $("#contractNum"+token).val(JSON.parse(data).contractNum.split(' ').join('\t\r'));
+            $("#contractNum"+token).val(JSON.parse(data).contractNum.split(' ').join('\r\n'));
         });
     }
 
