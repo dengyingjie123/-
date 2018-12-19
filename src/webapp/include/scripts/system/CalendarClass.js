@@ -182,7 +182,11 @@ var CalendarClass = function(token) {
 
             ]],
             columns: [[
-                { field:'money',title:'当月募集资金总额(元)'}
+                { field:'money',title:'当月募集资金总额(万元)',
+                    formatter: function(value,row,index){
+                        return fw.formatMoney(row['money']/10000);
+                    }
+                }
             ]]
         });
     }
