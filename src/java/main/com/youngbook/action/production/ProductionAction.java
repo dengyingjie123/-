@@ -786,7 +786,7 @@ public class ProductionAction extends BaseAction {
          * 状态为草稿(status == 0) 的产品才能进行修改操作
          */
         int status = production.getStatus();
-        if(status != 0){
+        if(status != ProductionStatus.Draft){
             MyException.newInstance("当前状态订单无法修改，请审批为草稿再进行修改操作");
         }
 
@@ -796,6 +796,7 @@ public class ProductionAction extends BaseAction {
         ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), getConnection());
 
 
+        //  todo :gouxilin 给个返回值
 
 
         return SUCCESS;
