@@ -45,12 +45,12 @@
     <div class="my_list clearfix">
       <ul>
         <li>
-          <a href="<%=Config.getWebDehecircle()%>/mine/order_catalog.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
+          <a href="<%=Config.getWebMonopoly()%>/mine/order_catalog.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
             <div class="my_list_img1"><i></i>我的投资<div class="lf_href">查看订单<b></b></div></div>
           </a>
         </li>
         <li>
-          <a href="<%=Config.getWebDehecircle()%>/mine/mine_info.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
+          <a href="<%=Config.getWebMonopoly()%>/mine/mine_info.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
             <div class="my_list_img2"><i></i>我的账户 <div class="lf_href"><%=customerPersonalVO.getName()%><b></b></div></div>
           </a>
         </li>
@@ -62,7 +62,7 @@
         </li>
 
         <li>
-          <a href="<%=Config.getWebDehecircle()%>/loadPage_dehecircle_card_list?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
+          <a href="<%=Config.getWebMonopoly()%>/loadPage_dehecircle_card_list?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
             <div class="my_list_img4"><i></i>银行卡<div class="lf_href"><b></b></div></div>
           </a>
         </li>
@@ -80,7 +80,7 @@
 
       <ul>
         <li>
-          <a href="<%=Config.getWebDehecircle()%>/mine/system_list.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
+          <a href="<%=Config.getWebMonopoly()%>/mine/system_list.jsp?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">
           <div class="my_list_img5"><i></i>系统设置<div class="lf_href"><b></b></div></div>
           </a>
         </li>

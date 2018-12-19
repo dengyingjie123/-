@@ -22,7 +22,7 @@
     <div class="page-content">
 
         <div class="main_ct">
-            <div class="tit">德合汇</div>
+            <div class="tit">大富翁</div>
 
             <div class="swp_ct bananer_img">
                 <!-- Swiper -->
@@ -73,7 +73,7 @@
 
             <div class="fund_list ">
                 <p class="bcg_cr"></p>
-                <div class="fund_tit">德合资讯<i></i></div>
+                <div class="fund_tit">大富翁资讯<i></i></div>
                 <%
                     for (int i = 0; listArticleVONews != null && i < listArticleVONews.size(); i++) {
                         ArticleVO articleVO = listArticleVONews.get(i);

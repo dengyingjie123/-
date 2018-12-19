@@ -110,7 +110,7 @@ function logout() {
     var url = WEB_ROOT + '/system/logoutCustomer';
     $$.post(url, '', function(data){
         loginCustomer = null;
-        window.location = WEB_ROOT + '/dehecircle/login.jsp';
+        window.location = WEB_ROOT + '/monopoly/login.jsp';
 
     });
 
@@ -177,7 +177,6 @@ function initApp() {
 
         if (id == 'btn-view-home') {
             viewHome.router.loadPage(WEB_ROOT + '/api/monopoly/loadPage_home_list');
-            viewHome.router.refreshPage();
         }
 
         if (id == 'btn-view-production') {
@@ -188,7 +187,6 @@ function initApp() {
         if (id == 'btn-view-3') {
             // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
             viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
-            viewCustomer.router.refreshPage();
         }
 
         //
