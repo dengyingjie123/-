@@ -2,6 +2,7 @@ var viewHome;
 var viewCustomer;
 var viewMine;
 var viewProduction;
+var viewMore;
 var $$ = Dom7;
 // Export selectors engine
 
@@ -146,6 +147,14 @@ function initApp() {
     // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
     viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
 
+
+    viewMore = myApp.addView('#view-more',{
+        domCache:false,
+        dynamicNavbar: true
+    });
+    // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
+    viewMore.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_more_list");
+
     // viewMine = myApp.addView('#view-5',{
     //     domCache:false
     // });
@@ -191,6 +200,15 @@ function initApp() {
             // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
             viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
         }
+
+
+        //
+
+        if (id == 'btn-view-more') {
+            viewMore.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_more_list");
+        }
+
+
 
         //
 

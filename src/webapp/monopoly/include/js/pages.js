@@ -1230,15 +1230,15 @@ pagePool.put('mine-list', {
 pagePool.put('more-list', {
     id:'more-list',
     name:'more_list',
-    url:'customer_list.jsp',
+    url:'more_list.jsp',
     preprocess:function(content, url, next){
         next(content);
     },
     onPageInit:function (app, page) {
-        $$('.check-version').on('click', function(){
-            // window.location = "youngbook://check-version/{'4':'5','cc':{'d':1}}"
-            window.location = "youngbook://check-version/customer/88/age/18"
-        });
+        // $$('.check-version').on('click', function(){
+        //     // window.location = "youngbook://check-version/{'4':'5','cc':{'d':1}}"
+        //     window.location = "youngbook://check-version/customer/88/age/18"
+        // });
     },
     onReload:function () {
         alert('onReload:' + this.id);

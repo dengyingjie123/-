@@ -65,7 +65,7 @@
             <result name="fdcg_common_success">/dehecircle/thirdparty/fdcg/common_success.jsp</result>
         </action>
 
-        <action name="loadPage_monopoly_mine_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_monopoly_mine_list">
+        <action name="loadPage_dehecircle_mine_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_dehecircle_mine_list">
             <interceptor-ref name ="authStack"/>
             <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
             <result type="json" name="success">

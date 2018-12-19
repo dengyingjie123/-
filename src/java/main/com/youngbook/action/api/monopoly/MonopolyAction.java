@@ -180,6 +180,11 @@ public class MonopolyAction extends BaseAction {
         return "production_list";
     }
 
+    public String loadPage_more_list() throws Exception {
+
+        return "more_list";
+    }
+
 
     public String loadPage_production_list_JYS() throws Exception {
 
