@@ -233,18 +233,6 @@ public class CustomerPersonalService extends BaseService {
     }
 
 
-    public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
-
-        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
-        customerPersonalPO.setMobile(mobile);
-        customerPersonalPO  = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
-
-
-
-
-        return customerPersonalPO;
-    }
-
     public CustomerPersonalPO loadCustomerByLoginName(String loginName, Connection conn) throws Exception {
         return customerPersonalDao.loadCustomerByLoginName(loginName, conn);
     }
@@ -2406,6 +2394,28 @@ public class CustomerPersonalService extends BaseService {
         return customerPersonalPO;
     }
 
+    /**
+     * @description 根据mobile查询CustomerPersonalPO
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/19 16:42
+     * @param mobile
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
+        customerPersonalPO.setMobile(mobile);
+        customerPersonalPO  = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
+
+
+
+
+        return customerPersonalPO;
+    }
 
 
     /**
