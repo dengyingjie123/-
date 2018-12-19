@@ -12,25 +12,32 @@
 <head>
 </head>
 <body>
-    <div class="easyui-panel" title="查询" iconCls="icon-search" >
-        <table border="0" cellpadding="3" cellspacing="0">
-            <tr>
-                <td>权限名</td>
-                <td><input type="text" id="search_permission_name<%=token %>" name="menu.permissionName" style="width:100px;" /></td>
-                <td>
-                    <a id="btnSearchPermissionSubmit<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
-                </td>
-                <td>
-                    <a id="btnSearchPermissionReset<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut">重置</a>
-                </td>
-            </tr>
-        </table>
-        <table id="PermissionTable<%=token%>" name="PermissionTable" border="0" cellspacing="5" cellpadding="0">
-        </table>
+
+<div class="easyui-layout" fit="true">
+    <div region="center" border="false" style="padding:10px;background:#fff;border:0px solid #ccc;">
+        <div class="easyui-panel" title="查询" iconCls="icon-search" >
+            <table border="0" cellpadding="3" cellspacing="0">
+                <tr>
+                    <td>权限名</td>
+                    <td><input type="text" id="search_permission_name<%=token %>" name="menu.permissionName" style="width:100px;" /></td>
+                    <td>
+                        <a id="btnSearchPermissionSubmit<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                    </td>
+                    <td>
+                        <a id="btnSearchPermissionReset<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut">重置</a>
+                    </td>
+                </tr>
+            </table>
+            <table id="PermissionTable<%=token%>" name="PermissionTable" border="0" cellspacing="5" cellpadding="0">
+            </table>
+        </div>
     </div>
-<div region="south" border="false" style="text-align:right;padding:6px;background:#F4F4F4">
-    <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('permissionWindow<%=token%>')">取消</a>
+    <div region="south" border="false" style="text-align:right;padding:6px;background:#F4F4F4">
+        <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('permissionWindow<%=token%>')">取消</a>
+    </div>
 </div>
+
+
 </body>
 </html>
 
