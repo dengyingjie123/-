@@ -160,9 +160,8 @@ var CalendarClass = function(token) {
     function iniTableRaiseInfoTable() {
 
         var today = fw.getTimeToday();
-        var strTableId = "raiseInfoTable" + token;
+        var strTableId = "infoTable" + token;
         var url = WEB_ROOT+"/system/Calendar_getCurrentMonthRaise.action?today="+today;
-
 
 
 
@@ -179,7 +178,6 @@ var CalendarClass = function(token) {
                 }
             },
             frozenColumns:[[  // 固定列，没有滚动条
-
             ]],
             columns: [[
                 { field:'money',title:'当月募集资金总额(万元)',

@@ -5,6 +5,7 @@ import com.youngbook.action.BaseAction;
 import com.youngbook.common.Database;
 import com.youngbook.common.Pager;
 import com.youngbook.common.ReturnObject;
+import com.youngbook.common.utils.DataUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.calendar.EventPO;
 import com.youngbook.entity.po.calendar.EventSourcePO;
@@ -15,7 +16,9 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,11 +67,15 @@ public class CalendarAction extends BaseAction {
         OrderPO orderPO = new OrderPO();
         String today = getRequest().getParameter("today");
         String loginUserId = getLoginUser().getId();
+        String currentMonth = today.substring(0, 7);
 
 
-
-        // todo: gouxilin 增加注释
+        /**
+         * 返回当前用户当月打款后的订单
+         */
         List<OrderPO> raiseOrderPOs = calendarService.getCurrentMonthRaise(today, loginUserId, getConnection());
+
+
 
 
         /**
@@ -83,7 +90,14 @@ public class CalendarAction extends BaseAction {
 
 
 
+        /**
+         * 设置当月募集资金
+         */
         orderPO.setMoney(raiseMoney);
+        /**
+         * 设置当前年月到payBackTime字段
+         */
+        orderPO.setPaybackTime(currentMonth);
         Pager pager = new Pager();
         ArrayList list = new ArrayList();
         list.add(orderPO);

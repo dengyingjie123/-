@@ -25,7 +25,7 @@
             </div>
         </th>
         <th>
-            <table  id="raiseInfoTable<%=token%>"style="width: 130px; height:555px"></table>
+            <table  id="infoTable<%=token%>"style="width: 150px; height:555px"></table>
         </th>
     </table>
 </div>

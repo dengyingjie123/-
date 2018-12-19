@@ -144,8 +144,9 @@ public class CalendarService extends BaseService {
      */
     public List<OrderPO> getCurrentMonthRaise(String today , String userId , Connection connection) throws Exception {
 
-        // todo: gouxilin 方法重命名  注释里提醒：today yyyy-mm-dd
-
+        /**
+         * today必须按照yyyy-mm-dd格式
+         */
         DatabaseSQL databaseSQL = DatabaseSQL.newInstance("53I25CYF");
         databaseSQL.addParameter4All("userId",userId);
         databaseSQL.addParameter4All("today",today);
