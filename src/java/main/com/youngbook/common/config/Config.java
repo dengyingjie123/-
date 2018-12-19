@@ -81,6 +81,11 @@ public class Config {
         return Config.getWebRoot() + "/dehecircle";
     }
 
+    public static String getWebMonopoly() throws Exception {
+        return Config.getWebRoot() + "/monopoly";
+    }
+
+
     public static String getWebDeheSales() throws Exception {
         return Config.getWebRoot() + "/dehesales";
     }
