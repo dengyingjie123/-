@@ -22,7 +22,7 @@
       </div>
 
       <div class="content-block">
-        <a id="btn-customer-mobile-change-success" href="<%=Config.getWebRoot()%>/dehecircle/loadPage_dehecircle_mine_list" class="button button-raised button-fill">返回</a>
+        <a id="btn-customer-mobile-change-success" href="<%=Config.getWebRoot()%>/monopoly/loadPage_monopoly_mine_list" class="button button-raised button-fill">返回</a>
       </div>
 
     </div>

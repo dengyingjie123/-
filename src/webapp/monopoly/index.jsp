@@ -113,10 +113,10 @@
 
 
     <!-- Path to Framework7 Library JS-->
-    <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/pages.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
-    <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/my-app.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
-    <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/checkLogin.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
-    <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/functions.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
+    <script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/pages.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
+    <script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/my-app.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
+    <script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/checkLogin.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
+    <script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/functions.js?r=<%=NumberUtils.randomNumbers(5)%>"></script>
   </body>
 <script type="text/javascript">
     window.android.invokeAndroid('{jsId:"set_login_user",id:"'+loginCustomer['id']+'",name:"'+loginCustomer['name']+'",mobile:"'+loginCustomer['mobile']+'"}');

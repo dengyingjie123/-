@@ -117,7 +117,7 @@ pagePool.put('mine-change-mobile', {
                 return;
             }
 
-            fm.f7_post(myApp, WEB_ROOT + '/api/dehecircle/loadPage_mine_change_mobile', formData, function(data){
+            fm.f7_post(myApp, WEB_ROOT + '/api/monopoly/loadPage_mine_change_mobile', formData, function(data){
                 // console.log(data);
                 viewCustomer.router.loadPage('mine/mine_change_mobile_success.jsp');
                 viewCustomer.router.refreshPage();
@@ -202,7 +202,7 @@ pagePool.put('goods-detail', {
                  */
                 fm.f7_confirm(myApp, '商品所需积分为：'+score+'，<br>当前可用积分为：'+availableScore+'，<br>是否确认兑换？', function(){
 
-                    viewHome.router.loadPage(WEB_ROOT + '/api/dehecircle/loadPage_score_use?articleId='+articleId+'&r='+Math.random());
+                    viewHome.router.loadPage(WEB_ROOT + '/api/monopoly/loadPage_score_use?articleId='+articleId+'&r='+Math.random());
                     return;
                 });
 
@@ -509,7 +509,7 @@ pagePool.put('password-save', {
                 if (data["returnValue"] == "1") {
                     fm.f7_alert(myApp, "密码修改成功", function () {
                         var currentView = fm.f7_getCurrentView();
-                        currentView.router.loadPage(WEB_ROOT + '/dehecircle/loadPage_dehecircle_mine_list');
+                        currentView.router.loadPage(WEB_ROOT + '/monopoly/loadPage_monopoly_mine_list');
                         currentView.router.refreshPage();
                 });
                 }
@@ -1102,7 +1102,7 @@ pagePool.put('production-detail', {
                     });
                 }
                 else {
-                    url = WEB_ROOT + '/dehecirccle/market/order_save.jsp?productionId=' + productionId;
+                    url = WEB_ROOT + '/monopoly/market/order_save.jsp?productionId=' + productionId;
                     //url = WEB_ROOT + '/ph/phGetPageOrderSave?productionId=' + productionId;
                     viewMarket.router.loadPage(fm.f7_url(url));
                 }
@@ -1119,7 +1119,7 @@ pagePool.put('production-detail', {
             var title = e.target.dataset.title;
             var summaryText = e.target.dataset.summaryText;
 
-            var url = "/dehecirccle/share/share_production.jsp?productionId="+productionId+"&userId="+userId;
+            var url = "/monopoly/share/share_production.jsp?productionId="+productionId+"&userId="+userId;
             url = fm.urlEncode(url);
 
             myApp.actions([
@@ -1440,7 +1440,7 @@ var homeListPage = {
         fm.f7_bind('.btn-production-detail',function(e){
             var articleId = e.target.dataset.id;
 
-            viewHome.router.loadPage( WEB_ROOT + '/api/dehecircle/loadPage_info_detail?articleId='+articleId);
+            viewHome.router.loadPage( WEB_ROOT + '/api/monopoly/loadPage_info_detail?articleId='+articleId);
         });
 
         $$('.btn-home-share').on('click', function (e) {
@@ -1450,7 +1450,7 @@ var homeListPage = {
             var title = e.target.dataset.title;
             var summaryText = e.target.dataset.summaryText;
 
-            var url = "/dehecirccle/share/share_article.jsp?userId="+userId+"&articleId="+articleId+"&title="+title;
+            var url = "/monopoly/share/share_article.jsp?userId="+userId+"&articleId="+articleId+"&title="+title;
             url = fm.urlEncode(url);
 
             console.log(e);

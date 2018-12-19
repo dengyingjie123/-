@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>德合汇</title>
+    <title>大富翁</title>
     <script type="text/javascript" src="<%=Config.getModernFrameworkRoot()%>/jquery.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/common.js"></script>
     <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/css/base.css" />

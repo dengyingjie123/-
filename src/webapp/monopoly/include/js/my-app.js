@@ -7,7 +7,7 @@ var $$ = Dom7;
 
 // Initialize your app
 var myApp = new Framework7({
-    modalTitle: '德合汇',
+    modalTitle: '大富翁',
     modalButtonOk:'确定',
     modalButtonCancel:'取消',
     modalPreloaderTitle:'加载中……',
@@ -25,13 +25,13 @@ var myApp = new Framework7({
         fm.f7_post(myApp, url, null, function (data) {
             if (data['returnValue'] == '0') {
 
-                var url = WEB_ROOT + "/dehecircle/login/login_mobile_code.jsp";
+                var url = WEB_ROOT + "/monopoly/login/login_mobile_code.jsp";
 
                 /**
                  * 通过统一认证登录方式登录
                  */
                 if (!fm.checkIsTextEmpty(loginToken)) {
-                    url = WEB_ROOT +  "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_dehecircle&fail_page=login_mobile_code_dehecircle";
+                    url = WEB_ROOT +  "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_monopoly&fail_page=login_mobile_code_monopoly";
                     window.location = url;
                 }
                 else {
@@ -134,14 +134,14 @@ function initApp() {
     viewProduction = myApp.addView('#view-production', {
         domCache:false
     });
-    viewProduction.router.loadPage(WEB_ROOT + "/api/dehecircle/loadPage_production_list?r"+Math.random());
+    viewProduction.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_production_list?r"+Math.random());
 
     viewCustomer = myApp.addView('#view-customer',{
         domCache:false,
         dynamicNavbar: true
     });
     // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
-    viewCustomer.router.loadPage(WEB_ROOT + "/dehecircle/loadPage_dehecircle_mine_list");
+    viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
 
     // viewMine = myApp.addView('#view-5',{
     //     domCache:false
@@ -152,7 +152,7 @@ function initApp() {
         main:true,
         domCache:false
     });
-    viewHome.router.loadPage(WEB_ROOT + '/api/dehecircle/loadPage_home_list');
+    viewHome.router.loadPage(WEB_ROOT + '/api/monopoly/loadPage_home_list');
 
     $$(document).on('navbarInit', function (e) {
         var navbar = e.detail.navbar;
@@ -176,18 +176,18 @@ function initApp() {
 
 
         if (id == 'btn-view-home') {
-            viewHome.router.loadPage(WEB_ROOT + '/api/dehecircle/loadPage_home_list');
+            viewHome.router.loadPage(WEB_ROOT + '/api/monopoly/loadPage_home_list');
             viewHome.router.refreshPage();
         }
 
         if (id == 'btn-view-production') {
-            viewProduction.router.loadPage(WEB_ROOT + "/api/dehecircle/loadPage_production_list?r"+Math.random());
+            viewProduction.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_production_list?r"+Math.random());
         }
 
 
         if (id == 'btn-view-3') {
             // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
-            viewCustomer.router.loadPage(WEB_ROOT + "/dehecircle/loadPage_dehecircle_mine_list");
+            viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
             viewCustomer.router.refreshPage();
         }
 
@@ -283,7 +283,7 @@ $$('#btn-login-mobile-code').on('click',function (e) {
             }
         }
 
-        window.location = WEB_ROOT + '/dehecircle/index.jsp';
+        window.location = WEB_ROOT + '/monopoly/index.jsp';
     },null);
 
 

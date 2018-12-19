@@ -7,7 +7,7 @@
     <constant name="struts.devMode" value="false" />
 
     <!-- 修改package的name和namespace -->
-    <package name="dehecircle" extends="json-default" namespace="/dehecircle">
+    <package name="monopoly" extends="json-default" namespace="/monopoly">
 
         <!-- 必须包含 开始 -->
         <result-types>
@@ -33,8 +33,8 @@
 
         <action name="phAddCard" class="com.youngbook.action.customer.CustomerAccountAction" method="phAddCard">
             <interceptor-ref name ="authStack"/>
-            <result name="success">/dehecircle/mine/card_save.jsp</result>
-            <result name="manyCards">/dehecircle/mine/card_save_fuiou.jsp</result>
+            <result name="success">/monopoly/mine/card_save.jsp</result>
+            <result name="manyCards">/monopoly/mine/card_save_fuiou.jsp</result>
         </action>
 
         <action name="phGetPageOrderSave" class="com.youngbook.action.production.OrderAction" method="phGetPageOrderSave">
@@ -46,7 +46,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="page_success">/dehecircle/market/order_save.jsp</result>
+            <result name="page_success">/monopoly/market/order_save.jsp</result>
         </action>
 
         <action name="phGetPagePaperInvestment" class="com.youngbook.action.production.OrderAction" method="phGetPagePaperInvestment">
@@ -58,11 +58,11 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="no_order_info">/dehecircle/market/no_order_info.jsp</result>
-            <result name="order_zxt">/dehecircle/mine/paper_investment.jsp</result>
-            <result name="order_zn">/dehecircle/mine/paper_investment.jsp</result>
-            <result name="fdcg_common_error">/dehecircle/thirdparty/fdcg/common_error.jsp</result>
-            <result name="fdcg_common_success">/dehecircle/thirdparty/fdcg/common_success.jsp</result>
+            <result name="no_order_info">/monopoly/market/no_order_info.jsp</result>
+            <result name="order_zxt">/monopoly/mine/paper_investment.jsp</result>
+            <result name="order_zn">/monopoly/mine/paper_investment.jsp</result>
+            <result name="fdcg_common_error">/monopoly/thirdparty/fdcg/common_error.jsp</result>
+            <result name="fdcg_common_success">/monopoly/thirdparty/fdcg/common_success.jsp</result>
         </action>
 
         <action name="loadPage_monopoly_mine_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_monopoly_mine_list">
@@ -74,7 +74,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="mine_list">/dehecircle/mine/mine_list.jsp</result>
+            <result name="mine_list">/monopoly/mine/mine_list.jsp</result>
         </action>
 
 
@@ -88,7 +88,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="password_list">/dehecircle/mine/password_list.jsp</result>
+            <result name="password_list">/monopoly/mine/password_list.jsp</result>
         </action>
 
         <action name="loadPage_dehecircle_card_list" class="com.youngbook.action.customer.CustomerAccountAction" method="loadPage_dehecircle_card_list">
@@ -100,7 +100,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="card_list">/dehecircle/mine/card_list.jsp</result>
+            <result name="card_list">/monopoly/mine/card_list.jsp</result>
         </action>
 
         <action name="loadPage_dehecircle_mobile_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_dehecircle_mobile_list">
@@ -112,7 +112,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="mobile_list">/dehecircle/mine/mobile_list.jsp</result>
+            <result name="mobile_list">/monopoly/mine/mobile_list.jsp</result>
         </action>
 
         <action name="loadPage_dehecircle_account_list" class="com.youngbook.action.customer.CustomerPersonalAction" method="loadPage_dehecircle_account_list">
@@ -124,7 +124,7 @@
                 <param name="excludeNullProperties">true</param>
                 <param name="ignoreHierarchy">true</param>
             </result>
-            <result name="account_list">/dehecircle/mine/account_list.jsp</result>
+            <result name="account_list">/monopoly/mine/account_list.jsp</result>
         </action>
 
         <action name="*_*" class="com.youngbook.action.core.{1}Action" method="{2}">
