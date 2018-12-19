@@ -1,5 +1,8 @@
 package com.youngbook.action.sale.contract;
 
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObject;
 import com.youngbook.common.MyException;
@@ -10,15 +13,17 @@ import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
+import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.po.sale.contract.ContractApplicationPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.Sale.contract.ContractApplicationVO;
+import com.youngbook.service.production.ProductionService;
 import com.youngbook.service.sale.contract.ContractService;
 import com.youngbook.service.system.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,9 +36,12 @@ public class ContractApplicationAction extends BaseAction {
     //销售合同业务类
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private ProductionService productionService;
     //销售合同申请对象
     private ContractApplicationPO contractApplicationPO = new ContractApplicationPO();
     private ContractApplicationVO contractApplicationVO = new ContractApplicationVO();
+
 
     /**
      * 新建一个销售合同申请记录
@@ -65,6 +73,7 @@ public class ContractApplicationAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 更新用户申请数据
      *
@@ -77,6 +86,7 @@ public class ContractApplicationAction extends BaseAction {
         contractService.updateApplication(contractApplicationPO, applicationUser, conn);
         return SUCCESS;
     }
+
 
     /**
      * 删除用户申请数据
@@ -99,6 +109,7 @@ public class ContractApplicationAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 验证销售合同id，获取销售合同
      *
@@ -120,6 +131,7 @@ public class ContractApplicationAction extends BaseAction {
         return SUCCESS;
     }
 
+
     /**
      * 获取销售和同事申请的列表数据
      * 调用 业务类的 listApplications 获取销售合同列表数据
@@ -137,6 +149,7 @@ public class ContractApplicationAction extends BaseAction {
         getResult().setReturnValue(page.toJsonObject());
         return SUCCESS;
     }
+
 
     /**
      * 审批销售合同申请
@@ -169,17 +182,75 @@ public class ContractApplicationAction extends BaseAction {
     }
 
 
+    /**
+     * @description 生成合同号
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 16:34
+     * @param 
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String createContractNum() throws Exception {
+
+        JSONArray jsonArray = new JSONArray();
+
+
+
+
+        String contracts = getHttpRequestParameter("contracts");
+        if(StringUtils.isEmpty(contracts)){
+            MyException.newInstance("无法获取合同范围，生成合同号失败").throwException();
+        }
+
+        String productionId = getHttpRequestParameter("productionId");
+        if(StringUtils.isEmpty(productionId)){
+            MyException.newInstance("无法获取相关产品分期信息，生成合同号失败").throwException();
+        }
+
+        String counts = getHttpRequestParameter("counts");
+        if(StringUtils.isEmpty(productionId)){
+            MyException.newInstance("无法获取申请套数，生成合同号失败").throwException();
+        }
+
+        ProductionPO productionPO = productionService.loadProductionById(productionId, getConnection());
+
+
+
+
+        /*
+        * 生成合同号
+        * */
+        JSONObject contractNum = contractService.createContractNum(contracts, productionPO, counts);
+        jsonArray.add(contractNum.toJSONString());
+
+
+
+
+        getResult().setReturnValue(jsonArray);
+
+
+
+
+        return SUCCESS;
+    }
+
+
     public ContractApplicationPO getContractApplicationPO() {
         return contractApplicationPO;
     }
+
 
     public void setContractApplicationPO(ContractApplicationPO contractApplicationPO) {
         this.contractApplicationPO = contractApplicationPO;
     }
 
+
     public ContractApplicationVO getContractApplicationVO() {
         return contractApplicationVO;
     }
+
 
     public void setContractApplicationVO(ContractApplicationVO contractApplicationVO) {
         this.contractApplicationVO = contractApplicationVO;

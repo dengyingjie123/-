@@ -13,6 +13,12 @@ var ApplicationContractClass = function (token) {
         onClickContractApplicationSearchReset();
         // 初始化表格
         initContractApplicationTable();
+
+
+        /**
+         * 生成合同号
+         */
+        onClickCreateContractNum();
     }
 
     //审核状态
@@ -108,6 +114,7 @@ var ApplicationContractClass = function (token) {
         });
     }
 
+
     /**
      * 删除销售合同申请
      */
@@ -143,6 +150,7 @@ var ApplicationContractClass = function (token) {
             });
         });
     }
+
 
     /**
      * 添加销售合同申请
@@ -297,6 +305,7 @@ var ApplicationContractClass = function (token) {
         }, null);
     }
 
+
     //产品选择
     function productionMenu() {
 
@@ -318,6 +327,78 @@ var ApplicationContractClass = function (token) {
             }, null);
         })
     }
+
+
+    /**
+     * @description 绑定生成合同号事件
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 16:51
+     * @param null
+     * @return 
+     * @throws Exception
+     */
+    function onClickCreateContractNum(){
+        var buttonId = "btnCreateContractNum" + token;
+        fw.bindOnClick(buttonId,function () {
+
+
+
+
+            fw.datagridGetSelected('ContractApplicationTable'+token, function(selected){
+                var contracts = selected.contracts;
+                var productionId = selected.productionId;
+                var counts = selected.counts;
+                var url =  WEB_ROOT +"/modules/sale/contract/ApplicationContract_ContractNum.jsp?token="+token;
+
+
+
+                /*
+                * 合同申请未经过审批时，没有合同范围，无法生成合同
+                * */
+                if(contracts == 0){
+                    fw.alert("提示", "无法获取合同范围，生成合同号失败，请审批该申请生成合同范围");
+                    return false;
+                }
+
+                
+
+
+                fw.window('ContractNumWindow'+token,'合同号列表',600,450,url,function () {
+                    initContractNumWindow(contracts , productionId , counts);
+                });
+            });
+        });
+    }
+
+
+    /**
+     * @description 初始化合同号
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 17:15
+     * @param null
+     * @return 
+     * @throws Exception
+     */
+    function initContractNumWindow (contracts , productionId , counts) {
+
+        var url = WEB_ROOT + "/sale/contract/ContractApplication_createContractNum.action?contracts=" + contracts + "&productionId=" + productionId + "&counts=" + counts;
+
+
+
+
+
+        /*
+        * 请求并返回数据，渲染到testArea
+        * */
+        fw.post(url,null,function (data) {
+            $("#contractNum"+token).val(JSON.parse(data).contractNum.split(' ').join('\r\n'));
+        });
+    }
+
 
     /**
      * 修改提交事件
