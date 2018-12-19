@@ -2382,24 +2382,15 @@ public class CustomerPersonalService extends BaseService {
      * @return com.youngbook.entity.po.customer.CustomerPersonalPO
      * @throws Exception
      */
-    public int loadCustomerByName(String name, Connection conn) throws Exception {
+    public CustomerPersonalPO loadCustomerByName(String name, Connection conn) throws Exception {
 
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DE");
-        databaseSQL.addParameter4All("name", name);
-        databaseSQL.initSQL();
+        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
+        customerPersonalPO.setName(name);
 
-
-
-
-        List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
-        if(search.size()==0){
-            return 0;
-        }
+        customerPersonalPO = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
 
 
-
-
-        return 1;
+        return customerPersonalPO;
     }
 
 

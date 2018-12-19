@@ -5234,8 +5234,8 @@ public class CustomerPersonalAction extends BaseAction {
 
 
 
-        int checkName = customerPersonalService.loadCustomerByName(name, getConnection());
-        CustomerPersonalPO customerPersonalPO = customerPersonalService.loadCustomerByMobile(mobile, getConnection());
+        CustomerPersonalPO customerPersonalPO_Name = customerPersonalService.loadCustomerByName(name, getConnection());
+        CustomerPersonalPO customerPersonalPO_Mobile = customerPersonalService.loadCustomerByMobile(mobile, getConnection());
         int checkIdCardNumber = customerPersonalService.loadCustomerByIdCardNumber(idCardNumber, getConnection());
 
 
@@ -5245,13 +5245,17 @@ public class CustomerPersonalAction extends BaseAction {
          * 判断客户姓名、身份证号、移动号码是否已经存在
          * */
         if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(idCardNumber)) {
-            if (checkName == 1) {
+            if (customerPersonalPO_Name != null) {
                 MyException.newInstance("已有同名客户，请添加客户手机号或身份证号", "").throwException();
             } else {
                 personalPO.setName(name);
                 customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
             }
-        } else if (StringUtils.isEmpty(mobile)) {
+        }
+        /**
+         *
+         */
+        else if (StringUtils.isEmpty(mobile)) {
             if (checkIdCardNumber == 1) {
                 MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
             }
@@ -5263,7 +5267,7 @@ public class CustomerPersonalAction extends BaseAction {
             customerCertificatePO.setName("98");
             customerCertificateService.insertOrUpdate(customerCertificatePO, getLoginUser().getId(), getConnection());
         } else if (StringUtils.isEmpty(idCardNumber)) {
-            if (customerPersonalPO!=null) {
+            if (customerPersonalPO_Mobile!=null) {
                 MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
             }else  {
                 personalPO.setName(name);
@@ -5274,7 +5278,7 @@ public class CustomerPersonalAction extends BaseAction {
             if (checkIdCardNumber == 1) {
                 MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
             }
-            if (customerPersonalPO!=null) {
+            if (customerPersonalPO_Mobile!=null) {
                 MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
             }
             CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();

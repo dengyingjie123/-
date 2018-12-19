@@ -313,6 +313,27 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return count;
     }
 
+    public CustomerPersonalPO loadCustomerPO(CustomerPersonalPO customerPersonalPO, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DE");
+        databaseSQL.addParameter4All("name", customerPersonalPO.getName());
+        databaseSQL.addParameter4All("mobile", customerPersonalPO.getMobile());
+        databaseSQL.initSQL();
+
+
+
+
+        List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
+        if(search.size() == 1){
+            return search.get(0);
+        }
+
+
+
+
+        return null;
+    }
+
     /**
      * 网站：通过 Customer mobile 获取 Customer
      * <p/>
