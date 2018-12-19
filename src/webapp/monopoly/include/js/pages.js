@@ -1221,6 +1221,11 @@ pagePool.put('mine-list', {
         $$('.btn-logout').on('click', function(){
             logout();
         });
+
+
+        $$('.btn-login').on('click', function(){
+            login();
+        });
     },
     onReload:function () {
         alert('onReload:' + this.id);

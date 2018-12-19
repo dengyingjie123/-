@@ -6,6 +6,12 @@ var viewMore;
 var $$ = Dom7;
 // Export selectors engine
 
+/**
+ * 不需要登录的视图
+ * @type {[*]}
+ */
+var viewsWithoutLogin = ['#view-home', '#view-more', '#view-customer'];
+
 // Initialize your app
 var myApp = new Framework7({
     modalTitle: '大富翁',
@@ -24,8 +30,14 @@ var myApp = new Framework7({
         console.log(view['selector']);
         console.log(loginCustomer);
 
-        if (view['selector'] == '#view-home') {
-            return true;
+        // if (view['selector'] == '#view-home') {
+        //     return true;
+        // }
+
+        for (var i = 0; i < viewsWithoutLogin.length; i++) {
+            if (view['selector'] == viewsWithoutLogin[i]) {
+                return true;
+            }
         }
 
         var url = WEB_ROOT + "/system/checkLoginCustomer";
@@ -112,6 +124,21 @@ function checkLogin() {
 }
 
 function logout() {
+
+
+    var url = WEB_ROOT + '/system/logoutCustomer';
+    $$.post(url, '', function(data){
+        loginCustomer = null;
+        window.location = WEB_ROOT + '/monopoly/index.jsp';
+
+    });
+
+
+    return false;
+}
+
+
+function login() {
 
 
     var url = WEB_ROOT + '/system/logoutCustomer';

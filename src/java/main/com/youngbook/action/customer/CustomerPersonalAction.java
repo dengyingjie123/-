@@ -650,7 +650,9 @@ public class CustomerPersonalAction extends BaseAction {
 
     public String loadPage_monopoly_mine_list() throws Exception {
 
-        String customerPersonalId = Config.getLoginCustomerInSession(getRequest()).getId();
+        CustomerPersonalPO loginCustomerInSession = Config.getLoginCustomerInSession(getRequest());
+
+        String customerPersonalId = loginCustomerInSession.getId();
 
         CustomerPersonalVO customerPersonalVO = customerPersonalService.loadCustomerVOByCustomerPersonalId(customerPersonalId, getConnection());
 

@@ -2,12 +2,6 @@
 <%@ page import="com.youngbook.common.config.Config" %>
 <%@ page import="com.youngbook.common.utils.NumberUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  %>
-<%
-    String type = com.youngbook.common.utils.HttpUtils.getParameter(request, "type");
-    String loginCustomerId = Config.getLoginCustomerInSession(request).getId();
-
-    int number = NumberUtils.randomNumbers(3);
-%>
 
 <div data-page="more-list" class="page">
 
