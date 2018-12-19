@@ -793,10 +793,20 @@ public class ProductionAction extends BaseAction {
 
 
 
-        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), getConnection());
+        /**
+         * 修改符合条件的产品分期
+         */
+        ProductionPO productionPO = productionService.insertOrUpdate(production, getLoginUser().getId(), getConnection());
 
 
-        //  todo :gouxilin 给个返回值
+        
+
+        /**
+         * 返回修改过的产品分期对象
+         */
+        getResult().setReturnValue(productionPO.toJsonObject());
+
+
 
 
         return SUCCESS;
@@ -822,6 +832,7 @@ public class ProductionAction extends BaseAction {
         getResult().setReturnValue(array);
         return SUCCESS;
     }
+
 
     /**
      * 删除
