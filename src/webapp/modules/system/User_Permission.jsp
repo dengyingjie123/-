@@ -12,7 +12,6 @@
 <head>
 </head>
 <body>
-
 <div class="easyui-layout" fit="true">
     <div region="center" border="false" style="padding:0px;background:#fff;border:0px solid #ccc;">
         <div class="easyui-panel" title="查询" iconCls="icon-search" >
@@ -36,8 +35,6 @@
         <a class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" onClick="fwCloseWindow('permissionWindow<%=token%>')">取消</a>
     </div>
 </div>
-
-
 </body>
 </html>
 
