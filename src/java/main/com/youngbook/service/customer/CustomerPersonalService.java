@@ -234,7 +234,15 @@ public class CustomerPersonalService extends BaseService {
 
 
     public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
-        return customerPersonalDao.loadCustomerByMobile(mobile, conn);
+
+        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
+        customerPersonalPO.setMobile(mobile);
+        customerPersonalPO  = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
+
+
+
+
+        return customerPersonalPO;
     }
 
     public CustomerPersonalPO loadCustomerByLoginName(String loginName, Connection conn) throws Exception {
@@ -2387,7 +2395,12 @@ public class CustomerPersonalService extends BaseService {
         CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
         customerPersonalPO.setName(name);
 
+
+
+
         customerPersonalPO = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
+
+
 
 
         return customerPersonalPO;
@@ -2406,24 +2419,20 @@ public class CustomerPersonalService extends BaseService {
      * @return com.youngbook.entity.po.customer.CustomerPersonalPO
      * @throws Exception
      */
-    public int loadCustomerByIdCardNumber(String idCardNumber, Connection conn) throws Exception {
+    public CustomerCertificatePO loadCustomerByIdCardNumber(String idCardNumber, Connection conn) throws Exception {
 
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DA");
-        databaseSQL.addParameter4All("idCardNumber", AesEncrypt.encrypt(idCardNumber));
-        databaseSQL.initSQL();
-
-
-
-
-        List<CustomerCertificatePO> search = MySQLDao.search(databaseSQL, CustomerCertificatePO.class, conn);
-        if(search.size()==0){
-            return 0;
-        }
+        CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
+        customerCertificatePO.setNumber(idCardNumber);
 
 
 
 
-        return 1;
+        customerCertificatePO = customerPersonalDao.loadCustomerCertificateByIdCardNumber(customerCertificatePO, conn);
+
+
+
+
+        return customerCertificatePO;
     }
 
 }
