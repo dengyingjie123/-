@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  %>
 
 <%
-    String redirectURL = Config.getWebDehecircle() + "/login/login_mobile_code.jsp";
+    String redirectURL = Config.getWebMonopoly() + "/login/login_mobile_code.jsp";
     response.sendRedirect(redirectURL);
 %>
 <%
@@ -20,26 +20,26 @@
     <title>德合汇</title>
     <script type="text/javascript" src="<%=Config.getModernFrameworkRoot()%>/jquery.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/common.js"></script>
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/css/base.css" />
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/css/swiper.min.css" />
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/css/base.css" />
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/css/swiper.min.css" />
 
 
     <!-- Path to Framework7 Library CSS-->
     <!--<link rel="stylesheet" href="include/framework/framework7-1.6.5/css/framework7.material.min.css">-->
     <script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/config.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/hashMap.js"></script>
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/framework/<%=Config.getF7Folder()%>/css/framework7.material.css">
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/framework/<%=Config.getF7Folder()%>/css/framework7.material.colors.css">
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/framework/<%=Config.getF7Folder()%>/css/framework7.material.css">
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/framework/<%=Config.getF7Folder()%>/css/framework7.material.colors.css">
     <!-- Path to your custom app styles-->
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/css/my-app.css">
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/css/my-app.css">
     <!--<link rel="stylesheet/less" type="text/css" href="include/less/my-app.less">-->
-    <link rel="stylesheet" href="<%=Config.getWebDehecircle()%>/include/css/material-icons.css">
+    <link rel="stylesheet" href="<%=Config.getWebMonopoly()%>/include/css/material-icons.css">
 </head>
 <body>
 
 <div class="login_ct">
     <div class="login_ct_head">
-        <p class="text_tip" onclick="window.location='<%=Config.getWebDehecircle()%>/login/login_mobile_code.jsp'">短信验证登录</p>
+        <p class="text_tip" onclick="window.location='<%=Config.getWebMonopoly()%>/login/login_mobile_code.jsp'">短信验证登录</p>
 
     </div>
     <div class="login_ct_main">
@@ -53,12 +53,12 @@
 
 </div>
 <!-- Path to Framework7 Library JS-->
-<script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/framework/framework7-1.6.5/js/framework7.js"></script>
+<script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/framework/framework7-1.6.5/js/framework7.js"></script>
 <!-- Path to your app js-->
 
 <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/extensions/framework-modern.js"></script>
-<script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/pages.js"></script>
-<script type="text/javascript" src="<%=Config.getWebDehecircle()%>/include/js/my-app.js"></script>
+<script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/pages.js"></script>
+<script type="text/javascript" src="<%=Config.getWebMonopoly()%>/include/js/my-app.js"></script>
 <script type="text/javascript" src="<%=Config.getWebRoot()%>/include/extensions/md5.js"></script>
 </body>
 </html>
