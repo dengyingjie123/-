@@ -10,10 +10,12 @@ import com.youngbook.entity.po.calendar.EventPO;
 import com.youngbook.entity.po.calendar.EventSourcePO;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.service.BaseService;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.util.List;
 
+@Component("calendarService")
 public class CalendarService extends BaseService {
 
     public EventSourcePO getCustomerBirthdays4MonthView(String intervalStart, UserPO saleMan) throws Exception {
@@ -142,6 +144,7 @@ public class CalendarService extends BaseService {
      */
     public List<OrderPO> getCurrentMonthRaise(String today , String userId , Connection connection) throws Exception {
 
+        // todo: gouxilin 方法重命名  注释里提醒：today yyyy-mm-dd
 
         DatabaseSQL databaseSQL = DatabaseSQL.newInstance("53I25CYF");
         databaseSQL.addParameter4All("userId",userId);

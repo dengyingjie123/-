@@ -12,6 +12,7 @@ import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.service.calendar.CalendarService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -27,14 +28,15 @@ import java.util.List;
  */
 public class CalendarAction extends BaseAction {
 
-    private CalendarService service = new CalendarService();
+    @Autowired
+    private CalendarService calendarService;
 
     public String buildEvents() throws Exception {
 
         EventSourcePO birthdaySource = new EventSourcePO();
 
         String intervalStart = getRequest().getParameter("intervalStart");
-        birthdaySource = service.getCustomerBirthdays4MonthView(intervalStart, getLoginUser());
+        birthdaySource = calendarService.getCustomerBirthdays4MonthView(intervalStart, getLoginUser());
 
 
         JSONArray eventSources = new JSONArray();
@@ -61,27 +63,27 @@ public class CalendarAction extends BaseAction {
 
         OrderPO orderPO = new OrderPO();
         String today = getRequest().getParameter("today");
-        String id = getLoginUser().getId();
+        String loginUserId = getLoginUser().getId();
 
 
 
-
-        List<OrderPO> raises = service.getCurrentMonthRaise(today, id, getConnection());
+        // todo: gouxilin 增加注释
+        List<OrderPO> raiseOrderPOs = calendarService.getCurrentMonthRaise(today, loginUserId, getConnection());
 
 
         /**
          * 计算返回的数据
          */
-        Double raise = 0.0;
-        for (OrderPO o : raises) {
+        Double raiseMoney = 0.0;
+        for (OrderPO o : raiseOrderPOs) {
             double money = o.getMoney();
-            raise += money;
+            raiseMoney += money;
         }
 
 
 
 
-        orderPO.setMoney(raise);
+        orderPO.setMoney(raiseMoney);
         Pager pager = new Pager();
         ArrayList list = new ArrayList();
         list.add(orderPO);
@@ -211,13 +213,5 @@ public class CalendarAction extends BaseAction {
             getResult().setMessage("失败");
         }
         return SUCCESS;
-    }
-
-    public CalendarService getService() {
-        return service;
-    }
-
-    public void setService(CalendarService service) {
-        this.service = service;
     }
 }
