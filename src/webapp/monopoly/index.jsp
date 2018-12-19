@@ -17,6 +17,15 @@
   if (StringUtils.isEmpty(show)) {
       show = "0";
   }
+
+
+  /**
+   * 验证客户类型
+   * 1：游客
+   * 2：注册用户
+   * 3：确认用户
+   */
+  String customerStatus_monopoly = "2";
 %>
 <!DOCTYPE html>
 <html>
@@ -55,6 +64,7 @@
         console.log(loginCustomer);
         loginCustomer = fm.convert2Json(loginCustomer);
         var loginToken;
+        var customerStatus_monopoly = '<%=customerStatus_monopoly%>';
     </script>
   </head>
   <body>
@@ -77,6 +87,10 @@
       </div>
 
 
+      <%
+        if (customerStatus_monopoly.equals("3")) {
+      %>
+
       <!-- 市场视图 开始 -->
       <div id="view-production" class="view tab <%=show.equals("1")?"active":""%>">
         <div class="pages">
@@ -85,9 +99,15 @@
             </div>
           </div>
         </div>
-
       </div>
       <!-- 市场视图 结束 -->
+      <%
+        }
+      %>
+
+
+
+
 
       <!-- -->
       <div id="view-customer" class="view tab <%=show.equals("2")?"active":""%>">
@@ -99,12 +119,31 @@
         </div>
       </div>
 
+      <!-- -->
+      <div id="view-more" class="view tab <%=show.equals("3")?"active":""%>">
+        <div class="pages">
+          <div data-page="index-more" class="page">
+            <div class="page-content">
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div id="mainToolbar" class="toolbar tabbar tabbar-labels toolbar-dehecricle">
         <div class="toolbar-inner">
           <a id="btn-view-home" href="#view-home" class="tab-link active"><i class="icon tabbar-index-icon-home"></i><span class="tabbar-label">首页</span></a>
+          <%
+            if (customerStatus_monopoly.equals("3")) {
+                %>
+
           <a id="btn-view-production" href="#view-production" class="tab-link <%=show.equals("1")?"active":""%>"><i class="icon tabbar-index-icon-production"></i><span class="tabbar-label">投资理财</span></a>
+          <%
+            }
+          %>
+
           <a id="btn-view-3" href="#view-customer" class="tab-link <%=show.equals("2")?"active":""%>"> <i class="icon tabbar-index-icon-mine"></i><span class="tabbar-label">我的账户</span></a>
+          <a id="btn-view-more" href="#view-production" class="tab-link <%=show.equals("3")?"active":""%>"><i class="icon tabbar-index-icon-production"></i><span class="tabbar-label">发现更多</span></a>
         </div>
       </div>
 

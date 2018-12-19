@@ -131,10 +131,13 @@ function initApp() {
     // });
     // viewHome.router.loadPage('more/customer_list.jsp?r='+Math.random());
 
-    viewProduction = myApp.addView('#view-production', {
-        domCache:false
-    });
-    viewProduction.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_production_list?r"+Math.random());
+    if (customerStatus_monopoly == 3) {
+        viewProduction = myApp.addView('#view-production', {
+            domCache:false
+        });
+        viewProduction.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_production_list");
+    }
+
 
     viewCustomer = myApp.addView('#view-customer',{
         domCache:false,
@@ -330,7 +333,7 @@ $$('#btn-login-register').on('click',function (e) {
         }
 
         if (data.code == 100) {
-            window.location = WEB_ROOT + "/dehecircle/index.jsp?r="+Math.random();
+            window.location = WEB_ROOT + "/monopoly/index.jsp?r="+Math.random();
         }
 
     },function () {
@@ -371,9 +374,9 @@ function androidCallback(jsId, data){
 
 function relogin() {
 
-    var url = WEB_ROOT + "/dehecircle/login/login/login_mobile_code.jsp"
+    var url = WEB_ROOT + "/monopoly/login/login/login_mobile_code.jsp"
     if (!fm.checkIsTextEmpty(loginToken)) {
-        url = WEB_ROOT + "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_dehecircle&fail_page=login_mobile_code_dehecircle";
+        url = WEB_ROOT + "/system/loginWithToken?loginToken="+loginToken+"&success_page=login_success_monopoly&fail_page=login_mobile_code_monopoly";
     }
 
     window.location = url;
