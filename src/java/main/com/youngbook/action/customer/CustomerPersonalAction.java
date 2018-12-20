@@ -62,6 +62,7 @@ import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class CustomerPersonalAction extends BaseAction {
 
@@ -5230,6 +5231,14 @@ public class CustomerPersonalAction extends BaseAction {
         String name = getHttpRequestParameter("name");
         String mobile = getHttpRequestParameter("mobile");
         String idCardNumber = getHttpRequestParameter("idCardNumber");
+        /**
+         * 移动号码验证
+         */
+        Pattern checkMobile = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
+        /**
+         * 身份证号验证
+         */
+        Pattern checkIdCardNum = Pattern.compile("(^\\d{18}$)|(^\\d{15}$)");
 
 
 
@@ -5262,6 +5271,9 @@ public class CustomerPersonalAction extends BaseAction {
             if (checkIdCardNumber != null) {
                 MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
             }
+            if(!checkIdCardNum.matcher(idCardNumber).matches() ){
+                MyException.newInstance("身份证号格式不正确,请查证", "").throwException();
+            }
             CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
             personalPO.setName(name);
             customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
@@ -5281,6 +5293,9 @@ public class CustomerPersonalAction extends BaseAction {
             if (customerPersonalPO_Mobile!= null) {
                 MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
             }
+            if(!checkMobile.matcher(mobile).matches()){
+                MyException.newInstance("移动号码格式不正确,请查证", "").throwException();
+            }
             personalPO.setName(name);
             personalPO.setMobile(mobile);
             customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
@@ -5296,8 +5311,14 @@ public class CustomerPersonalAction extends BaseAction {
             if (checkIdCardNumber != null) {
                 MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
             }
+            if(!checkIdCardNum.matcher(idCardNumber).matches() ){
+                MyException.newInstance("身份证号格式不正确,请查证", "").throwException();
+            }
             if (customerPersonalPO_Mobile!= null) {
                 MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
+            }
+            if(!checkMobile.matcher(mobile).matches()){
+                MyException.newInstance("移动号码格式不正确,请查证", "").throwException();
             }
             CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
             personalPO.setName(name);
