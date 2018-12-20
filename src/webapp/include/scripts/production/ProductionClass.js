@@ -73,10 +73,10 @@ var ProductionClass = function (token, my, obj) {
         fw.combotreeClear('#search_Status' + token);
         var strTableId = 'ProductionTable' + token;
         var pageSize = 10;
-        var pageList = [10, 20, 30]
+        var pageList = [10, 20, 30];
         var url = WEB_ROOT + "/production/Production_list.action";
-        if (obj != null) {
-            url = WEB_ROOT + "/production/Production_list.action?productionStatus='2'";
+       if (obj != null) {
+            url = WEB_ROOT + "/production/Production_list.action?status=2";
             pageSize = 10;
             pageList = [10]
         };

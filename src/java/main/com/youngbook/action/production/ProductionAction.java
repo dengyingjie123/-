@@ -824,6 +824,8 @@ public class ProductionAction extends BaseAction {
         }
 
 
+
+
         return SUCCESS;
     }
 
@@ -835,10 +837,26 @@ public class ProductionAction extends BaseAction {
      * @throws Exception
      */
     public String list() throws Exception {
+
+        String status = getHttpRequestParameter("status");
         productionVO = HttpUtils.getInstanceFromRequest(getRequest(), "productionVO", ProductionVO.class);
+        /**
+         * 如果是预约或修改订单产品，只查询在售状态的产品分期信息
+         */
+        if(!StringUtils.isEmpty(status)) {
+            productionVO.setStatus(status);
+        }
         Pager pager = Pager.getInstance(getRequest());
         pager = productionService.getProductions(productionVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+
+
+
+
         getResult().setReturnValue(pager.toJsonObject());
+
+
+
+
         return SUCCESS;
     }
 
