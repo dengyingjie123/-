@@ -10,7 +10,7 @@
 
         <div class="header_bar2">
             <a href="#" class="back link"><div class="header_back"><span></span></div></a>
-            <div class="header_new_title">德合资讯</div>
+            <div class="header_new_title">大富翁资讯</div>
         </div>
         <div class="Community_ct">
             <p class="tit"><%=articlePO.getTitle()%></p>

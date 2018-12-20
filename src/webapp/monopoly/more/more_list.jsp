@@ -20,8 +20,8 @@
             <div class="card ks-facebook-card">
                 <div class="card-content">
                     <div class="card-content-inner">
-                        <p class="color-gray">德恒普惠介绍</p>
-                        <p>德恒普惠，专注于政信项目金融产品投资交易，是以投资、转让为核心业务的综合服务平台，并致力于为特定机构及个人持有的资产提供优质的综合服务。</p>
+                        <p class="color-gray">大富翁介绍</p>
+                        <p>大富翁是深圳开普乐信息服务有限公司针对国内市场，提供综合的金融信息服务平台。公司依托最先进安全的计算机技术，构建完备的信息咨询、信息挖掘和大数据信息处理的高科技平台，致力为客户提供全面、准确及时的金融资讯，以及为客户提供个性化的的金融服务。</p>
                         <p>更多</p>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                         <div class="item-media"><i class="icon material-icons">phone</i></div>
                         <div class="item-inner">
                             <div class="item-title">联系客服</div>
-                            <div class="item-after"><%=Config.getSystemConfig("ph.service.mobile")%></div>
+                            <div class="item-after"><%=Config.getSystemConfig("monopoly.service.mobile")%></div>
                         </div>
                     </div>
                 </li>
