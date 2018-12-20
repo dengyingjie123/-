@@ -13,8 +13,7 @@
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/easyloader.js"></script>
-    <script type="text/javascript"
-            src="<%=Config.getWebRoot() %>/include/framework/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/system/ConfigClass.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/boot.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/hashMap.js"></script>
