@@ -53,10 +53,50 @@ public class MonopolyAction extends BaseAction {
 
         ArticleVO articleNews = new ArticleVO();
         articleNews.setColumnName("德合汇资讯");
-
         List<ArticleVO> listArticleVONews = articleService.getListArticleVO(articleNews, getConnection());
-
         getRequest().setAttribute("listArticleVONews", listArticleVONews);
+
+
+        /**
+         * 24小时要闻
+         */
+        ArticleVO articleNews_24 = new ArticleVO();
+        articleNews_24.setColumnName("24小时要闻");
+        List<ArticleVO> listArticleVONews_24 = articleService.getListArticleVO(articleNews_24, getConnection());
+        getRequest().setAttribute("listArticleVONews_24", listArticleVONews_24);
+
+
+
+        /**
+         * 基金资讯
+         */
+        ArticleVO articleNews_fund = new ArticleVO();
+        articleNews_fund.setColumnName("基金资讯");
+        List<ArticleVO> listArticleVONews_fund = articleService.getListArticleVO(articleNews_fund, getConnection());
+        getRequest().setAttribute("listArticleVONews_fund", listArticleVONews_fund);
+
+
+
+
+        /**
+         * 股票资讯
+         */
+        ArticleVO articleNews_stock = new ArticleVO();
+        articleNews_stock.setColumnName("股票资讯");
+        List<ArticleVO> listArticleVONews_stock = articleService.getListArticleVO(articleNews_stock, getConnection());
+        getRequest().setAttribute("listArticleVONews_stock", listArticleVONews_stock);
+
+
+
+
+        /**
+         * 理财资讯
+         */
+        ArticleVO articleNews_money = new ArticleVO();
+        articleNews_money.setColumnName("理财资讯");
+        List<ArticleVO> listArticleVONews_money = articleService.getListArticleVO(articleNews_money, getConnection());
+        getRequest().setAttribute("listArticleVONews_money", listArticleVONews_money);
+
 
 
         /**

@@ -10,7 +10,10 @@
 <%
 
     List<ArticleVO> listArticleVO = (List<ArticleVO>)request.getAttribute("listArticleVO");
-    List<ArticleVO> listArticleVONews = (List<ArticleVO>)request.getAttribute("listArticleVONews");
+    List<ArticleVO> listArticleVONews_24 = (List<ArticleVO>)request.getAttribute("listArticleVONews_24");
+    List<ArticleVO> listArticleVONews_fund = (List<ArticleVO>)request.getAttribute("listArticleVONews_fund");
+    List<ArticleVO> listArticleVONews_stock = (List<ArticleVO>)request.getAttribute("listArticleVONews_stock");
+    List<ArticleVO> listArticleVONews_money = (List<ArticleVO>)request.getAttribute("listArticleVONews_money");
 
     List<ProductionVO> listProductionVO_SM = (List<ProductionVO>)request.getAttribute("productions1");
 %>
@@ -69,12 +72,14 @@
             </div>
 
 
+
+            <!-- 24小时要闻资讯 开始 -->
             <div class="fund_list ">
                 <p class="bcg_cr"></p>
-                <div class="fund_tit">大富翁资讯<i></i></div>
+                <div class="fund_tit">24小时要闻<i></i></div>
                 <%
-                    for (int i = 0; listArticleVONews != null && i < listArticleVONews.size(); i++) {
-                        ArticleVO articleVO = listArticleVONews.get(i);
+                    for (int i = 0; listArticleVONews_24 != null && i < listArticleVONews_24.size(); i++) {
+                        ArticleVO articleVO = listArticleVONews_24.get(i);
                 %>
                 <div data-id="<%=articleVO.getId()%>" class="fund_ct mr_20 clearfix btn-production-detail">
                     <div data-id="<%=articleVO.getId()%>" class="community_lf btn-production-detail">
@@ -92,6 +97,91 @@
                     }
                 %>
             </div>
+            <!-- 24小时要闻资讯 结束 -->
+
+
+
+            <!-- 基金资讯 开始 -->
+            <div class="fund_list ">
+                <p class="bcg_cr"></p>
+                <div class="fund_tit">基金资讯<i></i></div>
+                <%
+                    for (int i = 0; listArticleVONews_fund != null && i < listArticleVONews_fund.size(); i++) {
+                        ArticleVO articleVO = listArticleVONews_fund.get(i);
+                %>
+                <div data-id="<%=articleVO.getId()%>" class="fund_ct mr_20 clearfix btn-production-detail">
+                    <div data-id="<%=articleVO.getId()%>" class="community_lf btn-production-detail">
+                        <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
+                            <%=articleVO.getTitle()%>
+                        </p>
+                        <p class="tips">金融市场</p>
+                        <%--<p class="comment">0 评论</p>--%>
+                    </div>
+                    <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
+                        <img  data-id="<%=articleVO.getId()%>" src="<%=articleVO.getImage()%>"  class="btn-production-detail" />
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+            </div>
+            <!-- 基金资讯 结束 -->
+
+
+
+            <!-- 股票资讯 开始 -->
+            <div class="fund_list ">
+                <p class="bcg_cr"></p>
+                <div class="fund_tit">股票资讯<i></i></div>
+                <%
+                    for (int i = 0; listArticleVONews_stock != null && i < listArticleVONews_stock.size(); i++) {
+                        ArticleVO articleVO = listArticleVONews_stock.get(i);
+                %>
+                <div data-id="<%=articleVO.getId()%>" class="fund_ct mr_20 clearfix btn-production-detail">
+                    <div data-id="<%=articleVO.getId()%>" class="community_lf btn-production-detail">
+                        <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
+                            <%=articleVO.getTitle()%>
+                        </p>
+                        <p class="tips">金融市场</p>
+                        <%--<p class="comment">0 评论</p>--%>
+                    </div>
+                    <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
+                        <img  data-id="<%=articleVO.getId()%>" src="<%=articleVO.getImage()%>"  class="btn-production-detail" />
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+            </div>
+            <!-- 股票资讯 结束 -->
+
+
+
+            <!-- 投资理财 开始 -->
+            <div class="fund_list ">
+                <p class="bcg_cr"></p>
+                <div class="fund_tit">投资理财<i></i></div>
+                <%
+                    for (int i = 0; listArticleVONews_money != null && i < listArticleVONews_money.size(); i++) {
+                        ArticleVO articleVO = listArticleVONews_money.get(i);
+                %>
+                <div data-id="<%=articleVO.getId()%>" class="fund_ct mr_20 clearfix btn-production-detail">
+                    <div data-id="<%=articleVO.getId()%>" class="community_lf btn-production-detail">
+                        <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
+                            <%=articleVO.getTitle()%>
+                        </p>
+                        <p class="tips">金融市场</p>
+                        <%--<p class="comment">0 评论</p>--%>
+                    </div>
+                    <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
+                        <img  data-id="<%=articleVO.getId()%>" src="<%=articleVO.getImage()%>"  class="btn-production-detail" />
+                    </div>
+                </div>
+                <%
+                    }
+                %>
+            </div>
+            <!-- 投资理财 结束 -->
 
         </div>
 
