@@ -294,127 +294,13 @@ public class ArticleAction extends BaseAction {
     }
 
 
-    /**
-     * @description
-     * 获取新闻
-     * @author 胡超怡
-     *
-     * @date 2018/12/18 17:16
-     * @return java.lang.String
-     * @throws Exception
-     */
-    public String insertNews() throws Exception {
-
-        /**
-         *  获取url地址的网页html
-         */
-        Document doc = Jsoup.connect("http://fund.eastmoney.com/a/cjjyw.html").userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)").get();
-
-
-        /**
-         * @description
-         * 获取指定标签的所有内容
-         * @author 胡超怡
-         *
-         * @date 2018/12/18 15:38
-         * @param css   class名
-         */
-        Elements selectsContent = doc.select("div.infos")
-                .select("ul")
-                .select("li")
-                .select("a");
-
-        Elements selectsTime = doc.select("div.infos")
-                .select("ul")
-                .select("li")
-                .select("span");
 
 
 
-
-        /**
-         * @description
-         * 获取一个
-         * @author 胡超怡
-         *
-         * @date 2018/12/18 15:53
-         * @return newsSet 新闻集合
-         * @throws Exception
-         */
-        HashSet<ArticlePO> newsSet = new HashSet<>();
-        String[] times = selectsTime.html().split("\n");
+    public static void main(String[] args) throws Exception{
 
 
-        /**
-         * 循环获得jsoup得到的数据
-         */
-        int i = 0;
-        for (Element a : selectsContent) {
-
-            String url = a.attr("href");
-            String titles = a.attr("title");
-            String contentNews = getContentByURL("http://fund.eastmoney.com/a/" + url).html();
-
-
-            /**
-             * 给新闻实体添加数据
-             */
-            ArticlePO newsPO = new ArticlePO();
-            newsPO.setSource("天天基金网");
-            newsPO.setTitle(titles);
-            newsPO.setNewsTime(times[i]);
-            newsPO.setContent(contentNews);
-            newsSet.add(newsPO);
-            i++;
-        }
-
-
-        /**
-         * 调用service
-         */
-        HashSet<ArticlePO> newsPO = articleService.insertNews(newsSet,getConnection());
-
-
-        return SUCCESS;
     }
-
-
-    /**
-     * @description 根据url获取内容
-     *
-     * @author 胡超怡
-     *
-     * @date 2018/12/18 17:27
-     * @param url
-     * @return java.lang.String
-     * @throws Exception
-     */
-    public Elements getContentByURL(String url) throws Exception{
-
-        //1.获取url地址的网页html
-        Document doc = Jsoup.connect(url).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)").get();
-
-        return doc.select("div.Body").select("p");
-    }
-
-
-    /**
-     * @description 日期格式转换
-     * 字符串转换为date
-     * @author 胡超怡
-     *
-     * @date 2018/12/18 17:24
-     * @param strDate
-     * @return java.util.Date
-     * @throws Exception
-     */
-    public Date strToDateLong(String strDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        ParsePosition pos = new ParsePosition(0);
-        Date strtodate = formatter.parse(strDate, pos);
-        return strtodate;
-    }
-
 
     public ArticlePO getArticle() {return article;}
     public void setArticle(ArticlePO article) {this.article = article;}

@@ -14,12 +14,19 @@ import com.youngbook.entity.vo.cms.ArticleVO;
 import com.youngbook.entity.vo.cms.ColumnVO;
 import com.youngbook.entity.wvo.cms.ArticleWVO;
 import com.youngbook.service.BaseService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -395,17 +402,112 @@ public class ArticleService extends BaseService {
 
     /**
      * @description
-     * 获取新闻
+     * 获取新闻(中国基金网http://www.chinafund.cn/)
      * @author 胡超怡
      *
      * @date 2018/12/18 18:11
-     * @param newsSet
+     * @param directoryUrl   不同栏目的目录url
      * @param conn
      * @return java.util.HashSet<com.youngbook.entity.po.cms.ArticlePO>
      * @throws Exception
      */
-    public HashSet<ArticlePO> insertNews(HashSet<ArticlePO> newsSet, Connection conn) throws Exception {
+    public HashSet<ArticlePO> insertNews(String directoryUrl, Connection conn) throws Exception {
 
+
+        /**
+         *  获取url地址的网页html
+         */
+        Document doc = Jsoup.connect(directoryUrl).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)").get();
+
+
+        /**
+         * @description
+         * 获取指定标签的所有内容
+         * @author 胡超怡
+         *
+         * @date 2018/12/20 18:30
+         * @param css   class名
+         */
+        Elements selectsTitles = doc.select("ul.pagelist")
+                .select("li")
+                .select("a");
+
+
+        Elements selectsTime = doc.select("ul.pagelist")
+                .select("li")
+                .select("span");
+
+
+
+
+        /**
+         * @description
+         * 获取时间
+         * @author 胡超怡
+         *
+         * @date 2018/12/20 18:30
+         * @return newsSet 新闻集合
+         * @throws Exception
+         */
+        HashSet<ArticlePO> newsSet = new HashSet<>();
+        String[] times = selectsTime.html().split("\n");
+
+
+        /**
+         * 循环获得jsoup得到的数据
+         */
+        int i = 0;
+        for (Element a : selectsTitles) {
+
+
+            /**
+             * 给新闻实体添加数据
+             */
+            ArticlePO newsPO = new ArticlePO();
+            String replace;
+            String url = a.attr("href");
+            String title = a.attr("title");
+
+
+            /**
+             * 获取到文章的主题内容
+             */
+            String contentNews = getContentByURL("http://www.chinafund.cn/" + url).select("p").html();
+            List<String> imgs = getContentByURL("http://www.chinafund.cn/" + url).select("div").select("img").eachAttr("src");
+
+            if(imgs !=null && imgs.size() > 0){
+
+                for(String img : imgs){
+                    newsPO.setImage(img+",");
+                }
+
+            }
+
+
+            /**
+             * 判断文章内容的3种格式，来进行处理
+             */
+            if(contentNews.contains("<br")){
+                replace=contentNews;
+
+            }else{
+                replace = contentNews.replace("　　", "<br><br>").replace("&nbsp;&nbsp;", "<br><br>");
+            }
+
+
+            /**
+             * 处理所有数据
+             */
+            newsPO.setSource("中国基金网");
+            newsPO.setTitle(title);
+            newsPO.setNewsTime(times[i]);
+            newsPO.setContent(replace);
+            newsSet.add(newsPO);
+            i++;
+        }
+
+
+        //调用dao插入所有新闻文章数据
         if (newsSet != null && newsSet.size() > 0) {
             for (ArticlePO newsPO : newsSet) {
                 articleDao.insertNews(newsPO, conn);
@@ -414,5 +516,42 @@ public class ArticleService extends BaseService {
 
         return newsSet;
 
+    }
+
+
+    /**
+     * @description 根据url获取内容
+     *
+     * @author 胡超怡
+     *
+     * @date 2018/12/18 17:27
+     * @param url
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public static Element getContentByURL(String url) throws Exception{
+
+        //1.获取url地址的网页html
+        Document doc = Jsoup.connect(url).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)").get();
+
+        return doc.getElementById("news_text");
+    }
+
+
+    /**
+     * @description 日期格式转换
+     * 字符串转换为date
+     * @author 胡超怡
+     *
+     * @date 2018/12/18 17:24
+     * @param strDate
+     * @return java.util.Date
+     * @throws Exception
+     */
+    public Date strToDateLong(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        ParsePosition pos = new ParsePosition(0);
+        Date strtodate = formatter.parse(strDate, pos);
+        return strtodate;
     }
 }
