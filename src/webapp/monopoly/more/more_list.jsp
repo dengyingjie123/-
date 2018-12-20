@@ -5,25 +5,28 @@
 
 <div data-page="more-list" class="page">
 
-    <div class="navbar">
-        <div class="navbar-inner navbar-ph">
-            <div class="center">更多</div>
-        </div>
-    </div>
-
     <div class="page-content hide-bars-on-scroll">
 
-        <%--<a href="<%=Config.getWebPH()%>/more/company_info.jsp" class="link color-black">--%>
-            <%--<div class="card ks-facebook-card">--%>
-                <%--<div class="card-content">--%>
-                    <%--<div class="card-content-inner">--%>
-                        <%--<p class="color-gray">德恒普惠介绍</p>--%>
-                        <%--<p>德恒普惠，专注于政信项目金融产品投资交易，是以投资、转让为核心业务的综合服务平台，并致力于为特定机构及个人持有的资产提供优质的综合服务。</p>--%>
-                        <%--<p>更多</p>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</a>--%>
+        <div class="financing">
+            <div class="search_head">
+                <%--<input class="lc_search" type="text" name="" id="" value="" />--%>
+                <%--<i></i>--%>
+                发现
+            </div>
+
+        </div>
+
+        <a href="<%=Config.getWebMonopoly()%>/more/company_info.jsp" class="link color-black">
+            <div class="card ks-facebook-card">
+                <div class="card-content">
+                    <div class="card-content-inner">
+                        <p class="color-gray">德恒普惠介绍</p>
+                        <p>德恒普惠，专注于政信项目金融产品投资交易，是以投资、转让为核心业务的综合服务平台，并致力于为特定机构及个人持有的资产提供优质的综合服务。</p>
+                        <p>更多</p>
+                    </div>
+                </div>
+            </div>
+        </a>
 
         <div class="content-block-title">更多信息</div>
         <div class="list-block">

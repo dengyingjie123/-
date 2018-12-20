@@ -9,18 +9,12 @@
 
 <div data-page="company-info" class="page">
 
-    <div class="navbar">
-        <div class="navbar-inner navbar-ph">
-            <div class="left"><a href="#" class="back link"> <i class="icon-white icon-back"></i><span></span></a></div>
-            <div class="center">德恒普惠介绍</div>
-            <div class="right">
-                <a href="customer/customer_save.jsp" class="link"><i class="icon material-icons">add</i></a>
-                <%--<a href="#" class="link"><i class="icon material-icons">more_vert</i></a>--%>
-            </div>
-        </div>
-    </div>
-
     <div class="page-content hide-bars-on-scroll">
+
+        <div class="header_bar2">
+            <a href="#" class="back link"><div class="header_back"><span></span></div></a>
+            <div class="header_new_title">关于开普乐</div>
+        </div>
 
         <div class="content-block">
             <span class="txt-20">德恒普惠介绍</span>

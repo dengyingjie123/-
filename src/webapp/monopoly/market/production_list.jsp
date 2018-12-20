@@ -28,10 +28,7 @@
 %>
 
 <div data-page="production-list" class="page">
-
     <div class="page-content bd-btn-body">
-
-
         <div class="financing">
             <div class="search_head">
                 <%--<input class="lc_search" type="text" name="" id="" value="" />--%>
