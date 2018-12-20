@@ -1045,7 +1045,7 @@ public class OrderService extends BaseService {
          * 生成兑付计划
          *
          */
-        generatePaymentPlan(order, userId, conn);
+        generatePaymentPlan(order, "0", userId, conn);
 
 
         // 增加客户资金记录
@@ -1403,7 +1403,7 @@ public class OrderService extends BaseService {
         /**
          * 生成兑付计划
          */
-        generatePaymentPlan(orderPO, userId, conn);
+        generatePaymentPlan(orderPO, "0", userId, conn);
 
         return orderPO;
     }
@@ -1896,11 +1896,12 @@ public class OrderService extends BaseService {
      *
      * @param order
      * @param operatorId
+     * @param generateType 0：未确认的删除，重新生成； 1：已确认的也删除，重新生成
      * @param conn
      * @throws Exception
      * @author 邓超
      */
-    public void generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
+    public void generatePaymentPlan(OrderPO order, String generateType, String operatorId, Connection conn) throws Exception {
 
         if (order == null) {
             MyException.newInstance("订单数据参数为空").throwException();
@@ -1934,13 +1935,23 @@ public class OrderService extends BaseService {
 
 
         /**
-         * 删除已有兑付计划
+         * 删除已有但未被确认的兑付计划
          */
         for (int i = 0; paymentPlanPOs != null && i < paymentPlanPOs.size(); i++) {
 
             PaymentPlanPO paymentPlanPO = paymentPlanPOs.get(i);
 
-            MySQLDao.remove(paymentPlanPO, operatorId, conn);
+
+            /**
+             * 检查是否已确认，如果尚未确认，则删除兑付计划
+             */
+            if (paymentPlanPO.getConfirmorId().equals("") && generateType.equals("0")) {
+                MySQLDao.remove(paymentPlanPO, operatorId, conn);
+            }
+            else if (generateType.equals("1")) {
+                MySQLDao.remove(paymentPlanPO, operatorId, conn);
+            }
+
         }
 
 
