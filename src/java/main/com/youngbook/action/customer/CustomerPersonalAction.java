@@ -5234,11 +5234,11 @@ public class CustomerPersonalAction extends BaseAction {
         /**
          * 移动号码验证
          */
-        Pattern checkMobile = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
+        Pattern checkMobile = Pattern.compile("(^1\\d{10}$)");
         /**
          * 身份证号验证
          */
-        Pattern checkIdCardNum = Pattern.compile("(^\\d{18}$)|(^\\d{15}$)");
+        Pattern checkIdCardNum = Pattern.compile("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)");
 
 
 
