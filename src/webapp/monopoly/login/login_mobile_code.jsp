@@ -45,7 +45,7 @@
         <%--<button class="wechat_btn"></button>--%>
     </div>
         <input name="checkCode" type="hidden" />
-        <input id="_s" name="_s" type="hidden" value="4" />
+        <input id="_s" name="_s" type="hidden" value="5" />
     </form>
 
 </div>
