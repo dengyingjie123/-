@@ -6,13 +6,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><%=Config.APP_NAME%>
     </title>
-    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/themes/gray/easyui.css">
-    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/default.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/buttons.css">
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.min.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/easyloader.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/easyloader.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/system/ConfigClass.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/boot.js"></script>

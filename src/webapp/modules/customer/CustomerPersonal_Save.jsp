@@ -33,7 +33,7 @@
 <body>
 
 <div class="easyui-layout" fit="true">
-    <div region="center" border="false" style="padding:10px;background:#fff;border:0px solid #ccc;">
+    <div region="center" border="false" style="padding:0px;background:#fff;border:0px solid #ccc;">
 
 
         <!--------------------------------------------------------------------------------
