@@ -148,7 +148,7 @@
           %>
 
           <a id="btn-view-3" href="#view-customer" class="tab-link <%=show.equals("2")?"active":""%>"> <i class="icon tabbar-index-icon-mine"></i><span class="tabbar-label">我的</span></a>
-          <a id="btn-view-more" href="#view-more" class="tab-link <%=show.equals("3")?"active":""%>"><i class="icon tabbar-index-icon-production"></i><span class="tabbar-label">发现</span></a>
+          <a id="btn-view-more" href="#view-more" class="tab-link <%=show.equals("3")?"active":""%>"><i class="icon tabbar-index-icon-more"></i><span class="tabbar-label">发现</span></a>
         </div>
       </div>
 

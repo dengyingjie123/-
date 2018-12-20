@@ -18,10 +18,18 @@ i.tabbar-index-icon-home {
 i.tabbar-index-icon-production {
   width: 20px;
   height: 20px;
- background-image: url("../img/nav-production2.png");
+  background-image: url("../img/nav-production2.png");
 }
 .active i.tabbar-index-icon-production {
   background-image: url("../img/nav-production1.png");
+}
+i.tabbar-index-icon-more {
+  width: 20px;
+  height: 20px;
+  background-image: url("../img/nav-more2.png");
+}
+.active i.tabbar-index-icon-more {
+  background-image: url("../img/nav-more1.png");
 }
 i.tabbar-index-icon-mine {
   width: 20px;
@@ -38,14 +46,6 @@ i.tabbar-index-icon-circel {
 }
 .active i.tabbar-index-icon-circel {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg version='1.1' id='图层_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'	 viewBox='-4 -4 40 40' enable-background='new -4 -4 40 40' xml:space='preserve'><g>	<path fill='#FF484A' d='M16,36C5,36-4,27-4,16C-4,5,5-4,16-4c11,0,20,9,20,20C36,27,27,36,16,36z M16-1.5C6.3-1.5-1.5,6.3-1.5,16		c0,9.7,7.8,17.5,17.5,17.5c9.7,0,17.5-7.8,17.5-17.5C33.5,6.3,25.7-1.5,16-1.5z'/>	<path fill='#FF484A' d='M23.5,23.5h-15v-10H11V21h12.5V23.5z'/>	<path fill='#FF484A' d='M23.5,18.5H21V11H8.5V8.5h15V18.5z'/></g></svg>");
-}
-i.tabbar-index-icon-more {
-  width: 20px;
-  height: 20px;
-  background-image: url("data:image/svg+xml;charset=utf-8,<svg version='1.1' id='图层_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'	 viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'><g>	<g>		<path fill='#82879B' d='M15.3,1H4.6C2.6,1,1,2.6,1,4.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V4.6			C18.8,2.6,17.2,1,15.3,1z M16.4,15.3c0,0.7-0.5,1.2-1.2,1.2H4.6c-0.7,0-1.2-0.5-1.2-1.2V4.6c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V15.3z M35.4,1H24.7c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V4.6			C39,2.6,37.4,1,35.4,1z M36.6,15.3c0,0.7-0.5,1.2-1.2,1.2H24.7c-0.7,0-1.2-0.5-1.2-1.2V4.6c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V15.3z M15.3,21.2H4.6c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V24.7			C18.8,22.8,17.2,21.2,15.3,21.2z M16.4,35.4c0,0.7-0.5,1.2-1.2,1.2H4.6c-0.7,0-1.2-0.5-1.2-1.2V24.7c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V35.4z M35.4,21.2H24.7c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V24.7			C39,22.8,37.4,21.2,35.4,21.2z M36.6,35.4c0,0.7-0.5,1.2-1.2,1.2H24.7c-0.7,0-1.2-0.5-1.2-1.2V24.7c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V35.4z'/>	</g></g></svg>");
-}
-.active i.tabbar-index-icon-more {
-  background-image: url("data:image/svg+xml;charset=utf-8,<svg version='1.1' id='图层_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'	 viewBox='0 0 40 40' enable-background='new 0 0 40 40' xml:space='preserve'><g>	<g>		<path fill='#000050' d='M15.3,1H4.6C2.6,1,1,2.6,1,4.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V4.6			C18.8,2.6,17.2,1,15.3,1z M16.4,15.3c0,0.7-0.5,1.2-1.2,1.2H4.6c-0.7,0-1.2-0.5-1.2-1.2V4.6c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V15.3z M35.4,1H24.7c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V4.6			C39,2.6,37.4,1,35.4,1z M36.6,15.3c0,0.7-0.5,1.2-1.2,1.2H24.7c-0.7,0-1.2-0.5-1.2-1.2V4.6c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V15.3z M15.3,21.2H4.6c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V24.7			C18.8,22.8,17.2,21.2,15.3,21.2z M16.4,35.4c0,0.7-0.5,1.2-1.2,1.2H4.6c-0.7,0-1.2-0.5-1.2-1.2V24.7c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V35.4z M35.4,21.2H24.7c-2,0-3.6,1.6-3.6,3.6v10.7c0,2,1.6,3.6,3.6,3.6h10.7c2,0,3.6-1.6,3.6-3.6V24.7			C39,22.8,37.4,21.2,35.4,21.2z M36.6,35.4c0,0.7-0.5,1.2-1.2,1.2H24.7c-0.7,0-1.2-0.5-1.2-1.2V24.7c0-0.7,0.5-1.2,1.2-1.2h10.7			c0.7,0,1.2,0.5,1.2,1.2V35.4z'/>	</g></g></svg>");
 }
 
 .card-header {
