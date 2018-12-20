@@ -57,6 +57,10 @@ public class HttpUtils {
     public static <T> T getAttribute(String attributeName, Class<T> clazz, HttpServletRequest request) throws Exception {
         Object obj = request.getAttribute(attributeName);
 
+        if (obj == null) {
+            return null;
+        }
+
         T exceptedObject = ObjectUtils.convert(obj, clazz);
 
         return exceptedObject;

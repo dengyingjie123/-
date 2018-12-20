@@ -652,6 +652,16 @@ public class CustomerPersonalAction extends BaseAction {
 
         CustomerPersonalPO loginCustomerInSession = Config.getLoginCustomerInSession(getRequest());
 
+        if (loginCustomerInSession == null) {
+
+            getRequest().setAttribute("customerPersonalVO", new CustomerPersonalVO());
+            getRequest().setAttribute("paymentPlanVO", new PaymentPlanVO());
+            getRequest().setAttribute("customerScoreVO", new CustomerScoreVO());
+
+
+            return "mine_list";
+        }
+
         String customerPersonalId = loginCustomerInSession.getId();
 
         CustomerPersonalVO customerPersonalVO = customerPersonalService.loadCustomerVOByCustomerPersonalId(customerPersonalId, getConnection());

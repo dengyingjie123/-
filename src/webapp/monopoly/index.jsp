@@ -12,13 +12,25 @@
   }
 
 
+  CustomerPersonalPO customerPersonalPO = Config.getLoginCustomerInSession(request);
+
   /**
    * 验证客户类型
    * 1：游客
    * 2：注册用户
    * 3：确认用户
    */
-  String customerStatus_monopoly = "2";
+  String customerStatus_monopoly = "1";
+
+  if (customerPersonalPO != null) {
+      if (customerPersonalPO.getCustomerCatalogId().equals("0")) {
+        customerStatus_monopoly = "2";
+      }
+
+    if (customerPersonalPO.getCustomerCatalogId().equals("1")) {
+      customerStatus_monopoly = "3";
+    }
+  }
 %>
 <!DOCTYPE html>
 <html>

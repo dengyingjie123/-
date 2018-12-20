@@ -11,9 +11,21 @@
 <%@ page import="com.youngbook.entity.po.customer.CustomerPersonalPO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  %>
 <%
-  CustomerPersonalVO customerPersonalVO = (CustomerPersonalVO)request.getAttribute("customerPersonalVO");
-  PaymentPlanVO paymentPlanVO = (PaymentPlanVO)request.getAttribute("paymentPlanVO");
-  CustomerScoreVO customerScoreVO = (CustomerScoreVO)request.getAttribute("customerScoreVO");
+  CustomerPersonalVO customerPersonalVO = null;
+  System.out.println(request.getAttribute("customerPersonalVO").toString());
+  if (request.getAttribute("customerPersonalVO") != null) {
+    customerPersonalVO = (CustomerPersonalVO)request.getAttribute("customerPersonalVO");
+  }
+
+  PaymentPlanVO paymentPlanVO = null;
+  if (request.getAttribute("paymentPlanVO") != null) {
+    paymentPlanVO = (PaymentPlanVO)request.getAttribute("paymentPlanVO");
+  }
+
+  CustomerScoreVO customerScoreVO = null;
+  if (request.getAttribute("customerScoreVO") != null) {
+    customerScoreVO = (CustomerScoreVO)request.getAttribute("customerScoreVO");
+  }
 
 //  FdcgCustomerQueryInfoPO fdcgCustomerQueryInfoPO = HttpUtils.getAttribute("fdcgCustomerQueryInfoPO", FdcgCustomerQueryInfoPO.class, request);
 
