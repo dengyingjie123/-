@@ -191,12 +191,12 @@
         <%
           if (loginCustomerInSession == null) {
               %>
-        <li><div class="my_list_img6 btn-login"><i></i>登录享有更多功能<div class="lf_href"><b></b></div></div></li>
+        <!-- <li><div class="my_list_img6 btn-login"><i></i>登录享有更多功能<div class="lf_href"><b></b></div></div></li> -->
         <%
           }
           else {
               %>
-        <li><div class="my_list_img6 btn-logout"><i></i>退出系统<div class="lf_href"><b></b></div></div></li>
+        <!-- <li><div class="my_list_img6 btn-logout"><i></i>退出系统<div class="lf_href"><b></b></div></div></li> -->
         <%
           }
         %>
