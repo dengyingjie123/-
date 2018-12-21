@@ -41,37 +41,6 @@
             </div>
 
 
-            <div class="fund_list">
-                <p class="bcg_cr"></p>
-                <div class="fund_tit">私募基金<i></i></div>
-                <%
-                    for (int i = 0; listProductionVO_SM != null && i < listProductionVO_SM.size(); i++) {
-                        ProductionVO productionVO = listProductionVO_SM.get(i);
-                %>
-                <a href="<%=Config.getWebRoot()%>/api/dehecircle/loadPage_production_detail?productionId=<%=productionVO.getId()%>&r=<%=NumberUtils.randomNumbers(5)%>" class="link">
-                <div class="fund_ct">
-                    <div class="fund_list_tit"><%=productionVO.getWebsiteDisplayName()%><i></i></div>
-                    <ul class="fund_list_ct clearfix">
-                        <li>
-                            <p class="annualized"><%=Config.getProductionExpectedYieldName(productionVO.getMaxExpectedYield())%></p>
-                            <p>最高预期年化收益</p>
-                        </li>
-                        <li>
-                            <p><%=productionVO.getInvestTermView()%></p>
-                            <p>投资期限</p>
-                        </li>
-                        <li>
-                            <p><%=MoneyUtils.format2String(productionVO.getMinSizeStart() / 10000 )%></p>
-                            <p>起投金额(万）</p>
-                        </li>
-                    </ul>
-                </div></a>
-                <%
-                    }
-                %>
-            </div>
-
-
 
             <!-- 24小时要闻资讯 开始 -->
             <div class="fund_list ">
