@@ -143,11 +143,25 @@
         %>
         <!-- 确认用户 结束 -->
 
+
+
+
+        <%
+          if (loginCustomerInSession != null) {
+              %>
         <li>
           <%--<a href="<%=Config.getWebDehecircle()%>/loadPage_dehecircle_mobile_list?r=<%=NumberUtils.randomNumbers(5)%>" class="item-link">--%>
-            <div class="my_list_img3"><i></i>手机号 <div class="lf_href"><%=customerPersonalVO.getMobile()%><b></b></div></div>
+          <div class="my_list_img3"><i></i>手机号 <div class="lf_href"><%=customerPersonalVO.getMobile()%><b></b></div></div>
           <%--</a>--%>
         </li>
+
+        <%
+          }
+        %>
+
+
+
+
 
 
         <%--<li>--%>
@@ -167,11 +181,11 @@
       <!-- 资讯设置 开始 -->
       <ul>
         <li>
-          <div class="my_list_img6"><i></i>要闻资讯<div class="lf_href">已开启<b></b></div></div>
+          <div class="my_list_img6 btn-mine-news_24"><i></i>要闻资讯<div class="lf_href">已开启<b></b></div></div>
         </li>
-        <li><div class="my_list_img6"><i></i>基金资讯<div class="lf_href">已开启<b></b></div></div></li>
-        <li><div class="my_list_img6"><i></i>股票资讯<div class="lf_href">已开启<b></b></div></div></li>
-        <li><div class="my_list_img6"><i></i>投资理财<div class="lf_href">已开启<b></b></div></div></li>
+        <li><div class="my_list_img6 btn-mine-news_fund"><i></i>基金资讯<div class="lf_href">已开启<b></b></div></div></li>
+        <li><div class="my_list_img6 btn-mine-news_stock"><i></i>股票资讯<div class="lf_href">已开启<b></b></div></div></li>
+        <li><div class="my_list_img6 btn-mine-news_money"><i></i>投资理财<div class="lf_href">已开启<b></b></div></div></li>
       </ul>
       <!-- 资讯设置 结束 -->
 

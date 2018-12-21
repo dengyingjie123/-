@@ -1226,6 +1226,36 @@ pagePool.put('mine-list', {
         $$('.btn-login').on('click', function(){
             login();
         });
+
+
+
+        fm.f7_bindWidthClass('btn-mine-news_24', function () {
+            console.log('btn-mine-news_24');
+            fm.f7_alert(myApp, '24小时要闻已开启');
+        });
+
+
+
+
+        fm.f7_bindWidthClass('btn-mine-news_fund', function () {
+            console.log('btn-mine-news_fund');
+            fm.f7_alert(myApp, '基金资讯已开启');
+        });
+
+
+
+
+        fm.f7_bindWidthClass('btn-mine-news_stock', function () {
+            fm.f7_alert(myApp, '股票资讯已开启');
+        });
+
+
+
+
+        fm.f7_bindWidthClass('btn-mine-news_money', function () {
+
+            fm.f7_alert(myApp, '理财资讯已开启');
+        });
     },
     onReload:function () {
         alert('onReload:' + this.id);
