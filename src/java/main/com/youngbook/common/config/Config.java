@@ -73,6 +73,7 @@ public class Config {
     public static ApplicationContext applicationContext = null;
 
 
+
     public static String getWebPH() throws Exception {
         return Config.getWebRoot() + "/ph";
     }
@@ -80,6 +81,11 @@ public class Config {
     public static String getWebDehecircle() throws Exception {
         return Config.getWebRoot() + "/dehecircle";
     }
+
+    public static String getWebMonopoly() throws Exception {
+        return Config.getWebRoot() + "/monopoly";
+    }
+
 
     public static String getWebDeheSales() throws Exception {
         return Config.getWebRoot() + "/dehesales";

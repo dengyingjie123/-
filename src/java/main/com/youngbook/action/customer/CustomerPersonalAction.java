@@ -612,11 +612,57 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
-
     public String loadPage_dehecircle_mine_list() throws Exception {
 
         String customerPersonalId = Config.getLoginCustomerInSession(getRequest()).getId();
+
+        CustomerPersonalVO customerPersonalVO = customerPersonalService.loadCustomerVOByCustomerPersonalId(customerPersonalId, getConnection());
+
+        if (customerPersonalVO != null) {
+            getRequest().setAttribute("customerPersonalVO", customerPersonalVO);
+
+
+            PaymentPlanVO paymentPlanVO = paymentPlanService.getCustomerPaymentPlanInfo4ph(customerPersonalVO.getId(), getConnection());
+
+            paymentPlanVO.setTotalPaymentPrincipalMoneyFormatted(MoneyUtils.format2String(paymentPlanVO.getTotalPaymentPrincipalMoney()));
+
+            paymentPlanVO.setTotalProfitMoneyFormatted(MoneyUtils.format2String(paymentPlanVO.getTotalProfitMoney()));
+            paymentPlanVO.setTotalPaymentMoneyFormatted(MoneyUtils.format2String(paymentPlanVO.getTotalPaymentMoney()));
+
+
+//            FdcgCustomerQueryInfoPO fdcgCustomerQueryInfoPO = customerPersonalService.fdcgQueryCustomerQueryInfoPO(customerPersonalVO.getId(), getConnection());
+//            getRequest().setAttribute("fdcgCustomerQueryInfoPO", fdcgCustomerQueryInfoPO);
+
+
+            CustomerScoreVO customerScoreVO = customerScoreService.getCustomerScoreVO(customerPersonalId, customerPersonalId, getConnection());
+
+
+            getRequest().setAttribute("paymentPlanVO", paymentPlanVO);
+            getRequest().setAttribute("customerScoreVO", customerScoreVO);
+
+
+            return "mine_list";
+        }
+
+        return SUCCESS;
+    }
+
+
+    public String loadPage_monopoly_mine_list() throws Exception {
+
+        CustomerPersonalPO loginCustomerInSession = Config.getLoginCustomerInSession(getRequest());
+
+        if (loginCustomerInSession == null) {
+
+            getRequest().setAttribute("customerPersonalVO", new CustomerPersonalVO());
+            getRequest().setAttribute("paymentPlanVO", new PaymentPlanVO());
+            getRequest().setAttribute("customerScoreVO", new CustomerScoreVO());
+
+
+            return "mine_list";
+        }
+
+        String customerPersonalId = loginCustomerInSession.getId();
 
         CustomerPersonalVO customerPersonalVO = customerPersonalService.loadCustomerVOByCustomerPersonalId(customerPersonalId, getConnection());
 
