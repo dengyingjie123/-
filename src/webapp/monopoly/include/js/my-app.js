@@ -222,16 +222,19 @@ function initApp() {
 
         if (id == 'btn-view-home') {
             viewHome.router.loadPage(WEB_ROOT + '/api/monopoly/loadPage_home_list');
+            viewHome.router.refreshPage();
         }
 
         if (id == 'btn-view-production') {
             viewProduction.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_production_list?r"+Math.random());
+            viewProduction.router.refreshPage();
         }
 
 
         if (id == 'btn-view-3') {
             // viewCustomer.router.loadPage('mine/mine_list.jsp?r='+Math.random());
             viewCustomer.router.loadPage(WEB_ROOT + "/monopoly/loadPage_monopoly_mine_list");
+            viewCustomer.router.refreshPage();
         }
 
 
@@ -239,6 +242,7 @@ function initApp() {
 
         if (id == 'btn-view-more') {
             viewMore.router.loadPage(WEB_ROOT + "/api/monopoly/loadPage_more_list");
+            viewMore.router.refreshPage();
         }
 
 

@@ -6,9 +6,9 @@
 <%@ page import="com.youngbook.entity.vo.production.ProductionVO" %>
 <%@ page import="com.youngbook.service.production.ProductionService" %>
 <%@ page import="com.youngbook.common.utils.MoneyUtils" %>
+<%@ page import="com.youngbook.common.utils.TimeUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"  %>
 <%
-
     List<ArticleVO> listArticleVO = (List<ArticleVO>)request.getAttribute("listArticleVO");
     List<ArticleVO> listArticleVONews_24 = (List<ArticleVO>)request.getAttribute("listArticleVONews_24");
     List<ArticleVO> listArticleVONews_fund = (List<ArticleVO>)request.getAttribute("listArticleVONews_fund");
@@ -29,8 +29,8 @@
                 <!-- Swiper -->
                 <div class="swiper-container ">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img class="banenr1" src="<%=Config.getWebDehecircle()%>/include/img/banner01.png"> </div>
-                        <div class="swiper-slide"><img class="banenr1" src="<%=Config.getWebDehecircle()%>/include/img/banner02.png"> </div>
+                        <div class="swiper-slide"><img class="banenr1" src="<%=Config.getWebMonopoly()%>/include/img/banner01.png"> </div>
+                        <div class="swiper-slide"><img class="banenr1" src="<%=Config.getWebMonopoly()%>/include/img/banner02.png"> </div>
 
                     </div>
                     <!-- Add Pagination -->
@@ -55,7 +55,7 @@
                         <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
                             <%=articleVO.getTitle()%>
                         </p>
-                        <p class="tips">金融市场</p>
+                        <p class="tips">发布时间：<%=TimeUtils.getDateShortString(articleVO.getPublishedTime())%></p>
                         <%--<p class="comment">0 评论</p>--%>
                     </div>
                     <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
@@ -83,7 +83,7 @@
                         <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
                             <%=articleVO.getTitle()%>
                         </p>
-                        <p class="tips">金融市场</p>
+                        <p class="tips">发布时间：<%=TimeUtils.getDateShortString(articleVO.getPublishedTime())%></p>
                         <%--<p class="comment">0 评论</p>--%>
                     </div>
                     <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
@@ -111,7 +111,7 @@
                         <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
                             <%=articleVO.getTitle()%>
                         </p>
-                        <p class="tips">金融市场</p>
+                        <p class="tips">发布时间：<%=TimeUtils.getDateShortString(articleVO.getPublishedTime())%></p>
                         <%--<p class="comment">0 评论</p>--%>
                     </div>
                     <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
@@ -139,7 +139,7 @@
                         <p data-id="<%=articleVO.getId()%>" class="cnt btn-production-detail">
                             <%=articleVO.getTitle()%>
                         </p>
-                        <p class="tips">金融市场</p>
+                        <p class="tips">发布时间：<%=TimeUtils.getDateShortString(articleVO.getPublishedTime())%></p>
                         <%--<p class="comment">0 评论</p>--%>
                     </div>
                     <div data-id="<%=articleVO.getId()%>" class="community_rt btn-production-detail">
