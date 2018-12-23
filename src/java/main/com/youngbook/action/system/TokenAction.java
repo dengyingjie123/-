@@ -48,6 +48,9 @@ public class TokenAction extends BaseAction {
         else if (_system.equals("4")) {
             signature = Config.getSystemConfig("system.sms.identityCode.signature.dehecircle");
         }
+        else if (_system.equals("5")) {
+            signature = Config.getSystemConfig("system.sms.identityCode.signature.monopoly");
+        }
 
         Connection conn = getConnection();
         HttpServletRequest request = getRequest();

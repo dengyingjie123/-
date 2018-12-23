@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="false" />
+
+    <!-- 修改package的name和namespace -->
+    <package name="api_monopoly" extends="json-default" namespace="/api/monopoly">
+
+        <!-- 必须包含 开始 -->
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+
+        <interceptors>
+            <interceptor name ="defaultInterceptor" class ="com.youngbook.common.interceptor.DefaultInterceptor" />
+            <interceptor name ="securityInterceptor" class ="com.youngbook.common.interceptor.SecurityInterceptor" />
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+            </interceptor-stack>
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+        </interceptors>
+
+        <global-results>
+            <result name ="login">/modules/system/error/login_error_data.jsp</result>
+            <result name ="permission_error">/modules/system/error/permission_error_data.jsp</result>
+            <result name ="transaction_error">/modules/system/error/transaction_error.jsp</result>
+        </global-results>
+        <!-- 必须包含 开始 -->
+
+
+
+        <action name="loadPage_production_detail" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_production_detail">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="production_detail">/monopoly/market/production_detail.jsp</result>
+        </action>
+
+        <action name="loadPage_info_detail" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_info_detail">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="info_detail">/monopoly/info/info_detail.jsp</result>
+        </action>
+
+        <action name="loadPage_goods_detail" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_goods_detail">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="goods_detail">/monopoly/score/goods_detail.jsp</result>
+        </action>
+
+
+        <action name="loadPage_mine_change_mobile" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_mine_change_mobile">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="mine_change_mobile_success">/monopoly/mine/mine_change_mobile_success.jsp</result>
+        </action>
+
+        <action name="loadPage_score_add_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_score_add_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="score_add_list">/monopoly/score/score_add_list.jsp</result>
+        </action>
+
+
+        <action name="loadPage_score_detail" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_score_detail">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="score_detail">/monopoly/score/score_detail.jsp</result>
+        </action>
+
+        <action name="loadPage_score_use_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_score_use_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="score_use_list">/monopoly/score/score_use_list.jsp</result>
+        </action>
+
+
+        <action name="loadPage_score_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_score_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="score_list">/monopoly/score/score_list.jsp</result>
+        </action>
+
+        <action name="loadPage_score_use" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_score_use">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="score_use_success">/monopoly/score/score_use_success.jsp</result>
+            <result name="score_use_error">/monopoly/score/score_use_error.jsp</result>
+        </action>
+
+
+        <action name="loadPage_home_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_home_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="home_list">/monopoly/home/home_list.jsp</result>
+        </action>
+
+
+        <action name="loadPage_more_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_more_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="more_list">/monopoly/more/more_list.jsp</result>
+        </action>
+
+
+        <action name="loadPage_production_list" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_production_list">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="production_list">/monopoly/market/production_list.jsp</result>
+        </action>
+
+        <action name="loadPage_production_list_JYS" class="com.youngbook.action.api.monopoly.MonopolyAction" method="loadPage_production_list_JYS">
+            <interceptor-ref name ="authStack"/>
+            <!--<result name="success">/w2/modules/customer/investmentPlan.jsp</result>-->
+            <result type="json" name="success">
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+            <result name="production_list_jys">/monopoly/market/production_list_jys.jsp</result>
+        </action>
+
+        <action name="*_*" class="com.youngbook.action.api.monopoly.{1}Action" method="{2}">
+            <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+    </package>
+</struts>

@@ -178,6 +178,13 @@ public class TimeUtils {
         return sdf.format(date);
     }
 
+    public static String getDateShortString(String time_YYYYMMDDSSMISS) throws Exception {
+
+        String formatedString = format(time_YYYYMMDDSSMISS, Format_YYYY_MM_DD_HH_M_S, Format_YYYY_MM_DD);
+
+        return formatedString;
+    }
+
     public static String getDateShortString(Date date) {
         String path = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(path);
@@ -377,6 +384,8 @@ public class TimeUtils {
 
         return time;
     }
+
+
 
     public static Map<String, String> getDiffTime (String time1, String time2,String format) throws Exception {
 

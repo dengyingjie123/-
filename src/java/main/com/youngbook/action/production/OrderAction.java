@@ -217,7 +217,7 @@ public class OrderAction extends BaseAction {
 
         OrderPO order = orderService.loadByOrderId(orderId, conn);
 
-        orderService.generatePaymentPlan(order, getLoginUser().getId(), conn);
+        orderService.generatePaymentPlan(order, "1", getLoginUser().getId(), conn);
 
         getResult().setReturnValue("{'message':'生成兑付计划成功'}");
 

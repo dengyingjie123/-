@@ -9,8 +9,10 @@
     <include file="config/struts-w2/struts-ph.xml"/>
     <include file="config/struts-w2/struts-dehesales.xml"/>
     <include file="config/struts-w2/struts-dehecircle.xml"/>
+    <include file="config/struts-w2/struts-monopoly.xml"/>
     <include file="config/struts-w2/struts-api.xml"/>
     <include file="config/struts-w2/struts-api-dehecircle.xml"/>
+    <include file="config/struts-w2/struts-api-monopoly.xml"/>
     <include file="config/struts-w2/struts-api-production.xml"/>
     <include file="config/struts-w2/struts-api-customer.xml"/>
     <include file="config/struts-w2/struts-api-cms.xml"/>

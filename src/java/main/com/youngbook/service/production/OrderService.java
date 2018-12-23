@@ -137,19 +137,25 @@ public class OrderService extends BaseService {
     /**
      * 修改订单产品
      *
-     * @param orderId
-     * @param productionId
-     * @param productionCompositionId
-     * @param money
-     * @param userId
-     * @param connection
-     * @return
-     * @throws Exception
+     * 订单没有兑付的情况下，可以修改订单所对应的产品
+     *
+     * @author leevits
+     *
+     * @param orderId 订单编号
+     * @param productionId 产品编号
+     * @param productionCompositionId 产品构成编号
+     * @param money 订单金额
+     * @param userId 操作员编号
+     * @param connection 数据库连接
+     * @return 更新后的订单对象
+     * @throws Exception 常规异常
      */
     public OrderPO updateOrderProduction(String orderId, String productionId, String productionCompositionId, double money, String userId, Connection connection) throws  Exception {
 
 
-       //查询是否有该订单，若没有则不能修改
+        /**
+         * 查询是否有该订单，若没有则不能修改
+         */
         OrderPO orderPO = orderDao.loadByOrderId(orderId, connection);
         if (orderPO == null) {
             MyException.newInstance("暂无该订单信息，修改失败", "订单号：" + orderId).throwException();
@@ -158,7 +164,11 @@ public class OrderService extends BaseService {
 
 
 
-        //判断订单状态，以下状态订单不能修改产品信息
+        /**
+         * 判断订单状态，以下状态订单不能修改产品信息
+         *
+         * 部分兑付或已兑付的订单，不能修改订单产品
+         */
         if (orderPO.getStatus() == 8) {
             MyException.newInstance("当前订单已部分兑付，无法修改", "订单号：" + orderId).throwException();
         }
@@ -1035,7 +1045,7 @@ public class OrderService extends BaseService {
          * 生成兑付计划
          *
          */
-        generatePaymentPlan(order, userId, conn);
+        generatePaymentPlan(order, "0", userId, conn);
 
 
         // 增加客户资金记录
@@ -1393,7 +1403,7 @@ public class OrderService extends BaseService {
         /**
          * 生成兑付计划
          */
-        generatePaymentPlan(orderPO, userId, conn);
+        generatePaymentPlan(orderPO, "0", userId, conn);
 
         return orderPO;
     }
@@ -1886,11 +1896,12 @@ public class OrderService extends BaseService {
      *
      * @param order
      * @param operatorId
+     * @param generateType 0：未确认的删除，重新生成； 1：已确认的也删除，重新生成
      * @param conn
      * @throws Exception
      * @author 邓超
      */
-    public void generatePaymentPlan(OrderPO order, String operatorId, Connection conn) throws Exception {
+    public void generatePaymentPlan(OrderPO order, String generateType, String operatorId, Connection conn) throws Exception {
 
         if (order == null) {
             MyException.newInstance("订单数据参数为空").throwException();
@@ -1924,13 +1935,23 @@ public class OrderService extends BaseService {
 
 
         /**
-         * 删除已有兑付计划
+         * 删除已有但未被确认的兑付计划
          */
         for (int i = 0; paymentPlanPOs != null && i < paymentPlanPOs.size(); i++) {
 
             PaymentPlanPO paymentPlanPO = paymentPlanPOs.get(i);
 
-            MySQLDao.remove(paymentPlanPO, operatorId, conn);
+
+            /**
+             * 检查是否已确认，如果尚未确认，则删除兑付计划
+             */
+            if (paymentPlanPO.getConfirmorId().equals("") && generateType.equals("0")) {
+                MySQLDao.remove(paymentPlanPO, operatorId, conn);
+            }
+            else if (generateType.equals("1")) {
+                MySQLDao.remove(paymentPlanPO, operatorId, conn);
+            }
+
         }
 
 

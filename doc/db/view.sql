@@ -130,6 +130,7 @@ SELECT
     o.sid, o.id, o.operatorId, o.operateTime, o.OrderNum, o.CustomerName, o.CustomerId, o.ProductionId, o.ProductionCompositionId,
     o.accountId, o.createtime,
     p.`Name` productionName,
+		p.discountRate,
     pc.`Name` productionCompositionName,
     o.Money, o.appointmentTime, o.PayTime, o.contractNo, o.referralCode, o.`Status` status,
     o.orderConfirmUserId01,
@@ -142,8 +143,8 @@ SELECT
     o.financeMoneyConfirmUserId,
     (select name from system_user where state=0 and id=o.financeMoneyConfirmUserId) financeMoneyConfirmUserName,
     o.financeMoneyConfirmTime,
-    o.allinpayCircle_deposit_status,	
-    o.allinpayCircle_payByShare_status,	
+    o.allinpayCircle_deposit_status,    
+    o.allinpayCircle_payByShare_status,    
     o.allinpayCircle_payByShare_time
 FROM
     crm_order o
@@ -250,4 +251,49 @@ Left join crm_saleman_salemangroup ssg on ssg.saleManId=cd.salesmanId and ssg.de
 left join crm_salemangroup sg on sg.state=0 and sg.id=ssg.saleManGroupId
 WHERE
     1 = 1
-and c.state=0 
+and c.state=0
+
+
+;
+
+-- 兑付计划视图
+create or replace view view_paymentPlan as
+SELECT
+    -- 兑付计划编号
+    plan.id paymentPlanId,
+    -- 订单编号
+    o.id orderId,
+    -- 客户编号
+    o.CustomerId customerId,
+    -- 客户姓名
+    o.CustomerName,
+    -- 产品编号
+    o.ProductionId,
+    -- 产品名称
+    o.productionName,
+    -- 应兑付时间
+    plan.PaymentTime,
+    -- 应兑付本金金额
+    plan.TotalPaymentPrincipalMoney,
+    -- 应兑付收益金额
+    plan.TotalProfitMoney,
+    -- 实际兑付本金金额
+    plan.PaiedPrincipalMoney,
+    -- 实际兑付收益金额
+    plan.PaiedProfitMoney,
+    -- 实际兑付时间
+    plan.PaiedPaymentTime
+FROM
+    core_paymentplan plan
+left join view_order o on plan.OrderId=o.id
+WHERE
+    plan.state = 0
+    
+;
+
+-- 销售名下客户的投资汇总
+CREATE or replace view view_order_totoal_money as
+select o.CustomerId, o.salesmanId, sum(o.Money) totalMoney 
+from view_order o 
+where 1=1
+GROUP BY o.CustomerId, o.salesmanId

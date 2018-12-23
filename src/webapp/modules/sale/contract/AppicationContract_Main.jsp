@@ -15,6 +15,7 @@
     ButtonPO btnUpdateApplication = new ButtonPO("btnUpdateApplication" + token, "修改申请", "icon-edit","销售合同申请_销售合同申请_修改");
     ButtonPO btnDeleteApplication= new ButtonPO("btnDeleteApplication" + token, "删除", "icon-cut","销售合同申请_销售合同申请_删除");
     ButtonPO btnCheckApplication= new ButtonPO("btnCheckApplication" + token, "申请审批", "icon-edit","销售合同申请_销售合同申请_审批");
+    ButtonPO btnCreateContractNum= new ButtonPO("btnCreateContractNum" + token, "生成合同号", "icon-edit","销售合同申请_销售合同申请_生成合同号");
     // 创建Toolbar，并受权限控制
     ToolbarPO toolbar = ToolbarPO.getInstance(request);
     // 直接添加按钮，后台程序会自动判断，有权限则添加，没有权限则不添加
@@ -22,6 +23,7 @@
     toolbar.addButton(btnUpdateApplication);
     toolbar.addButton(btnDeleteApplication);
     toolbar.addButton(btnCheckApplication);
+    toolbar.addButton(btnCreateContractNum);
 
 %>
 <html>

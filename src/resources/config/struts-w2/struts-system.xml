@@ -88,6 +88,8 @@
             </result>
             <result name="login_success_dehecircle">/dehecircle/index.jsp</result>
             <result name="login_mobile_code_dehecircle">/dehecircle/login/login_mobile_code.jsp</result>
+            <result name="login_success_monopoly">/monopoly/index.jsp</result>
+            <result name="login_mobile_code_monopoly">/monopoly/login/login_mobile_code.jsp</result>
         </action>
 
         <action name="saveLog" class = "com.youngbook.action.system.ConfigAction" method="saveLog">
