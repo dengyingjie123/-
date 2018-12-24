@@ -100,6 +100,7 @@ var MenuClass = function(token) {
         });
     }
 
+
     function initMenuTree(treeId) {
         //alert(treeId);
         var url = WEB_ROOT+"/system/Menu_list.action";
@@ -111,9 +112,8 @@ var MenuClass = function(token) {
             $(treeId).tree('collapseAll', root.target);
             $(treeId).tree('expand', root.target);
         }, null);
-
-
     }
+
 
 	return {
 		initModule:function() {

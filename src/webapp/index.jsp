@@ -55,7 +55,7 @@
 <body class="easyui-layout">
 
 <!-- header area begin -->
-<div region="north" split="false" style="height:52px;padding:2px;vertical-align:text-top;background-image: url('include/images/headerbg.jpg')">
+<div region="north" split="false" style="height:48px;padding:0px;vertical-align:text-top;background-image: url('include/images/headerbg.jpg')">
     <div id="header">
         <table width="100%">
             <tr>
@@ -86,7 +86,7 @@
 <!-- header area end -->
 
 <!-- menu area begin -->
-<div id="menubar" region="west" split="true" title="系统菜单" style="width:200px;padding:5px;">
+<div id="menubar" region="west" split="true" title="系统菜单" style="width:225px;padding:0px;">
     <ul id="systemMenu">正在加载，请稍候……</ul>
 </div>
 <!-- menu area end -->

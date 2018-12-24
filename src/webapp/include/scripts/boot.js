@@ -73,11 +73,32 @@ function initSystem() {
 
     fw.post(WEB_ROOT + "/system/Menu_listMenu.action", null, function (data) {
 //        alert(JSON.stringify(data));
-        $('#' + systemMenuId).tree({data: data[0].children});
-        $('#' + systemMenuId).tree('collapseAll');
+/*        $('#' + systemMenuId).tree({data: data[0].children});
+        $('#' + systemMenuId).tree('collapseAll');*/
+        var childern = data[0].children;
+        $('#systemMenu').sidemenu({
+            data: childern,
+            onSelect: onSideMenuSelect,
+            border: false,
+        });
     }, function (message) {
         alert(message);
     });
+
+
+    function onSideMenuSelect(item,token) {
+        if (!$('#contentTabs').tabs('exists', item.text)) {
+            $('#contentTabs').tabs('add', {
+                title: item.text,
+                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + "?token="+token+'" style="width:100%;height:99%;"></iframe>',
+                closable: true,
+                icon: item.iconCls,
+                id: item.id
+            });
+        } else {
+            $('#contentTabs').tabs('select', item.text);
+        }
+    }
 
 
     // 初始化登录用户
