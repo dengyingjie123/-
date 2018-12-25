@@ -100,7 +100,8 @@ function initSystem() {
         if (!$('#'+contentTabsId).tabs('exists', item.text)) {
             $('#'+contentTabsId).tabs('add', {
                 title: item.text,
-                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + '?token='+item.id+'" style="width:100%;height:99%;"></iframe>',
+                href: WEB_ROOT + "/" + item.attributes.url + "?token=" + item.id,
+/*                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + '?token='+item.id+'" style="width:100%;height:99%;"></iframe>',*/
                 closable: true,
                 icon: item.iconCls,
                 id: item.id
