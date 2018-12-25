@@ -54,7 +54,6 @@ function initSystem() {
     //alert("initSystem2");
     // 初始化菜单
     var systemMenuId = 'systemMenu';
-
     // 绑定菜单点击事件
     $('#' + systemMenuId).tree({
         onClick: function (node) {
@@ -63,54 +62,51 @@ function initSystem() {
                 if ($("#" + systemMenuId).tree('isLeaf', node.target)) {
                     loadWorkSpace(node.attributes.url, node.attributes.moduleName,
                         node.attributes.permissionName, node.iconCls, node.id);
-                }
-            }
+                }}
             catch (e) {
                 // $.messager.alert('出差警告','菜单加载失败 ' + e);
-            }
-        }
+            }}
     });
-
     fw.post(WEB_ROOT + "/system/Menu_listMenu.action", null, function (data) {
 //        alert(JSON.stringify(data));
 /*        $('#' + systemMenuId).tree({data: data[0].children});
         $('#' + systemMenuId).tree('collapseAll');*/
         var childern = data[0].children;
-        $('#systemMenu').sidemenu({
-            data: childern,
-            onSelect: onSideMenuSelect,
-            border: false,
+        $('#'+systemMenuId).sidemenu({
+            data: childern ,
+            onSelect: onSideMenuSelect ,
+            border: false ,
         });
     }, function (message) {
         alert(message);
     });
 
 
-    function onSideMenuSelect(item,token) {
-        if (!$('#contentTabs').tabs('exists', item.text)) {
-            $('#contentTabs').tabs('add', {
+    function onSideMenuSelect(item) {
+        var contentTabsId = "contentTabs";
+        if (!$('#'+contentTabsId).tabs('exists', item.text)) {
+            $('#'+contentTabsId).tabs('add', {
                 title: item.text,
-                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + "?token="+token+'" style="width:100%;height:99%;"></iframe>',
+                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + '?token='+item.id+'" style="width:100%;height:99%;"></iframe>',
                 closable: true,
                 icon: item.iconCls,
-                id: item.id
+                id: item.id,
+                onLoad: function () {
+                    contentTabAdd(item.attributes.permissionName, item.id);
+                },
             });
         } else {
-            $('#contentTabs').tabs('select', item.text);
-        }
-    }
+            $('#'+contentTabsId).tabs('select', item.text);
+            contentTabReload(item.attributes.permissionName, item.id);
+        }}
 
 
     // 初始化登录用户
     fw.post(WEB_ROOT + "/system/Login_loadLoginUser.action", null, function (data) {
         //fw.alertReturnValue(data);
         loginUser.setUser(data);
-
         // 设置登录用户名称
         $('#btnLoginUser').menubutton({text: loginUser.getName()});
-        //onClickLogoutUser();
-
-
         // 加载用户推荐码
         var referralCodeURL = WEB_ROOT + "/system/User_getReferralCode.action?user.id=" + loginUser.getId();
         // fw.debug(refereeCodeUrl, 333344);
@@ -120,31 +116,73 @@ function initSystem() {
                 fw.alert("警告", "无法获得用户推荐码");
                 return;
             }
-
-
             $('#referralCode').html(referralCode);
-
         }, function() {
             fw.alert("警告", "无法获得用户推荐码");
         });
-
     }, function () {
         fw.alert("警告", "获得登录用户信息失败，请重新登录");
     });
-
     // 初始化登录用户所在部门
     initUserDepartment();
-
-
-
-
-
-
     // 可在此处增加默认的模块 [24611604]
     // 右侧面板显示公告
     // loadWorkSpace('modules/system/message/Message_Main.jsp','公告管理','公告管理','','System_Message_123456');
 }
+/**
+ * 加载页面到工作区
+ * @param url 页面地址
+ * @param moduleName 模块名称
+ * @param permissionName 权限名称
+ * @param icon 图标
+ * @param token
+ */
+function loadWorkSpace(url, moduleName, permissionName, icon, token) {
 
+    //alert("Menu:["+moduleName+"] obj:["+permissionName+"] url:["+url+"] token:["+token+"]");
+    //alert("["+moduleName+"]");
+    //alert("icon:["+icon+"]");
+    var contentTabsId = "contentTabs";
+    var index = hmMenu.get(token);
+    //alert("Menu Index 1:"+index + " size:"+hmMenu.size);
+    if (fw.checkIsTextEmpty(index)) {
+        index = hmMenu.size;
+        hmMenu.put(token, index);
+    }
+    if (!$('#' + contentTabsId).tabs('exists', index)) {
+        $('#' + contentTabsId).tabs('add', {
+            title: moduleName,
+            loadingMessage: '正在加载，请稍后……',
+            href: WEB_ROOT + "/" + url + "?token=" + token,
+            cache: true,
+            iconCls: icon,
+            closable: false,
+            onLoad: function () {
+                contentTabAdd(permissionName, token);
+            },
+            onClose: function (title, index) {
+                //hmMenu = new Map();
+                //alert("onclose : " + index);
+                if (index) {
+                    alert("close: " + index);
+                    var i = 0
+                    for (i = 0; i < hmMenu.keys.length; i++) {
+                        var key = hmMenu.keys[i];
+                        var value = hmMenu.get(key);
+                        if (value == index) {
+                            alert("remove " + index + " token: " + value);
+                            hmMenu.remove(key);
+                        }
+                    }
+                }
+            }
+        });
+    }
+    else {
+        $('#' + contentTabsId).tabs('select', index);
+        contentTabReload(permissionName, token);
+    }
+}
 
 function initUserDepartment() {
     // 初始化登陆用户所在部门
@@ -209,62 +247,7 @@ function onClickLogoutUser() {
     }, null);
 
 }
-/**
- * 加载页面到工作区
- * @param url 页面地址
- * @param moduleName 模块名称
- * @param permissionName 权限名称
- * @param icon 图标
- * @param token
- */
-function loadWorkSpace(url, moduleName, permissionName, icon, token) {
 
-    //alert("Menu:["+moduleName+"] obj:["+permissionName+"] url:["+url+"] token:["+token+"]");
-
-    //alert("["+moduleName+"]");
-    //alert("icon:["+icon+"]");
-    var contentTabsId = "contentTabs";
-    var index = hmMenu.get(token);
-    //alert("Menu Index 1:"+index + " size:"+hmMenu.size);
-    if (fw.checkIsTextEmpty(index)) {
-        index = hmMenu.size;
-        hmMenu.put(token, index);
-    }
-
-    if (!$('#' + contentTabsId).tabs('exists', index)) {
-        $('#' + contentTabsId).tabs('add', {
-            title: moduleName,
-            loadingMessage: '正在加载，请稍后……',
-            href: WEB_ROOT + "/" + url + "?token=" + token,
-            cache: true,
-            iconCls: icon,
-            closable: false,
-            onLoad: function () {
-                contentTabAdd(permissionName, token);
-            },
-            onClose: function (title, index) {
-                //hmMenu = new Map();
-                //alert("onclose : " + index);
-                if (index) {
-                    alert("close: " + index);
-                    var i = 0
-                    for (i = 0; i < hmMenu.keys.length; i++) {
-                        var key = hmMenu.keys[i];
-                        var value = hmMenu.get(key);
-                        if (value == index) {
-                            alert("remove " + index + " token: " + value);
-                            hmMenu.remove(key);
-                        }
-                    }
-                }
-            }
-        });
-    }
-    else {
-        $('#' + contentTabsId).tabs('select', index);
-        contentTabReload(permissionName, token);
-    }
-}
 /**
  * 加载左侧树形菜单
  * @param permissionName
