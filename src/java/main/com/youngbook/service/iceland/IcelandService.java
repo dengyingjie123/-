@@ -11,10 +11,14 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.customer.ICustomerPersonalDao;
 import com.youngbook.dao.system.IUserDao;
 import com.youngbook.dao.system.UserDaoImpl;
-import com.youngbook.entity.iceland.*;
+import com.youngbook.entity.iceland.CallCommentPO;
+import com.youngbook.entity.iceland.CommonSentencePO;
+import com.youngbook.entity.iceland.CustomerOrderReviewPO;
+import com.youngbook.entity.iceland.CustomerPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerFeedbackPO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
+import com.youngbook.entity.vo.customer.CustomerVO;
 import com.youngbook.service.BaseService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -133,6 +137,8 @@ public class IcelandService extends BaseService {
 
         return list;
     }
+
+
 
 
     public static void main(String [] args) throws Exception {

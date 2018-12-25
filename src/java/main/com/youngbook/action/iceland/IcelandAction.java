@@ -10,9 +10,9 @@ import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.iceland.CallCommentPO;
 import com.youngbook.entity.iceland.CommonSentencePO;
 import com.youngbook.entity.iceland.CustomerOrderReviewPO;
-import com.youngbook.entity.iceland.CustomerVO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.customer.CustomerFeedbackPO;
+import com.youngbook.entity.vo.customer.CustomerVO;
 import com.youngbook.service.customer.CustomerFeedbackService;
 import com.youngbook.service.iceland.IcelandService;
 import com.youngbook.service.system.UserService;
@@ -189,10 +189,6 @@ public class IcelandAction extends BaseAction {
                 CustomerVO customerVO = listCustomerVO.get(i);
                 String mobileMasked = StringUtils.maskMobile(customerVO.getMobile());
                 customerVO.setMobileMasked(mobileMasked);
-
-                if (customerVO.getCommentCount() > 0) {
-                    customerVO.setStatusName("已拨打");
-                }
             }
 
             getResult().setReturnValue(listCustomerVO);
@@ -212,6 +208,17 @@ public class IcelandAction extends BaseAction {
     }
 
     public String getListCustomerOrderReview() throws Exception {
+
+        List<CustomerOrderReviewPO> customerOrderReviewPOs = icelandService.getListCustomerOrderReview(getConnection());
+
+        getResult().setReturnValue(customerOrderReviewPOs);
+
+        return SUCCESS;
+    }
+
+
+
+    public String getListCustomer() throws Exception {
 
         List<CustomerOrderReviewPO> customerOrderReviewPOs = icelandService.getListCustomerOrderReview(getConnection());
 

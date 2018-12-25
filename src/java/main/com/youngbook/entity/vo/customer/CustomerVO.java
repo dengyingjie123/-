@@ -8,6 +8,8 @@ public class CustomerVO {
     private String id = "";
     private String customerId = "";
     private String name = "";
+    private String mobile = "";
+    private String mobileMasked = "";
 
     public String getCustomerId() {
         return customerId;
@@ -33,4 +35,19 @@ public class CustomerVO {
         this.name = name;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getMobileMasked() {
+        return mobileMasked;
+    }
+
+    public void setMobileMasked(String mobileMasked) {
+        this.mobileMasked = mobileMasked;
+    }
 }
