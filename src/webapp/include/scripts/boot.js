@@ -1,5 +1,5 @@
 var WEB_ROOT = "/core";
-var SCRIPTS_ROOT = "../scripts";
+var SCRIPTS_ROOT = "../../../scripts";
 var JEASYUI_ROOT = "jquery-easyui-1.4.5";
 //var SCRIPTS_ROOT = WEB_ROOT+"/include/scripts";
 var VERSION = Math.random();
@@ -84,15 +84,15 @@ function initSystem() {
 
     function onSideMenuSelect(item) {
 
-        console.log("onSideMenuSelect");
+/*        console.log("onSideMenuSelect");
         console.log(item);
-        console.log($('#contentTabs').tabs('exists', item.text));
+        console.log($('#contentTabs').tabs('exists', item.text));*/
 
         var contentTabsId = "contentTabs";
 
         $('#'+contentTabsId).tabs({
             onAdd: function (title,index) {
-                console.log("contentTabAdd");
+               // console.log("contentTabAdd");
                 contentTabAdd(item.attributes.permissionName, item.id);
             }
         });
