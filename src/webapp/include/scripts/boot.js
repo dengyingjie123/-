@@ -1,5 +1,5 @@
 var WEB_ROOT = "/core";
-var SCRIPTS_ROOT = "../../../scripts";
+var SCRIPTS_ROOT = "../scripts";
 var JEASYUI_ROOT = "jquery-easyui-1.4.5";
 //var SCRIPTS_ROOT = WEB_ROOT+"/include/scripts";
 var VERSION = Math.random();
