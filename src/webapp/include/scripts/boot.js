@@ -74,9 +74,8 @@ function initSystem() {
         var childern = data[0].children;
         $('#'+systemMenuId).sidemenu({
             data: childern ,
-            onSelect: onSideMenuSelect ,
-            border: false ,
-            
+            onSelect: onSideMenuSelect,
+            border: false
         });
     }, function (message) {
         alert(message);
@@ -84,22 +83,36 @@ function initSystem() {
 
 
     function onSideMenuSelect(item) {
+
+        console.log("onSideMenuSelect");
+        console.log(item);
+        console.log($('#contentTabs').tabs('exists', item.text));
+
         var contentTabsId = "contentTabs";
+
+        $('#'+contentTabsId).tabs({
+            onAdd: function (title,index) {
+                console.log("contentTabAdd");
+                contentTabAdd(item.attributes.permissionName, item.id);
+            }
+        });
+
         if (!$('#'+contentTabsId).tabs('exists', item.text)) {
             $('#'+contentTabsId).tabs('add', {
                 title: item.text,
                 content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + '?token='+item.id+'" style="width:100%;height:99%;"></iframe>',
                 closable: true,
                 icon: item.iconCls,
-                id: item.id,
-                onLoad: function () {
-                    contentTabAdd(item.attributes.permissionName, item.id);
-                },
+                id: item.id
             });
-        } else {
+
+
+        }
+        else {
             $('#'+contentTabsId).tabs('select', item.text);
             contentTabReload(item.attributes.permissionName, item.id);
-        }}
+        }
+    }
 
 
     // 初始化登录用户
