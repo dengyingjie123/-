@@ -76,6 +76,7 @@ function initSystem() {
             data: childern ,
             onSelect: onSideMenuSelect ,
             border: false ,
+            
         });
     }, function (message) {
         alert(message);
