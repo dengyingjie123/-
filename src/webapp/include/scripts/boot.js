@@ -84,30 +84,21 @@ function initSystem() {
 
     function onSideMenuSelect(item) {
 
-/*        console.log("onSideMenuSelect");
-        console.log(item);
-        console.log($('#contentTabs').tabs('exists', item.text));*/
 
         var contentTabsId = "contentTabs";
-
         $('#'+contentTabsId).tabs({
             onAdd: function (title,index) {
-               // console.log("contentTabAdd");
                 contentTabAdd(item.attributes.permissionName, item.id);
             }
         });
-
         if (!$('#'+contentTabsId).tabs('exists', item.text)) {
             $('#'+contentTabsId).tabs('add', {
                 title: item.text,
                 href: WEB_ROOT + "/" + item.attributes.url + "?token=" + item.id,
-/*                content: '<iframe scrolling="auto" frameborder="0"  src="' + WEB_ROOT + '/' + item.attributes.url + '?token='+item.id+'" style="width:100%;height:99%;"></iframe>',*/
                 closable: true,
                 icon: item.iconCls,
                 id: item.id
             });
-
-
         }
         else {
             $('#'+contentTabsId).tabs('select', item.text);
@@ -176,8 +167,8 @@ function loadWorkSpace(url, moduleName, permissionName, icon, token) {
                 contentTabAdd(permissionName, token);
             },
             onClose: function (title, index) {
-                //hmMenu = new Map();
-                //alert("onclose : " + index);
+                // hmMenu = new Map();
+                // alert("onclose : " + index);
                 if (index) {
                     alert("close: " + index);
                     var i = 0

@@ -2,24 +2,24 @@
          language="java" %>
 <%
     String isUpdatePassword = (String) request.getAttribute("isUpdatePassword");
-
+    String jEasyUI_Version = "jeasyui/1.6.11/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title><%=Config.APP_NAME%></title>
-    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/themes/material-teal/easyui.css">
-    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>themes/icon.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/default.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/style/buttons.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.css">
     <link rel="stylesheet" type="text/css" href="<%=Config.getWebRoot() %>/include/framework/fullcalendar-2.2.2/fullcalendar.print.css" media='print'>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>jquery.min.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/JSON-to-Table-1.0.0.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/third-party/accounting.min.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/easyloader.js"></script>
-    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/jeasyui/1.6.11/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>easyloader.js"></script>
+    <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/framework/<%=jEasyUI_Version%>locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/system/ConfigClass.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/scripts/boot.js"></script>
     <script type="text/javascript" src="<%=Config.getWebRoot() %>/include/extensions/hashMap.js"></script>
