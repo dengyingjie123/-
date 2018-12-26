@@ -8,4 +8,6 @@ import java.util.List;
 public interface ICalendarDao {
 
     List<EventPO> getEventPO(String intervalStart, Connection conn) throws Exception;
+
+    List<EventPO> getEventPOPaymentPlan(String intervalStart, Connection conn) throws Exception;
 }

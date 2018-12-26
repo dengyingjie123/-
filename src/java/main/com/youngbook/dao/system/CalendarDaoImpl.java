@@ -37,8 +37,6 @@ public class CalendarDaoImpl implements ICalendarDao {
         String loginUserId = baseUtils.getLoginUser().getId();
 
 
-
-
         /**
          * 获取每个客户的生日
          */
@@ -55,23 +53,20 @@ public class CalendarDaoImpl implements ICalendarDao {
             search = MySQLDao.search(databaseSQL, EventPO.class, conn);
         }
 
+        return search;
+    }
 
-
+    @Override
+    public List<EventPO> getEventPOPaymentPlan(String intervalStart, Connection conn) throws Exception{
 
         /**
          * 获取所有兑付的金额和日期
          */
         DatabaseSQL databaseSQL = DatabaseSQL.newInstance("822E1800");
-        databaseSQL.addParameter4All("intervalStart",intervalStart);
+        databaseSQL.addParameter4All("intervalStart", intervalStart);
         databaseSQL.initSQL();
 
-        List<EventPO> search1 = MySQLDao.search(databaseSQL, EventPO.class, conn);
-        if(search1 !=null && search1.size()!=0){
-            for(EventPO eventPO : search1){
-                search.add(eventPO);
-            }
-        }
-
-        return search;
+        return MySQLDao.search(databaseSQL, EventPO.class, conn);
     }
+
 }

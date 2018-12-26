@@ -31,22 +31,49 @@ var CalendarClass = function(token) {
                 var customerName = event.title;
                 initCostomerPersonal_ListProductionWindow(customerName);
             },
-            events:function(start, end, timezone, callback) {
-//                alert(start.unix() + " :" + end.unix());
-//
-//                var now = new Date(parseInt(start.unix()) * 1000);
-//                var s = now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-//                alert(s);
+            /*events:function(start, end, timezone, callback) {
+
                 var view = $('#calendar').fullCalendar('getView');
-                // alert("The view's title is " + view.intervalStart.format() + " --- " + view.end.format());
-                fw.post(WEB_ROOT + "/system/Calendar_listCustomerBirthdays.action", {"intervalStart":view.intervalStart.format()}, function(data) {
+
+                alert("The view's title is " + view.title);
+
+                fw.post(WEB_ROOT + "/system/Calendar_listCustomerBirthdays.action", {"intervalStart": view.intervalStart.format()}, function (data) {
                     callback(data);
                 }, null);
-            }
+            },*/
+            events:[
+
+                {
+                    id: 'availableForMeeting',
+                    start: '2018-12-11T10:00:00',
+                    end: '2018-12-11T16:00:00',
+                    rendering: 'background'
+                },
+                {
+                    id: 'availableForMeeting',
+                    start: '2018-12-13T10:00:00',
+                    end: '2018-12-13T16:00:00',
+                    rendering: 'background'
+                },
+
+                // red areas where no events can be dropped
+                {
+                    start: '2018-12-24',
+                    end: '2018-12-28',
+                    overlap: false,
+                    rendering: 'background',
+                    color: '#ff9f89'
+                },
+                {
+                    start: '2018-12-06',
+                    end: '2018-12-08',
+                    overlap: false,
+                    rendering: 'background',
+                    color: '#ff9f89'
+                }
+
+            ]
         });
-
-
-
 
     }
 

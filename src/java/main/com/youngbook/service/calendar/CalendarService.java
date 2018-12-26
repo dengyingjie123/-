@@ -132,9 +132,26 @@ public class CalendarService extends BaseService {
         return eventSource;
     }
 
+
+    /**
+     * @description
+     * 根据日期查询前后2个月的所有客户生日和兑付计划
+     * @author 胡超怡
+     *
+     * @date 2018/12/26 14:02
+     * @param intervalStart 传入的要查询的时间 yyyy-MM-dd
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.calendar.EventPO>
+     * @throws Exception
+     */
     public List<EventPO> getEventPO(String intervalStart, Connection conn) throws Exception {
 
-        return calendarDao.getEventPO(intervalStart,conn);
+        List<EventPO> eventPOBirthDay = calendarDao.getEventPO(intervalStart, conn);
+
+        List<EventPO> eventPOPaymentPlan = calendarDao.getEventPOPaymentPlan(intervalStart, conn);
+
+
+        return eventPOBirthDay;
 
     }
 }
