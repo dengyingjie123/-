@@ -13,8 +13,10 @@ import com.youngbook.entity.po.production.ProjectPO;
 import com.youngbook.entity.po.sale.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,12 +31,31 @@ public class MoneyUtils {
         System.out.println(MoneyUtils.format2Fen(1.23));
     }
 
-    public static double calculateProfit(double money, double profitRate, int duration, int type) {
+
+    /**
+     * 计算兑付金额
+     * @param money
+     * @param profitRate
+     * @param interestDate
+     * @param tempInterestDate
+     * @param duration
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    public static double calculateProfit(double money, double profitRate, String interestDate, String tempInterestDate, int duration, int type) throws Exception{
 
         int DAYS_OF_YEAR = 365;
+        int DAYS_OF_YEAR_A = 360;
         int MONTH_OF_YEAR = 12;
 
+
+
+
         double profit = 0.00;
+
+
+
 
         // 按天计息
         if (type == 0) {
@@ -48,8 +69,40 @@ public class MoneyUtils {
         else if (type == 2) {
             profit = money * profitRate * duration;
         }
+        // 按天(A类)计算
+        else if (type == 3) {
+            /**
+             * 计算计息时长
+             */
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date tempInterest = format.parse(tempInterestDate);
+            Date interest = format.parse(interestDate);
+
+
+
+
+            /**
+             * 得到毫秒，换算为天
+             */
+            long temp = tempInterest.getTime() - interest.getTime();
+            long cycle = temp/1000/60/60/24;
+
+
+
+
+            /**
+             * 计算兑付利息
+             */
+            profit = money * profitRate * cycle / DAYS_OF_YEAR_A;
+        }
+
+
+
 
         profit = MoneyUtils.handleDouble(profit, 2);
+
+
+
 
         return profit;
     }

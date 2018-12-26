@@ -1717,12 +1717,23 @@ public class OrderService extends BaseService {
         return totalProfit;
     }
 
-
+    /**
+     * 生成兑付计划
+     * @param order
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public List<PaymentPlanPO> calculatePaymentPlan(OrderPO order, Connection conn) throws Exception {
 
-        List<PaymentPlanPO> plans = new ArrayList<PaymentPlanPO>();
+        List<PaymentPlanPO> plans = new ArrayList();
+
+
+
 
         ProductionPO productionPO = productionDao.loadProductionById(order.getProductionId(), conn);
+
+
 
 
         // 获得起息日
@@ -1732,24 +1743,42 @@ public class OrderService extends BaseService {
         }
 
 
+
+
         double money = order.getMoney();
+
+
+
 
         // 周期
         int interestCycle = productionPO.getInterestCycle();
-
         // 期数
         int interestUnit = productionPO.getInterestUnit();
-
+        // 付息期数
         int interestTimes = productionPO.getInterestTimes();
-
         // 收益率
         double profitRate = getExpectedYield(order.getProductionCompositionId(), conn);
+
+
 
         for (int i = 1; i <= interestTimes; i++) {
             PaymentPlanPO paymentPlanPO = getPaymentPlanPOInstance(order);
 
-            // 应兑付利息
-            double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestCycle, interestUnit);
+
+
+
+            // 兑付日期
+            String interestUnitName = interestUnit == 0 ? TimeUtils.DATE : (interestUnit == 1  ? TimeUtils.MONTH :( interestUnit == 3 ? TimeUtils.MONTH :  TimeUtils.YEAR));
+            String tempInterestDate = TimeUtils.getTime(interestDate, interestCycle, interestUnitName);
+            tempInterestDate = TimeUtils.format(tempInterestDate, TimeUtils.Format_YYYY_MM_DD_HH_M_S, TimeUtils.Format_YYYY_MM_DD);
+            paymentPlanPO.setPaymentTime(tempInterestDate);
+
+
+
+
+            // 应兑付利息，按月(A类)，付息时长按实际情况计算，底数为360
+            double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestDate, tempInterestDate, interestCycle, interestUnit);
+
 
 
 
@@ -1765,8 +1794,11 @@ public class OrderService extends BaseService {
             if (i == interestTimes) {
                 tempMoney = money;
             }
-            paymentPlanPO.setTotalPaymentPrincipalMoney(tempMoney);
 
+
+
+
+            paymentPlanPO.setTotalPaymentPrincipalMoney(tempMoney);
 
 
 
@@ -1781,52 +1813,31 @@ public class OrderService extends BaseService {
 
 
 
-            // 兑付日期
-            String interestUnitName = interestUnit == 0 ? TimeUtils.DATE : (interestUnit == 1 ? TimeUtils.MONTH : TimeUtils.YEAR);
-            String tempInterestDate = TimeUtils.getTime(interestDate, interestCycle, interestUnitName);
-            tempInterestDate = TimeUtils.format(tempInterestDate, TimeUtils.Format_YYYY_MM_DD_HH_M_S, TimeUtils.Format_YYYY_MM_DD);
-
-            paymentPlanPO.setPaymentTime(tempInterestDate);
-
-
-
-
-
             // 兑付总期数
             paymentPlanPO.setTotalInstallment(interestTimes);
-
-
-
-
             // 当前兑付期数
             paymentPlanPO.setCurrentInstallment(i);
-
-
-
-
             // 已兑付本金金额
             paymentPlanPO.setPaiedPrincipalMoney(0);
-
-
-
-
             // 已兑付收益金额
             paymentPlanPO.setPaiedProfitMoney(0);
-
-
-
-
             //兑付状态 从KV表中获取，生成兑付计划的时候统一设为未兑付
             paymentPlanPO.setStatus(PaymentPlanStatus.Unpaid);
+
+
 
 
             plans.add(paymentPlanPO);
 
 
+
+
             // 计算下一个起息日
             interestDate = tempInterestDate;
-        }
 
+
+            
+        }
         return plans;
     }
 
@@ -1949,7 +1960,7 @@ public class OrderService extends BaseService {
         List<PaymentPlanPO> paymentPlanList = calculatePaymentPlan(order, conn);
         //根据产品兑付的期数添加相应的兑付PO
         for (int i = 0; paymentPlanList != null && i < paymentPlanList.size(); i++) {
-            // 通过订单添加的对付计划永远是新增，因此 ID 设为空
+            // 通过订单添加的兑付计划永远是新增，因此 ID 设为空
             int count = MySQLDao.insertOrUpdate(paymentPlanList.get(i), operatorId, conn);
 
             if (count != 1) {
