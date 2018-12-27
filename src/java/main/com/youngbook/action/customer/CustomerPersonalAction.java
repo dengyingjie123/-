@@ -5248,11 +5248,9 @@ public class CustomerPersonalAction extends BaseAction {
         CustomerCertificatePO checkIdCardNumber = customerPersonalService.loadCustomerByIdCardNumber(idCardNumber, getConnection());
 
 
-
-
-        /*
+        /**
          * 判断客户姓名是否已经存在
-         * */
+         */
         if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(idCardNumber)) {
             if (customerPersonalPO_Name != null) {
                 MyException.newInstance("已有同名客户，请添加客户手机号或身份证号", "").throwException();
@@ -5260,10 +5258,6 @@ public class CustomerPersonalAction extends BaseAction {
             personalPO.setName(name);
             customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
         }
-
-
-
-
         /**
          * 判断客户是否已经存在
          */
@@ -5282,10 +5276,6 @@ public class CustomerPersonalAction extends BaseAction {
             customerCertificatePO.setName("98");
             customerCertificateService.insertOrUpdate(customerCertificatePO, getLoginUser().getId(), getConnection());
         }
-
-
-
-
         /**
          * 判断客户移动号码是否已经存在
          */
@@ -5300,10 +5290,6 @@ public class CustomerPersonalAction extends BaseAction {
             personalPO.setMobile(mobile);
             customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
         }
-
-
-
-
         /**
          * 判断客户身份证号及移动号码是否已经存在
          */
