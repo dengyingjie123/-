@@ -753,16 +753,65 @@ public class ProductionAction extends BaseAction {
         production = HttpUtils.getInstanceFromRequest(getRequest(), "production", ProductionPO.class);
         Connection conn = getConnection();
 
-        int count = 0;
-        count = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
 
-        // 创建产品失败
-        if (count != 1) {
-            MyException.newInstance("创建产品失败").throwException();
-        }
+
+
+        ProductionPO po = productionService.insertOrUpdate(production, getLoginUser().getId(), conn);
+
+
+
 
         return SUCCESS;
     }
+
+
+    /**
+     * @description 修改产品，当产品分期为草稿状态(status == 0)才允许修改
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/3 9:15
+     * @param
+     * @return com.youngbook.entity.po.production.ProductionPO
+     * @throws Exception
+     */
+    public String editProduction() throws Exception {
+
+        production = HttpUtils.getInstanceFromRequest(getRequest(), "production", ProductionPO.class);
+
+
+
+
+        /**
+         * 状态为草稿(status == 0) 的产品才能进行修改操作
+         */
+        int status = production.getStatus();
+        if(status != ProductionStatus.Draft){
+            MyException.newInstance("当前状态订单无法修改，请审批为草稿再进行修改操作");
+        }
+
+
+
+
+        /**
+         * 修改符合条件的产品分期
+         */
+        ProductionPO productionPO = productionService.insertOrUpdate(production, getLoginUser().getId(), getConnection());
+
+
+        
+
+        /**
+         * 返回修改过的产品分期对象
+         */
+        getResult().setReturnValue(productionPO.toJsonObject());
+
+
+
+
+        return SUCCESS;
+    }
+
 
     /**
      * 删除
@@ -783,6 +832,7 @@ public class ProductionAction extends BaseAction {
         getResult().setReturnValue(array);
         return SUCCESS;
     }
+
 
     /**
      * 删除
