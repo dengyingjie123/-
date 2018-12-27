@@ -233,10 +233,6 @@ public class CustomerPersonalService extends BaseService {
     }
 
 
-    public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
-        return customerPersonalDao.loadCustomerByMobile(mobile, conn);
-    }
-
     public CustomerPersonalPO loadCustomerByLoginName(String loginName, Connection conn) throws Exception {
         return customerPersonalDao.loadCustomerByLoginName(loginName, conn);
     }
@@ -2370,6 +2366,84 @@ public class CustomerPersonalService extends BaseService {
         return customerPersonalDao.getCustomerPersonalAssignedByUserId(userId, conn);
     }
 
+
+    /**
+     * @description  根据name查询CustomerPersonalPO
+     * 
+     * @author
+     * 
+     * @date 2018/12/14 9:37
+     * @param name
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public CustomerPersonalPO loadCustomerByName(String name, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
+        customerPersonalPO.setName(name);
+
+
+
+
+        customerPersonalPO = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
+
+
+
+
+        return customerPersonalPO;
+    }
+
+    /**
+     * @description 根据mobile查询CustomerPersonalPO
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/19 16:42
+     * @param mobile
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
+
+        CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
+        customerPersonalPO.setMobile(mobile);
+        customerPersonalPO  = customerPersonalDao.loadCustomerPO(customerPersonalPO, conn);
+
+
+
+
+        return customerPersonalPO;
+    }
+
+
+    /**
+     * @description  根据name查询CustomerPersonalPO
+     *
+     * @author
+     *
+     * @date 2018/12/14 9:37
+     * @param idCardNumber
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public CustomerCertificatePO loadCustomerByIdCardNumber(String idCardNumber, Connection conn) throws Exception {
+
+        CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
+        customerCertificatePO.setNumber(idCardNumber);
+
+
+
+
+        customerCertificatePO = customerPersonalDao.loadCustomerCertificateByIdCardNumber(customerCertificatePO, conn);
+
+
+
+
+        return customerCertificatePO;
+    }
 
 }
 
