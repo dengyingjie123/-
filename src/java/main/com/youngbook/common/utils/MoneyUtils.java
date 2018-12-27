@@ -34,6 +34,9 @@ public class MoneyUtils {
 
     /**
      * 计算兑付金额
+     *
+     * 增加注释，说明各个参数的含义，以及A类的计算公式说明
+     *
      * @param money
      * @param profitRate
      * @param interestDate
@@ -86,6 +89,8 @@ public class MoneyUtils {
              */
             long temp = tempInterest.getTime() - interest.getTime();
             long cycle = temp/1000/60/60/24;
+            // todo : gouxilin 使用TimeUtils.getDayDifference()方法计算天数
+
 
 
 
