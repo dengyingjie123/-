@@ -78,7 +78,10 @@ function initSystem() {
         alert(message);
     });
 
-
+    /**
+     * 菜单被选中后
+     * @param item
+     */
     function onSideMenuSelect(item) {
         var token = item.id;
         var node = item.attributes;
@@ -94,11 +97,11 @@ function initSystem() {
         });
         if (!$('#'+contentTabsId).tabs('exists', item.text)) {
             $('#'+contentTabsId).tabs('add', {
-                title: item.text,
-                href: WEB_ROOT + "/" + node.url + "?token=" + token,
-                closable: true,
-                icon: item.iconCls,
-                id: token,
+                title : item.text,
+                href : WEB_ROOT + "/" + node.url + "?token=" + token,
+                closable : true,
+                icon : item.iconCls,
+                id : token,
             });
         }
         else {
