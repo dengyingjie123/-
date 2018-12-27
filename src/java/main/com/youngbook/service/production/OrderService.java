@@ -1774,9 +1774,10 @@ public class OrderService extends BaseService {
             paymentPlanPO.setPaymentTime(tempInterestDate);
 
 
-
-
-            // 应兑付利息，按月(A类)，付息时长按实际情况计算，底数为360
+            /**
+             * 运算规则：
+             * 购买金额*预期收益率*(兑付日期-起息日)/360
+             */
             double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestDate, tempInterestDate, interestCycle, interestUnit);
 
 

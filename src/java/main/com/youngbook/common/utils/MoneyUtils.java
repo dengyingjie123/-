@@ -49,7 +49,7 @@ public class MoneyUtils {
     public static double calculateProfit(double money, double profitRate, String interestDate, String tempInterestDate, int duration, int type) throws Exception{
 
         int DAYS_OF_YEAR = 365;
-        int DAYS_OF_YEAR_A = 360;
+        int DAYS_OF_YEAR_360 = 360;
         int MONTH_OF_YEAR = 12;
 
 
@@ -72,33 +72,20 @@ public class MoneyUtils {
         else if (type == 2) {
             profit = money * profitRate * duration;
         }
-        // 按天(A类)计算
+        // 按月(A类)计算
         else if (type == 3) {
-            /**
-             * 计算计息时长
-             */
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date tempInterest = format.parse(tempInterestDate);
-            Date interest = format.parse(interestDate);
-
-
-
-
-            /**
-             * 得到毫秒，换算为天
-             */
-            long temp = tempInterest.getTime() - interest.getTime();
-            long cycle = temp/1000/60/60/24;
-            // todo : gouxilin 使用TimeUtils.getDayDifference()方法计算天数
-
+            String format = "yyyy-MM-dd";
+            int dayDifference = TimeUtils.getDayDifference(interestDate, tempInterestDate, format);
 
 
 
 
             /**
              * 计算兑付利息
+             * 运算规则：
+             * 购买金额*预期收益率*(兑付日期-起息日)/360
              */
-            profit = money * profitRate * cycle / DAYS_OF_YEAR_A;
+            profit = money * profitRate * dayDifference / DAYS_OF_YEAR_360;
         }
 
 
