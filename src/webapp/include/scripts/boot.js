@@ -91,7 +91,7 @@ function initSystem() {
 
         var contentTabsId = "contentTabs";
         $('#'+contentTabsId).tabs({
-            onAdd: function (title,index) {
+            onLoad: function (title,index) {
                 contentTabAdd(node.permissionName, token);
             }
         });
