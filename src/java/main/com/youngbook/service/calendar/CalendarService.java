@@ -150,6 +150,15 @@ public class CalendarService extends BaseService {
 
         List<EventPO> eventPOPaymentPlan = calendarDao.getEventPOPaymentPlan(intervalStart, conn);
 
+        for (EventPO birthDay: eventPOBirthDay ) {
+            birthDay.setColor("#FFFF00");
+        }
+
+        for (EventPO paymentPlan: eventPOPaymentPlan ) {
+            paymentPlan.setColor("#B0C4DE");
+            paymentPlan.setTitle(paymentPlan.getTitle());
+            eventPOBirthDay.add(paymentPlan);
+        }
 
         return eventPOBirthDay;
 

@@ -43,6 +43,7 @@ public class CustomerProductionAction extends BaseAction {
      * @throws Exception
      */
     public String list() throws Exception{
+
         HttpServletRequest request = ServletActionContext.getRequest();
         List<KVObject> conditions = MySQLDao.getQueryDatetimeParameters(request, CustomerProductionVO.class);
         String customerId = getRequest().getParameter("customerId");

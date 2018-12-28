@@ -18,6 +18,7 @@ public class EventPO extends BasePO {
     private String start = "";
     private String end = "";
     private String url = "";
+    private String color = "";
 
     @Override
     public JSONObject toJsonObject() {
@@ -27,7 +28,16 @@ public class EventPO extends BasePO {
         json.element("start", start);
         json.element("end", end);
         json.element("url", url);
+        json.element("color", color);
         return json;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public String getId() {
