@@ -10,6 +10,7 @@ public class CustomerVO {
     private String name = "";
     private String mobile = "";
     private String mobileMasked = "";
+    private int commentCount = Integer.MAX_VALUE;
 
     public String getCustomerId() {
         return customerId;
@@ -49,5 +50,13 @@ public class CustomerVO {
 
     public void setMobileMasked(String mobileMasked) {
         this.mobileMasked = mobileMasked;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }
