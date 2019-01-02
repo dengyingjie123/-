@@ -932,8 +932,11 @@ public class Config {
      * @throws Exception
      */
     public static List<MenuPO> getUserMenus(String userId) throws Exception {
+        /**
+         * 加入 state=0 限制
+         */
         String sql = "select DISTINCT m.* from system_positionpermission pp, system_positionuser pu, system_user u, system_menu m " +
-                " where m.type=1 and u.id=pu.userId and pp.positionId=pu.positionId and pp.permissionId=m.id and u.id='"+userId+"' order by m.orders";
+                " where m.type=1 and m.state=0 and u.id=pu.userId and pp.positionId=pu.positionId and pp.permissionId=m.id and u.id='"+userId+"' order by m.orders";
         List<MenuPO> menus = MySQLDao.query(sql, MenuPO.class, null);
         return menus;
     }

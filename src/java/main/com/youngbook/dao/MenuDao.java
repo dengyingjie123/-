@@ -764,8 +764,15 @@ public class MenuDao {
      * @throws Exception
      */
     public MenuPO loadMenuPO(MenuPO menu, Class<MenuPO> clazz, Connection conn) throws Exception {
-        MenuPO menuPO = MySQLDao.load(menu, clazz, conn);
-        return menuPO;
+
+        List<MenuPO> list = MySQLDao.search(menu, clazz, null, null, conn);
+        //查找state=0的菜单对象
+        for (MenuPO temp:list){
+            if (temp.getState() == 0){
+                return temp;
+            };
+        }
+        return null;
     }
 
 

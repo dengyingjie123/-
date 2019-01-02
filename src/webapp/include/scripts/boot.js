@@ -313,7 +313,7 @@ function contentTabAdd(permissionName, token) {
             orderClass.initReportWeekly();
         });
     }
-    else if (permissionName == "销售管理_报表管理_销售人员客户存量_查看") {
+    else if (permissionName == "报表_销售_产品销售报表") {
         using(SCRIPTS_ROOT + '/sale/report/SpecificSalemanClass.js', function () {
             //alert("hello");
             var specificSalemanClass = new SpecificSalemanClass(token)
