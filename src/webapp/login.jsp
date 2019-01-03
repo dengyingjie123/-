@@ -94,6 +94,20 @@
             padding: 0;
         }
 
+        #panel-login .captcha_btn {
+            text-align: center;
+            cursor: pointer;
+            position: absolute;
+            top: 219px;
+            left: 400px;
+            width: 109px;
+            height: 38px;
+            background: url("include/images/icon_quit.png") -1px;
+            font-size: 15px;
+            border: 0px;
+            padding: 0;
+        }
+
         .login_tip {
 	position: absolute;
 	top: 289px;
@@ -210,8 +224,14 @@
             <div class="login_user"><span>用户名：</span><input type="text" name="user.name" id="operatorId" value="4"/></div>
             <div class="login_password"><span>密&nbsp;码：</span><input type="password" name="user.password" id="password" value="admin"/></div>
 
+            <div class="login_user"><span>电话号码：</span><input type="text" name="user.name" id="phoneNumber" value="4"/></div>
+            <div class="login_password"><span>验证码：</span><input type="password" name="user.password" id="captcha" value="admin"/></div>
+
+
+
             <input type="button" class="login_btn" name="button" id="btnLogin" value="登录" onclick="Login_DoLogin()"/>
             <input type="reset" class="cancel_btn" name="button2" id="btnReset" value="重置"/>
+            <input type="reset" class="captcha_btn" name="button3" id="getCaptcha" value="获得验证码" onclick="Get_Captcha()"/>
 
             <div class="login_tip">
                 <a class="a_doc" style="font-size: 12px" href="http://www.miitbeian.gov.cn" target="_blank">粤ICP备16072634号</a>
