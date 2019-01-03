@@ -78,6 +78,7 @@ function initSystem() {
         alert(message);
     });
 
+
     /**
      * 菜单被选中后
      * @param item
@@ -151,7 +152,7 @@ function loadWorkSpace(url, moduleName, permissionName, icon, token) {
 
     //alert("Menu:["+moduleName+"] obj:["+permissionName+"] url:["+url+"] token:["+token+"]");
     //alert("["+moduleName+"]");
-    //alert("icon:["+icon+"]");
+    //alert("icon:["+icon+"]");0
     var contentTabsId = "contentTabs";
     var index = hmMenu.get(token);
     //alert("Menu Index 1:"+index + " size:"+hmMenu.size);
