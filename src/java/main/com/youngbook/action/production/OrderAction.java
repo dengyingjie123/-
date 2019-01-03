@@ -836,7 +836,7 @@ public class OrderAction extends BaseAction {
 
         getResult().setReturnValue(pager.toJsonObject());
 
-            return SUCCESS;
+        return SUCCESS;
     }
 
     public String exportReportMonthly() throws Exception {

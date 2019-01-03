@@ -131,11 +131,11 @@ var OrderClass = function (token) {
             },
             loadMsg: '数据正在加载，请稍后……',
             rownumbers: true,
-            singleSelect: false,
+            singleSelect: true,
             pagination: true,
             pageList: [10,20,50,100],
             pageSize: 10,
-            fitColumns: true,
+            fitColumns:true,
             loadFilter: function (data) {
                 try {
                     data = fw.dealReturnObject(data);
@@ -146,50 +146,26 @@ var OrderClass = function (token) {
             },
             frozenColumns:[
                 [  // 固定列，没有滚动条
-                    {field: 'ck', checkbox: true},
+                    {field:'ck',checkbox:true},
                     {field: 'sid', title: '序号', hidden: true},
                     {field: 'id', title: '编号', hidden: true},
-                    {field: 'money_open_add', title: '产品名称', align: "center"},
-                    {field: 'money_open_add', title: '募集总额', align: "center"},
-                    {field: 'money_open_add', title: '存续规模', align: "center"},
-                    {field: 'money_open_add', title: '本年募集总额', align: "center", width: 100},
-                    {field: 'money_open_add', title: '年度新增', align: "center"},
+                    {field: 'productionName', title: '产品名称', align: "center", width: 85},
+                    {field: 'money_open_add', title: '募集总额', align: "center", width: 85},
+                    {field: 'money_open_add', title: '存续规模', align: "center", width: 85},
+                    {field: 'money_open_add', title: '本年募集总额', align: "center", width: 85},
+                    {field: 'money_open_add', title: '年度新增', align: "center", width: 85}
                 ]
             ],
-            // columns: [
-            //     [
-            //         {field: 'money_open', title: '存量金额',
-            //             formatter: function(value,row,index){
-            //                 return fw.formatMoney(row['money_open']);
-            //             }
-            //         },
-            //         {field: 'money_open_discountRate', title: '存量金额折标',
-            //             formatter: function(value,row,index){
-            //                 return fw.formatMoney(row['money_open_discountRate']);
-            //             }
-            //         },
-            //         {field: 'money_open_add', title: '新增金额',
-            //             formatter: function(value,row,index){
-            //                 return fw.formatMoney(row['money_open_add']);
-            //             }
-            //         },
-            //         {field: 'money_open_discountRate_add', title: '新增金额折标',
-            //             formatter: function(value,row,index){
-            //                 return fw.formatMoney(row['money_open_discountRate_add']);
-            //             }
-            //         },
-            //         {field: 'customer_count', title: '客户数'},
-            //         {field: 'customer_count_add', title: '客户新增数'}
-            //     ]
-            // ],
             columns: [
-                [{"title":"本金对付","colspan":2},
-                    {"title":"利息兑付","colspan":2}],
-                [{"field":"uname0","title":"本年已兑付","rowspan":1},
-                    {"field":"config_gender1","title":"已兑付总额","rowspan":1},
-                    {"field":"config_gender2","title":"本年已兑付","rowspan":1},
-                    {"field":"config_datatype0","title":"已兑付总额","rowspan":1}]],
-            rownumbers: true,
+                [{title: "本金对付", colspan: 2, align: "center"},
+                    {title: "利息兑付", colspan: 2, align: "center"}
+                    ],
+                [{field: "paidYearPrincipal", title: "本年已兑付", align: "center", rowspan:1},
+                    {field: "paidTotalPrincipal", title: "已兑付总额", align: "center", rowspan: 1},
+                    {field: "paidYearInterests", title: "本年已兑付", align: "center", rowspan: 1},
+                    {field: "paidTotalInterests", title: "已兑付总额", align: "center", rowspan: 1}
+                    ]
+            ],
             toolbar:[{
                 iconCls: 'icon-print', id: 'btnExport'+token, text: '导出'
             }],
