@@ -31,6 +31,22 @@ public class PositionUserDaoImpl implements IPositionUserDao {
 
     }
 
+
+    /**
+     * 增肌注释
+     *
+     * getPagerPositionUserVO
+     *
+     * 模糊查询按文档方式
+     *
+     * 命名
+     * @param positionUserVO
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     @Override
     public Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception {
 

@@ -46,6 +46,10 @@ public class PositionUserService extends BaseService {
      */
     public Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception{
 
-       return positionUserDao.showList(positionUserVO,currentPage,showRowCount,conn);
+
+        /**
+         * positionUserVO判断是否为空
+         */
+        return positionUserDao.showList(positionUserVO, currentPage, showRowCount, conn);
     }
 }
