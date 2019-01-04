@@ -1777,8 +1777,7 @@ public class OrderService extends BaseService {
 
 
             /**
-             * 运算规则：
-             * 购买金额*预期收益率*(兑付日期-起息日)/360
+             * 计算收益率
              */
             double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestDate, tempInterestDate, interestCycle, interestUnit);
 
