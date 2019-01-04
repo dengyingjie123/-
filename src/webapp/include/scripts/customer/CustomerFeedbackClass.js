@@ -231,7 +231,7 @@ var CustomerFeedbackClass = function(token){
             },{
                 id:'btnDelete'+token,
                 text:'删除',
-                iconCls:'icon-cut'
+                iconCls:'icon-clear'
             }],
             onLoadSuccess:function() {
                 // 初始化事件

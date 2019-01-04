@@ -13,7 +13,7 @@
     String token = request.getParameter("token");
     ButtonPO btnNewApplication = new ButtonPO("btnNewApplication" + token, "新建申请", "icon-add","销售合同申请_销售合同申请_新增");
     ButtonPO btnUpdateApplication = new ButtonPO("btnUpdateApplication" + token, "修改申请", "icon-edit","销售合同申请_销售合同申请_修改");
-    ButtonPO btnDeleteApplication= new ButtonPO("btnDeleteApplication" + token, "删除", "icon-cut","销售合同申请_销售合同申请_删除");
+    ButtonPO btnDeleteApplication= new ButtonPO("btnDeleteApplication" + token, "删除", "icon-clear","销售合同申请_销售合同申请_删除");
     ButtonPO btnCheckApplication= new ButtonPO("btnCheckApplication" + token, "申请审批", "icon-edit","销售合同申请_销售合同申请_审批");
     // 创建Toolbar，并受权限控制
     ToolbarPO toolbar = ToolbarPO.getInstance(request);

@@ -82,7 +82,7 @@ var ProductionTransferClass = function(token){
             },{
                 id:'btnProductionTransferDelete'+token,
                 text:'删除',
-                iconCls:'icon-cut'
+                iconCls:'icon-clear'
             }],
             onLoadSuccess:function() {
                 // 初始化事件

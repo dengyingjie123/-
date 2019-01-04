@@ -168,13 +168,13 @@ var FinanceExpenseClass = function (token) {
                 {
                     id: 'btnFinanceExpensePrint' + token,
                     text: '打印',
-                    iconCls: 'icon-search'
+                    iconCls: 'icon-print'
                 },
 
                 {
                     id: 'btnFinanceExpenseDelete' + token,
                     text: '作废',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

@@ -77,7 +77,7 @@ var CustomerWithdrawClass = function (token, obj)  {
             },{
                 id:'btnCustomerWithdrawDelete'+token,
                 text:'删除',
-                iconCls:'icon-cut'
+                iconCls:'icon-clear'
             }],
             onLoadSuccess:function() {
                 // 初始化添加事件

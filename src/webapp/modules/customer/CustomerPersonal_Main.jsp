@@ -19,7 +19,7 @@
     ButtonPO btnDistribution = new ButtonPO("btnCustomerDistribution" + token, "客户分配管理", "icon-search", "客户管理_个人客户管理_客户分配管理");
     // ButtonPO btnSms = new ButtonPO("btnSmsSending"+token , "短信发送" , "icon-edit");
     // 创建不需要权限控制的按钮
-    ButtonPO btnDelete = new ButtonPO("btnCustomerPersonalDelete" + token, "删除", "icon-cut", "客户管理_个人客户管理_删除");
+    ButtonPO btnDelete = new ButtonPO("btnCustomerPersonalDelete" + token, "删除", "icon-clear", "客户管理_个人客户管理_删除");
     ButtonPO btnPassword = new ButtonPO("btnPassword" + token, "密码管理", "icon-search");
     ButtonPO btnAllinpayCircleQueryCashShare = new ButtonPO("btnAllinpayCircleQueryCashShare" + token, "通联资产查询", "icon-search");
 //    ButtonPO btnExport = new ButtonPO("btnCustomerPersonalExport" + token, "导出excel", "icon-search");

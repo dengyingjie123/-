@@ -87,7 +87,7 @@ var CustomerAuthenticationStatusClass = function (token, obj) {
                 {
                     id: 'btnCustomerAuthenticationStatusDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

@@ -14,7 +14,7 @@
     // 创建权限控制的按钮
     ButtonPO btnAdd = new ButtonPO("btnProjectAdd" + token, "添加", "icon-add");
     ButtonPO btnEdit = new ButtonPO("btnProjectEdit" + token, "修改", "icon-edit");
-    ButtonPO btnDelete= new ButtonPO("btnProjectDelete" + token, "删除", "icon-cut");
+    ButtonPO btnDelete= new ButtonPO("btnProjectDelete" + token, "删除", "icon-clear");
 
     // 创建Toolbar，并受权限控制
     ToolbarPO toolbar = ToolbarPO.getInstance(request);

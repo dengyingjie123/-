@@ -85,7 +85,7 @@ var InvestmentPlanClass = function (token) {
                 {
                     id: 'btnInvestmentPlanDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

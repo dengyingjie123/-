@@ -103,7 +103,7 @@ var CustomerPointClass = function(token){
             },{
                 id:'btnCustomerPointDelete'+token,
                 text:'删除',
-                iconCls:'icon-cut'
+                iconCls:'icon-clear'
             }],
             onLoadSuccess:function() {
                 // 初始化事件

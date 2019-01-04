@@ -77,7 +77,7 @@ var CustomerDepositClass = function(token,obj){
                 {
                 id:'btnCustomerDepositDelete'+token,
                 text:'删除',
-                iconCls:'icon-cut'
+                iconCls:'icon-clear'
             }],
             onLoadSuccess:function() {
                 // 初始化添加事件

@@ -16,7 +16,7 @@
     ButtonPO btnAdd = new ButtonPO("btnProductionAdd" + token, "添加", "icon-add", "产品管理-产品分期管理-新增");
     ButtonPO btnEdit = new ButtonPO("btnProductionEdit" + token, "修改", "icon-edit", "产品管理-产品分期管理-修改");
     ButtonPO btnProductionView = new ButtonPO("btnProductionView" + token, "查看", "icon-edit", "产品管理-产品分期管理-查看");
-    ButtonPO btnDelete= new ButtonPO("btnProductionDelete" + token, "删除", "icon-cut", "产品管理-产品分期管理-删除");
+    ButtonPO btnDelete= new ButtonPO("btnProductionDelete" + token, "删除", "icon-clear", "产品管理-产品分期管理-删除");
     ButtonPO btnListCustomer = new ButtonPO("btnProductionCustomerList" + token , "客户信息","icon-edit");
     ButtonPO btnCheck = new ButtonPO("btnProductionCheck" + token , "审批","icon-edit", "产品管理-产品分期管理-产品审核");
 

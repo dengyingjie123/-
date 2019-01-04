@@ -183,7 +183,7 @@ var BusinessTripApplicationClass = function (token) {
                 {
                     id: 'btnBusinessTripApplicationPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnBusinessTripApplicationEditCheck' + token,
@@ -193,7 +193,7 @@ var BusinessTripApplicationClass = function (token) {
                 {
                     id: 'btnBusinessTripApplicationDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

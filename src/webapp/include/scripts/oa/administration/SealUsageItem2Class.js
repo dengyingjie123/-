@@ -137,7 +137,7 @@ var SealUsageItem2Class = function (token, btnstatus, applicationId) {
                 {
                     id: 'btnSealUsageItem2Delete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 },
                 {
                     id: 'btnSealUsageItem2ReceiveIsConfirm' + token,

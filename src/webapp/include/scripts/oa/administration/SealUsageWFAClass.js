@@ -138,12 +138,12 @@ var SealUsageWFAClass = function (token, bizId) {
                 {
                     id: 'btnSealUsageWfaPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnSealUsageWfaDelete' + token,
                     text: '作废',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

@@ -115,12 +115,12 @@ var AssetInfoClass = function (token) {
                 }, {
                     id: 'btnAssetInfoPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnAssetInfoDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

@@ -185,12 +185,12 @@ var InformationSubmitted2Class = function (token) {
                 {
                     id: 'btnInformationSubmitted2Print' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnInformationSubmitted2Delete' + token,
                     text: '作废',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

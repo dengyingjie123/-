@@ -140,7 +140,7 @@ var InformationSubmittedItem2Class = function (token, btnstatus, applicationId) 
                 {
                     id: 'btnInformationSubmittedItem2Delete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 },
                 {
                     id: 'btnInformationSubmittedItem2ReceiveIsConfirm' + token,

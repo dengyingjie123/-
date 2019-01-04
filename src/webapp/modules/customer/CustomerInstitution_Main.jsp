@@ -8,7 +8,7 @@
     // 创建权限控制的按钮
     ButtonPO btnAdd = new ButtonPO("btnCustomerInstitutionAdd" + token, "添加", "icon-add");
     ButtonPO btnEdit = new ButtonPO("btnCustomerInstitutionEdit" + token, "修改", "icon-edit");
-    ButtonPO btnDelete= new ButtonPO("btnCustomerInstitutionDelete" + token, "删除", "icon-cut");
+    ButtonPO btnDelete= new ButtonPO("btnCustomerInstitutionDelete" + token, "删除", "icon-clear");
     ButtonPO btnDistribution = new ButtonPO("btnInstitutionDistribution" + token, "客户分配", "icon-search");
     ButtonPO btnPassword = new ButtonPO("btnPassword" + token, "密码管理", "icon-search");
     ButtonPO btnDial = new ButtonPO("btnCustomerInstitutionDial" + token, "呼叫", "icon-search");// HOPEWEALTH-1276 拨打电话

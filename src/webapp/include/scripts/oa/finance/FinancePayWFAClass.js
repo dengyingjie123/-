@@ -196,12 +196,12 @@ var FinancePayWFAClass = function (token) {
                 {
                     id: 'btnFinancePayWFADelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 },
                 {
                     id: 'btnFinancePayWFAPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 }
             ],
             onLoadSuccess: function () {

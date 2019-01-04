@@ -145,7 +145,7 @@ var KVClass  = function(token){
         },'-',{
             id:'btnDeleteKV'+token,
             text:'删除',
-            iconCls:'icon-cut',
+            iconCls:'icon-clear',
             handler:function(){
                 var selected = $('#'+strTableId).datagrid('getSelected');
                 if(selected != null){
@@ -168,7 +168,7 @@ var KVClass  = function(token){
         },{
             id:'btnReload'+token,
             text:'刷新系统配置',
-            iconCls:'icon-edit',
+            iconCls:'icon-cut',
             handler:function(){
                 var url = WEB_ROOT + "/system/KV_reloadSystemConfig";
                 fw.post(url, null, function(data){

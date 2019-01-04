@@ -163,12 +163,12 @@ var FinanceBizTripExpenseWFA4DetailNewClass = function (token)
                 {
                     id: 'btnFinanceBizTripExpenseWFADelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 },
                 {
                     id: 'financeBizTripExpenseWFAPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 }
             ],
             onLoadSuccess: function () {

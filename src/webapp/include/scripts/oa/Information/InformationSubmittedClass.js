@@ -173,12 +173,12 @@ var InformationSubmittedClass = function (token) {
                 }, {
                     id: 'btnInformationSubmittedPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnInformationSubmittedDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

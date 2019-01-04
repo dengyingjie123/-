@@ -152,12 +152,12 @@ var AssetApplicationClass = function (token) {
                 },{
                     id: 'btnAssetApplicationPrint' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnAssetApplicationDelete' + token,
                     text: '删除',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {

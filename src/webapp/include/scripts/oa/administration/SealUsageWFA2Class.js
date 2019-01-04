@@ -194,12 +194,12 @@ var SealUsageWFA2Class = function (token) {
                 {
                     id: 'btnSealUsageWFA2Print' + token,
                     text: '打印',
-                    iconCls: 'icon-edit'
+                    iconCls: 'icon-print'
                 },
                 {
                     id: 'btnSealUsageWFA2Delete' + token,
                     text: '作废',
-                    iconCls: 'icon-cut'
+                    iconCls: 'icon-clear'
                 }
             ],
             onLoadSuccess: function () {
