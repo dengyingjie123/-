@@ -20,6 +20,7 @@ import com.youngbook.service.system.TokenService;
 import com.youngbook.service.system.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.axis.constants.Use;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -123,15 +124,13 @@ public class UserAction extends BaseAction {
 
 
     /**
-     * 新增或修改
-     *
-     * @return
+     * @description 修改或新增用户
+     * @author 徐明煜
+     * @date 2019/1/4 15:03
+     * @param
+     * @return java.lang.String
      * @throws Exception
      */
-    /*
-    * 2015-6-16 周海鸿
-    * 修改insertOurUpdate 方法 让id不重复
-    * */
     @Permission(require = "系统管理-用户管理-新增")
     public String insertOrUpdate() throws Exception {
 
@@ -139,20 +138,12 @@ public class UserAction extends BaseAction {
 
         result = new ReturnObject();
         try {
-            int count = 0;
-            Connection conn = this.getConnection();
-            count = userService.newOrUpdateUser(user, conn);
 
+            userService.newOrUpdateUser(user, getLoginUser().getId(), getConnection());
+            result.setMessage("操作成功");
+            result.setCode(ReturnObject.CODE_SUCCESS);
+            result.setReturnValue(user.toJsonObject());
 
-            if (count == 1) {
-                result.setMessage("操作成功");
-                result.setCode(ReturnObject.CODE_SUCCESS);
-                result.setReturnValue(user.toJsonObject());
-            }
-            else {
-                result.setMessage("操作失败");
-                result.setCode(ReturnObject.CODE_EXCEPTION);
-            }
         }
         catch (Exception e) {
             result.setCode(ReturnObject.CODE_EXCEPTION);

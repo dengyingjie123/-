@@ -30,6 +30,51 @@ public class NumberUtils {
 
 
     /**
+     * @description 返回输入长度的随机数字
+     * @author 徐明煜
+     * @date 2019/1/4 14:09
+     * @param length
+     * @return java.lang.String
+     * @throws
+     */
+    public static String randomNumByLength(int length){
+
+        //生成相应位数的随机数字
+        int number = (int)(Math.random()*Math.pow(10, length));
+        //转换格式
+        String resultNumber = String.valueOf(number);
+
+
+
+
+        /**
+         * 检查随机数的位数
+         */
+        int count=0; //计数
+        while(number>=1) {
+            number/=10;
+            count++;
+        }
+
+
+
+
+        /**
+         * 位数为需要的则直接返回,位数不够在前面加零
+         */
+        if (count == length){
+            return resultNumber;
+        }else{
+            count = count - length;
+            for(int i = count; i > 0; i--){
+                resultNumber = "0" + resultNumber;
+            }
+            return resultNumber;
+        }
+     }
+
+
+    /**
      * 判断所给数字是否在数组内
      * @param number
      * @param numbers

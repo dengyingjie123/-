@@ -5,6 +5,7 @@ import com.youngbook.common.config.Config;
 import com.youngbook.common.config.SessionConfig;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.NumberUtils;
+import com.youngbook.common.utils.PasswordUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
@@ -271,70 +272,72 @@ public class UserService extends BaseService {
 
 
     /**
-     * 新增或修改
-     *
-     * 增加名字
-     * 在NumberUtils增加新方法，获取随机数
-     *
-     * 返回user
-     *
+     * @description 方法实现说明
+     * @author 徐明煜
+     * @date 2019/1/4 14:03
      * @param user
      * @param conn
-     * @return
+     * @return int
      * @throws Exception
      */
-    public int newOrUpdateUser(UserPO user, Connection conn) throws Exception {
-        int count = 0;
-
-
-
-
-
+    public UserPO newOrUpdateUser(UserPO user, String operatorId, Connection conn) throws Exception {
 
         /**
          * 检查是否输入了密码，未输入则设置8位随机数字为密码
          */
         String newPassword = user.getPassword();
         if (StringUtils.isEmpty(newPassword)) {
-            int eight = (int)(Math.random()*100000000);
-            newPassword = String.valueOf(eight);
+            newPassword = NumberUtils.randomNumByLength(8);
         }
+        /**
+         * 转为md5值，保存到对象中
+         */
+        newPassword = PasswordUtils.getUserPassswordInMd5(newPassword);
+        user.setPassword(newPassword);
 
 
 
-        //转为md5值，保存到数据库
-        newPassword = StringUtils.md5(newPassword);
 
-
-        //新建用户
+        /**
+         * 新增用户，保存到数据库
+         */
         if (user.getId().equals("")) {
-            //创建短信对象
+            /**
+             * 创建短信对象并发送
+             */
             SmsPO smsPO = new SmsPO();
             smsPO.setContent("密码为" + newPassword);
             smsPO.setReceiverMobile(user.getMobile());
             smsPO.setReceiverName(user.getName());
             List<SmsPO> list = new ArrayList<SmsPO>();
             list.add(smsPO);
-
-            //发送短信
             smsService.send(list, user, conn);
 
+
+
+
+            /**
+             * 设置新用户推荐码
+             */
             String staffCode = this.newStaffCode(conn);
             user.setStaffCode(staffCode);
-            user.setReferralCode(Config.getReferralCode(staffCode));    // 推荐码也是员工号
+            user.setReferralCode(Config.getReferralCode(staffCode));
         }
         else {
             user.setReferralCode(null);
         }
+        //保存到数据库
+        MySQLDao.insertOrUpdate(user, operatorId, conn);
 
-        user.setPassword(newPassword);
-        count = MySQLDao.insertOrUpdate(user, conn);
+
+
 
         // 若是销售岗位，则在销售成员表中增加销售记录
         if (user.getPositionTypeId().equals(UserPositionType.SaleMan)) {
             salesmanDao.insertSalesman(user, conn);
         }
-        return count;
+
+        return user;
     }
 
 
