@@ -1717,12 +1717,23 @@ public class OrderService extends BaseService {
         return totalProfit;
     }
 
-
+    /**
+     * 生成兑付计划
+     * @param order
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public List<PaymentPlanPO> calculatePaymentPlan(OrderPO order, Connection conn) throws Exception {
 
-        List<PaymentPlanPO> plans = new ArrayList<PaymentPlanPO>();
+        List<PaymentPlanPO> plans = new ArrayList();
+
+
+
 
         ProductionPO productionPO = productionDao.loadProductionById(order.getProductionId(), conn);
+
+
 
 
         // 获得起息日
@@ -1732,24 +1743,43 @@ public class OrderService extends BaseService {
         }
 
 
+
+
         double money = order.getMoney();
+
+
+
 
         // 周期
         int interestCycle = productionPO.getInterestCycle();
-
         // 期数
         int interestUnit = productionPO.getInterestUnit();
-
+        // 付息期数
         int interestTimes = productionPO.getInterestTimes();
-
         // 收益率
         double profitRate = getExpectedYield(order.getProductionCompositionId(), conn);
+
+
 
         for (int i = 1; i <= interestTimes; i++) {
             PaymentPlanPO paymentPlanPO = getPaymentPlanPOInstance(order);
 
-            // 应兑付利息
-            double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestCycle, interestUnit);
+
+
+
+            // 兑付日期
+            String interestUnitName = interestUnit == 0 ? TimeUtils.DATE : (interestUnit == 1  ? TimeUtils.MONTH :( interestUnit == 3 ? TimeUtils.MONTH :  TimeUtils.YEAR));
+            String tempInterestDate = TimeUtils.getTime(interestDate, interestCycle, interestUnitName);
+            tempInterestDate = TimeUtils.format(tempInterestDate, TimeUtils.Format_YYYY_MM_DD_HH_M_S, TimeUtils.Format_YYYY_MM_DD);
+            paymentPlanPO.setPaymentTime(tempInterestDate);
+
+
+
+
+            /**
+             * 计算收益率
+             */
+            double tempInterest = MoneyUtils.calculateProfit(money, profitRate, interestDate, tempInterestDate, interestCycle, interestUnit);
 
 
 
@@ -1765,8 +1795,11 @@ public class OrderService extends BaseService {
             if (i == interestTimes) {
                 tempMoney = money;
             }
-            paymentPlanPO.setTotalPaymentPrincipalMoney(tempMoney);
 
+
+
+
+            paymentPlanPO.setTotalPaymentPrincipalMoney(tempMoney);
 
 
 
@@ -1781,52 +1814,32 @@ public class OrderService extends BaseService {
 
 
 
-            // 兑付日期
-            String interestUnitName = interestUnit == 0 ? TimeUtils.DATE : (interestUnit == 1 ? TimeUtils.MONTH : TimeUtils.YEAR);
-            String tempInterestDate = TimeUtils.getTime(interestDate, interestCycle, interestUnitName);
-            tempInterestDate = TimeUtils.format(tempInterestDate, TimeUtils.Format_YYYY_MM_DD_HH_M_S, TimeUtils.Format_YYYY_MM_DD);
-
-            paymentPlanPO.setPaymentTime(tempInterestDate);
-
-
-
-
-
             // 兑付总期数
             paymentPlanPO.setTotalInstallment(interestTimes);
-
-
-
-
             // 当前兑付期数
             paymentPlanPO.setCurrentInstallment(i);
-
-
-
-
             // 已兑付本金金额
             paymentPlanPO.setPaiedPrincipalMoney(0);
-
-
-
-
             // 已兑付收益金额
             paymentPlanPO.setPaiedProfitMoney(0);
-
-
-
-
             //兑付状态 从KV表中获取，生成兑付计划的时候统一设为未兑付
             paymentPlanPO.setStatus(PaymentPlanStatus.Unpaid);
+
+
 
 
             plans.add(paymentPlanPO);
 
 
+
+
             // 计算下一个起息日
             interestDate = tempInterestDate;
-        }
 
+
+
+            
+        }
         return plans;
     }
 
@@ -1851,6 +1864,7 @@ public class OrderService extends BaseService {
 
     }
 
+
     /**
      * 初始化兑付计划的PO，不同的兑付类型返回的兑付计划PO中，有几个变量均相同，故单独拿出来初始化
      */
@@ -1864,7 +1878,6 @@ public class OrderService extends BaseService {
     }
 
 
-
     /**
      * 获得起息日
      * @param orderId
@@ -1873,23 +1886,31 @@ public class OrderService extends BaseService {
      * @throws Exception
      */
     public String getValueDate(String orderId, Connection conn) throws Exception {
-        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
 
+        OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
         if (StringUtils.isEmpty(orderPO.getPayTime())) {
             MyException.newInstance("订单尚未支付，无法获得起息日").throwException();
         }
 
-        ProductionPO productionPO = productionDao.loadProductionById(orderPO.getProductionId(), conn);
 
+
+
+        ProductionPO productionPO = productionDao.loadProductionById(orderPO.getProductionId(), conn);
         if (!StringUtils.isEmpty(productionPO.getValueDate())) {
             return productionPO.getValueDate();
         }
 
 
+
+
         String valueDate = TimeUtils.getTime(orderPO.getPayTime(), 1, "DATE");
+
+
+
 
         return valueDate;
     }
+
 
     /**
      * 为订单生成对付计划
@@ -1908,17 +1929,23 @@ public class OrderService extends BaseService {
         }
 
 
+
+
         if (order.getStatus() != OrderStatus.Saled && order.getStatus() != OrderStatus.Feedback1 && !order.getFinanceMoneyConfirm().equals("1")) {
             MyException.newInstance("该笔订单尚未付款，无法生成兑付计划").throwException();
         }
 
 
+
+
         //付息类型、付息期数
         ProductionPO production = productionDao.loadProductionById(order.getProductionId(), conn);
-
         if (production == null) {
             MyException.newInstance("查询产品失败").throwException();
         }
+
+
+
 
         /**
          * 如果已有已执行的兑付计划，则不能重新生成
@@ -1932,6 +1959,8 @@ public class OrderService extends BaseService {
                 MyException.newInstance("存在已执行的兑付计划，无法重新生成，请检查").throwException();
             }
         }
+
+
 
 
         /**
@@ -1956,11 +1985,12 @@ public class OrderService extends BaseService {
 
 
 
+
         //生成兑付数据
         List<PaymentPlanPO> paymentPlanList = calculatePaymentPlan(order, conn);
         //根据产品兑付的期数添加相应的兑付PO
         for (int i = 0; paymentPlanList != null && i < paymentPlanList.size(); i++) {
-            // 通过订单添加的对付计划永远是新增，因此 ID 设为空
+            // 通过订单添加的兑付计划永远是新增，因此 ID 设为空
             int count = MySQLDao.insertOrUpdate(paymentPlanList.get(i), operatorId, conn);
 
             if (count != 1) {
@@ -1987,7 +2017,6 @@ public class OrderService extends BaseService {
         String orderNum = "DH" + year + no;
         return orderNum;
     }
-
 
 
     /**
@@ -2032,6 +2061,7 @@ public class OrderService extends BaseService {
         }
         return count;
     }
+
 
     /**
      * 获取客户的订单数据
@@ -2167,6 +2197,7 @@ public class OrderService extends BaseService {
         return orderVOs;
     }
 
+
     /**
      * 订单管理主界面数据显示
      *
@@ -2277,6 +2308,7 @@ public class OrderService extends BaseService {
         return pager;
     }
 
+
     /**
      * 获取查询语句
      *
@@ -2312,6 +2344,7 @@ public class OrderService extends BaseService {
         return buf.toString();
     }
 
+
     private String getSqlById(String productionId) {
         StringBuffer sqlDB = new StringBuffer();
         sqlDB.append(" SELECT ");
@@ -2345,6 +2378,7 @@ public class OrderService extends BaseService {
         return sqlDB.toString();
     }
 
+
     /**
      * 订单编辑页面下拉列表(combotree)控件数据的构造
      *
@@ -2363,6 +2397,7 @@ public class OrderService extends BaseService {
         }
         return array;
     }
+
 
     /**
      * 订单编辑页面下拉列表(combotree)控件数据的构造
@@ -2384,8 +2419,6 @@ public class OrderService extends BaseService {
     }
 
 
-
-
     /**
      * 网站：通过订单订单编号获取订单
      *
@@ -2401,9 +2434,7 @@ public class OrderService extends BaseService {
         return po;
     }
 
-
-
-
+    
     /**
      * 根据订单获取所属的产品
      *

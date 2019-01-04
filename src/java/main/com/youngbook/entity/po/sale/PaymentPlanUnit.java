@@ -14,12 +14,16 @@ public class PaymentPlanUnit {
     public static final int UnitYear = 2;
     public static final String UnitYearText = "按年";
 
+    public static final int UnitMonth_Mode_A = 3;
+    public static final String UnitMonth_Mode_A_Text = "按月(A类)";
+
     public static JSONArray getStrutsJSONArray() {
         JSONArray array = new JSONArray();
         JSONObject object = new JSONObject();
         array.add(getJSONObject(object, PaymentPlanUnit.UnitDay, PaymentPlanUnit.UnitDayText));
         array.add(getJSONObject(object, PaymentPlanUnit.UnitMonth, PaymentPlanUnit.UnitMonthText));
         array.add(getJSONObject(object, PaymentPlanUnit.UnitYear, PaymentPlanUnit.UnitYearText));
+        array.add(getJSONObject(object, PaymentPlanUnit.UnitMonth_Mode_A, PaymentPlanUnit.UnitMonth_Mode_A_Text));
         return array;
     }
 

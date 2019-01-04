@@ -13,8 +13,10 @@ import com.youngbook.entity.po.production.ProjectPO;
 import com.youngbook.entity.po.sale.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,12 +31,35 @@ public class MoneyUtils {
         System.out.println(MoneyUtils.format2Fen(1.23));
     }
 
-    public static double calculateProfit(double money, double profitRate, int duration, int type) {
+
+    /**
+     * @description
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/27 13:47
+     * @param money 购买金融
+     * @param profitRate 兑付金额
+     * @param interestDate 起息日
+     * @param tempInterestDate 兑付日期
+     * @param duration 计息时长，若付息单位是按月（A类），由起息日和兑付日期的实际情况计算
+     * @param type 付息单位类型
+     * @return double
+     * @throws Exception
+     */
+    public static double calculateProfit(double money, double profitRate, String interestDate, String tempInterestDate, int duration, int type) throws Exception{
 
         int DAYS_OF_YEAR = 365;
+        int DAYS_OF_YEAR_360 = 360;
         int MONTH_OF_YEAR = 12;
 
+
+
+
         double profit = 0.00;
+
+
+
 
         // 按天计息
         if (type == 0) {
@@ -48,8 +73,34 @@ public class MoneyUtils {
         else if (type == 2) {
             profit = money * profitRate * duration;
         }
+        /**
+         * 按月(A类)计算
+         */
+        else if (type == 3) {
+            String format = "yyyy-MM-dd";
+            /**
+             * 计算兑付日期与起息日的时间差，单位为天
+             */
+            int dayDifference = TimeUtils.getDayDifference(interestDate, tempInterestDate, format);
 
+
+
+
+            /**
+             * 运算规则：
+             * 购买金额*预期收益率*(兑付日期-起息日)/360
+             */
+            profit = money * profitRate * dayDifference / DAYS_OF_YEAR_360;
+        }
+
+
+        /**
+         * 对金额四舍五入，reservedBits为保留位数
+         */
         profit = MoneyUtils.handleDouble(profit, 2);
+
+
+
 
         return profit;
     }
