@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="app" flow-init>
+<head>
+  <title>basic</title>
+  <meta charset="utf-8">
+
+  <script src="../../dehecircle/include/js/angular.js"></script>
+
+  <script src="../../dehecircle/include/js/ng-flow-standalone.js"></script>
+
+  <script src="../../dehecircle/include/js/app.js"></script>
+
+  <!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+        rel="stylesheet"/>-->
+  <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">-->
+</head>
+<body flow-prevent-drop flow-drag-enter="style={border: '5px solid green'}" flow-drag-leave="style={}" ng-style="style">
+
+<div class="container">
+  <h1>上传测试</h1>
+  <hr class="soften"/>
+
+  <div class="row">
+    <div class="span6">
+      <span class="btn" flow-btn><i class="icon icon-file"></i>选择文件</span>
+      <span class="btn" flow-btn flow-directory ng-show="$flow.supportDirectory"><i class="icon icon-folder-open"></i>
+      选择文件夹
+      </span>
+    </div>
+  </div>
+
+  <hr class="soften">
+
+  <p>
+    <a class="btn btn-small btn-success" ng-click="$flow.resume()">全部上传</a>
+    <a class="btn btn-small btn-danger" ng-click="$flow.pause()">全部暂停</a>
+    <a class="btn btn-small btn-info" ng-click="$flow.cancel()">全部取消</a>
+    <span class="label label-info">总大小: {{$flow.getSize()/1024 | number:0}} KB</span>
+    <!-- <span class="label label-info">Is Uploading: {{$flow.isUploadi ng()}}</span> -->
+  </p>
+
+  <div>
+      <div ng-repeat="file in $flow.files" class="transfer-box">
+        {{file.relativePath}} ({{file.size/1024 | number:0}} KB)
+        <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
+          <div class="progress-bar" role="progressbar"
+               aria-valuenow="{{file.progress() * 100}}"
+               aria-valuemin="0"
+               aria-valuemax="100"
+               ng-style="{width: (file.progress() * 100) + '%'}">
+            <span class="sr-only">{{file.progress()*100}}% 完成</span>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <a class="btn btn-xs btn-warning" ng-click="file.pause()" ng-show="!file.paused && file.isUploading()">
+            暂停
+          </a>
+          <a class="btn btn-xs btn-warning" ng-click="file.resume()" ng-show="file.paused">
+            继续
+          </a>
+          <a class="btn btn-xs btn-danger" ng-click="file.cancel()">
+            取消
+          </a>
+          <a class="btn btn-xs btn-info" ng-click="file.retry()" ng-show="file.error">
+            重试
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="soften"/>
+  <!-- flow-drag-enter进入样式，leave离开样式 -->
+  <div class="alert" flow-drop flow-drag-enter="class='alert-success'" flow-drag-leave="class=''" ng-class="dropClass">
+    文件拖放处
+  </div>
+
+</div>
+</body>
+</html>

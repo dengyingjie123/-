@@ -25,10 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.File;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +43,53 @@ public class FileUploadAction extends BaseAction {
     @Autowired
     FilesService filesService;
 
+    public String uploadNew() throws Exception{
+
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+
+        /**
+         * 获取分块参数
+         */
+        int flowChunkNumber = Integer.valueOf(request.getParameter("flowChunkNumber"));
+        Long flowTotalChunks = Long.valueOf(request.getParameter("flowTotalChunks"));
+        int flowChunkSize = Integer.valueOf(request.getParameter("flowChunkSize"));
+        String flowTotalSize = request.getParameter("flowTotalSize");
+
+
+        String flowFilename = request.getParameter("flowFilename");
+        String flowIdentifier = request.getParameter("flowIdentifier");
+        String flowRelativePath = request.getParameter("flowRelativePath");
+
+        System.out.println(flowChunkNumber+"---"+flowTotalChunks+"---"+flowChunkSize+"---"+flowTotalSize+"---"+
+                flowFilename+"---"+flowIdentifier+"---"+flowRelativePath);
+
+
+        RandomAccessFile raf = new RandomAccessFile(new File("D:\\"+flowFilename), "rw");
+
+        //
+        raf.seek((flowChunkNumber - 1) * flowChunkSize);
+
+
+        /**
+         * 保存文件
+         */
+        InputStream is = request.getInputStream();
+        long readed = 0;
+        long content_length = request.getContentLength();
+        byte[] bytes = new byte[1024 * 100];
+        while(readed < content_length) {
+            int r = is.read(bytes);
+            if (r < 0)  {
+                break;
+            }
+            raf.write(bytes, 0, r);
+            readed += r;
+        }
+        raf.close();
+
+        return SUCCESS;
+    }
 
     public String uploadBase64() throws Exception {
 

@@ -10,7 +10,8 @@ import com.youngbook.entity.po.BasePO;
  * Created by Administrator on 2015/4/3.
  */
 @Table(name = "System_Files", jsonPrefix = "files")
-public class FilesPO extends BasePO {
+public class
+FilesPO extends BasePO {
     // sid
     @Id
     private int sid = Integer.MAX_VALUE;
