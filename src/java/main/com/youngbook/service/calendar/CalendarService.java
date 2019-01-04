@@ -2,6 +2,7 @@ package com.youngbook.service.calendar;
 
 import com.youngbook.common.Database;
 import com.youngbook.common.MyException;
+import com.youngbook.common.config.Config;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.system.ICalendarDao;
 import com.youngbook.entity.po.UserPO;
@@ -144,21 +145,29 @@ public class CalendarService extends BaseService {
      * @return java.util.List<com.youngbook.entity.po.calendar.EventPO>
      * @throws Exception
      */
-    public List<EventPO> getEventPO(String intervalStart, Connection conn) throws Exception {
+    public List<EventPO> getListEventPO(String intervalStart, String userId, Connection conn) throws Exception {
 
         List<EventPO> eventPOBirthDay = calendarDao.getEventPO(intervalStart, conn);
 
-        List<EventPO> eventPOPaymentPlan = calendarDao.getEventPOPaymentPlan(intervalStart, conn);
+        // List<EventPO> eventPOPaymentPlan = calendarDao.getEventPOPaymentPlan(intervalStart, conn);
 
+        /**
+         * 颜色写到 SystemConfig
+         */
         for (EventPO birthDay: eventPOBirthDay ) {
-            birthDay.setColor("#FFFF00");
+
+            String birthdayBgCorlor = "crm.calendar.birthday.bgcolor";
+
+            // A2A200
+
+            birthDay.setColor(Config.getSystemConfig(birthdayBgCorlor));
         }
 
-        for (EventPO paymentPlan: eventPOPaymentPlan ) {
-            paymentPlan.setColor("#B0C4DE");
-            paymentPlan.setTitle(paymentPlan.getTitle());
-            eventPOBirthDay.add(paymentPlan);
-        }
+//        for (EventPO paymentPlan: eventPOPaymentPlan ) {
+//            paymentPlan.setColor("#B0C4DE");
+//            paymentPlan.setTitle(paymentPlan.getTitle());
+//            eventPOBirthDay.add(paymentPlan);
+//        }
 
         return eventPOBirthDay;
 

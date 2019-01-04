@@ -28,7 +28,7 @@ public class CalendarDaoImpl implements ICalendarDao {
      * @throws Exception
      */
     @Override
-    public List<EventPO> getEventPO(String intervalStart, Connection conn) throws Exception {
+    public List<EventPO> getListEventPOOfBrithday(String intervalStart, Connection conn) throws Exception {
 
         List<EventPO> search;
 
@@ -39,6 +39,10 @@ public class CalendarDaoImpl implements ICalendarDao {
 
         /**
          * 获取每个客户的生日
+         *
+         * 使用view_customer查询
+         *
+         * 只显示生日
          */
         if (!baseUtils.hasPermission("个人日历_查看全部")){
             DatabaseSQL databaseSQL = DatabaseSQL.newInstance("4D541001");

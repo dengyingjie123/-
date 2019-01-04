@@ -55,7 +55,7 @@ public class CalendarAction extends BaseAction {
 
         String intervalStart = getRequest().getParameter("intervalStart");
 
-        List<EventPO> events = calendarService.getEventPO(intervalStart, getConnection());
+        List<EventPO> events = calendarService.getListEventPO(intervalStart, getLoginUser().getId(), getConnection());
 
 
         /**
