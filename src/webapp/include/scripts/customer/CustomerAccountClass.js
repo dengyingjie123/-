@@ -94,7 +94,7 @@ var CustomerAccountClass = function(token) {
             },{
                 id:'btnCustomerAccountDelete'+token,
                 text:'删除',
-                iconCls: 'icon-remove'
+                iconCls: 'icon-cut'
             },{
                 id:'btnAllinpayCircleOpenAccount'+token,
                 text:'通联金融圈开户',
