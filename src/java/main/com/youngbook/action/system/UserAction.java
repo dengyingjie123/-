@@ -284,19 +284,26 @@ public class UserAction extends BaseAction {
         String userId = getHttpRequestParameter("userId");
         //查找和该销售人员绑定的客户分配
         List<CustomerDistributionPO> list = customerDistributionService.listCustomerDistributionPOByUserId(userId, getConnection());
+
+
         //如有客户分配，不允该销售离职
-        if(list.size()>0){
+        // 空指针异常
+        if (list != null  || list.size() > 0){
             MyException.newInstance("该员工仍有客户分配，请重新分配后进行离职操作").throwException();
         }
 
 
 
 
+        /**
+         * 多行注释
+         */
         //查找相关销售组分配
-        List<SalemanSalemangroupPO> salemangrouplist  = salemanSalemangroupService.listSalemanSalemangroupsPOBySalemanId(userId, getConnection());
-        if (salemangrouplist.size() > 0){
+        List<SalemanSalemangroupPO> salemanGroupList  = salemanSalemangroupService.listSalemanSalemangroupsPOBySalemanId(userId, getConnection());
+        if (salemanGroupList.size() > 0){
             //逻辑删除销售组
-            for (SalemanSalemangroupPO temp: salemangrouplist){
+            // 用原始的for循环
+            for (SalemanSalemangroupPO temp: salemanGroupList){
                 salemanSalemangroupService.delete(temp, getLoginUser().getId(), getConnection());
             }
         }
@@ -306,7 +313,7 @@ public class UserAction extends BaseAction {
 
         //查找权限分配
         List<PositionUserPO> positionUserPOList = positionUserService.searchByUserId(userId, PositionUserPO.class, getConnection());
-                if(positionUserPOList.size() > 0){
+        if(positionUserPOList.size() > 0){
             //逻辑删除权限
             for (PositionUserPO temp: positionUserPOList){
                 positionUserService.remove(temp, getLoginUser().getId(), getConnection());

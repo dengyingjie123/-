@@ -338,6 +338,15 @@ public class CustomerDistributionService extends BaseService {
     }
 
 
+    /**
+     * 增加注释
+     *
+     * 传入参数的判断
+     * @param userId
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public List<CustomerDistributionPO> listCustomerDistributionPOByUserId(String userId, Connection conn) throws Exception {
         return customerDistributionDao.getListCustomerDistrbutionPOByUserId(userId, conn);
     }
