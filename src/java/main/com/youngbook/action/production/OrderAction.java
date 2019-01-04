@@ -1195,6 +1195,26 @@ public class OrderAction extends BaseAction {
     }
 
 
+    /**
+     * @description 删除订单
+     *
+     * @author 苟熙霖
+     *
+     * @date 2019/1/4 16:05
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String deleteOrder() throws Exception {
+
+        String orderId = HttpUtils.getParameter(getRequest(), "orderId");
+        orderService.deleteOrder(orderId, getLoginUser().getId(), getConnection());
+
+
+        return SUCCESS;
+    }
+
+
     public String appointmentOrder() throws Exception {
 
         String moneyString = HttpUtils.getParameter(getRequest(), "operationMoney");
