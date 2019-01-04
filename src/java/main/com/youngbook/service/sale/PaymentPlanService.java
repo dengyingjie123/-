@@ -673,6 +673,7 @@ public class PaymentPlanService extends BaseService implements IBizService {
             double totalMoney = NumberUtils.formatDouble(paymentPlanVO.getTotalPaymentMoney(), 2);
             paymentPlanVO.setTotalPaymentMoney(totalMoney);
 
+
             /**
              * 星期
              */
@@ -683,12 +684,22 @@ public class PaymentPlanService extends BaseService implements IBizService {
 
 
             /**
-             * 转换时间格式
+             * 转换兑付时间格式
              */
-            Date newPaymentTimeDate = TimeUtils.getDate(paymentPlanVO.getPaymentTime());
-            String newPaymentTime = new SimpleDateFormat("yyyy-MM-dd").format(newPaymentTimeDate);
-            paymentPlanVO.setPaymentTime(newPaymentTime);
+            if(paymentPlanVO.getPaymentTime() != null){
+                Date newPaymentTimeDate = TimeUtils.getDate(paymentPlanVO.getPaymentTime());
+                String newPaymentTime = new SimpleDateFormat("yyyy-MM-dd").format(newPaymentTimeDate);
+                paymentPlanVO.setPaymentTime(newPaymentTime);
+            }
 
+            /**
+             * 转换认购时间格式
+             */
+            if(paymentPlanVO.getPayTime() != null){
+                Date newPayTimeDate = TimeUtils.getDate(paymentPlanVO.getPayTime());
+                String newPayTime = new SimpleDateFormat("yyyy-MM-dd").format(newPayTimeDate);
+                paymentPlanVO.setPayTime(newPayTime);
+            }
 
             /**
              * 收益方式描述

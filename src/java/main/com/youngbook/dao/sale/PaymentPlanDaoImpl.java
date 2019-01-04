@@ -311,6 +311,17 @@ public class PaymentPlanDaoImpl implements IPaymentPlanDao {
     }
 
 
+    /**
+     * @description 兑付计划月报
+     *
+     * @author 胡超怡
+     *
+     * @date 2019/1/4 16:08
+     * @param paymentTime 查询的兑付月份
+     * @param conn 数据库连接对象
+     * @return java.util.List<com.youngbook.entity.vo.Sale.PaymentPlanVO>
+     * @throws Exception
+     */
     @Override
     public List<PaymentPlanVO> getListPaymentPlanVO(String paymentTime,Connection conn) throws Exception {
 

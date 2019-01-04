@@ -233,6 +233,16 @@ public class PaymentPlanAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description 兑付计划月报
+     * 显示出兑付计划的月报列表
+     * @author 胡超怡
+     *
+     * @date 2019/1/4 15:31
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String reportMonth() throws Exception {
 
         String paymentTime = getHttpRequestParameter("paymentTime");

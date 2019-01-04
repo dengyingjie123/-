@@ -100,6 +100,8 @@ public class PaymentPlanVO extends BaseVO {
 
     private String customerId = new String();
 
+    //认购时间
+    @DataAdapter(fieldType = FieldType.DATE)
     private String payTime = new String();
 
     // 分管领导编号
