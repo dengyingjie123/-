@@ -272,6 +272,12 @@ public class UserService extends BaseService {
 
     /**
      * 新增或修改
+     *
+     * 增加名字
+     * 在NumberUtils增加新方法，获取随机数
+     *
+     * 返回user
+     *
      * @param user
      * @param conn
      * @return
@@ -279,6 +285,8 @@ public class UserService extends BaseService {
      */
     public int newOrUpdateUser(UserPO user, Connection conn) throws Exception {
         int count = 0;
+
+
 
 
 
@@ -291,6 +299,8 @@ public class UserService extends BaseService {
             int eight = (int)(Math.random()*100000000);
             newPassword = String.valueOf(eight);
         }
+
+
 
         //转为md5值，保存到数据库
         newPassword = StringUtils.md5(newPassword);
