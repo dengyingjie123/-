@@ -70,7 +70,7 @@
             cursor: pointer;
             position: absolute;
             top: 219px;
-            left: 160px;
+            left: 50px;
             width: 109px;
             height: 38px;
             background: url("include/images/icon_login.png") -1px;
@@ -85,7 +85,7 @@
             cursor: pointer;
             position: absolute;
             top: 219px;
-            left: 280px;
+            left: 170px;
             width: 109px;
             height: 38px;
             background: url("include/images/icon_quit.png") -1px;
@@ -99,7 +99,21 @@
             cursor: pointer;
             position: absolute;
             top: 219px;
-            left: 400px;
+            left: 290px;
+            width: 109px;
+            height: 38px;
+            background: url("include/images/icon_quit.png") -1px;
+            font-size: 15px;
+            border: 0px;
+            padding: 0;
+        }
+
+        #panel-login .reset_btn {
+            text-align: center;
+            cursor: pointer;
+            position: absolute;
+            top: 219px;
+            left: 410px;
             width: 109px;
             height: 38px;
             background: url("include/images/icon_quit.png") -1px;
@@ -146,7 +160,7 @@
 
         .login_user {
             position: absolute;
-            top: 93px;
+            top: 40px;
             left: 90px;
             width: 368px;
             padding: 15px 10px;
@@ -154,7 +168,23 @@
 
         .login_password {
             position: absolute;
-            top: 150px;
+            top: 80px;
+            left: 90px;
+            width: 368px;
+            padding: 15px 10px;
+        }
+
+        .login_mobile {
+            position: absolute;
+            top: 120px;
+            left: 90px;
+            width: 368px;
+            padding: 15px 10px;
+        }
+
+        .login_captcha {
+            position: absolute;
+            top: 160px;
             left: 90px;
             width: 368px;
             padding: 15px 10px;
@@ -213,6 +243,24 @@
                 fw.alert("失败", message);
             }
         }
+
+        function Get_Captcha() {
+            var mobile = $('#moible').val()
+            if (fw.checkIsTextEmpty(mobile)) {
+                fw.alert("失败", "请输入电话号码!");
+                return;
+            };
+            var pattern = /^1[34578]\d{9}$/;
+            if(!pattern.test(mobile)){
+                fw.alert("失败", "请输入11位电话号码!");
+                return;
+            };
+
+            $('#btnCaptcha').val('正在发送验证码');
+            $('#loginForm').submit();
+
+        }
+
     </script>
 </head>
 
@@ -224,14 +272,16 @@
             <div class="login_user"><span>用户名：</span><input type="text" name="user.name" id="operatorId" value="4"/></div>
             <div class="login_password"><span>密&nbsp;码：</span><input type="password" name="user.password" id="password" value="admin"/></div>
 
-            <div class="login_user"><span>电话号码：</span><input type="text" name="user.name" id="phoneNumber" value="4"/></div>
-            <div class="login_password"><span>验证码：</span><input type="password" name="user.password" id="captcha" value="admin"/></div>
+            <div class="login_mobile"><span>电话号码：</span><input type="text" name="user.mobile" id="mobile"/></div>
+            <div class="login_captcha"><span>验证码：</span><input type="password" name="user.captcha" id="captcha"/></div>
 
 
 
             <input type="button" class="login_btn" name="button" id="btnLogin" value="登录" onclick="Login_DoLogin()"/>
             <input type="reset" class="cancel_btn" name="button2" id="btnReset" value="重置"/>
-            <input type="reset" class="captcha_btn" name="button3" id="getCaptcha" value="获得验证码" onclick="Get_Captcha()"/>
+            <input type="reset" class="captcha_btn" name="button3" id="btnCaptcha" value="获得验证码" onclick="Get_Captcha()"/>
+            <input type="reset" class="reset_btn" name="button3" id="btnByCaptcha" value="修改密码" onclick="Get_Captcha()"/>
+
 
             <div class="login_tip">
                 <a class="a_doc" style="font-size: 12px" href="http://www.miitbeian.gov.cn" target="_blank">粤ICP备16072634号</a>
