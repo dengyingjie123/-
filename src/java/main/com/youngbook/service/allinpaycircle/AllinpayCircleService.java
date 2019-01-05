@@ -635,7 +635,7 @@ public class AllinpayCircleService extends BaseService {
         }
 
         if (!StringUtils.isEmpty(orderPO.getAllinpayCircle_deposit_status()) && !orderPO.getAllinpayCircle_deposit_status().equals("0")) {
-            MyException.newInstance("该订单已经进行充值确认，请不要重复充值！", "orderId=" + orderId).throwException();
+            MyException.newInstance("该订单充值已受理，请不要重复充值！", "orderId=" + orderId).throwException();
         }
 
         CustomerAccountPO customerAccountPO = customerAccountDao.loadCustomerAccountPOByAccountId(accountId, conn);
@@ -1039,6 +1039,27 @@ public class AllinpayCircleService extends BaseService {
     public ReturnObject payByShare(String orderId, String operatorId, Connection conn) throws Exception {
 
         OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        if (orderPO == null) {
+            MyException.newInstance("无法获得订单信息", "orderId=" + orderId).throwException();
+        }
+
+        if (orderPO.getAllinpayCircle_deposit_status() == null) {
+            MyException.newInstance("订单尚未充值，请检查！", "orderId=" + orderId).throwException();
+        }
+
+        if (orderPO.getAllinpayCircle_deposit_status() != null && !orderPO.getAllinpayCircle_deposit_status().equals("1")) {
+            MyException.newInstance("订单充值尚未成功，请检查！", "orderId=" + orderId).throwException();
+        }
+
+
+        if (orderPO.getAllinpayCircle_payByShare_status() != null && orderPO.getAllinpayCircle_payByShare_status().equals("2")) {
+            MyException.newInstance("订单份额支付已受理，不要重新支付，请检查！", "orderId=" + orderId).throwException();
+        }
+
+        if (orderPO.getAllinpayCircle_payByShare_status() != null && orderPO.getAllinpayCircle_payByShare_status().equals("1")) {
+            MyException.newInstance("订单份额支付已成功，不要重新支付，请检查！", "orderId=" + orderId).throwException();
+        }
 
         CustomerPersonalPO customerPersonalPO = customerPersonalDao.loadByCustomerPersonalId(orderPO.getCustomerId(), conn);
 
