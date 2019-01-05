@@ -153,6 +153,12 @@ public class AllinpayCircleAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * 机构自付充值
+     * @return
+     * @throws Exception
+     */
     public String depositByInstitution() throws Exception {
 
         String orderId = getHttpRequestParameter("orderId");

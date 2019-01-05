@@ -149,7 +149,6 @@ public class OrderPO extends BasePO {
     private String financeMoneyConfirmTime = new String();
 
 
-    @IgnoreDB
     private String allinpayCircle_req_trace_num = "";
 
     /**
@@ -159,7 +158,6 @@ public class OrderPO extends BasePO {
      * 2：充值已受理
      * 3：充值失败
      */
-    @IgnoreDB
     private String allinpayCircle_deposit_status = "";
 
 
@@ -170,10 +168,8 @@ public class OrderPO extends BasePO {
      * 2：待确认
      * 3：支付失败
      */
-    @IgnoreDB
     private String allinpayCircle_payByShare_status = "";
 
-    @IgnoreDB
     @DataAdapter(fieldType = FieldType.DATE)
     private String allinpayCircle_payByShare_time = "";
 

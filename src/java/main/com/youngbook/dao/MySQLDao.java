@@ -2059,6 +2059,7 @@ public class MySQLDao {
 
                 IgnoreDB ignoreDB = field.getAnnotation(IgnoreDB.class);
                 if (ignoreDB != null) {
+                    LogService.info("MySQLDao.search(): 忽略： " + field.getName(), MySQLDao.class);
                     continue;
                 }
 
@@ -2422,6 +2423,7 @@ public class MySQLDao {
                 }
 
                 if (field.getAnnotation(IgnoreDB.class) != null) {
+                    LogService.info("MySQLDao.query(): 忽略： " + field.getName(), MySQLDao.class);
                     continue;
                 }
 
@@ -2811,6 +2813,7 @@ public class MySQLDao {
         IgnoreDB ignoreDB = field.getAnnotation(IgnoreDB.class);
 
         if (ignoreDB != null) {
+            LogService.info("MySQLDao.isIgnore(): 忽略： " + field.getName(), MySQLDao.class);
             return true;
         }
         return false;
@@ -2989,6 +2992,7 @@ public class MySQLDao {
 
                 IgnoreDB ignoreDB = field.getAnnotation(IgnoreDB.class);
                 if (ignoreDB != null) {
+                    LogService.info("MySQLDao.query(): 忽略： " + field.getName(), MySQLDao.class);
                     continue;
                 }
 
@@ -3161,6 +3165,7 @@ public class MySQLDao {
 
                 IgnoreDB ignoreDB = field.getAnnotation(IgnoreDB.class);
                 if (ignoreDB != null) {
+                    LogService.info("MySQLDao.search(): 忽略： " + field.getName(), MySQLDao.class);
                     continue;
                 }
 

@@ -202,8 +202,8 @@ public class TimeRunner {
 
 //
 //            // 短信扫描 10 秒一次
-            SmsSenderTask smsSenderTask = new SmsSenderTask();
-            TimeRunner.addTask(smsSenderTask);
+//            SmsSenderTask smsSenderTask = new SmsSenderTask();
+//            TimeRunner.addTask(smsSenderTask);
 
 
             AllinpayCircleDealRawDataTask allinpayCircleDealRawDataTask = new AllinpayCircleDealRawDataTask();

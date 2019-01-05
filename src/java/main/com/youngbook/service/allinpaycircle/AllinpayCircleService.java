@@ -578,9 +578,23 @@ public class AllinpayCircleService extends BaseService {
     }
 
 
+    /**
+     * 机构自付充值
+     * @param orderId 订单编号
+     * @param operatorId
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public ReturnObject depositByInstitution(String orderId, String operatorId, Connection conn) throws Exception {
 
+        StringUtils.checkIsEmpty(orderId, "订单编号为空");
+
         OrderPO orderPO = orderDao.loadByOrderId(orderId, conn);
+
+        if (orderPO == null) {
+            MyException.newInstance("无法获得订单信息", "orderId=" + orderId).throwException();
+        }
 
         String accountId = orderPO.getAccountId();
         String productionId = orderPO.getProductionId();
