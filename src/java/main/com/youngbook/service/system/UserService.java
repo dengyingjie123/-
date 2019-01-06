@@ -14,6 +14,8 @@ import com.youngbook.dao.system.IFilesDao;
 import com.youngbook.dao.system.IPositionUserDao;
 import com.youngbook.dao.system.IUserDao;
 import com.youngbook.entity.po.DepartmentPO;
+import com.youngbook.entity.po.MenuPO;
+import com.youngbook.entity.po.PermissionPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.FilesPO;
@@ -358,5 +360,35 @@ public class UserService extends BaseService {
         return pager;
 
     }
+    /**
+     * @description  获取对应用户的权限
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/12 11:38
+     * @param userId
+     * @param permissionName
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return com.youngbook.common.Pager
+     * @throws Exception
+     */
+    public  Pager getPagerMenuPos (String userId,String permissionName,int currentPage, int showRowCount, Connection conn) throws Exception{
 
+
+        if(StringUtils.isEmpty(userId)){
+            MyException.newInstance("无法获得用户编号").throwException();
+        }
+
+
+
+
+        Pager pagerMenuPos = userDao.getPagerMenuPos(userId, permissionName, currentPage, showRowCount, conn);
+
+
+
+
+        return pagerMenuPos;
+    }
 }

@@ -62,6 +62,7 @@ import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class CustomerPersonalAction extends BaseAction {
 
@@ -152,7 +153,6 @@ public class CustomerPersonalAction extends BaseAction {
     private String order = new String();
 
 
-
     public String appointmentOrder4Modern() throws Exception {
 
 
@@ -162,7 +162,7 @@ public class CustomerPersonalAction extends BaseAction {
         String moneyString = getHttpRequestParameter("money");
 
         if (!StringUtils.isNumeric(moneyString)) {
-            MyException.newInstance("输入预约金额有误", "productionId="+productionId+"&money="+moneyString).throwException();
+            MyException.newInstance("输入预约金额有误", "productionId=" + productionId + "&money=" + moneyString).throwException();
         }
 
 
@@ -177,7 +177,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 确认客户为合格投资者
-     *
+     * <p>
      * 作者：邓超
      * 内容：创建代码
      * 时间：不详
@@ -196,12 +196,12 @@ public class CustomerPersonalAction extends BaseAction {
         // 获取参数
         String customerId = HttpUtils.getParameter(request, "customerId");
         // 校验参数
-        if(StringUtils.isEmpty(customerId)) {
+        if (StringUtils.isEmpty(customerId)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "缺少客户ID").throwException();
         }
 
         Integer count = customerPersonalService.confirmInvestor(customerId, conn);
-        if(count != 1) {
+        if (count != 1) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "数据操作异常，请重新再试！");
         }
 
@@ -212,6 +212,7 @@ public class CustomerPersonalAction extends BaseAction {
     /**
      * HOPEWEALTH-28-后台对风险测评的支持
      * 根据客户ID查询记录，暂时只支持CustomerTestType为1即风险测评的查询
+     *
      * @return
      * @throws Exception
      */
@@ -249,6 +250,7 @@ public class CustomerPersonalAction extends BaseAction {
     /**
      * HOPEWEALTH-28-后台对风险测评的支持
      * 增加一条评分记录
+     *
      * @return
      * @throws Exception
      */
@@ -284,7 +286,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 支付生成实名信息接口
-     *
+     * <p>
      * 作者：邓超
      * 内容：创建代码
      * 时间：2015年12月18日
@@ -309,10 +311,10 @@ public class CustomerPersonalAction extends BaseAction {
         String bankCode = HttpUtils.getParameter(request, "bankCode");
 
         // 校验参数合法性
-        if(StringUtils.isEmpty(bizId) || StringUtils.isEmpty(customerId) || StringUtils.isEmpty(name) || StringUtils.isEmpty(idCard) || StringUtils.isEmpty(bankNumber) || StringUtils.isEmpty(bankCode)) {
+        if (StringUtils.isEmpty(bizId) || StringUtils.isEmpty(customerId) || StringUtils.isEmpty(name) || StringUtils.isEmpty(idCard) || StringUtils.isEmpty(bankNumber) || StringUtils.isEmpty(bankCode)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
-        if(customerId.length() != 32) {
+        if (customerId.length() != 32) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_CORRECT, "参数不正确").throwException();
         }
 
@@ -328,7 +330,7 @@ public class CustomerPersonalAction extends BaseAction {
         OrderPayService orderPayService = new OrderPayService();
         OrderPayPO orderPay = orderPayService.buildPayAuthentication(bizId, customerId, name, idCard, bankNumber, bankCode, conn);
 
-        if(orderPay == null) {
+        if (orderPay == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "建立实名信息失败了，请稍候再试").throwException();
         }
 
@@ -523,7 +525,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     /**
      * 创建人：张舜清
      * 时间：7/13/2015
@@ -572,7 +573,6 @@ public class CustomerPersonalAction extends BaseAction {
         }
         return SUCCESS;
     }
-
 
 
     public String loadPage_PH_mine_list() throws Exception {
@@ -861,7 +861,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     public String fdcgDealReturnAccountRecharge() throws Exception {
 
         String name = "用户充值申请-同步回调";
@@ -881,7 +880,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     public String fdcgDealReturnAccountWithdraw() throws Exception {
 
         String name = "用户提现申请-同步回调";
@@ -899,7 +897,6 @@ public class CustomerPersonalAction extends BaseAction {
 
         return FdcgCommon.dealNotify(name, getRequest(), getConnection());
     }
-
 
 
     // loadCustomerPOByCrmCustomerPersonalId
@@ -1053,7 +1050,7 @@ public class CustomerPersonalAction extends BaseAction {
         FdcgCustomerPO customerPO = customerPersonalService.fdcgLoadCustomerPOByCrmCustomerPersonalId(customerId, getConnection());
 
         if (customerPO == null) {
-            MyException.newInstance("无法找到存管账户", "customerId="+customerId);
+            MyException.newInstance("无法找到存管账户", "customerId=" + customerId);
         }
 
         customerAccountBindPO.setUserName(customerPO.getUserName());
@@ -1061,7 +1058,7 @@ public class CustomerPersonalAction extends BaseAction {
         customerAccountBindPO.setMerchantNo(FdcgCommon.getMerchantNo());
         customerAccountBindPO.setExtMark(customerPersonalPO.getId());
         customerAccountBindPO.setReturnUrl(Config.getSystemConfig("system.url") + "/fdcg/CustomerAccount_dealReturnBind");
-        customerAccountBindPO.setNotifyUrl(Config.getSystemConfig("system.url") +"/fdcg/CustomerAccount_dealNotifyBind");
+        customerAccountBindPO.setNotifyUrl(Config.getSystemConfig("system.url") + "/fdcg/CustomerAccount_dealNotifyBind");
         customerAccountBindPO.setOrderDate(TimeUtils.getNowDateYYYYMMDD());
         customerAccountBindPO.setOrderNo(FdcgCommon.getId20());
 
@@ -1091,11 +1088,10 @@ public class CustomerPersonalAction extends BaseAction {
         }
 
 
-
         FdcgCustomerPO fdcgCustomerPO = customerPersonalService.fdcgLoadCustomerPOByCrmCustomerPersonalId(customerId, getConnection());
 
         if (fdcgCustomerPO == null) {
-            MyException.newInstance("无法找到存管账户", "customerId="+customerId);
+            MyException.newInstance("无法找到存管账户", "customerId=" + customerId);
         }
 
         KVObjects kvObjects = new KVObjects();
@@ -1138,11 +1134,10 @@ public class CustomerPersonalAction extends BaseAction {
         }
 
 
-
         FdcgCustomerPO fdcgCustomerPO = customerPersonalService.fdcgLoadCustomerPOByCrmCustomerPersonalId(customerId, getConnection());
 
         if (fdcgCustomerPO == null) {
-            MyException.newInstance("无法找到存管账户", "customerId="+customerId);
+            MyException.newInstance("无法找到存管账户", "customerId=" + customerId);
         }
 
         KVObjects kvObjects = new KVObjects();
@@ -1189,11 +1184,10 @@ public class CustomerPersonalAction extends BaseAction {
         }
 
 
-
         FdcgCustomerPO fdcgCustomerPO = customerPersonalService.fdcgLoadCustomerPOByCrmCustomerPersonalId(customerId, getConnection());
 
         if (fdcgCustomerPO == null) {
-            MyException.newInstance("无法找到存管账户", "customerId="+customerId);
+            MyException.newInstance("无法找到存管账户", "customerId=" + customerId);
         }
 
         FdcgCustomerAccountWithdrawPO fdcgCustomerAccountWithdrawPO = new FdcgCustomerAccountWithdrawPO();
@@ -1220,8 +1214,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
-
     public String fdcgQueryUserInfoData() throws Exception {
 
         String customerId = getLoginCustomer().getId();
@@ -1240,7 +1232,7 @@ public class CustomerPersonalAction extends BaseAction {
         FdcgCustomerPO fdcgCustomerPO = customerPersonalService.fdcgLoadCustomerPOByCrmCustomerPersonalId(customerId, getConnection());
 
         if (fdcgCustomerPO == null) {
-            MyException.newInstance("无法找到存管账户", "customerId="+customerId);
+            MyException.newInstance("无法找到存管账户", "customerId=" + customerId);
         }
 
         FdcgCustomerQueryInfoPO fdcgCustomerQueryInfoPO = customerPersonalService.fdcgQueryCustomerQueryInfoPO(fdcgCustomerPO);
@@ -1249,10 +1241,6 @@ public class CustomerPersonalAction extends BaseAction {
 
         return SUCCESS;
     }
-
-
-
-
 
 
     public String loadCustomerPersonalVOById() throws Exception {
@@ -1272,7 +1260,7 @@ public class CustomerPersonalAction extends BaseAction {
 
 
         if (list == null || list.size() == 0) {
-            MyException.newInstance("无法找到对应客户","customerId="+customerId).throwException();
+            MyException.newInstance("无法找到对应客户", "customerId=" + customerId).throwException();
         }
 
 
@@ -1335,7 +1323,7 @@ public class CustomerPersonalAction extends BaseAction {
             return false;
         } else {
             String CustomerID = (String) id;
-        /*加入特定的字符 再进行MD处理*/
+            /*加入特定的字符 再进行MD处理*/
             newPassword = StringUtils.md5(newPassword + Config.MD5String);
 
             int count = 0;
@@ -1448,11 +1436,10 @@ public class CustomerPersonalAction extends BaseAction {
      * * 修改人：姚章鹏
      * 时间：2015年7月13日17:39:44
      * 内容：计算等级
-     *
+     * <p>
      * 修改人：quan.zeng
      * 时间：2015年12月6日
      * 内容：计算等级代码抽取到service中
-     *
      */
     @Security(needWebLogin = true)
     public String indexShow4W() throws Exception {
@@ -1528,7 +1515,6 @@ public class CustomerPersonalAction extends BaseAction {
         }
 
 
-
         pager = customerPersonalService.listPagerCustomerVO(customerVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
 
         getResult().setReturnValue(pager.toJsonObject());
@@ -1562,7 +1548,6 @@ public class CustomerPersonalAction extends BaseAction {
 
         return SUCCESS;
     }
-
 
 
     //密码修改
@@ -1604,7 +1589,6 @@ public class CustomerPersonalAction extends BaseAction {
         getResult().setReturnValue(array);
         return SUCCESS;
     }
-
 
 
     //原密码验证
@@ -1712,7 +1696,7 @@ public class CustomerPersonalAction extends BaseAction {
         HttpServletRequest request = getRequest();
         Connection conn = getConnection();
         List<KVObject> conditions = new ArrayList<KVObject>();
-        
+
 
         Pager pager = Pager.getInstance(request);
 
@@ -1738,7 +1722,7 @@ public class CustomerPersonalAction extends BaseAction {
         boolean isCallCenterPermission = getPermission().has("客户管理_个人客户管理_呼叫中心查看");
         List<IJsonable> customers = pager.getData();
         for (IJsonable data : customers) {
-            CustomerPersonalVO customer = (CustomerPersonalVO)data;
+            CustomerPersonalVO customer = (CustomerPersonalVO) data;
 
             if (isCallCenterPermission) {
                 String mobile = customer.getMobile();
@@ -2000,7 +1984,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     /**
      * 创建人：张舜清
      * 时间：8/13/2015
@@ -2044,12 +2027,11 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
     /**
-     *
      * 修改人：李昕骏
      * 时间：2015年11月21日 11:08:52
      * 内容：
      * 将用户注册的用户归属状态改为在线客户
-     *
+     * <p>
      * 修改人：张舜清
      * 时间：7/30/2015
      * 内容：传统注册，传统注册通道先暂时关闭
@@ -2083,7 +2065,7 @@ public class CustomerPersonalAction extends BaseAction {
              * 执行注册
              */
             LogPO logPO = new LogPO();
-            logPO.setMachineMessage("用户【"+mobile+"】注册，推荐码【"+referralCode+"】，渠道【PC端】");
+            logPO.setMachineMessage("用户【" + mobile + "】注册，推荐码【" + referralCode + "】，渠道【PC端】");
             customerPersonalService.registerCustomer(personal, referralCode, conn);
             getResult().setMessage("注册成功");
             getRequest().setAttribute("returnObject", getResult());
@@ -2100,8 +2082,7 @@ public class CustomerPersonalAction extends BaseAction {
 
             return "success";
 
-        }
-        catch (MyException me) {
+        } catch (MyException me) {
             me.printStackTrace();
             // 处理异常
             me.findLog().setPeopleMessage(me.getMessage());
@@ -2112,8 +2093,7 @@ public class CustomerPersonalAction extends BaseAction {
             getResult().setMessage("注册失败，" + me.getMessage());
             getRequest().setAttribute("returnObject", getResult());
             return "info";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             getResult().setMessage("注册失败，" + e.getMessage());
             getRequest().setAttribute("returnObject", getResult());
@@ -2125,6 +2105,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 移动端注册客户
+     *
      * @return
      * @throws Exception
      */
@@ -2150,7 +2131,6 @@ public class CustomerPersonalAction extends BaseAction {
         if (isMobileTaken) {
             MyException.newInstance("【" + personal.getMobile() + "】用户名已被占用").throwException();
         }
-
 
 
         personal = customerPersonalService.registerCustomer(personal, referralCode, conn);
@@ -2207,7 +2187,7 @@ public class CustomerPersonalAction extends BaseAction {
 
         String loginUserName = "";
         if (session.getAttribute("loginUserName") != null) {
-            loginUserName = (String)session.getAttribute("loginUserName");
+            loginUserName = (String) session.getAttribute("loginUserName");
 
             CustomerPersonalService customerPersonalService = Config.getBeanByName("customerPersonalService", CustomerPersonalService.class);
             CustomerPersonalPO customer = customerPersonalService.loadCustomerByLoginName(loginUserName, conn);
@@ -2294,12 +2274,12 @@ public class CustomerPersonalAction extends BaseAction {
      * 作者：邓超
      * 内容：创建代码
      * 时间：2015-6-3
-     *
+     * <p>
      * 修改：李昕骏
      * 时间：2015年11月21日 11:48:43
      * 内容
      * 重写网站验证码部分
-     *
+     * <p>
      * 修改:周海鸿
      * 内容：前台传入密码加上特性字符串进行加密
      * 时间：2015-7-23
@@ -2323,7 +2303,7 @@ public class CustomerPersonalAction extends BaseAction {
         String password = getRequest().getParameter("password");
 
         if (StringUtils.isEmpty(loginName) || StringUtils.isEmpty(password)) {
-            MyException.newInstance("用户名和密码输入有误，请检查", "loginName="+loginName+"&password="+password).throwException();
+            MyException.newInstance("用户名和密码输入有误，请检查", "loginName=" + loginName + "&password=" + password).throwException();
         }
 
         personal = customerPersonalService.login(loginName, password, conn);
@@ -2342,31 +2322,28 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     /**
      * 登录接口
-     *
+     * <p>
      * 作者：邓超
      * 内容：创建代码
      * 时间：2015年12月4日
      *
      * @return
-     * @throws Exception
-     *
-     * 作者：quan.zeng
-     * 内容：修改代码
-     * 时间：2015年12月4日
-     * 描述：token失效时间使用常量配置
-     *
-     * 作者：quan.zeng
-     * 内容：修改代码
-     * 时间：2015年12月14日
-     * 描述：带出登录用户是否设置交易密码
-     *
-     * 作者：quan.zeng
-     * 内容：修改代码
-     * 时间：2015年12月17日
-     * 描述：登录成功带出是否实名认证标记
+     * @throws Exception 作者：quan.zeng
+     *                   内容：修改代码
+     *                   时间：2015年12月4日
+     *                   描述：token失效时间使用常量配置
+     *                   <p>
+     *                   作者：quan.zeng
+     *                   内容：修改代码
+     *                   时间：2015年12月14日
+     *                   描述：带出登录用户是否设置交易密码
+     *                   <p>
+     *                   作者：quan.zeng
+     *                   内容：修改代码
+     *                   时间：2015年12月17日
+     *                   描述：登录成功带出是否实名认证标记
      */
     public String login() throws Exception {
 
@@ -2382,10 +2359,10 @@ public class CustomerPersonalAction extends BaseAction {
         String mobile = HttpUtils.getParameter(request, "mobile");
         String password = HttpUtils.getParameter(request, "password");
         // 校验参数合法性
-        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
-        if(password.length() != 32) {
+        if (password.length() != 32) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_ENCRYPT, "请将密码加密后进行传输").throwException();
         }
         // 参数双边去空
@@ -2394,18 +2371,18 @@ public class CustomerPersonalAction extends BaseAction {
 
         // 校验手机号码和密码
         customerPersonal = customerPersonalService.login(mobile, password, conn);
-        if(customerPersonal == null) {
+        if (customerPersonal == null) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "您的用户名或密码不正确").throwException();
         }
 
         // 插入新 Token
         TokenPO tokenPO = tokenService.newToken(customerPersonal.getId(), TokenBizType.CustomerLoginToken, request.getRemoteAddr(), conn);
-        if(tokenPO == null) {
+        if (tokenPO == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "Token 添加失败").throwException();
         }
 
         // 获取是否设置交易密码
-        boolean isSetTransactionPassword = customerPersonalService.isSetTransactionPassword(customerPersonal.getId(),conn);
+        boolean isSetTransactionPassword = customerPersonalService.isSetTransactionPassword(customerPersonal.getId(), conn);
         // 获取是否设置密保问题
         CustomerProtectionQAService protectionQAService = new CustomerProtectionQAService();
         Pager isSetQAPager = protectionQAService.getQAByCustomerId(customerPersonal.getId(), conn);
@@ -2515,7 +2492,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 注册接口
-     *
+     * <p>
      * 作者：邓超
      * 内容：创建代码
      * 时间：2015年12月5日
@@ -2539,11 +2516,11 @@ public class CustomerPersonalAction extends BaseAction {
         String referralCode = HttpUtils.getParameter(request, "referralCode");
 
         // 校验参数合法性
-        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(mobileCode)) {
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(mobileCode)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "系统参数不完整").throwException();
         }
 
-        if(mobile.length() != 11) {
+        if (mobile.length() != 11) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_CORRECT, "请输入正确的手机号码").throwException();
         }
 
@@ -2563,13 +2540,13 @@ public class CustomerPersonalAction extends BaseAction {
             password = StringUtils.md5(password + Config.MD5String);
         }
 
-        if(!StringUtils.isEmpty(referralCode)) {
+        if (!StringUtils.isEmpty(referralCode)) {
             referralCode = referralCode.trim();
         }
 
         // 校验手机是否被占用
         Boolean isRegistered = customerPersonalService.isMobileRegistered(mobile, conn);
-        if(isRegistered) {
+        if (isRegistered) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_IS_REGISTERED, "您的手机号码已被注册，建议您通过找回密码的方式进行密码重置，如果您仍有疑问，请致电客服人员，我们及时地为您处理，联系电话：0755-85024000").throwException();
         }
 
@@ -2587,10 +2564,10 @@ public class CustomerPersonalAction extends BaseAction {
 
         // 生成新的客户资金记录
         List<CustomerMoneyPO> customerMoneyList = customerMoneyService.getByCustomerId4W(personalPO.getId(), conn);
-        if(customerMoneyList.size() > 1) {
+        if (customerMoneyList.size() > 1) {
             MyException.newInstance("抱歉，您的信息有异常，请致电客服人员，我们及时地为您处理，联系电话：0755-85024000").throwException();
         }
-        if(customerMoneyList.size() == 0) {
+        if (customerMoneyList.size() == 0) {
             customerMoneyService.insertEmptyCustomerMoney(personalPO.getId(), conn);
         }
 
@@ -2603,7 +2580,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 用户注销
-     *
+     * <p>
      * 作者：姚章鹏
      * 内容：创建代码
      * 时间：2015年12月29日
@@ -2619,7 +2596,7 @@ public class CustomerPersonalAction extends BaseAction {
 
         // 获取 Token
         TokenPO token = this.getToken();
-        if(token == null) {
+        if (token == null) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "请检查参数是否正确！").throwException();
         }
 
@@ -2638,30 +2615,28 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 获取客户信息接口
-     *
+     * <p>
      * 作者：quan.zeng
      * 内容：创建代码
      * 时间：2015年12月6日
      *
      * @return
-     * @throws Exception
-     *
-     * 作者：quan.zeng
-     * 内容：创建代码
-     * 时间：2015年12月6日
-     * 描述：一次获取我的账户信息的手机号码、安全等级、总资产并返回，
-     *      由于token校验需要查询数据库，如果分三次获取则发出三次请求
-     *      每次请求都需要经过校验会影响效率
+     * @throws Exception 作者：quan.zeng
+     *                   内容：创建代码
+     *                   时间：2015年12月6日
+     *                   描述：一次获取我的账户信息的手机号码、安全等级、总资产并返回，
+     *                   由于token校验需要查询数据库，如果分三次获取则发出三次请求
+     *                   每次请求都需要经过校验会影响效率
      */
     @Security(needToken = true)
-    public String getCustomerInfo() throws Exception{
+    public String getCustomerInfo() throws Exception {
 
         // 获取数据库连接
         Connection conn = this.getConnection();
 
         // 获取登录成功后通过校验的 token
         TokenPO tokenPO = this.getToken();
-        if(tokenPO == null) {
+        if (tokenPO == null) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_TOKEN_NOT_CORRECT, "您好！请先登录！").throwException();
         }
 
@@ -2670,7 +2645,7 @@ public class CustomerPersonalAction extends BaseAction {
 
         // 查询客户信息
         CustomerPersonalPO customerPersonalPO = customerPersonalService.loadCustomerById4W(customerId, conn);
-        if(customerPersonalPO == null){
+        if (customerPersonalPO == null) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "十分抱歉，您还没有注册！").throwException();
         }
 
@@ -2687,18 +2662,22 @@ public class CustomerPersonalAction extends BaseAction {
         JSONObject returnValue = new JSONObject();
 
         // 返回客户的手机号码
-        returnValue.put("customerMobile",customerPersonalPO.getMobile());
+        returnValue.put("customerMobile", customerPersonalPO.getMobile());
 
         // 返回客户的安全级别
         String securityClass = "低";
-        if (securityClassSum <= 50) {  securityClass = "低"; }
-        else if (securityClassSum > 50 && securityClassSum <= 75) {securityClass = "中";  }
-        else if (securityClassSum > 75) { securityClass = "高";}
-        returnValue.put("customerSecurityClass",securityClass);
+        if (securityClassSum <= 50) {
+            securityClass = "低";
+        } else if (securityClassSum > 50 && securityClassSum <= 75) {
+            securityClass = "中";
+        } else if (securityClassSum > 75) {
+            securityClass = "高";
+        }
+        returnValue.put("customerSecurityClass", securityClass);
 
         // 返回客户的总资产
         DecimalFormat dcmFmt = new DecimalFormat("0.00");
-        returnValue.put("customerTotalMoney",dcmFmt.format(principalMoney + profitMoney));
+        returnValue.put("customerTotalMoney", dcmFmt.format(principalMoney + profitMoney));
 
         // 返回其他信息
         getResult().setToken(tokenPO.getToken());
@@ -2711,13 +2690,13 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 校验是否设置交易密码接口
-     *
+     * <p>
      * 作者:quan.zeng
      * 内容：创建代码
      * 时间：2015-12-9
      *
-     * @throws Exception
      * @return String
+     * @throws Exception
      */
     @Security(needToken = true)
     public String isSetTransactionPassword() throws Exception {
@@ -2728,13 +2707,13 @@ public class CustomerPersonalAction extends BaseAction {
         Connection conn = this.getConnection();
 
         // 校验参数
-        if(StringUtils.isEmpty(customerId)) {
+        if (StringUtils.isEmpty(customerId)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
 
         // 校验是否设置了交易密码
-        boolean isSet = customerPersonalService.isSetTransactionPassword(customerId,conn);
-        if(!isSet){
+        boolean isSet = customerPersonalService.isSetTransactionPassword(customerId, conn);
+        if (!isSet) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_TRANDING_PASSWORD_NOT_SET, "未设置交易密码").throwException();
         }
         getResult().setCode(100);
@@ -2745,7 +2724,7 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 设置或修改交易密码接口
-     *
+     * <p>
      * 作者:quan.zeng
      * 内容：创建代码
      * 时间：2015-12-9 16：50
@@ -2763,13 +2742,13 @@ public class CustomerPersonalAction extends BaseAction {
         String reTransactionPassword = HttpUtils.getParameter(getRequest(), "reTransactionPassword");
 
         // 校验参数
-        if(StringUtils.isEmpty(customerId) || StringUtils.isEmpty(transactionPassword) || StringUtils.isEmpty(reTransactionPassword)){
+        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(transactionPassword) || StringUtils.isEmpty(reTransactionPassword)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_CORRECT, "参数不完整").throwException();
         }
-        if(transactionPassword.length() != 32 || reTransactionPassword.length()!=32) {
+        if (transactionPassword.length() != 32 || reTransactionPassword.length() != 32) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_ENCRYPT, "请将密码加密后进行传输").throwException();
         }
-        if(!transactionPassword.equals(reTransactionPassword)) {
+        if (!transactionPassword.equals(reTransactionPassword)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PASSWORDS_NOT_SAME, "两次输入的密码不匹配").throwException();
         }
 
@@ -2783,7 +2762,6 @@ public class CustomerPersonalAction extends BaseAction {
         if (customer == null) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "用户不存在").throwException();
         }
-
 
 
         // 不是第一次设置交易密码，需要验证手机验证码
@@ -2801,7 +2779,7 @@ public class CustomerPersonalAction extends BaseAction {
 
 
         int count = customerPersonalService.setOrModifyTransactionPassword(customer, transactionPassword, conn);
-        if(count != 1){
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_TRANDING_PASSWORD_OPERATION_ERROR, "操作失败").throwException();
         }
 
@@ -2818,24 +2796,24 @@ public class CustomerPersonalAction extends BaseAction {
         String rePassword = HttpUtils.getParameter(getRequest(), "rePassword");
 
 
-        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password) || StringUtils.isEmpty(rePassword)){
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password) || StringUtils.isEmpty(rePassword)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_CORRECT, "参数不完整").throwException();
         }
 
-        if(password.length() != 32 || rePassword.length()!=32) {
+        if (password.length() != 32 || rePassword.length() != 32) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_ENCRYPT, "请将密码加密后进行传输").throwException();
         }
 
-        if(!password.equals(rePassword)) {
+        if (!password.equals(rePassword)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PASSWORDS_NOT_SAME, "两次密码不一致").throwException();
         }
 
         // 获取数据库连接
         Connection conn = this.getConnection();
 
-        int count = customerPersonalService.modifyLoginPassword(mobile,password,conn);
+        int count = customerPersonalService.modifyLoginPassword(mobile, password, conn);
 
-        if(count != 1){
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_TRANDING_PASSWORD_OPERATION_ERROR, "操作失败").throwException();
         }
 
@@ -2960,7 +2938,7 @@ public class CustomerPersonalAction extends BaseAction {
         getResult().setMessage(returnObject.getMessage());
 
         if (getResult().getCode() == ReturnObject.CODE_DB_EXCEPTION) {
-            return  "info";
+            return "info";
         }
 
 
@@ -3077,7 +3055,7 @@ public class CustomerPersonalAction extends BaseAction {
         }
         CustomerPersonalPO loginUser = (CustomerPersonalPO) session.getAttribute("loginUser");
         loginUser = customerPersonalService.loadByCustomerPersonalId(loginUser.getId(), conn);
-        if(loginUser == null) {
+        if (loginUser == null) {
             MyException.newInstance(ReturnObject.CODE_DB_EXCEPTION, "没有找到客户").throwException();
         }
 
@@ -3303,11 +3281,12 @@ public class CustomerPersonalAction extends BaseAction {
      * 创建人：姚章鹏
      * 时间：时间
      * 内容：手机端发送短信
+     *
      * @return
      * @throws Exception
      */
-    @Security(needToken =true)
-    public String getMobileSms()throws  Exception{
+    @Security(needToken = true)
+    public String getMobileSms() throws Exception {
         // 获取数据库连接
         Connection conn = this.getConnection();
         // 获取请求
@@ -3317,12 +3296,12 @@ public class CustomerPersonalAction extends BaseAction {
         String customerId = HttpUtils.getParameter(request, "customerId");
         String smsContent = HttpUtils.getParameter(request, "smsContent");
         // 校验参数合法性
-        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(customerId)||StringUtils.isEmpty(smsContent)) {
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(customerId) || StringUtils.isEmpty(smsContent)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
         //获取客户信息
         CustomerPersonalPO customerPersonal = customerPersonalService.loadCustomerById4W(customerId, conn);
-        if(customerPersonal==null){
+        if (customerPersonal == null) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_NOT_EXISTENT, "账户不存在").throwException();
         }
         // 成功后去调用System_Sms服务，插入数据
@@ -3331,7 +3310,7 @@ public class CustomerPersonalAction extends BaseAction {
         Integer type = SmsType.TYPE_IDENTIFY_CODE;
         String signature = Config.getSystemConfig("system.oa.sms.identityCode.signature");
         int count = smsService.insertSMS(customerId, customerPersonal.getName(), mobile, subject, smsContent, signature, type, conn);
-        if(count!=1){
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_SMS_SEND_ERROR, "短信发送失败").throwException();
         }
         getResult().setCode(100);
@@ -4301,10 +4280,10 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
     /*
-    * 作者：周海鸿
-    * 时间：2015-7-23
-    * 内容：修改登录密码
-    * */
+     * 作者：周海鸿
+     * 时间：2015-7-23
+     * 内容：修改登录密码
+     * */
     public String changePassword4web() throws Exception {
 
         //获取原始密码
@@ -4409,11 +4388,11 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
     /*
-    *设置银行
+     *设置银行
      * 修改：周海鸿
-      *时间：2015-7-24
-      *内容：添加银行卡数据
-      * */
+     *时间：2015-7-24
+     *内容：添加银行卡数据
+     * */
     @Security(needWebLogin = true)
     public String getBankCard() throws Exception {
 
@@ -4444,12 +4423,13 @@ public class CustomerPersonalAction extends BaseAction {
 
         return SUCCESS;
     }
+
     /**
-     *设置银行
+     * 设置银行
      * 修改：姚章鹏
-     *时间：2015年11月27日
-     *内容：获取银行卡信息和实名认证信息
-     * */
+     * 时间：2015年11月27日
+     * 内容：获取银行卡信息和实名认证信息
+     */
     @Security(needWebLogin = true)
     public String getCustomerCertificate4W() throws Exception {
 
@@ -4707,7 +4687,6 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
 
-
     /**
      * 获取手机状态的
      * <p/>
@@ -4947,6 +4926,7 @@ public class CustomerPersonalAction extends BaseAction {
     /**
      * HWBANKSAPP-22-创建接口检查客户(CustomerPersonal)是否进行了实名验证，存在certificate记录和客户name不为空才满足
      * 参数: customerId
+     *
      * @return
      * @throws Exception
      */
@@ -4965,7 +4945,7 @@ public class CustomerPersonalAction extends BaseAction {
         // 验证
         JSONObject jo = customerPersonalService.isCertificatedCustomer(customerId, conn);
         if (jo == null) {
-            MyException.newInstance(ReturnObjectCode.CUSTOMER_NOT_CERTIFICATED, "客户没有通过实名验证，客户编号["+customerId+"]").throwException();
+            MyException.newInstance(ReturnObjectCode.CUSTOMER_NOT_CERTIFICATED, "客户没有通过实名验证，客户编号[" + customerId + "]").throwException();
         }
         getResult().setReturnValue(jo);
 
@@ -4987,15 +4967,15 @@ public class CustomerPersonalAction extends BaseAction {
         String customerId = HttpUtils.getParameter(request, "customerId");
 
         // 校验参数合法性
-        if(StringUtils.isEmpty(customerId)) {
+        if (StringUtils.isEmpty(customerId)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
 
         CustomerCertificatePO certificateInfo = customerCertificateService.getCustomerCertificate(customerId, conn);
 
         // 校验是否为空
-        if(certificateInfo == null) {
-            MyException.newInstance(ReturnObjectCode.CUSTOMER_NOT_REAL_AUTHENTICATION, "此客户没有实名认证，客户编号["+customerId+"]").throwException();
+        if (certificateInfo == null) {
+            MyException.newInstance(ReturnObjectCode.CUSTOMER_NOT_REAL_AUTHENTICATION, "此客户没有实名认证，客户编号[" + customerId + "]").throwException();
         }
 
         getResult().setReturnValue(certificateInfo.toJsonObject());
@@ -5026,7 +5006,7 @@ public class CustomerPersonalAction extends BaseAction {
         CustomerAuthenticationStatusPO statusPO = customerAuthenticationStatusService.loadByCustomerId(loginUser.getId(), conn);
 
         //判断客户是否实名认证
-        if (statusPO.getAccountStatus()==0) {
+        if (statusPO.getAccountStatus() == 0) {
             //未实名认证
             getResult().setReturnValue("0");
             return SUCCESS;
@@ -5055,11 +5035,11 @@ public class CustomerPersonalAction extends BaseAction {
         // 获取参数
         String mobile = HttpUtils.getParameter(request, "mobile");
         // 校验参数合法性
-        if(StringUtils.isEmpty(mobile)) {
+        if (StringUtils.isEmpty(mobile)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
         // 删除以前的客户认证码
-        authenticationCodeService.deleteAuthentucatuibCode(mobile,conn);
+        authenticationCodeService.deleteAuthentucatuibCode(mobile, conn);
         // 随机生成 6 位不重复的数字
         int result = NumberUtils.randomNumbers(6);
         // 重新生成客户认证码
@@ -5085,18 +5065,18 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 修改手机号码
-     *
+     * <p>
      * 作者：姚章鹏
      * 内容：创建代码
      * 时间：2015年12月17日10:28:56
-     *
+     * <p>
      * 修改：邓超
      * 内容：新增旧手机的验证
      * 说明：========== 特别注意 ========== 新手机的手机动态码在拦截器里已验证，这里再验证老的手机动态码，以防绕过接口
      * 时间：2016年1月25日
      *
-     * @throws Exception
      * @return String
+     * @throws Exception
      */
     @Security(needMobileCode = true, needToken = true)
     public String updateMobileNumber() throws Exception {
@@ -5113,25 +5093,25 @@ public class CustomerPersonalAction extends BaseAction {
         String oldMobileCode = HttpUtils.getParameter(request, "oldMobileCode");
 
         // 校验参数合法性
-        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(customerId) || StringUtils.isEmpty(oldMobile) || StringUtils.isEmpty(oldMobileCode)) {
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(customerId) || StringUtils.isEmpty(oldMobile) || StringUtils.isEmpty(oldMobileCode)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
 
         // 校验新手机号码是否已经被注册
         CustomerPersonalPO po = customerPersonalService.loadCustomerByMobile(mobile, conn);
-        if(po != null) {
+        if (po != null) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_LOGIN_NAME_IS_REGISTERED, "当前手机号已被注册，请填写另一个手机号").throwException();
         }
 
         // 校验原手机和原动态码（以防绕过验证）
         Boolean isOldCodeSuccess = Config.checkMobileCode(oldMobile, oldMobileCode, conn);
-        if(!isOldCodeSuccess) {
+        if (!isOldCodeSuccess) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_MOBILECODE_NOT_CORRECT, "原手机动态码校验失败").throwException();
         }
 
         // 修改手机号码（新手机动态码在拦截器里已经验证）
         int count = customerPersonalService.resetMobile(mobile, customerId, conn);
-        if(count!=1){
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_MOBILE_NUMBER_OPERATION_ERROR, "操作失败").throwException();
         }
 
@@ -5148,7 +5128,7 @@ public class CustomerPersonalAction extends BaseAction {
      * 时间：2015年12月23日10:09:57
      */
     @Security(needToken = true)
-    public String updatePassword() throws  Exception{
+    public String updatePassword() throws Exception {
         // 获取数据库连接
         Connection conn = this.getConnection();
         // 获取请求
@@ -5158,11 +5138,11 @@ public class CustomerPersonalAction extends BaseAction {
         String oldPassword = HttpUtils.getParameter(request, "oldPassword");
         String newPassword = HttpUtils.getParameter(request, "newPassword");
         // 校验参数合法性
-        if(StringUtils.isEmpty(customerId)||StringUtils.isEmpty(oldPassword)||StringUtils.isEmpty(newPassword)) {
+        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(oldPassword) || StringUtils.isEmpty(newPassword)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
         //验证密码是否加密
-        if(oldPassword.length() != 32||newPassword.length() != 32) {
+        if (oldPassword.length() != 32 || newPassword.length() != 32) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_ENCRYPT, "请将密码加密后进行传输").throwException();
         }
         //获取客户信息
@@ -5172,12 +5152,12 @@ public class CustomerPersonalAction extends BaseAction {
         }
         String password = StringUtils.md5(oldPassword + Config.MD5String);
         //验证密码是否正确
-        if(!po.getPassword().equals(password)){
+        if (!po.getPassword().equals(password)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PASSWORDS_NOT_SAME, "密码错误").throwException();
         }
         //修改密码
-        int count = customerPersonalService.resetMobilePassword(po,newPassword,customerId, conn);
-        if(count!=1){
+        int count = customerPersonalService.resetMobilePassword(po, newPassword, customerId, conn);
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_MOBILE_PASSWORD_OPERATION_ERROR, "操作失败").throwException();
         }
         getResult().setCode(100);
@@ -5188,13 +5168,13 @@ public class CustomerPersonalAction extends BaseAction {
 
     /**
      * 获取客户资金详情，兑付后的客户资金
-     *
+     * <p>
      * 作者：姚章鹏
      * 内容：创建代码
      * 时间：2015年12月23日10:49:33
      */
     @Security(needToken = true)
-    public String getCustomerPrincipalAndProfitMoney() throws  Exception{
+    public String getCustomerPrincipalAndProfitMoney() throws Exception {
         // 获取数据库连接
         Connection conn = this.getConnection();
         // 获取请求
@@ -5202,7 +5182,7 @@ public class CustomerPersonalAction extends BaseAction {
         // 获取参数
         String customerId = HttpUtils.getParameter(request, "customerId");
         // 校验参数合法性
-        if(StringUtils.isEmpty(customerId)) {
+        if (StringUtils.isEmpty(customerId)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
 
@@ -5211,8 +5191,8 @@ public class CustomerPersonalAction extends BaseAction {
         Double principalMoney = customerPersonalService.getCustomerTotalPrincipalMoney(customerId, conn);
         object.put("totalPrincipalMoney", NumberUtils.format(principalMoney, 2));
         Double profitMoney = customerPersonalService.getCustomerTotalProfitMoney(customerId, conn);
-        object.put("totalProfitMoney",NumberUtils.format(profitMoney, 2));
-        
+        object.put("totalProfitMoney", NumberUtils.format(profitMoney, 2));
+
         getResult().setReturnValue(object);
         getResult().setCode(100);
         getResult().setMessage("操作成功");
@@ -5220,13 +5200,14 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
     /**
-     *内容：添加或者更改手势密码
-     *创建人：姚章鹏
+     * 内容：添加或者更改手势密码
+     * 创建人：姚章鹏
      * 时间：2015年12月25日11:44:11
+     *
      * @param
      */
     @Security(needToken = true)
-    public String addOrUpdateGesturePassword() throws  Exception{
+    public String addOrUpdateGesturePassword() throws Exception {
         // 获取数据库连接
         Connection conn = this.getConnection();
         // 获取请求
@@ -5236,18 +5217,18 @@ public class CustomerPersonalAction extends BaseAction {
         String gesturePassword = HttpUtils.getParameter(request, "gesturePassword");
         String status = HttpUtils.getParameter(request, "status");
         // 校验参数合法性
-        if(StringUtils.isEmpty(customerId)||StringUtils.isEmpty(gesturePassword)||StringUtils.isEmpty(status)) {
+        if (StringUtils.isEmpty(customerId) || StringUtils.isEmpty(gesturePassword) || StringUtils.isEmpty(status)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
-        int gesturePasswordStatus=0;
+        int gesturePasswordStatus = 0;
         try {
-            gesturePasswordStatus= Integer.parseInt(status);
-        }catch (Exception e){
+            gesturePasswordStatus = Integer.parseInt(status);
+        } catch (Exception e) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_CORRECT, "参数不正确").throwException();
         }
         //添加或者更改手势密码
         int count = customerPersonalService.setGesturePassword(customerId, gesturePassword, gesturePasswordStatus, conn);
-        if(count!=1){
+        if (count != 1) {
             MyException.newInstance(ReturnObjectCode.CUSTOMER_MOBILE_PASSWORD_OPERATION_ERROR, "操作失败").throwException();
         }
         getResult().setCode(100);
@@ -5256,14 +5237,15 @@ public class CustomerPersonalAction extends BaseAction {
     }
 
     /**
-     *内容：查询是否启用手势密码
+     * 内容：查询是否启用手势密码
      * 作者：姚章鹏
      * 内容：创建代码
      * 时间：2015年12月25日11:44:31
+     *
      * @param
      */
     @Security(needToken = true)
-    public String getGesturePassword() throws  Exception{
+    public String getGesturePassword() throws Exception {
         // 获取数据库连接
         Connection conn = this.getConnection();
         // 获取请求
@@ -5271,17 +5253,129 @@ public class CustomerPersonalAction extends BaseAction {
         // 获取参数
         String customerId = HttpUtils.getParameter(request, "customerId");
         // 校验参数合法性
-        if(StringUtils.isEmpty(customerId)) {
+        if (StringUtils.isEmpty(customerId)) {
             MyException.newInstance(ReturnObjectCode.PUBLIC_PARAMETER_NOT_COMPLETE, "参数不完整").throwException();
         }
         int GesturePasswordStatus = customerPersonalService.getGesturePassword(customerId, conn);
-        JSONObject object=new JSONObject();
-        object.put("status",GesturePasswordStatus);
+        JSONObject object = new JSONObject();
+        object.put("status", GesturePasswordStatus);
         getResult().setReturnValue(object);
         getResult().setCode(100);
         getResult().setMessage("操作成功");
         return SUCCESS;
     }
+
+
+    /**
+     * @param
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     * @description 快速添加客户
+     * @author 苟熙霖
+     * @date 2018/12/14 10:27
+     */
+    public String addCustomerPersonalQuick() throws Exception {
+
+        CustomerPersonalPO personalPO = new CustomerPersonalPO();
+        String name = getHttpRequestParameter("name");
+        String mobile = getHttpRequestParameter("mobile");
+        String idCardNumber = getHttpRequestParameter("idCardNumber");
+        /**
+         * 移动号码验证
+         */
+        Pattern checkMobile = Pattern.compile("(^1\\d{10}$)");
+        /**
+         * 身份证号验证
+         */
+        Pattern checkIdCardNum = Pattern.compile("(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)");
+
+
+
+
+        CustomerPersonalPO customerPersonalPO_Name = customerPersonalService.loadCustomerByName(name, getConnection());
+        CustomerPersonalPO customerPersonalPO_Mobile = customerPersonalService.loadCustomerByMobile(mobile, getConnection());
+        CustomerCertificatePO checkIdCardNumber = customerPersonalService.loadCustomerByIdCardNumber(idCardNumber, getConnection());
+
+
+        /**
+         * 判断客户姓名是否已经存在
+         */
+        if (StringUtils.isEmpty(mobile) && StringUtils.isEmpty(idCardNumber)) {
+            if (customerPersonalPO_Name != null) {
+                MyException.newInstance("已有同名客户，请添加客户手机号或身份证号", "").throwException();
+            }
+            personalPO.setName(name);
+            customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
+        }
+        /**
+         * 判断客户是否已经存在
+         */
+        else if (StringUtils.isEmpty(mobile)) {
+            if (checkIdCardNumber != null) {
+                MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
+            }
+            if(!checkIdCardNum.matcher(idCardNumber).matches() ){
+                MyException.newInstance("身份证号格式不正确,请查证", "").throwException();
+            }
+            CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
+            personalPO.setName(name);
+            customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
+            customerCertificatePO.setCustomerId(personalPO.getId());
+            customerCertificatePO.setNumber(idCardNumber);
+            customerCertificatePO.setName("98");
+            customerCertificateService.insertOrUpdate(customerCertificatePO, getLoginUser().getId(), getConnection());
+        }
+        /**
+         * 判断客户移动号码是否已经存在
+         */
+        else if (StringUtils.isEmpty(idCardNumber)) {
+            if (customerPersonalPO_Mobile!= null) {
+                MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
+            }
+            if(!checkMobile.matcher(mobile).matches()){
+                MyException.newInstance("移动号码格式不正确,请查证", "").throwException();
+            }
+            personalPO.setName(name);
+            personalPO.setMobile(mobile);
+            customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
+        }
+        /**
+         * 判断客户身份证号及移动号码是否已经存在
+         */
+        else{
+            if (checkIdCardNumber != null) {
+                MyException.newInstance("该身份证号已存在，请查证后再操作", "").throwException();
+            }
+            if(!checkIdCardNum.matcher(idCardNumber).matches() ){
+                MyException.newInstance("身份证号格式不正确,请查证", "").throwException();
+            }
+            if (customerPersonalPO_Mobile!= null) {
+                MyException.newInstance("该移动号码已存在，请查证后再操作", "").throwException();
+            }
+            if(!checkMobile.matcher(mobile).matches()){
+                MyException.newInstance("移动号码格式不正确,请查证", "").throwException();
+            }
+            CustomerCertificatePO customerCertificatePO = new CustomerCertificatePO();
+            personalPO.setName(name);
+            personalPO.setMobile(mobile);
+            customerPersonalService.insertOrUpdate(personalPO, getLoginUser().getId(), getConnection());
+            customerCertificatePO.setCustomerId(personalPO.getId());
+            customerCertificatePO.setNumber(idCardNumber);
+            customerCertificatePO.setName("98");
+            customerCertificateService.insertOrUpdate(customerCertificatePO, getLoginUser().getId(), getConnection());
+        }
+
+
+
+
+        getResult().setReturnValue(personalPO.toJsonObject());
+
+
+
+
+        return SUCCESS;
+    }
+
 
     public void setPersonal(CustomerPersonalPO personal) {
         this.personal = personal;

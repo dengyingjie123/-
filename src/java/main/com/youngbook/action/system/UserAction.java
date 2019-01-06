@@ -7,9 +7,7 @@ import com.youngbook.common.config.Config;
 import com.youngbook.common.config.SessionConfig;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
-import com.youngbook.entity.po.DepartmentPO;
-import com.youngbook.entity.po.UserPO;
-import com.youngbook.entity.po.UserType;
+import com.youngbook.entity.po.*;
 import com.youngbook.entity.po.sale.SalesmanPO;
 import com.youngbook.entity.po.system.UserPositionInfoPO;
 import com.youngbook.entity.vo.system.UserVO;
@@ -391,6 +389,43 @@ public class UserAction extends BaseAction {
         return SUCCESS;
     }
 
+    /**
+     * @description 获取对应用户的权限
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/12 11:31
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String getPagerMenuPo() throws  Exception{
+        /*
+        * 初始化数据
+        * */
+        String userId = HttpUtils.getParameter(getRequest(), "user.id");
+        String permissionName = HttpUtils.getParameter(getRequest(), "menuPO.permissionName");
+        Pager pagerMenuPos = Pager.getInstance(getRequest());
+
+
+
+
+        /**
+         *  获取对应用户的权限
+         */
+        pagerMenuPos = userService.getPagerMenuPos(userId, permissionName, pagerMenuPos.getCurrentPage(), pagerMenuPos.getShowRowCount(), getConnection());
+
+
+
+
+        getResult().setReturnValue(pagerMenuPos.toJsonObject());
+
+
+
+
+        return SUCCESS;
+    }
+
 
     public ReturnObject getResult() {
         return result;
@@ -432,4 +467,6 @@ public class UserAction extends BaseAction {
     public void setDepartment(DepartmentPO department) {
         this.department = department;
     }
+
+
 }

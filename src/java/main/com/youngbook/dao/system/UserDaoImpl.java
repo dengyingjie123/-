@@ -1,12 +1,16 @@
 package com.youngbook.dao.system;
 
 import com.youngbook.common.Database;
+import com.youngbook.common.Pager;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.database.DatabaseSQL;
+import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.NumberUtils;
 import com.youngbook.common.utils.StringUtils;
 import com.youngbook.common.utils.Struts2Utils;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.entity.po.MenuPO;
+import com.youngbook.entity.po.PermissionPO;
 import com.youngbook.entity.po.UserPO;
 import org.springframework.stereotype.Component;
 import sun.awt.SunToolkit;
@@ -117,5 +121,32 @@ public class UserDaoImpl implements IUserDao {
             return  users.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Pager getPagerMenuPos(String userId, String permissionName, int currentPage, int showRowCount, Connection connection) throws Exception {
+        /*
+        * 初始化DatabaseSQL
+        * */
+        MenuPO po = new MenuPO();
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("skrskr");
+        dbSQL.addParameter4All("userId",userId);
+        dbSQL.addParameter4All("permissionName",permissionName);
+        dbSQL.initSQL();
+        dbSQL.init4Pager();
+
+
+
+
+        /*
+        * 查询数据
+        * */
+        Pager pagerMenuPos = MySQLDao.search(dbSQL, po, null, currentPage, showRowCount, null, connection);
+
+
+
+
+
+        return pagerMenuPos;
     }
 }

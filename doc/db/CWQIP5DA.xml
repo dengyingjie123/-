@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="CWQIP5DA">
+SELECT
+	*
+FROM
+    	crm_customercertificate cc
+LEFT JOIN  crm_customerpersonal cp ON cp.id = cc.CustomerId
+WHERE
+    1 = 1
+AND cc.state = 0
+<if test="#{idCardNumber} != null">
+    AND cc.Number= #{idCardNumber}
+</if>
+        </select>
+    </select-sql>
+</sql>

@@ -4,6 +4,7 @@ import com.youngbook.common.Pager;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
+import com.youngbook.entity.po.customer.CustomerCertificatePO;
 import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.fdcg.FdcgCustomerPO;
 import com.youngbook.entity.vo.customer.CustomerPersonalVO;
@@ -16,6 +17,8 @@ import java.util.List;
  * Created by Lee on 2016/5/28.
  */
 public interface ICustomerPersonalDao {
+    public CustomerCertificatePO loadCustomerCertificateByIdCardNumber(CustomerCertificatePO customerCertificatePO, Connection conn) throws Exception;
+    public CustomerPersonalPO loadCustomerPO(CustomerPersonalPO customerPersonalPO, Connection conn) throws Exception;
     public CustomerPersonalPO insertOrUpdate(CustomerPersonalPO customerPersonalPO, String userId, Connection conn) throws Exception;
     public CustomerPersonalPO updateModern(CustomerPersonalPO customer, String userId, Connection conn) throws Exception;
     public boolean isCustomerCatalogConfirmed(CustomerPersonalPO customerPersonalPO);

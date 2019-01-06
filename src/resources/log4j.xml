@@ -11,7 +11,7 @@
 
     <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
         <!--指定消息输出路径中的文件。-->
-        <param name="File" value="D:/work/03_deploy/weblogic/log/system.log"/>
+        <param name="File" value="C:/work/03_deploy/weblogic/log/system.log"/>
         <!--指定日志信息的最低输出级别，默认为DEBUG。-->
         <param name="Threshold" value="DEBUG"/>
         <!--表示所有消息都会被立即输出，默认值是true。-->

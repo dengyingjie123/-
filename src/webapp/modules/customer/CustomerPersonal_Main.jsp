@@ -14,6 +14,7 @@
     String token = request.getParameter("token") ;
 
     // 创建需要权限控制的按钮
+    ButtonPO btnQuickAdd = new ButtonPO("btnCustomerPersonalQuickAdd" + token, "快速添加", "icon-add","客户管理_个人客户管理_快速添加");
     ButtonPO btnAdd = new ButtonPO("btnCustomerPersonalAdd" + token, "添加", "icon-add","客户管理_个人客户管理_新建");
     ButtonPO btnEdit = new ButtonPO("btnCustomerPersonalEdit" + token, "修改", "icon-edit");
     ButtonPO btnDistribution = new ButtonPO("btnCustomerDistribution" + token, "客户分配管理", "icon-search", "客户管理_个人客户管理_客户分配管理");
@@ -29,6 +30,7 @@
     // 创建Toolbar，并受权限控制
     ToolbarPO toolbar = ToolbarPO.getInstance(request);
     // 直接添加按钮，后台程序会自动判断，有权限则添加，没有权限则不添加
+    toolbar.addButton(btnQuickAdd);
     toolbar.addButton(btnAdd);
     toolbar.addButton(btnEdit);
     toolbar.addButton(btnDelete);

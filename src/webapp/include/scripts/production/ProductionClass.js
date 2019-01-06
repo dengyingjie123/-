@@ -379,10 +379,15 @@ var ProductionClass = function (token, my, obj) {
                 }
             });
 
-
+            if (windowType == WindowType_Edit ) {
+                onClickProductionEditSubmit();
+            }
+            if (windowType == WindowType_Add || windowType == WindowType_Check) {
+                onClickProductionSubmit();
+            }
             // 初始化表单提交事件
             // fw.initCKEditor("description" + token);
-            onClickProductionSubmit();
+
             // 得到下拉的id
             var tree = $('#productHomeId' + token).combotree('tree');
             // 初始化产品头的列表
@@ -508,8 +513,16 @@ var ProductionClass = function (token, my, obj) {
         });
     }
 
+
     /**
-     * 修改事件
+     * @description 修改事件
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/11/30 13:58
+     * @param null
+     * @return
+     * @throws Exception
      */
     function onClickProductionEdit() {
         var buttonId = "btnProductionEdit" + token;
@@ -517,6 +530,14 @@ var ProductionClass = function (token, my, obj) {
             fw.datagridGetSelected('ProductionTable' + token, function (selected) {
                 process.beforeClick();
                 var id = selected.id;
+
+                var status = selected.status;
+                if(status != 0) {
+                    fw.alert('提示',"当前状态订单无法修改，请审批为草稿再进行修改操作");
+                    process.afterClick();
+                    return;
+                }
+
                 var url = WEB_ROOT + "/production/Production_load.action?production.id=" + id;
                 fw.post(url, null, function (data) {
 //                    fw.alertReturnValue(data);
@@ -525,10 +546,12 @@ var ProductionClass = function (token, my, obj) {
                 }, function () {
                     process.afterClick();
                 });
+
             })
 
         });
     }
+
 
     function onClickProductionView() {
         var buttonId = "btnProductionView" + token;
@@ -548,6 +571,8 @@ var ProductionClass = function (token, my, obj) {
 
         });
     }
+
+
     /**
      * 审核事件
      *
@@ -650,6 +675,76 @@ var ProductionClass = function (token, my, obj) {
             //结束时间不能小于开始时间
             var formId = "formProduction" + token;
             var url = WEB_ROOT + "/production/Production_insertOrUpdate.action";
+            fw.bindOnSubmitForm(formId, url, function () {
+                process.beforeClick();
+            }, function () {
+//                    alert('done');
+                process.afterClick();
+                fw.datagridReload("ProductionTable" + token);
+                fw.windowClose('ProductionWindow' + token);
+            }, function () {
+                process.afterClick();
+            });
+        });
+    }
+
+    /*
+     * @description 产品修改数据提交
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/3 9:12
+     * @param null
+     * @return
+     * @throws Exception
+     */
+    function onClickProductionEditSubmit() {
+
+
+        var buttonId = "btnProductionSubmit" + token;
+        fw.bindOnClick(buttonId, function (process) {
+            fw.CurrencyFormatText('size' + token);
+            //判断配额是否小于或等于0
+            if (fw.getCurrencyFormatValue('size' + token) <= 0) {
+                fw.alert("警告", "配额不可为0");
+                return;
+            }
+            //开始时间
+            var startTime = fw.getFormValue('startTime' + token, fw.type_form_datebox, fw.type_get_value);
+            // 到期日
+            var stopTime = fw.getFormValue('stopTime' + token, fw.type_form_datebox, fw.type_get_value);
+            //结束时间不能小于开始时间
+            if (stopTime < startTime) {
+                fw.alert("警告", "结束时间不能小于开始时间");
+                return;
+            }
+
+
+            //  起息日不能大于到期日
+            //起息日
+            var valueDate = fw.getFormValue('valueDate' + token, fw.type_form_datebox, fw.type_get_value);
+            // 到期日
+            var expiringDate = fw.getFormValue('expiringDate' + token, fw.type_form_datebox, fw.type_get_value);
+
+            if (!fw.checkIsTextEmpty(valueDate) && !fw.checkIsTextEmpty(expiringDate) && valueDate >= expiringDate) {
+
+                fw.alert("警告", "起息日不能大于或等于到期日");
+                return;
+            }
+            //投资期限
+            var InvestTermView =   $("#InvestTermView"+token).val();
+            //显示期限范围
+            var InvestTerm = $("#InvestTerm"+token).val();
+
+            //判断数据有效性
+            if (!fw.checkIsNullObject(InvestTerm) && InvestTerm < 0) {
+                fw.alert("警告", "网站显示期限范围数据填写正确");
+                return false;
+            }
+
+            //结束时间不能小于开始时间
+            var formId = "formProduction" + token;
+            var url = WEB_ROOT + "/production/Production_editProduction.action";
             fw.bindOnSubmitForm(formId, url, function () {
                 process.beforeClick();
             }, function () {

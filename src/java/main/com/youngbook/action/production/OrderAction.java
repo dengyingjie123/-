@@ -209,18 +209,26 @@ public class OrderAction extends BaseAction {
     }
 
 
+    /**
+     * 生成兑付计划
+     * @return
+     * @throws Exception
+     */
     public String generatePaymentPlan() throws Exception {
 
         String orderId = getHttpRequestParameter("orderId");
         Connection conn = getConnection();
 
 
+
+
         OrderPO order = orderService.loadByOrderId(orderId, conn);
 
-        orderService.generatePaymentPlan(order, "1", getLoginUser().getId(), conn);
+
+
+
 
         getResult().setReturnValue("{'message':'生成兑付计划成功'}");
-
         return SUCCESS;
     }
 

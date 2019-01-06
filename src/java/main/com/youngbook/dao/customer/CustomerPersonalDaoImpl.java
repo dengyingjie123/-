@@ -313,6 +313,72 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return count;
     }
 
+    
+    /**
+     * @description 根据姓名或移动号码查询CustomerPersonalPO
+     * 
+     * @author 苟熙霖 
+     * 
+     * @date 2018/12/19 15:27
+     * @param customerPersonalPO
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerPersonalPO
+     * @throws Exception
+     */
+    public CustomerPersonalPO loadCustomerPO(CustomerPersonalPO customerPersonalPO, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DE");
+        databaseSQL.addParameter4All("name", customerPersonalPO.getName());
+        databaseSQL.addParameter4All("mobile", customerPersonalPO.getMobile());
+        databaseSQL.initSQL();
+
+
+
+
+        List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
+        if(search.size() >= 1){
+            return search.get(0);
+        }
+
+
+
+
+        return null;
+    }
+
+
+  /**
+   * @description 根据身份证号查询CustomerCertificatePO
+   * 
+   * @author 苟熙霖 
+   * 
+   * @date 2018/12/19 15:30
+   * @param customerCertificatePO
+   * @param conn
+   * @return com.youngbook.entity.po.customer.CustomerCertificatePO
+   * @throws Exception
+   */
+    public CustomerCertificatePO  loadCustomerCertificateByIdCardNumber (CustomerCertificatePO customerCertificatePO, Connection conn ) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DA");
+        databaseSQL.addParameter4All("idCardNumber", AesEncrypt.encrypt(customerCertificatePO.getNumber()));
+        databaseSQL.initSQL();
+
+
+
+
+        List<CustomerCertificatePO> search = MySQLDao.search(databaseSQL, CustomerCertificatePO.class, conn);
+        if(search.size() >= 1){
+            return search.get(0);
+        }
+
+
+
+
+        return null;
+    }
+
+
     /**
      * 网站：通过 Customer mobile 获取 Customer
      * <p/>
@@ -348,6 +414,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return null;
     }
 
+
     public CustomerPersonalPO loadCustomerByLoginName(String loginName, Connection conn) throws Exception {
 
         StringBuffer sbSQL = new StringBuffer();
@@ -370,6 +437,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return null;
     }
 
+
     public CustomerVO loadCustomerVO(String customerId, Connection conn) throws Exception {
 
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("loadCustomerVO", this);
@@ -383,6 +451,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
 
         return null;
     }
+
 
     public boolean isCustomerCatalogConfirmed(CustomerPersonalPO customerPersonalPO) {
         if (customerPersonalPO != null && customerPersonalPO.getCustomerCatalogId() != null && customerPersonalPO.getCustomerCatalogId().equals(CustomerCatalog.Confirmed)) {
@@ -457,6 +526,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return 1;
     }
 
+
     /**
      * 网站：通过 Customer ID 获取 Customer
      * <p/>
@@ -492,6 +562,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         }
         return null;
     }
+
 
     public CustomerPersonalPO loadByCustomerPersonalNumber(String personalNumber, Connection conn) throws Exception {
 
