@@ -154,10 +154,9 @@ public class CalendarService extends BaseService {
             // A2A200
             String birthdayBgCorlor = "crm.calendar.birthday.bgcolor";
 
-            birthDay.setBackgroundColor(Config.getSystemConfig(birthdayBgCorlor));
-            birthDay.setEnd(birthDay.getStart());
+            birthDay.setColor(Config.getSystemConfig(birthdayBgCorlor));
             StringBuilder sb = new StringBuilder(birthDay.getTitle());
-            sb.insert(0, "生日：");
+            sb.insert(0, "生日 ");
             birthDay.setTitle(sb.toString());
         }
 

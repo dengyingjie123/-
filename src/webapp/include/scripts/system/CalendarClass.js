@@ -28,7 +28,7 @@ var CalendarClass = function (token) {
                 var customerId = event.id;
                 initCostomerPersonal_ListProductionWindow(customerId);
             },*/
-            events:function(start, end, timezone, callback) {
+            events: function (start, end, timezone, callback) {
 
                 var view = $('#calendar').fullCalendar('getView');
 
