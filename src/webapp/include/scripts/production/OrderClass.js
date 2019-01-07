@@ -392,7 +392,7 @@ var OrderClass = function (token) {
                 onClickOrderFinanceConfirm02();
                 onClickOrderTransfer();
                 onClickOrderPayback();
-                onClickOrderDelete();
+
                 onClickMoneyTransfer2Gongda();
                 onClickOrderFeedback1();
                 onClickOrderFeedback2();
@@ -401,7 +401,7 @@ var OrderClass = function (token) {
                 onClickOrderEdit();
 
                 onClickOrderProductionEdit();
-
+                onClickOrderDelete();
                 onClickOrderGeneratePaymentPlan();
 
                 onClickOrderContractSigned();
@@ -2080,14 +2080,14 @@ var OrderClass = function (token) {
 
 
     /**
-     * 删除事件 todo 苟熙霖
+     * 删除事件 
      */
     function onClickOrderDelete() {
         var buttonId = "btnOrderDeleteProduction" + token;
         fw.bindOnClick(buttonId, function (process) {
             fw.datagridGetSelected('OrderTable' + token, function (selected) {
                 fw.confirm('删除确认', '是否确认删除数据？', function () {
-                    var url = WEB_ROOT + "/order/production_deleteOrder.action?orderId=" + selected.id;
+                    var url = WEB_ROOT + "/production/Order_deleteOrder.action?orderId=" + selected.id;
                     fw.post(url, null, function () {
                         fw.datagridReload('OrderTable' + token);
                     }, null);
@@ -2097,6 +2097,7 @@ var OrderClass = function (token) {
             });
         });
     }
+
 
     /**
      * 数据提交事件

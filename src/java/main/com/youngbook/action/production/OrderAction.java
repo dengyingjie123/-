@@ -1208,7 +1208,13 @@ public class OrderAction extends BaseAction {
     public String deleteOrder() throws Exception {
 
         String orderId = HttpUtils.getParameter(getRequest(), "orderId");
+
+
+
+
         orderService.deleteOrder(orderId, getLoginUser().getId(), getConnection());
+
+
 
 
         return SUCCESS;
