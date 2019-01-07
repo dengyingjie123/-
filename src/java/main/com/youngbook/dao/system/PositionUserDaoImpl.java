@@ -48,7 +48,7 @@ public class PositionUserDaoImpl implements IPositionUserDao {
      * @throws Exception
      */
     @Override
-    public Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+    public Pager getListPositionUser(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception {
 
         DatabaseSQL dbSQL = DatabaseSQL.newInstance("822A1600");
         dbSQL.addParameter4All("userName",positionUserVO.getUserName());
@@ -56,7 +56,7 @@ public class PositionUserDaoImpl implements IPositionUserDao {
         dbSQL.initSQL();
         dbSQL.init4Pager();
 
-        Pager search = MySQLDao.search(dbSQL, positionUserVO, null, currentPage, showRowCount, null, conn);
+        Pager search = MySQLDao.search(dbSQL, new PositionUserVO() , null, currentPage, showRowCount, null, conn);
 
         return search;
     }

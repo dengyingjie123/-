@@ -159,7 +159,8 @@ public class PositionUserAction extends BaseAction {
 
         Pager pager = Pager.getInstance(getRequest());
 
-        pager = positionUserService.showList(positionUserVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+        pager = positionUserService.getListPositionUser(positionUserVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
+
         //返回数据
         getResult().setReturnValue(pager.toJsonObject());
 

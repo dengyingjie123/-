@@ -12,5 +12,5 @@ public interface IPositionUserDao {
 
     void setDefaultFinanceCircle(String userId, Connection conn) throws Exception;
 
-    Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception;
+    Pager getListPositionUser(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception;
 }

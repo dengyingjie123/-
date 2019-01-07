@@ -1,5 +1,6 @@
 package com.youngbook.service.system;
 
+import com.youngbook.common.MyException;
 import com.youngbook.common.Pager;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.dao.system.IPositionUserDao;
@@ -44,12 +45,9 @@ public class PositionUserService extends BaseService {
      * @return com.youngbook.common.Pager 
      * @throws Exception
      */
-    public Pager showList(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception{
+    public Pager getListPositionUser(PositionUserVO positionUserVO, int currentPage, int showRowCount, Connection conn) throws Exception{
 
+            return positionUserDao.getListPositionUser(positionUserVO, currentPage, showRowCount, conn);
 
-        /**
-         * positionUserVO判断是否为空
-         */
-        return positionUserDao.showList(positionUserVO, currentPage, showRowCount, conn);
     }
 }

@@ -237,6 +237,7 @@ var PositionUserClass = function (token) {
 
             params["PositionUserVO.userName"] = $('#Search_userName'+token).val();
             params["PositionUserVO.mobile"] = $('#Search_mobile'+token).val();
+
             $( '#' + strTableId).datagrid('load');
         });
     }
