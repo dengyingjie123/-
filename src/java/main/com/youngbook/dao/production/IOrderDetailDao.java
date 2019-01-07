@@ -18,4 +18,6 @@ public interface IOrderDetailDao {
     public int saveOrderDetail( OrderPO order, double operationMoney, String operationTime, int operationOrderStatus, String description, String userId, Connection conn) throws Exception;
     public int saveOrderDetail(OrderPO order, double money, String operationTime, String description, String userId, Connection conn) throws Exception;
     public List<OrderDetailPO> getOrderDetailsByCustomerId(String customerId, Connection conn) throws Exception;
+
+    public List<OrderDetailPO> getListOrderDetailPOByOrderId (String orderId, Connection conn) throws  Exception;
 }

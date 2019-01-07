@@ -1,6 +1,7 @@
 package com.youngbook.dao.production;
 
 import com.youngbook.entity.po.common.TimePO;
+import com.youngbook.entity.po.production.OrderDetailPO;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.vo.production.OrderVO;
 

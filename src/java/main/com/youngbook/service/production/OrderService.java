@@ -827,7 +827,7 @@ public class OrderService extends BaseService {
 
 
     /**
-     * @description 删除订单
+     * @description 删除订单,已被兑付的无法删除,并删除相对应的订单明细
      *
      * @author 苟熙霖
      *
@@ -842,6 +842,8 @@ public class OrderService extends BaseService {
 
         OrderPO orderPO = orderDao.loadByOrderId(orderId, connection);
         List<PaymentPlanPO> paymentPlanPOS = paymentPlanDao.getPaymentPlansByOrderId(orderId, connection);
+
+
 
 
         int status;
@@ -862,6 +864,10 @@ public class OrderService extends BaseService {
 
 
         orderDetailDao.saveOrderDetail(orderPO,0, TimeUtils.getNow(), "订单删除", userId, connection);
+        List<OrderDetailPO> orderDetailPOS = orderDetailDao.getListOrderDetailPOByOrderId(orderId, connection);
+        for (OrderDetailPO orderDetailPO : orderDetailPOS) {
+           MySQLDao.remove(orderDetailPO, userId, connection);
+        }
 
 
 

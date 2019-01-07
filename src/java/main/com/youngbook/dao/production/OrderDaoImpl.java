@@ -10,6 +10,7 @@ import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.common.TimePO;
 import com.youngbook.entity.po.customer.CustomerAccountPO;
+import com.youngbook.entity.po.production.OrderDetailPO;
 import com.youngbook.entity.po.production.OrderPO;
 import com.youngbook.entity.vo.production.OrderVO;
 import org.apache.struts2.RequestUtils;
@@ -232,6 +233,7 @@ public class OrderDaoImpl implements IOrderDao {
 
         return orders;
     }
+
 
 
 

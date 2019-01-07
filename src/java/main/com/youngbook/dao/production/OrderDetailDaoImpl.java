@@ -133,4 +133,29 @@ public class OrderDetailDaoImpl implements IOrderDetailDao {
         return details;
     }
 
+
+    /**
+     * @description 查询订单相关订单明细
+     *
+     * @author 苟熙霖
+     *
+     * @date 2019/1/7 15:13
+     * @param orderId
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.production.OrderDetailPO>
+     * @throws Exception
+     */
+    @Override
+    public List<OrderDetailPO> getListOrderDetailPOByOrderId(String orderId, Connection conn) throws Exception {
+
+        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("6NPMYONK");
+        databaseSQL.addParameter4All("orderId", orderId);
+        databaseSQL.initSQL();
+        List<OrderDetailPO> orderDetailPOS = MySQLDao.search(databaseSQL, OrderDetailPO.class, conn);
+
+
+
+
+        return orderDetailPOS;
+    }
 }
