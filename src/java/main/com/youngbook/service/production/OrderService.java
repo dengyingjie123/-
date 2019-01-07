@@ -852,6 +852,9 @@ public class OrderService extends BaseService {
         }
         MySQLDao.remove(orderPO,userId ,connection);
 
+        orderDetailDao.saveOrderDetail(orderPO,0, TimeUtils.getNow(), "订单删除", userId, connection);
+
+
         return orderPO ;
     }
 
