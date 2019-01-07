@@ -227,6 +227,13 @@ public class OrderAction extends BaseAction {
 
 
 
+        /**
+         * 生成兑付计划
+         * */
+        orderService.generatePaymentPlan(order, "1" ,getLoginUser().getId(), conn);
+
+
+
 
         getResult().setReturnValue("{'message':'生成兑付计划成功'}");
         return SUCCESS;
