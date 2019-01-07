@@ -30,4 +30,6 @@ public interface IPaymentPlanDao {
     public Pager getCapitalPre(PaymentPlanVO paymentPlanVO, String startTime, String endTime, String departments, Connection conn) throws Exception;
 
     List<PaymentPlanVO> getCapitalPreDetail(String startTime, String endTime, Connection connection) throws Exception;
+
+    List<PaymentPlanVO> getListPaymentPlanVO(String paymentTime, Connection connection) throws Exception;
 }

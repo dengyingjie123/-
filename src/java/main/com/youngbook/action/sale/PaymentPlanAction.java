@@ -58,6 +58,16 @@ public class PaymentPlanAction extends BaseAction {
     CustomerScoreService customerScoreService;
 
 
+
+    /**
+     * @description
+     * Excel表格导出
+     * @author 胡超怡
+     *
+     * @date 2018/12/7 13:05
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String exportReportMonth() throws Exception {
 
         String paymentTimeMonth = getHttpRequestParameter("paymentTimeMonth");
@@ -106,7 +116,7 @@ public class PaymentPlanAction extends BaseAction {
             for (int i = 0; plans != null && i < plans.size(); i++) {
                 PaymentPlanVO paymentPlanVO = plans.get(i);
 
-                Date datePaymentPlanTime = TimeUtils.getDate(paymentPlanVO.getPaymentTime());
+                Date datePaymentPlanTime = TimeUtils.getNewDate(paymentPlanVO.getPaymentTime());
                 int currentWeekOfYear = TimeUtils.getWeekOfYear(datePaymentPlanTime);
                 if (weekOfYear != currentWeekOfYear) {
 
@@ -142,6 +152,9 @@ public class PaymentPlanAction extends BaseAction {
                 plansOfWeek.add(paymentPlanVO);
 
 
+                /**
+                 * 设置表头
+                 */
                 ExcelUtils.setCellValue("a" + (offset + i), paymentPlanVO.getCustomerName(), sheet);
                 ExcelUtils.setCellValue("b" + (offset + i), paymentPlanVO.getProductionName(), sheet);
                 ExcelUtils.setCellValue("c" + (offset + i), paymentPlanVO.getPayTime(), sheet);
@@ -152,8 +165,8 @@ public class PaymentPlanAction extends BaseAction {
                 ExcelUtils.setCellValue("h" + (offset + i), paymentPlanVO.getTotalPaymentPrincipalMoney(), sheet);
                 ExcelUtils.setCellValue("i" + (offset + i), paymentPlanVO.getTotalProfitMoney(), sheet);
                 ExcelUtils.setCellValue("j" + (offset + i), paymentPlanVO.getTotalPaymentPrincipalMoney() + paymentPlanVO.getTotalProfitMoney(), sheet);
-
-
+                ExcelUtils.setCellValue("k" + (offset + i), paymentPlanVO.getSaleManName(), sheet);
+                ExcelUtils.setCellValue("l" + (offset + i), paymentPlanVO.getSaleGroupName(), sheet);
                 // 打印最后一笔小计
                 // 打印小计内容
                 if (i == (plans.size() - 1) && plansOfWeek != null && plansOfWeek.size() > 0) {
@@ -220,6 +233,16 @@ public class PaymentPlanAction extends BaseAction {
         return SUCCESS;
     }
 
+
+    /**
+     * @description 兑付计划月报
+     * 显示出兑付计划的月报列表
+     * @author 胡超怡
+     *
+     * @date 2019/1/4 15:31
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String reportMonth() throws Exception {
 
         String paymentTime = getHttpRequestParameter("paymentTime");

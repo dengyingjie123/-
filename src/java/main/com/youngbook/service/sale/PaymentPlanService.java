@@ -641,17 +641,29 @@ public class PaymentPlanService extends BaseService implements IBizService {
 
     public List<PaymentPlanVO> getListPaymentPlanVO(String paymentTime, Connection conn) throws Exception {
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("reportMonth", this);
-        dbSQL.addParameter4All("paymentTime", paymentTime);
-        dbSQL.initSQL();
 
-        List<PaymentPlanVO> list = MySQLDao.search(dbSQL, PaymentPlanVO.class, conn);
+        List<PaymentPlanVO> list = paymentPlanDao.getListPaymentPlanVO(paymentTime,conn);
 
+
+        /**
+         * @description
+         * 处理返回的list的金额，时间，星期，收益方式数据
+         * @author 胡超怡
+         *
+         * @date 2018/12/7 13:10
+         * @param paymentTime
+         * @param conn
+         * @return java.util.List<com.youngbook.entity.vo.Sale.PaymentPlanVO>
+         * @throws Exception
+         */
         for (int i = 0; list != null && i < list.size(); i++) {
             PaymentPlanVO paymentPlanVO = list.get(i);
             paymentPlanVO.setTotalPaymentMoney(paymentPlanVO.getTotalProfitMoney() + paymentPlanVO.getTotalPaymentPrincipalMoney());
 
-            // 金额保留2位小数
+
+            /**
+             * 金额保留2位小数
+             */
             double profitMoney = NumberUtils.formatDouble(paymentPlanVO.getTotalProfitMoney(), 2);
             paymentPlanVO.setTotalProfitMoney(profitMoney);
 
@@ -661,13 +673,37 @@ public class PaymentPlanService extends BaseService implements IBizService {
             double totalMoney = NumberUtils.formatDouble(paymentPlanVO.getTotalPaymentMoney(), 2);
             paymentPlanVO.setTotalPaymentMoney(totalMoney);
 
-            // 星期
+
+            /**
+             * 星期
+             */
             String time = paymentPlanVO.getPaymentTime();
             Date date = TimeUtils.getDate(time);
             String weekOfDay = TimeUtils.getWeekDayChinese(date);
             paymentPlanVO.setWeekOfDay(weekOfDay);
 
-            // 收益方式描述
+
+            /**
+             * 转换兑付时间格式
+             */
+            if(paymentPlanVO.getPaymentTime() != null){
+                Date newPaymentTimeDate = TimeUtils.getDate(paymentPlanVO.getPaymentTime());
+                String newPaymentTime = new SimpleDateFormat("yyyy-MM-dd").format(newPaymentTimeDate);
+                paymentPlanVO.setPaymentTime(newPaymentTime);
+            }
+
+            /**
+             * 转换认购时间格式
+             */
+            if(paymentPlanVO.getPayTime() != null){
+                Date newPayTimeDate = TimeUtils.getDate(paymentPlanVO.getPayTime());
+                String newPayTime = new SimpleDateFormat("yyyy-MM-dd").format(newPayTimeDate);
+                paymentPlanVO.setPayTime(newPayTime);
+            }
+
+            /**
+             * 收益方式描述
+             */
             StringBuffer interestDescription = new StringBuffer();
             if (paymentPlanVO.getInterestCycle() == 3) {
                 interestDescription.append("季度");
@@ -679,6 +715,8 @@ public class PaymentPlanService extends BaseService implements IBizService {
             interestDescription.append(paymentPlanVO.getCurrentInstallment() + "/" + paymentPlanVO.getInterestTimes() + " )");
 
             paymentPlanVO.setInterestDescription(interestDescription.toString());
+
+
         }
 
         return list;

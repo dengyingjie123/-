@@ -99,6 +99,24 @@ public class TimeUtils {
         return sdf.parse(dateText);
     }
 
+
+
+
+    /**
+     * @description
+     * 根据yyyy-MM-dd格式化
+     * @author 胡超怡
+     *
+     * @date 2018/12/7 13:06
+     * @param dateText
+     * @return java.util.Date
+     * @throws Exception
+     */
+    public static Date getNewDate(String dateText) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(dateText);
+    }
+
     public static Date getDateCommon(String dateText) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.parse(dateText);
