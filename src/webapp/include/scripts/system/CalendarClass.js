@@ -22,48 +22,20 @@ var CalendarClass = function (token) {
             },
             lang: 'zh-cn',
             defaultDate: fw.getTimeToday(),
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            eventClick: function (event, jsEvent, view) {
-//                    if (event.id) {
-//                        alert(event.start);
-//                    }
+            editable: false,
+            eventLimit: true,
+            /*eventClick: function (event, jsEvent, view) {
                 var customerId = event.id;
                 initCostomerPersonal_ListProductionWindow(customerId);
-            },
+            },*/
             events:function(start, end, timezone, callback) {
 
                 var view = $('#calendar').fullCalendar('getView');
-
-                // alert("The view's title is " + view.title);
 
                 fw.post(WEB_ROOT + "/system/Calendar_listCustomerBirthdays.action", {"intervalStart": view.intervalStart.format()}, function (data) {
                     callback(data);
                 }, null);
             },
-            /*events: [
-                {
-                    title: 'Business Lunch',
-                    start: '2018-12-03T13:00:00',
-                    constraint: 'businessHours'
-                },
-                {
-                    title: 'Meeting',
-                    start: '2018-12-13T11:00:00',
-                    constraint: 'availableForMeeting', // defined below
-                    color: '#257e4a'
-                },
-                {
-                    title: 'Conference',
-                    start: '2018-12-18',
-                    end: '2018-12-20'
-                },
-                {
-                    title: 'Party',
-                    start: '2018-12-29T20:00:00'
-                },
-
-            ]*/
         });
 
     }

@@ -32,7 +32,7 @@ public class CalendarService extends BaseService {
         sbSQL.append("     id,");
         sbSQL.append("     NAME title,");
         sbSQL.append("     CONCAT(");
-        sbSQL.append("         DATE_FORMAT(date_add('"+intervalStart+"', INTERVAL - 1 MONTH), '%Y'),");
+        sbSQL.append("         DATE_FORMAT(date_add('" + intervalStart + "', INTERVAL - 1 MONTH), '%Y'),");
         sbSQL.append("         '-',");
         sbSQL.append("         DATE_FORMAT(Birthday, '%c-%d')");
         sbSQL.append("     ) START");
@@ -41,7 +41,7 @@ public class CalendarService extends BaseService {
         sbSQL.append(" WHERE");
         sbSQL.append("     state = 0");
         sbSQL.append("     AND DATE_FORMAT(birthday, '%c') = DATE_FORMAT(");
-        sbSQL.append("         date_add('"+intervalStart+"', INTERVAL - 1 MONTH),");
+        sbSQL.append("         date_add('" + intervalStart + "', INTERVAL - 1 MONTH),");
         sbSQL.append("         '%c'");
         sbSQL.append("     )");
         sbSQL.append(" ");
@@ -52,7 +52,7 @@ public class CalendarService extends BaseService {
         sbSQL.append("     id,");
         sbSQL.append("     NAME title,");
         sbSQL.append("     CONCAT(");
-        sbSQL.append("         DATE_FORMAT(date_add('"+intervalStart+"', INTERVAL 0 MONTH), '%Y'),");
+        sbSQL.append("         DATE_FORMAT(date_add('" + intervalStart + "', INTERVAL 0 MONTH), '%Y'),");
         sbSQL.append("         '-',");
         sbSQL.append("         DATE_FORMAT(Birthday, '%c-%d')");
         sbSQL.append("     ) START");
@@ -61,7 +61,7 @@ public class CalendarService extends BaseService {
         sbSQL.append(" WHERE");
         sbSQL.append("     state = 0");
         sbSQL.append("     AND DATE_FORMAT(birthday, '%c') = DATE_FORMAT(");
-        sbSQL.append("         date_add('"+intervalStart+"', INTERVAL 0 MONTH),");
+        sbSQL.append("         date_add('" + intervalStart + "', INTERVAL 0 MONTH),");
         sbSQL.append("         '%c'");
         sbSQL.append("     )");
         sbSQL.append(" ");
@@ -72,7 +72,7 @@ public class CalendarService extends BaseService {
         sbSQL.append("     id,");
         sbSQL.append("     NAME title,");
         sbSQL.append("     CONCAT(");
-        sbSQL.append("         DATE_FORMAT(date_add('"+intervalStart+"', INTERVAL 1 MONTH), '%Y'),");
+        sbSQL.append("         DATE_FORMAT(date_add('" + intervalStart + "', INTERVAL 1 MONTH), '%Y'),");
         sbSQL.append("         '-',");
         sbSQL.append("         DATE_FORMAT(Birthday, '%c-%d')");
         sbSQL.append("     ) START");
@@ -81,7 +81,7 @@ public class CalendarService extends BaseService {
         sbSQL.append(" WHERE");
         sbSQL.append("     state = 0");
         sbSQL.append("     AND DATE_FORMAT(birthday, '%c') = DATE_FORMAT(");
-        sbSQL.append("         date_add('"+intervalStart+"', INTERVAL 1 MONTH),");
+        sbSQL.append("         date_add('" + intervalStart + "', INTERVAL 1 MONTH),");
         sbSQL.append("         '%c'");
         sbSQL.append("     )");
 
@@ -96,7 +96,7 @@ public class CalendarService extends BaseService {
             sbSQLIn.append("      crm_customerpersonal");
             sbSQLIn.append(" WHERE");
             sbSQLIn.append("      state = 0");
-            sbSQLIn.append(" AND OperatorId = '"+loginUserId+"'");
+            sbSQLIn.append(" AND OperatorId = '" + loginUserId + "'");
             sbSQLIn.append(" AND id NOT IN (");
             sbSQLIn.append("      SELECT");
             sbSQLIn.append("           CustomerId");
@@ -114,7 +114,7 @@ public class CalendarService extends BaseService {
             sbSQLIn.append("      1 = 1");
             sbSQLIn.append(" AND state = 0");
             sbSQLIn.append(" AND STATUS = 1");
-            sbSQLIn.append(" AND SaleManId = '"+loginUserId+"'");
+            sbSQLIn.append(" AND SaleManId = '" + loginUserId + "'");
 
 
             sbSQL.insert(0, " Select * from (");
@@ -125,8 +125,7 @@ public class CalendarService extends BaseService {
             List<EventPO> events = MySQLDao.query(sbSQL.toString(), EventPO.class, null);
             eventSource.setEvents(events);
             eventSource.setColor("#FFCCFF");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             MyException.deal(e);
         }
 
@@ -135,39 +134,32 @@ public class CalendarService extends BaseService {
 
 
     /**
-     * @description
-     * 根据日期查询前后2个月的所有客户生日和兑付计划
-     * @author 胡超怡
-     *
-     * @date 2018/12/26 14:02
      * @param intervalStart 传入的要查询的时间 yyyy-MM-dd
      * @param conn
      * @return java.util.List<com.youngbook.entity.po.calendar.EventPO>
      * @throws Exception
+     * @description 根据日期查询前后2个月的所有客户生日和兑付计划
+     * @author 胡超怡
+     * @date 2018/12/26 14:02
      */
-    public List<EventPO> getListEventPO(String intervalStart, String userId, Connection conn) throws Exception {
+    public List<EventPO> getListEventPOOfBrithday(String intervalStart, String userId, Connection conn) throws Exception {
 
-        List<EventPO> eventPOBirthDay = calendarDao.getEventPO(intervalStart, conn);
-
-        // List<EventPO> eventPOPaymentPlan = calendarDao.getEventPOPaymentPlan(intervalStart, conn);
+        List<EventPO> eventPOBirthDay = calendarDao.getListEventPOOfBrithday(intervalStart, conn, userId);
 
         /**
          * 颜色写到 SystemConfig
          */
-        for (EventPO birthDay: eventPOBirthDay ) {
-
-            String birthdayBgCorlor = "crm.calendar.birthday.bgcolor";
+        for (EventPO birthDay : eventPOBirthDay) {
 
             // A2A200
+            String birthdayBgCorlor = "crm.calendar.birthday.bgcolor";
 
-            birthDay.setColor(Config.getSystemConfig(birthdayBgCorlor));
+            birthDay.setBackgroundColor(Config.getSystemConfig(birthdayBgCorlor));
+            birthDay.setEnd(birthDay.getStart());
+            StringBuilder sb = new StringBuilder(birthDay.getTitle());
+            sb.insert(0, "生日：");
+            birthDay.setTitle(sb.toString());
         }
-
-//        for (EventPO paymentPlan: eventPOPaymentPlan ) {
-//            paymentPlan.setColor("#B0C4DE");
-//            paymentPlan.setTitle(paymentPlan.getTitle());
-//            eventPOBirthDay.add(paymentPlan);
-//        }
 
         return eventPOBirthDay;
 

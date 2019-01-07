@@ -43,26 +43,24 @@ public class CalendarAction extends BaseAction {
 
 
     /**
-     * @description
-     * 按照现有规范优化了个人日历显示客户生日的功能
-     * @author 胡超怡
-     *
-     * @date 2018/11/28 16:16
      * @return java.lang.String
      * @throws Exception
+     * @description 按照现有规范优化了个人日历显示客户生日的功能
+     * @author 胡超怡
+     * @date 2018/11/28 16:16
      */
     public String listCustomerBirthdays() throws Exception {
 
         String intervalStart = getRequest().getParameter("intervalStart");
 
-        List<EventPO> events = calendarService.getListEventPO(intervalStart, getLoginUser().getId(), getConnection());
+        List<EventPO> eventsBirthday = calendarService.getListEventPOOfBrithday(intervalStart, getLoginUser().getId(), getConnection());
 
 
         /**
          * 把返回的数据组成json数组格式响应给前台
          */
         JSONArray array = new JSONArray();
-        for (EventPO event : events) {
+        for (EventPO event : eventsBirthday) {
             array.add(event.toJsonObject());
         }
         getResult().setReturnValue(array);
