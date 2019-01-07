@@ -838,26 +838,36 @@ public class OrderService extends BaseService {
      * @return com.youngbook.entity.po.production.OrderPO
      * @throws Exception
      */
-    public OrderPO deleteOrder(String orderId , String userId ,Connection connection ) throws Exception {
+    public OrderPO deleteOrder(String orderId, String userId, Connection connection ) throws Exception {
 
         OrderPO orderPO = orderDao.loadByOrderId(orderId, connection);
-        List<PaymentPlanVO> paymentPlanVOS = paymentPlanDao.listPaymentPlanVOByOrderId(orderId, connection);
+        List<PaymentPlanPO> paymentPlanPOS = paymentPlanDao.getPaymentPlansByOrderId(orderId, connection);
+
+
         int status;
-        for (PaymentPlanVO paymentPlanVO : paymentPlanVOS) {
-            status = paymentPlanVO.getStatus();
-            if(status==0){
-                MySQLDao.remove(paymentPlanVO, userId, connection);
+        for (PaymentPlanPO paymentPlanPO : paymentPlanPOS) {
+            status = paymentPlanPO.getStatus();
+            if(status!=0){
+                MyException.newInstance("该订单兑付计划已被兑付，无法删除").throwException();
             }
-            MyException.newInstance("该订单兑付计划已被兑付，无法删除").throwException();
+            MySQLDao.remove(paymentPlanPO, userId, connection);
         }
-        MySQLDao.remove(orderPO,userId ,connection);
+
+
+
+
+        MySQLDao.remove(orderPO, userId, connection);
+
+
+
 
         orderDetailDao.saveOrderDetail(orderPO,0, TimeUtils.getNow(), "订单删除", userId, connection);
 
 
+
+
         return orderPO ;
     }
-
 
 
     public boolean checkSignatureExists(OrderPO order, Connection conn) throws Exception {

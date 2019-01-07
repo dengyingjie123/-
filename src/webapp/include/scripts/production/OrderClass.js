@@ -329,8 +329,8 @@ var OrderClass = function (token) {
                     {field: 'payTime', title: '到账时间'},
                     {field: 'createTime', title: '创建时间'},
                     {field: 'paybackTime', title: '兑付计划',formatter:function(value,row,index){
-                        return "<a href='#'>查看</a>";
-                    }},
+                            return "<a href='#'>查看</a>";
+                        }},
                     {field: 'confirmorName', title: '兑付计划确认人'},
                     {field: 'productionCompositionName', title: '产品构成'},
                     {field: 'contractNo', title: '合同编号'},
@@ -339,10 +339,10 @@ var OrderClass = function (token) {
                     {field: 'financeMoneyConfirmTime', title: '日终扎帐确认时间'},
                     {field: 'payChannelName', title: '支付渠道',hidden:true},
                     {field: 'downloadFiles', title: '下载附件',formatter:function(value,row,index){
-                        var zipName = "订单附件_" + row['customerName'] + '_' + row['productionName'] + '.zip';
-                        var url = "down.jsp?zipName="+zipName+"&moduleId=18833&bizId=" + row['id'];
-                        return "<a href='"+url+"' target='_blank'>下载</a>";
-                    }},
+                            var zipName = "订单附件_" + row['customerName'] + '_' + row['productionName'] + '.zip';
+                            var url = "down.jsp?zipName="+zipName+"&moduleId=18833&bizId=" + row['id'];
+                            return "<a href='"+url+"' target='_blank'>下载</a>";
+                        }},
                     {field: 'allinpayCircle_deposit_status', title: '通联-充值状态',
                         formatter: function(value,row,index){
                             if (row['allinpayCircle_deposit_status']=='0') {
@@ -392,7 +392,6 @@ var OrderClass = function (token) {
                 onClickOrderFinanceConfirm02();
                 onClickOrderTransfer();
                 onClickOrderPayback();
-
                 onClickMoneyTransfer2Gongda();
                 onClickOrderFeedback1();
                 onClickOrderFeedback2();
@@ -401,8 +400,10 @@ var OrderClass = function (token) {
                 onClickOrderEdit();
 
                 onClickOrderProductionEdit();
-                onClickOrderDelete();
+
                 onClickOrderGeneratePaymentPlan();
+
+                onClickOrderDelete();
 
                 onClickOrderContractSigned();
                 onClickOrderSaveReferralCode();
@@ -1234,32 +1235,32 @@ var OrderClass = function (token) {
     function initRefreeCodeCombotree(code) {
 
         $('#referralCode'+token).combotree({keyHandler:{
-            delay:1000,
-            up: function(){},
-            down: function(){},
-            enter: function(){},
-            query: function(q){
+                delay:1000,
+                up: function(){},
+                down: function(){},
+                enter: function(){},
+                query: function(q){
 
-                if (!fw.checkIsTextEmpty(searchQ) && searchQ.indexOf(q) == 0 && searchQ.length > q.length) {
-                    $('#referralCode'+token).combotree('setText',"");
-                    q = "";
-                    searchQ = "";
+                    if (!fw.checkIsTextEmpty(searchQ) && searchQ.indexOf(q) == 0 && searchQ.length > q.length) {
+                        $('#referralCode'+token).combotree('setText',"");
+                        q = "";
+                        searchQ = "";
+                    }
+
+                    if (fw.checkIsTextEmpty(q)) {
+                        return;
+                    }
+
+
+                    fw.post(searchURL, "code="+q, function(data){
+                        // fw.debug(data, 44);
+                        $('#referralCode'+token).combotree('clear');
+                        $('#referralCode'+token).combotree('loadData',data);
+                        $('#referralCode'+token).combotree('setText',q);
+                        searchQ = q;
+                    }, null);
                 }
-
-                if (fw.checkIsTextEmpty(q)) {
-                    return;
-                }
-
-
-                fw.post(searchURL, "code="+q, function(data){
-                    // fw.debug(data, 44);
-                    $('#referralCode'+token).combotree('clear');
-                    $('#referralCode'+token).combotree('loadData',data);
-                    $('#referralCode'+token).combotree('setText',q);
-                    searchQ = q;
-                }, null);
-            }
-        }});
+            }});
 
         if (fw.checkIsNullObject(code)) {
             return;
@@ -1414,7 +1415,6 @@ var OrderClass = function (token) {
             else if(actionName == Action_EditOrderProduction){
                 initWindowOrderWindowForm_OrderEditProduction(data);
             }
-
             // 初始化表单提交事件
             onClickOrderSubmit();
 
@@ -1702,12 +1702,10 @@ var OrderClass = function (token) {
     }
 
 
-
-    var Action_Edit = "Action_Edit";
-
-    /**
+     /**
      * 订单修改
      */
+    var Action_Edit = "Action_Edit";
     function onClickOrderEdit() {
         var buttonId = "btnOrderEdit" + token;
         fw.bindOnClick4Any(buttonId, function () {
@@ -1726,6 +1724,9 @@ var OrderClass = function (token) {
 
         });
     }
+
+
+
 
 
     function onClickOrderFinanceMoneyConfirm() {
@@ -1992,13 +1993,14 @@ var OrderClass = function (token) {
         });
     }
 
+
     function onClickOrderGeneratePaymentPlan() {
         var buttonId = "btnOrderGeneratePaymentPlan" + token;
+
         fw.bindOnClick4Any(buttonId, function () {
-
             fw.datagridGetSelected('OrderTable' + token, function (selected) {
-                var orderId = selected.id;
 
+                var orderId = selected.id;
                 fw.confirm('提示', '是否生成【'+selected['orderNum']+'】订单的兑付计划？', function(){
                     var url = WEB_ROOT + "/production/Order_generatePaymentPlan?orderId="+orderId;
                     fw.post(url, null, function(data){
@@ -2010,6 +2012,27 @@ var OrderClass = function (token) {
             });
         });
     }
+
+
+    /**
+     * 删除事件
+     */
+    function onClickOrderDelete() {
+        var buttonId = "btnOrderDeleteProduction" + token;
+        fw.bindOnClick4Any(buttonId, function () {
+            fw.datagridGetSelected('OrderTable' + token, function (selected) {
+                fw.confirm('订单删除确认', '是否确认删除数据？', function () {
+                    var url = WEB_ROOT + "/production/Order_deleteOrder.action?orderId=" + selected.id;
+                    fw.post(url, null, function () {
+                        fw.datagridReload('OrderTable' + token);
+                    }, null);
+                }
+                );
+            });
+        });
+    }
+
+
     //预约
     var Action_Appointment = "Action_Appointment";
     function onClickOrderAppointment() {
@@ -2077,27 +2100,6 @@ var OrderClass = function (token) {
 
         });
     }
-
-
-    /**
-     * 删除事件 
-     */
-    function onClickOrderDelete() {
-        var buttonId = "btnOrderDeleteProduction" + token;
-        fw.bindOnClick(buttonId, function (process) {
-            fw.datagridGetSelected('OrderTable' + token, function (selected) {
-                fw.confirm('删除确认', '是否确认删除数据？', function () {
-                    var url = WEB_ROOT + "/production/Order_deleteOrder.action?orderId=" + selected.id;
-                    fw.post(url, null, function () {
-                        fw.datagridReload('OrderTable' + token);
-                    }, null);
-                }, function () {
-                    process.afterClick();
-                });
-            });
-        });
-    }
-
 
     /**
      * 数据提交事件
@@ -2294,7 +2296,7 @@ var OrderClass = function (token) {
     }
 
     //查询客户事件
-        function onClickCheckCustomer() {
+    function onClickCheckCustomer() {
 
         $('#customerName' + token).bind('click', function () {
             // var url = WEB_ROOT + "/modules/production/Select_Customer.jsp?token=" + token;
