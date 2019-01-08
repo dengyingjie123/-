@@ -115,7 +115,6 @@ public class CustomerTask extends Task {
 
                     CustomerPersonalPO tempCustomer = customerPersonalService.registerCustomer(customerPersonalPO, customerPersonalPO.getReferralCode(), conn);
 
-
                     tempCustomer.setRemark(customerPersonalPO.getRemark());
 
                     if (!StringUtils.isEmpty(customerPersonalPO.getSex())) {
@@ -142,6 +141,9 @@ public class CustomerTask extends Task {
                     MySQLDao.insertOrUpdate(tempCustomer, conn);
 
 
+
+
+
                     logPO.setMachineMessage(parameters);
 
                     logService.save(logPO, conn);
@@ -153,7 +155,7 @@ public class CustomerTask extends Task {
                     logException.setPeopleMessage(ex.getMessage());
                     logService.save(logException);
 
-                    throw ex;
+                    // throw ex;
                 }
 
             }
