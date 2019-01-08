@@ -864,6 +864,9 @@ public class OrderService extends BaseService {
 
 
         orderDetailDao.saveOrderDetail(orderPO,0, TimeUtils.getNow(), "订单删除", userId, connection);
+        /**
+         * 查询订单相关订单明细
+         */
         List<OrderDetailPO> orderDetailPOS = orderDetailDao.getListOrderDetailPOByOrderId(orderId, connection);
         for (OrderDetailPO orderDetailPO : orderDetailPOS) {
            MySQLDao.remove(orderDetailPO, userId, connection);
