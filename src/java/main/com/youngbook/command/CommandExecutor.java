@@ -24,6 +24,7 @@ import com.youngbook.service.sale.PaymentPlanService;
 import com.youngbook.service.sale.contract.ContractService;
 import com.youngbook.service.system.LogService;
 import com.youngbook.service.system.UserService;
+import com.youngbook.service.task.CustomerTask;
 import com.youngbook.service.task.FuiouOrderQueryBatchTask;
 import com.youngbook.service.task.FuiouOrderQueryTask;
 import com.youngbook.service.task.MergeTask;
@@ -119,8 +120,11 @@ public class CommandExecutor {
             }
 
             if (command.equals("CustomerTask")) {
-//                CustomerTask customerTask = new CustomerTask();
-//                customerTask.doImport();
+                if (!CommandExecutor.getConsoleInput( "请将导入文件保存至【d:/customerTask.xls】，是否继续？ y/n").equalsIgnoreCase("y")) {
+                    MyException.newInstance("手动取消").throwException();
+                }
+                CustomerTask customerTask = new CustomerTask();
+                customerTask.doImport("d:/customerTask.xls");
                 return;
             }
 

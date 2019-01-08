@@ -36,32 +36,34 @@ public class CustomerTask extends Task {
     LogService logService = Config.getBeanByName("logService", LogService.class);
 
 
-    public static void main(String[] args) throws Exception {
-        CustomerTask customerTask = new CustomerTask();
-        customerTask.doImport();
-
-    }
-
-    public void doImport() throws Exception {
-        HSSFSheet sheet = ExcelUtils.openSheet("Sheet1", "d:/客户导入模版.xls");
+    /**
+     * 模版保存于 src\webapp\include\exportTemplates\customerTask.xls
+     * @param path
+     * @throws Exception
+     */
+    public void doImport(String path) throws Exception {
+        HSSFSheet sheet = ExcelUtils.openSheet("Sheet1", path);
 
         int rowCount = ExcelUtils.getRowCount(sheet);
 
         List<CustomerPersonalPO> customerPersonalPOs = new ArrayList<CustomerPersonalPO>();
 
+        int offset = 1;
+
         for (int i = 0; i < rowCount; i++) {
-            int index = i + 1;
+            int index = i + 1 + offset;
             String name = ExcelUtils.getCellStringValue("a" + index, sheet);
             String mobile = ExcelUtils.getCellStringValue("b" + index, sheet);
             String idCard = ExcelUtils.getCellStringValue("c" + index, sheet);
             String comment = ExcelUtils.getCellStringValue("d" + index, sheet);
             String sex = ExcelUtils.getCellStringValue("e" + index, sheet);
+            String referralCode = ExcelUtils.getCellStringValue("f" + index, sheet);
 
             CustomerPersonalPO customerPersonalPO = new CustomerPersonalPO();
             customerPersonalPO.setName(name);
             customerPersonalPO.setMobile(mobile);
             customerPersonalPO.setSex(sex);
-
+            customerPersonalPO.setReferralCode(referralCode);
 
 
             // 身份证号
@@ -81,11 +83,11 @@ public class CustomerTask extends Task {
 
 
         CustomerTask customerTask = new CustomerTask();
-        customerTask.importCustomer(customerPersonalPOs, "32");
+        customerTask.importCustomer(customerPersonalPOs);
     }
 
 
-    private void importCustomer(List<CustomerPersonalPO> customerPersonalPOs, String referralCode) throws Exception {
+    private void importCustomer(List<CustomerPersonalPO> customerPersonalPOs) throws Exception {
 
         Connection conn = Config.getConnection();
 
@@ -111,8 +113,7 @@ public class CustomerTask extends Task {
 
                     customerPersonalPO.setPassword("123456");
 
-                    CustomerPersonalPO tempCustomer = customerPersonalService.registerCustomer(customerPersonalPO, referralCode, conn);
-
+                    CustomerPersonalPO tempCustomer = customerPersonalService.registerCustomer(customerPersonalPO, customerPersonalPO.getReferralCode(), conn);
 
                     tempCustomer.setRemark(customerPersonalPO.getRemark());
 
@@ -140,6 +141,9 @@ public class CustomerTask extends Task {
                     MySQLDao.insertOrUpdate(tempCustomer, conn);
 
 
+
+
+
                     logPO.setMachineMessage(parameters);
 
                     logService.save(logPO, conn);
@@ -148,10 +152,10 @@ public class CustomerTask extends Task {
                     LogPO logException = new LogPO();
                     logException.setName("导入客户失败");
                     logException.setMachineMessage(parameters);
-                    logException.setPeopleMessage(MyException.getExceptionMessage(ex));
+                    logException.setPeopleMessage(ex.getMessage());
                     logService.save(logException);
 
-                    throw ex;
+                    // throw ex;
                 }
 
             }
