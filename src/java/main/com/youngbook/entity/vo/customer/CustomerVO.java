@@ -8,6 +8,9 @@ public class CustomerVO {
     private String id = "";
     private String customerId = "";
     private String name = "";
+    private String mobile = "";
+    private String mobileMasked = "";
+    private int commentCount = Integer.MAX_VALUE;
 
     public String getCustomerId() {
         return customerId;
@@ -33,4 +36,27 @@ public class CustomerVO {
         this.name = name;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getMobileMasked() {
+        return mobileMasked;
+    }
+
+    public void setMobileMasked(String mobileMasked) {
+        this.mobileMasked = mobileMasked;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
 }
