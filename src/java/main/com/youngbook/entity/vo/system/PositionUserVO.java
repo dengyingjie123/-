@@ -33,6 +33,9 @@ public class PositionUserVO extends BaseVO {
     // 部门名称
     private String departmentName = new String();
 
+    // 手机号
+    private String mobile = new String();
+
     // 默认标识
     private int states = Integer.MAX_VALUE;
 
@@ -108,5 +111,13 @@ public class PositionUserVO extends BaseVO {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

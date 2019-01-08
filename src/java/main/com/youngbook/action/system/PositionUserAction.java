@@ -2,6 +2,7 @@ package com.youngbook.action.system;
 
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.*;
+import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.IdUtils;
 import com.youngbook.dao.MySQLDao;
@@ -24,11 +25,14 @@ public class PositionUserAction extends BaseAction {
     private PositionUserPO positionUser = new PositionUserPO();
     private com.youngbook.entity.po.system.PositionUserPO positionUserPO = new com.youngbook.entity.po.system.PositionUserPO();
     private PositionUserVO positionUserVO = new PositionUserVO();
-    private PositionUserService service = new PositionUserService();
+
+    @Autowired
+    private PositionUserService positionUserService;
+
     private List<Map<String,Object>> list  = new ArrayList<Map<String, Object>>();
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
 
     public String insertOrUpdate() throws Exception {
@@ -143,34 +147,20 @@ public class PositionUserAction extends BaseAction {
 
 
     /**
-     * 获取数据列表
+     * @description 获取用户部门归属列表
+     * 增加过滤条件，使得排除已经在department里删除的部门,增加了手机号搜索
+     * @author 胡超怡
      *
-     * 修改：leevits
-     * 内容：增加过滤条件，使得排除已经在department里删除的部门
-     * 时间：2015年6月17日 11:35:59
-     * @return
+     * @date 2018/12/12 14:56
+     * @return java.lang.String
      * @throws Exception
      */
     public String showList() throws Exception {
 
-        // 构造SQL语句
-        StringBuffer sbSQL = new StringBuffer();
-        sbSQL.append("SELECT distinct pu.id,pu.positionId,pu.states,(CASE pu.states WHEN 0 THEN '否' ELSE '是' END) AS statesName,pu.userId,u.`name` AS userName,pt.DepartmentId as departmentId,pt.DepartmentName as departmentName,pt.`Name` as positionName ");
-        sbSQL.append(" FROM system_positionuser pu,system_user u,system_position pt ");
-        sbSQL.append(" WHERE 1 = 1 AND u.id = pu.userId AND pu.positionId = pt.Id");
-        sbSQL.append(" and pt.DepartmentId in (select id from system_department )");
+        Pager pager = Pager.getInstance(getRequest());
 
-        HttpServletRequest request = getRequest();
+        pager = positionUserService.getListPositionUser(positionUserVO, pager.getCurrentPage(), pager.getShowRowCount(), getConnection());
 
-        List<KVObject> conditions = new ArrayList<KVObject>();
-        conditions = MySQLDao.getQueryDatetimeParameters(request, positionUserVO.getClass(), conditions);
-        //整型范围查询
-        conditions = MySQLDao.getQueryNumberParameters(request, positionUserVO.getClass(), conditions);
-
-        QueryType queryType = new QueryType(Database.QUERY_FUZZY, Database.NUMBER_EQUAL);
-
-        //获取分页对象
-        Pager pager = Pager.query(sbSQL.toString(), positionUserVO, conditions, request, queryType);
         //返回数据
         getResult().setReturnValue(pager.toJsonObject());
 
@@ -184,7 +174,7 @@ public class PositionUserAction extends BaseAction {
      * @throws Exception
      */
     public String loadPositionUser() throws Exception {
-        positionUserPO = service.loadPositionUserPO(positionUserPO.getId());
+        positionUserPO = positionUserService.loadPositionUserPO(positionUserPO.getId());
         getResult().setReturnValue(positionUserPO.toJsonObject4Form());
 
         return SUCCESS;
