@@ -48,8 +48,10 @@ public class CustomerTask extends Task {
 
         List<CustomerPersonalPO> customerPersonalPOs = new ArrayList<CustomerPersonalPO>();
 
+        int offset = 1;
+
         for (int i = 0; i < rowCount; i++) {
-            int index = i + 1;
+            int index = i + 1 + offset;
             String name = ExcelUtils.getCellStringValue("a" + index, sheet);
             String mobile = ExcelUtils.getCellStringValue("b" + index, sheet);
             String idCard = ExcelUtils.getCellStringValue("c" + index, sheet);
@@ -148,7 +150,7 @@ public class CustomerTask extends Task {
                     LogPO logException = new LogPO();
                     logException.setName("导入客户失败");
                     logException.setMachineMessage(parameters);
-                    logException.setPeopleMessage(MyException.getExceptionMessage(ex));
+                    logException.setPeopleMessage(ex.getMessage());
                     logService.save(logException);
 
                     throw ex;
