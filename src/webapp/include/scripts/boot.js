@@ -121,7 +121,7 @@ function initSystem() {
 
     // 可在此处增加默认的模块 [24611604]
     // 右侧面板显示公告
-    //loadWorkSpace('modules/system/Calendar_Main.jsp','个人日历','个人日历管理','','5cbcd591-fbd6-4773-81b8-f05f154c8c04');
+    loadWorkSpace('modules/system/Calendar_Main.jsp','个人日历','个人日历管理','','5cbcd591-fbd6-4773-81b8-f05f154c8c04');
 }
 
 
@@ -198,7 +198,7 @@ function onClickLogoutUser() {
  */
 function loadWorkSpace(url, moduleName, permissionName, icon, token) {
 
-    //alert("Menu:["+moduleName+"] obj:["+permissionName+"] url:["+url+"] token:["+token+"]");
+    // alert("Menu:["+moduleName+"] obj:["+permissionName+"] url:["+url+"] token:["+token+"]");
 
     //alert("["+moduleName+"]");
     //alert("icon:["+icon+"]");
@@ -209,6 +209,15 @@ function loadWorkSpace(url, moduleName, permissionName, icon, token) {
         index = hmMenu.size;
         hmMenu.put(token, index);
     }
+
+    // console.log($('#' + contentTabsId).tabs('getSelected'));
+
+    $('#' + contentTabsId).tabs({
+        border:false,
+        onSelect:function(title){
+            // alert(title+' is selected');
+        }
+    });
 
     if (!$('#' + contentTabsId).tabs('exists', index)) {
         $('#' + contentTabsId).tabs('add', {
