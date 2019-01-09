@@ -16,6 +16,7 @@ import com.youngbook.dao.sale.IPaymentPlanDao;
 import com.youngbook.dao.sale.ISalemanGroupDao;
 import com.youngbook.dao.sale.contract.IContractDao;
 import com.youngbook.dao.system.IDepartmentDao;
+import com.youngbook.dao.system.IHolidayDao;
 import com.youngbook.dao.system.ILogDao;
 import com.youngbook.dao.system.IUserDao;
 import com.youngbook.entity.po.UserPO;
@@ -38,6 +39,7 @@ import com.youngbook.service.allinpay.AllinpayBatchPaymentService;
 import com.youngbook.service.core.IMoneyTransferService;
 import com.youngbook.service.customer.CustomerDistributionService;
 import com.youngbook.service.pay.FuiouDirectService;
+import com.youngbook.service.system.HolidayService;
 import net.sf.json.JSONArray;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +108,13 @@ public class OrderService extends BaseService {
 
     @Autowired
     ILogDao logDao;
+
+    @Autowired
+    IHolidayDao holidayDao;
+
+    @Autowired
+    HolidayService holidayService;
+
 
     public int saveReferralCode(String orderId, String referralCode, String userId, Connection conn) throws Exception {
 
@@ -1739,7 +1748,7 @@ public class OrderService extends BaseService {
         // 获得起息日
         String interestDate = productionPO.getValueDate();
         if (StringUtils.isEmpty(interestDate)) {
-            interestDate = TimeUtils.getTime(order.getPayTime(), 1, TimeUtils.DATE);
+            interestDate =holidayService.getNextWorkDay(order.getPayTime(), conn) ;
         }
 
 
