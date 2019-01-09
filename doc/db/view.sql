@@ -220,7 +220,7 @@ SELECT
     u.`name` saleManName,
     sg.Id saleGroupId,
     sg.`Name` saleGroupName,
-    c.id, c.PersonalNumber, c.`Name`, c.LoginName, c.Mobile, c.CreateTime, c.state,
+    c.id, c.PersonalNumber, c.`Name`, c.LoginName, c.Mobile, c.CreateTime, c.state, c.birthday,
     c.id linkCustomerId, '' IdCard,
     cd.`Status` distributionStatus
 FROM
@@ -239,7 +239,7 @@ SELECT
     u.`name` saleManName,
     sg.id saleGroupId,
     sg.`Name` saleGroupName,
-    c.id, '' PersonalNumber, c.`Name`, '' LoginName, c.Mobile, '' CreateTime, c.state,
+    c.id, '' PersonalNumber, c.`Name`, '' LoginName, c.Mobile, '' CreateTime, c.state, '' birthday,
     c.id linkCustomerId, '' IdCard,
     cd.`Status` distributionStatus
 FROM
