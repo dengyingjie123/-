@@ -21,7 +21,7 @@ import java.util.*;
 public class HolidayUtil {
 
     /**
-     * @description 循环每日日期判断是否是节假日，是则存入数据库,system_holiday
+     * @description 循环当年所有日期判断是否是节假日，是则存入数据库,system_holiday
      *
      * @author 苟熙霖
      *
@@ -32,7 +32,7 @@ public class HolidayUtil {
      */
     public static void main(String[] args) throws Exception {
 
-        HolidayUtil.getCurrentYearHoliday("2020");
+        HolidayUtil.getCurrentYearHoliday("2019");
 
     }
 
@@ -51,12 +51,19 @@ public class HolidayUtil {
             Calendar dd =Calendar.getInstance();
             dd.setTime(d1);
 
+
+
+
             while(tmp.getTime()<=d2.getTime()-1) {
                 tmp=dd.getTime();
                 String format = sdf.format(tmp);
                 String result = getResult(format);
                 String[] split = result.split("");
                 Integer value = Integer.valueOf(split[21]);
+
+
+
+
                 if(!value.equals(0)){
                     HolidayPO holidayPO = new HolidayPO();
                     holidayPO.setState(0);
@@ -64,9 +71,17 @@ public class HolidayUtil {
                     holidayPOS.add(holidayPO);
                     MySQLDao.insertOrUpdate(holidayPO);
                 }
+
+
+
+
                 //天数加上1
                 dd.add(Calendar.DAY_OF_MONTH, 1);
             }
+
+
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -78,11 +93,19 @@ public class HolidayUtil {
         BufferedReader reader = null;
         String result = null;
         StringBuffer sbf = new StringBuffer();
+
+
+
+
         String time = format.replaceAll("-", "");
         URL realURL = new URL("http://api.goseek.cn/Tools/holiday?date=" + time);
         HttpURLConnection httpURLConnection = (HttpURLConnection) realURL.openConnection();
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.connect();
+
+
+
+
         try {
             HttpURLConnection connection = (HttpURLConnection)realURL.openConnection();
             connection.setRequestMethod("GET");
@@ -90,14 +113,30 @@ public class HolidayUtil {
             InputStream is = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String strRead = null;
+
+
+
+
             while ((strRead = reader.readLine()) != null) {
                 sbf.append(strRead);
             }
+
+
+
+
             reader.close();
             result = sbf.toString();
-        } catch (Exception e) {
+        }
+
+
+
+        catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+
         return result;
     }
 
