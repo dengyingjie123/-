@@ -20,14 +20,25 @@ import java.util.*;
 
 public class HolidayUtil {
 
+    /**
+     * @description 循环每日日期判断是否是节假日，是则存入数据库,system_holiday
+     *
+     * @author 苟熙霖
+     *
+     * @date 2019/1/9 15:20
+     * @param args
+     * @return void
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
 
-        HolidayUtil.getCurrentYearHoliday("2019");
+        HolidayUtil.getCurrentYearHoliday("2020");
 
     }
 
 
     public static List<HolidayPO> getCurrentYearHoliday(String year) throws Exception {
+
         List<HolidayPO> holidayPOS = new ArrayList<>();
         //日期格式化
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
