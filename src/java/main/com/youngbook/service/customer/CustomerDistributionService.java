@@ -348,6 +348,9 @@ public class CustomerDistributionService extends BaseService {
      * @throws Exception
      */
     public List<CustomerDistributionPO> listCustomerDistributionPOByUserId(String userId, Connection conn) throws Exception {
+        if (userId == null){
+            MyException.newInstance("未获得到用户信息").throwException();
+        }
         return customerDistributionDao.getListCustomerDistrbutionPOByUserId(userId, conn);
     }
 

@@ -26,5 +26,5 @@ public interface IPositionUserDao {
 
     List<PositionUserPO> searchByPositionAndUser(PositionUserPO positionUserPO, Class<PositionUserPO> positionUserPOClass, Connection conn) throws Exception;
 
-    List<PositionUserPO> searchByUserID(String userId, Class<PositionUserPO> positionUserPOClass, Connection conn) throws Exception;
+    List<PositionUserPO> getListPositionUserPOByUserId(String userId, Class<PositionUserPO> positionUserPOClass, Connection conn) throws Exception;
 }

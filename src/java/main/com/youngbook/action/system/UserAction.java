@@ -282,6 +282,7 @@ public class UserAction extends BaseAction {
     public String dismiss() throws Exception {
 
         String userId = getHttpRequestParameter("userId");
+
         //查找和该销售人员绑定的客户分配
         List<CustomerDistributionPO> list = customerDistributionService.listCustomerDistributionPOByUserId(userId, getConnection());
 
