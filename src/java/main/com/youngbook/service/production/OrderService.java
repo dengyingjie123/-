@@ -3,7 +3,7 @@ package com.youngbook.service.production;
 import com.youngbook.common.*;
 import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
-import com.youngbook.common.config.Config4Status;
+
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
@@ -41,7 +41,7 @@ import com.youngbook.service.customer.CustomerDistributionService;
 import com.youngbook.service.pay.FuiouDirectService;
 import com.youngbook.service.system.HolidayService;
 import net.sf.json.JSONArray;
-import org.apache.poi.ss.formula.functions.T;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -1748,7 +1748,8 @@ public class OrderService extends BaseService {
         // 获得起息日
         String interestDate = productionPO.getValueDate();
         if (StringUtils.isEmpty(interestDate)) {
-            interestDate =holidayService.getNextWorkDay(order.getPayTime(), conn) ;
+            String time = TimeUtils.getTime(order.getPayTime(), 1, TimeUtils.DATE);
+            interestDate =holidayService.getNextWorkDay(time, conn) ;
         }
 
 

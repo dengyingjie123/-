@@ -4,7 +4,7 @@ package com.youngbook.entity.po;
 import com.youngbook.annotation.*;
 import net.sf.json.JSONObject;
 
-@Table(name = "crm_holiday", jsonPrefix = "holiday")
+@Table(name = "system_holiday", jsonPrefix = "holiday")
 public class HolidayPO extends BasePO {
     @Id(type = IdType.LONG)
     private long sid = Long.MAX_VALUE;

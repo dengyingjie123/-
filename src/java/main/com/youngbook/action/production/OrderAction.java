@@ -1,6 +1,6 @@
 package com.youngbook.action.production;
 
-import bsh.StringUtil;
+
 import com.youngbook.action.BaseAction;
 import com.youngbook.annotation.Permission;
 import com.youngbook.annotation.Security;
@@ -9,7 +9,6 @@ import com.youngbook.common.config.AesEncrypt;
 import com.youngbook.common.config.Config;
 import com.youngbook.common.config.Config4Bank;
 import com.youngbook.common.database.DatabaseSQL;
-import com.youngbook.common.reflaction.MyClass;
 import com.youngbook.common.utils.*;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.UserPO;
@@ -22,7 +21,6 @@ import com.youngbook.entity.po.production.*;
 import com.youngbook.entity.po.sale.contract.ContractPO;
 import com.youngbook.entity.vo.customer.CustomerPersonalVO;
 import com.youngbook.entity.vo.production.OrderReportMonthlyVO;
-import com.youngbook.entity.vo.production.OrderReportWeeklyVO;
 import com.youngbook.entity.vo.production.OrderVO;
 import com.youngbook.service.allinpay.AllinPayOrderService;
 import com.youngbook.service.core.OrderPayService;
@@ -54,7 +52,6 @@ import javax.servlet.http.HttpSession;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class OrderAction extends BaseAction {
 
@@ -225,9 +222,13 @@ public class OrderAction extends BaseAction {
         OrderPO order = orderService.loadByOrderId(orderId, conn);
 
 
+
+
         orderService.generatePaymentPlan(order, "1", getLoginUser().getId(), conn);
 
 
+
+        
         getResult().setReturnValue("{'message':'生成兑付计划成功'}");
         return SUCCESS;
     }
