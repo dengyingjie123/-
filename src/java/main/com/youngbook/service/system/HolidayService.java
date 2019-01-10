@@ -24,7 +24,7 @@ public class HolidayService extends BaseService {
 
 
     /**
-     * @description    获取工作日
+     * @description    循环获取到账日期的下一个工作日
      *
      * @author 苟熙霖
      *
@@ -55,6 +55,9 @@ public class HolidayService extends BaseService {
 
 
 
+           /**
+            * 如果是节假日,天数加1再进行判断
+            */
            if (holidayPO != null) {
                dd.setTime(parse);
                dd.add(Calendar.DAY_OF_MONTH, 1);

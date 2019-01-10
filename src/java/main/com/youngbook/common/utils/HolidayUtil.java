@@ -17,7 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-
+/**
+ * @description 关于节假日的工具类
+ *
+ * @author 苟熙霖
+ */
 public class HolidayUtil {
 
     /**
@@ -31,7 +35,7 @@ public class HolidayUtil {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-
+        //填入需要数据的年份后运行
         HolidayUtil.getCurrentYearHoliday("2019");
 
     }
@@ -75,7 +79,7 @@ public class HolidayUtil {
 
 
 
-                //天数加上1
+                //天数加1
                 dd.add(Calendar.DAY_OF_MONTH, 1);
             }
 

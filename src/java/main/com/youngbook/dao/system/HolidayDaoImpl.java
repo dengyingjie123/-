@@ -35,13 +35,6 @@ public class HolidayDaoImpl extends BaseDao implements IHolidayDao {
 
 
 
-        DatabaseSQL databaseSQL = DatabaseSQL.newInstance("81PGFSXM");
-        databaseSQL.addParameter4All("time",time);
-
-
-
-
-        databaseSQL.initSQL();
         HolidayPO load = MySQLDao.load(holidayPO, HolidayPO.class, conn);
 
 

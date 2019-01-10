@@ -4,6 +4,11 @@ package com.youngbook.entity.po;
 import com.youngbook.annotation.*;
 import net.sf.json.JSONObject;
 
+/**
+ * @description 节假日日期
+ *
+ * @author 苟熙霖
+ */
 @Table(name = "system_holiday", jsonPrefix = "holiday")
 public class HolidayPO extends BasePO {
     @Id(type = IdType.LONG)
@@ -19,7 +24,7 @@ public class HolidayPO extends BasePO {
     // 编号
     private String ID = new String();
 
-    // 键
+    // 节假日日期
     private String holiday = new String();
 
     @Override
