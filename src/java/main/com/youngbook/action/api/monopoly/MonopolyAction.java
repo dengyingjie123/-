@@ -13,12 +13,17 @@ import com.youngbook.entity.po.customer.CustomerScoreType;
 import com.youngbook.entity.po.production.ProductionDisplayType;
 import com.youngbook.entity.vo.cms.ArticleVO;
 import com.youngbook.entity.vo.customer.CustomerScoreVO;
+import com.youngbook.entity.vo.monopoly.HomeListVO;
+import com.youngbook.entity.vo.monopoly.ReturnArticleVO;
+import com.youngbook.entity.vo.monopoly.ReturnProductionVO;
 import com.youngbook.entity.vo.production.ProductionVO;
 import com.youngbook.service.cms.ArticleService;
 import com.youngbook.service.customer.CustomerPersonalService;
 import com.youngbook.service.customer.CustomerScoreService;
 import com.youngbook.service.production.ProductionService;
 import net.sf.json.JSONObject;
+import org.apache.poi.ss.formula.functions.T;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -41,7 +46,21 @@ public class MonopolyAction extends BaseAction {
     @Autowired
     ProductionService productionService;
 
+    public List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) {
+        List<ReturnArticleVO> listReturnArticleVO = new ArrayList<>();
+        if(listArticleVO.size() >= size){
+            for (int i =0; i < size; i++){
+                ReturnArticleVO returnArticleVO = new ReturnArticleVO();
+                BeanUtils.copyProperties(listArticleVO.get(i), returnArticleVO);
+                listReturnArticleVO.add(returnArticleVO);
+            }
+        }
+        return listReturnArticleVO;
+    }
+
     public String loadPage_home_list() throws Exception {
+
+//        Integer size = Integer.parseInt(getHttpRequestParameter("newSize"));
 
         ArticleVO articleVO = new ArticleVO();
         articleVO.setColumnName("商城");
@@ -54,7 +73,7 @@ public class MonopolyAction extends BaseAction {
         ArticleVO articleNews = new ArticleVO();
         articleNews.setColumnName("德合汇资讯");
         List<ArticleVO> listArticleVONews = articleService.getListArticleVO(articleNews, getConnection());
-        getRequest().setAttribute("listArticleVONews", listArticleVONews);
+
 
 
         /**
@@ -63,7 +82,10 @@ public class MonopolyAction extends BaseAction {
         ArticleVO articleNews_24 = new ArticleVO();
         articleNews_24.setColumnName("24小时要闻");
         List<ArticleVO> listArticleVONews_24 = articleService.getListArticleVO(articleNews_24, getConnection());
-        getRequest().setAttribute("listArticleVONews_24", listArticleVONews_24);
+
+        List<ReturnArticleVO> listReturnArticleVONews_24 = transforArticleVO(listArticleVONews_24, 3);
+
+
 
 
 
@@ -73,7 +95,8 @@ public class MonopolyAction extends BaseAction {
         ArticleVO articleNews_fund = new ArticleVO();
         articleNews_fund.setColumnName("基金资讯");
         List<ArticleVO> listArticleVONews_fund = articleService.getListArticleVO(articleNews_fund, getConnection());
-        getRequest().setAttribute("listArticleVONews_fund", listArticleVONews_fund);
+
+        List<ReturnArticleVO> listReturnArticleVONews_fund = transforArticleVO(listArticleVONews_fund, 3);
 
 
 
@@ -84,7 +107,8 @@ public class MonopolyAction extends BaseAction {
         ArticleVO articleNews_stock = new ArticleVO();
         articleNews_stock.setColumnName("股票资讯");
         List<ArticleVO> listArticleVONews_stock = articleService.getListArticleVO(articleNews_stock, getConnection());
-        getRequest().setAttribute("listArticleVONews_stock", listArticleVONews_stock);
+
+        List<ReturnArticleVO> listReturnArticleVONews_stock = transforArticleVO(listArticleVONews_stock, 3);
 
 
 
@@ -95,7 +119,8 @@ public class MonopolyAction extends BaseAction {
         ArticleVO articleNews_money = new ArticleVO();
         articleNews_money.setColumnName("理财资讯");
         List<ArticleVO> listArticleVONews_money = articleService.getListArticleVO(articleNews_money, getConnection());
-        getRequest().setAttribute("listArticleVONews_money", listArticleVONews_money);
+
+        List<ReturnArticleVO> listReturnArticleVONews_money = transforArticleVO(listArticleVONews_money, 3);
 
 
 
@@ -104,37 +129,23 @@ public class MonopolyAction extends BaseAction {
          */
         ProductionVO productionVO = new ProductionVO();
         List<ProductionVO> listProductionVOs = productionService.getListProductionVO(productionVO, getConnection());
-
-        DatabaseSQL dbSQL = DatabaseSQL.getInstance("select * from system_kv where groupname='Project_Type' ORDER BY Orders");
-        List<KVPO> projectTypes = MySQLDao.search(dbSQL, KVPO.class, getConnection());
-
-        JSONObject json = new JSONObject();
-
-
-        for (int i = 0; projectTypes != null && i < projectTypes.size(); i++) {
-
-            KVPO type = projectTypes.get(i);
-
-            List<ProductionVO> productionVOs = new ArrayList<ProductionVO>();
-
-            for (int j = 0; listProductionVOs != null && j < listProductionVOs.size(); j++) {
-                productionVO = listProductionVOs.get(j);
-
-                if (productionVO.getDisplayType() != null && productionVO.getDisplayType().equals(ProductionDisplayType.FinanceCircle)) {
-                    if (productionVO.getProjectType().equals(type.getK())) {
-                        productionVOs.add(productionVO);
-                    }
-                }
+        List<ReturnProductionVO> listReturnProductionVO = new ArrayList<>();
+        if(listProductionVOs.size() >= 1){
+            for (int i =0; i < 1; i++){
+                ReturnProductionVO returnArticleVO = new ReturnProductionVO();
+                BeanUtils.copyProperties(listProductionVOs.get(i), returnArticleVO);
+                listReturnProductionVO.add(returnArticleVO);
             }
-
-
-            getRequest().setAttribute("type" + (i + 1), type);
-            getRequest().setAttribute("productions" + (i + 1), productionVOs);
-
         }
 
 
-        return "home_list";
+        List<String> listImage = new ArrayList<>();
+        HomeListVO homeListVO = new HomeListVO(listImage, listReturnArticleVONews_24, listReturnArticleVONews_fund, listReturnArticleVONews_stock, listReturnArticleVONews_money, listReturnProductionVO);
+        getResult().setReturnValue(homeListVO);
+
+
+
+        return SUCCESS;
     }
 
 
