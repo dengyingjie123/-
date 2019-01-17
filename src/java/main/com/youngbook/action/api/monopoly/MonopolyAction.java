@@ -11,9 +11,11 @@ import com.youngbook.entity.po.customer.CustomerPersonalPO;
 import com.youngbook.entity.po.customer.CustomerScorePO;
 import com.youngbook.entity.po.customer.CustomerScoreType;
 import com.youngbook.entity.po.production.ProductionDisplayType;
+import com.youngbook.entity.po.production.ProductionPO;
 import com.youngbook.entity.vo.cms.ArticleVO;
 import com.youngbook.entity.vo.customer.CustomerScoreVO;
 import com.youngbook.entity.vo.monopoly.HomeListVO;
+import com.youngbook.entity.vo.monopoly.ReturnProductionAndArticleVO;
 import com.youngbook.entity.vo.monopoly.ReturnArticleVO;
 import com.youngbook.entity.vo.monopoly.ReturnProductionVO;
 import com.youngbook.entity.vo.production.ProductionVO;
@@ -21,8 +23,6 @@ import com.youngbook.service.cms.ArticleService;
 import com.youngbook.service.customer.CustomerPersonalService;
 import com.youngbook.service.customer.CustomerScoreService;
 import com.youngbook.service.production.ProductionService;
-import net.sf.json.JSONObject;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,21 +46,53 @@ public class MonopolyAction extends BaseAction {
     @Autowired
     ProductionService productionService;
 
+
+    /**
+     * @description 将ArticleVO对象转成ReturnArticleVO对象，并返回需要的对象数量
+     * @author 徐明煜
+     * @date 2019/1/16 13:48
+     * @param listArticleVO
+     * @param size
+     * @return java.util.List<com.youngbook.entity.vo.monopoly.ReturnArticleVO>
+     * @throws Exception
+     */
     public List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) {
+
+        //新建返回列表
         List<ReturnArticleVO> listReturnArticleVO = new ArrayList<>();
-        if(listArticleVO.size() >= size){
-            for (int i =0; i < size; i++){
-                ReturnArticleVO returnArticleVO = new ReturnArticleVO();
-                BeanUtils.copyProperties(listArticleVO.get(i), returnArticleVO);
-                listReturnArticleVO.add(returnArticleVO);
-            }
+
+        //防止空指针异常
+        if(listArticleVO.size() < size){
+            size = listArticleVO.size();
         }
+
+        //进行对象转换
+        for (int i =0; i < size; i++){
+            ReturnArticleVO returnArticleVO = new ReturnArticleVO();
+            BeanUtils.copyProperties(listArticleVO.get(i), returnArticleVO);
+            listReturnArticleVO.add(returnArticleVO);
+        }
+
         return listReturnArticleVO;
     }
 
+
+    /**
+     * @description 根据请求需要各种类文章的数量返回大富翁首页数据
+     * @author 徐明煜
+     * @date 2019/1/16 14:34
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
     public String loadPage_home_list() throws Exception {
 
-//        Integer size = Integer.parseInt(getHttpRequestParameter("newSize"));
+
+        Integer news24 = Integer.parseInt(getHttpRequestParameter("news24"));
+        Integer news_fund = Integer.parseInt(getHttpRequestParameter("news_fund"));
+        Integer news_stock = Integer.parseInt(getHttpRequestParameter("news_stock"));
+        Integer news_money = Integer.parseInt(getHttpRequestParameter("news_money"));
+        Integer production  = Integer.parseInt(getHttpRequestParameter("production"));
 
         ArticleVO articleVO = new ArticleVO();
         articleVO.setColumnName("商城");
@@ -83,7 +115,8 @@ public class MonopolyAction extends BaseAction {
         articleNews_24.setColumnName("24小时要闻");
         List<ArticleVO> listArticleVONews_24 = articleService.getListArticleVO(articleNews_24, getConnection());
 
-        List<ReturnArticleVO> listReturnArticleVONews_24 = transforArticleVO(listArticleVONews_24, 3);
+        //对象转换
+        List<ReturnArticleVO> listReturnArticleVONews_24 = transforArticleVO(listArticleVONews_24, news24);
 
 
 
@@ -96,7 +129,8 @@ public class MonopolyAction extends BaseAction {
         articleNews_fund.setColumnName("基金资讯");
         List<ArticleVO> listArticleVONews_fund = articleService.getListArticleVO(articleNews_fund, getConnection());
 
-        List<ReturnArticleVO> listReturnArticleVONews_fund = transforArticleVO(listArticleVONews_fund, 3);
+        //对象转换
+        List<ReturnArticleVO> listReturnArticleVONews_fund = transforArticleVO(listArticleVONews_fund, news_fund);
 
 
 
@@ -108,7 +142,8 @@ public class MonopolyAction extends BaseAction {
         articleNews_stock.setColumnName("股票资讯");
         List<ArticleVO> listArticleVONews_stock = articleService.getListArticleVO(articleNews_stock, getConnection());
 
-        List<ReturnArticleVO> listReturnArticleVONews_stock = transforArticleVO(listArticleVONews_stock, 3);
+        //对象转换
+        List<ReturnArticleVO> listReturnArticleVONews_stock = transforArticleVO(listArticleVONews_stock, news_stock);
 
 
 
@@ -120,7 +155,8 @@ public class MonopolyAction extends BaseAction {
         articleNews_money.setColumnName("理财资讯");
         List<ArticleVO> listArticleVONews_money = articleService.getListArticleVO(articleNews_money, getConnection());
 
-        List<ReturnArticleVO> listReturnArticleVONews_money = transforArticleVO(listArticleVONews_money, 3);
+        //对象转换
+        List<ReturnArticleVO> listReturnArticleVONews_money = transforArticleVO(listArticleVONews_money, news_money);
 
 
 
@@ -143,44 +179,85 @@ public class MonopolyAction extends BaseAction {
         HomeListVO homeListVO = new HomeListVO(listImage, listReturnArticleVONews_24, listReturnArticleVONews_fund, listReturnArticleVONews_stock, listReturnArticleVONews_money, listReturnProductionVO);
         getResult().setReturnValue(homeListVO);
 
+        return SUCCESS;
+    }
 
+
+    /**
+     * @description 根据产品Id查找产品详情及相关文章
+     * @author 徐明煜
+     * @date 2019/1/16 16:05
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String loadPage_production_detail() throws Exception {
+
+        /**
+         * 产品对象
+         */
+        String productionId = getHttpRequestParameter("productionId");
+        ProductionPO productionPO = productionService.loadProductionById(productionId, getConnection());
+        //对产品对象进行部分属性屏蔽
+        ReturnProductionVO returnProductionVO = new ReturnProductionVO();
+        BeanUtils.copyProperties(productionPO, returnProductionVO);
+
+
+
+
+        /**
+         * 描述文章
+         */
+        ArticleVO articleVO = new ArticleVO();
+        articleVO.setBizId(productionPO.getProductHomeId());
+        List<ArticleVO> listArticleVO = articleService.getListArticleVO(articleVO, getConnection());
+
+        List<ReturnArticleVO> listReturnArticleVO = transforArticleVO(listArticleVO, listArticleVO.size());
+
+
+
+
+        /**
+         * 组装返回json,包含产品详情及相应文章描述
+         */
+        //新建返回对象
+        ReturnProductionAndArticleVO returnProductionAndArticleVO = new ReturnProductionAndArticleVO();
+        //向返回对象写入产品和描述文章信息
+        returnProductionAndArticleVO.setArticle(listReturnArticleVO);
+        returnProductionAndArticleVO.setProduction(returnProductionVO);
+        getResult().setReturnValue(returnProductionAndArticleVO);
 
         return SUCCESS;
     }
 
 
-    public String loadPage_production_detail() throws Exception {
+    /**
+     * @description 根据文章Id返回文章详情
+     * @author 徐明煜
+     * @date 2019/1/16 16:05
+     * @param
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String load_article_detail() throws Exception {
 
-        String productionId = getHttpRequestParameter("productionId");
-
-        ProductionVO productionVO = new ProductionVO();
-        productionVO.setId(productionId);
-        List<ProductionVO> listProductionVO = productionService.getListProductionVO(productionVO, getConnection());
-
-        if (listProductionVO != null && listProductionVO.size() == 1) {
-            productionVO = listProductionVO.get(0);
-
-
-            /**
-             * 描述文章
-             */
-            ArticleVO articleVO = new ArticleVO();
-            articleVO.setBizId(productionVO.getProductHomeId());
-            List<ArticleVO> listArticleVO = articleService.getListArticleVO(articleVO, getConnection());
-
-            if (listArticleVO != null && listArticleVO.size() > 0) {
-                articleVO = listArticleVO.get(0);
-
-                getRequest().setAttribute("articleVO", articleVO);
-            }
-
-            getRequest().setAttribute("productionVO", productionVO);
-
-        }
+        /**
+         * 根据文章id查找文章
+         */
+        String articleId = getHttpRequestParameter("articleId");
+        ArticlePO articlePO = articleService.loadArticlePOById(articleId, getConnection());
 
 
 
-        return "production_detail";
+
+        /**
+         * 组装返回文章详情
+         */
+        ReturnArticleVO returnArticleVO = new ReturnArticleVO();
+        BeanUtils.copyProperties(articlePO, returnArticleVO);
+        getResult().setReturnValue(returnArticleVO);
+
+        return SUCCESS;
     }
 
 

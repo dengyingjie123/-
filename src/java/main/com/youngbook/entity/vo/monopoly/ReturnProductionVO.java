@@ -12,7 +12,7 @@ public class ReturnProductionVO {
     private String id = new String();
 
     // 产品名称
-    private String productName = new String();
+    private String name = new String();
 
     // 项目ID
     private String projectId = new String();
@@ -28,12 +28,12 @@ public class ReturnProductionVO {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProjectId() {
