@@ -1679,6 +1679,11 @@ public class CustomerPersonalAction extends BaseAction {
     /**
      * 列出登录用户所能操作的个人客户列表
      * <p/>
+     * 修改人：胡超怡
+     * 修改日期：2019年1月15日 10:13:00
+     * 修改内容
+     * 修改显示内容，默认显示有过订单的客户
+     * <p/>
      * 修改人：李昕骏
      * 修改日期：2015年8月19日 08:39:22
      * 修改内容
@@ -1737,6 +1742,61 @@ public class CustomerPersonalAction extends BaseAction {
         getResult().setReturnValue(pager.toJsonObject());
         return SUCCESS;
     }
+
+
+    /**
+     * @description 显示全部用户
+     *
+     * @author 胡超怡
+     *
+     * @date 2019/1/17 17:22
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String listAll() throws Exception {
+        HttpServletRequest request = getRequest();
+        Connection conn = getConnection();
+        List<KVObject> conditions = new ArrayList<KVObject>();
+
+
+        Pager pager = Pager.getInstance(request);
+
+
+        if (getPermission().has("客户管理_个人客户管理_查看所有用户")) {
+            pager = customerPersonalService.listPagerCustomerVOAll(personalVO, pager.getCurrentPage(), pager.getShowRowCount(), conn);
+        }
+        // 团队负责人和本团队的客服，可以看到所有的客户
+        // 客户管理_个人客户管理_管理员查看
+        // 客户管理_个人客户管理_呼叫中心查看
+        else if (getPermission().has("客户管理_个人客户管理_管理员查看") || getPermission().has("客户管理_个人客户管理_呼叫中心查看")) {
+            pager = customerPersonalService.listCustomrs4DistributionToManagedSaleGroup(personalVO, conditions, pager.getCurrentPage(), pager.getShowRowCount(), getLoginUser(), conn);
+        }
+
+        // 普通销售人员只能查看分配给自己的客户
+        // 客户管理_个人客户管理_销售人员查看
+        else if (getPermission().has("客户管理_个人客户管理_销售人员查看")) {
+            pager = customerPersonalService.listCustomrs4DistributionToMe(personalVO, conditions, pager.getCurrentPage(), pager.getShowRowCount(), getLoginUser());
+        }
+
+        // 呼叫中心人员权限，去除敏感信息
+        boolean isCallCenterPermission = getPermission().has("客户管理_个人客户管理_呼叫中心查看");
+        List<IJsonable> customers = pager.getData();
+        for (IJsonable data : customers) {
+            CustomerPersonalVO customer = (CustomerPersonalVO) data;
+
+            if (isCallCenterPermission) {
+                String mobile = customer.getMobile();
+                customer.setMobile(StringUtils.maskMobile(mobile));
+            }
+
+            String customerType = customer.getCustomerTypeId();
+            customer.setCustomerTypeName(CustomerPersonalType.getCustomerPersonalTypeName(customerType));
+        }
+
+        getResult().setReturnValue(pager.toJsonObject());
+        return SUCCESS;
+    }
+
 
     /**
      * 创建人：张舜清

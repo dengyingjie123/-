@@ -88,7 +88,8 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
 
 
     /**
-     * 查询所有用户-分页
+     * 只查询有订单的用户-分页
+     *
      * @param customerVO
      * @param currentPage
      * @param showRowCount
@@ -98,7 +99,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
      */
     public Pager listPagerCustomerVO(CustomerPersonalVO customerVO, int currentPage, int showRowCount, Connection conn) throws Exception {
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("955E1804");
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("955E1803");
         //dbSQL.addParameter4All("saleManId", customerVO.getSaleManId());
         dbSQL.initSQL();
 
@@ -110,7 +111,6 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
 
         return pager;
     }
-
 
 
     public List<CustomerPersonalVO> listCustomerPersonalVO(String userId, String customerId, String referralCode, Connection conn) throws Exception {
@@ -173,8 +173,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
                 CustomerCertificatePO customerCertificatePO = certificatePOs.get(0);
                 String idCardWithoutMask = AesEncrypt.decrypt(customerCertificatePO.getNumber());
                 customerPersonalVO.setIdCardNumber(idCardWithoutMask);
-            }
-            else {
+            } else {
                 customerPersonalVO.setIdCardNumber("");
             }
 
@@ -313,17 +312,44 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         return count;
     }
 
-    
+
     /**
-     * @description 根据姓名或移动号码查询CustomerPersonalPO
-     * 
-     * @author 苟熙霖 
-     * 
-     * @date 2018/12/19 15:27
+     * @description 查询全部客户-分页
+     * 查询全部客户
+     * @author 胡超怡
+     *
+     * @date 2019/1/16 13:14
+     * @param customerVO 客户vo实体
+     * @param currentPage 当前页码
+     * @param showRowCount 页码尺寸
+     * @param conn 连接
+     * @return com.youngbook.common.Pager
+     * @throws Exception
+     */
+    @Override
+    public Pager listPagerCustomerVOAll(CustomerPersonalVO customerVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("955E1804");
+        dbSQL.initSQL();
+
+        StringBuffer sbSQL = new StringBuffer(dbSQL.getSQL());
+        sbSQL.insert(0, "select DISTINCT _ft_.* from (").append(" ) _ft_ order by _ft_.personalNumber desc");
+
+        QueryType queryType = new QueryType(Database.QUERY_FUZZY, Database.NUMBER_EQUAL);
+        Pager pager = Pager.search(sbSQL.toString(), dbSQL.getParameters(), customerVO, null, currentPage, showRowCount, queryType, conn);
+
+        return pager;
+    }
+
+
+    /**
      * @param customerPersonalPO
      * @param conn
      * @return com.youngbook.entity.po.customer.CustomerPersonalPO
      * @throws Exception
+     * @description 根据姓名或移动号码查询CustomerPersonalPO
+     * @author 苟熙霖
+     * @date 2018/12/19 15:27
      */
     public CustomerPersonalPO loadCustomerPO(CustomerPersonalPO customerPersonalPO, Connection conn) throws Exception {
 
@@ -333,46 +359,36 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
         databaseSQL.initSQL();
 
 
-
-
         List<CustomerPersonalPO> search = MySQLDao.search(databaseSQL, CustomerPersonalPO.class, conn);
-        if(search.size() >= 1){
+        if (search.size() >= 1) {
             return search.get(0);
         }
-
-
 
 
         return null;
     }
 
 
-  /**
-   * @description 根据身份证号查询CustomerCertificatePO
-   * 
-   * @author 苟熙霖 
-   * 
-   * @date 2018/12/19 15:30
-   * @param customerCertificatePO
-   * @param conn
-   * @return com.youngbook.entity.po.customer.CustomerCertificatePO
-   * @throws Exception
-   */
-    public CustomerCertificatePO  loadCustomerCertificateByIdCardNumber (CustomerCertificatePO customerCertificatePO, Connection conn ) throws Exception {
+    /**
+     * @param customerCertificatePO
+     * @param conn
+     * @return com.youngbook.entity.po.customer.CustomerCertificatePO
+     * @throws Exception
+     * @description 根据身份证号查询CustomerCertificatePO
+     * @author 苟熙霖
+     * @date 2018/12/19 15:30
+     */
+    public CustomerCertificatePO loadCustomerCertificateByIdCardNumber(CustomerCertificatePO customerCertificatePO, Connection conn) throws Exception {
 
         DatabaseSQL databaseSQL = DatabaseSQL.newInstance("CWQIP5DA");
         databaseSQL.addParameter4All("idCardNumber", AesEncrypt.encrypt(customerCertificatePO.getNumber()));
         databaseSQL.initSQL();
 
 
-
-
         List<CustomerCertificatePO> search = MySQLDao.search(databaseSQL, CustomerCertificatePO.class, conn);
-        if(search.size() >= 1){
+        if (search.size() >= 1) {
             return search.get(0);
         }
-
-
 
 
         return null;
@@ -389,7 +405,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
      *
      * @param mobile
      * @param conn
-     * @return
+     * @return CustomerPersonalPO
      * @throws Exception
      */
     public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception {
@@ -547,7 +563,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
     public CustomerPersonalPO loadByCustomerPersonalId(String customerPersonalId, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(customerPersonalId)) {
-            MyException.newInstance("客户编号为空", "customerPersonalId="+customerPersonalId).throwException();
+            MyException.newInstance("客户编号为空", "customerPersonalId=" + customerPersonalId).throwException();
         }
 
 
@@ -567,7 +583,7 @@ public class CustomerPersonalDaoImpl implements ICustomerPersonalDao {
     public CustomerPersonalPO loadByCustomerPersonalNumber(String personalNumber, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(personalNumber)) {
-            MyException.newInstance("客户编号为空", "personalNumber="+personalNumber).throwException();
+            MyException.newInstance("客户编号为空", "personalNumber=" + personalNumber).throwException();
         }
 
 

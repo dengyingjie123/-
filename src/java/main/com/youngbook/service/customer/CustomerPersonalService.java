@@ -199,6 +199,25 @@ public class CustomerPersonalService extends BaseService {
         return pager;
     }
 
+
+    /**
+     * @description 查询全部客户-分页
+     * 查询全部客户
+     * @author 胡超怡
+     *
+     * @date 2019/1/16 13:13
+     * @param customerVO
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return com.youngbook.common.Pager
+     * @throws Exception
+     */
+    public Pager listPagerCustomerVOAll(CustomerPersonalVO customerVO, int currentPage, int showRowCount, Connection conn) throws Exception {
+        Pager pager = customerPersonalDao.listPagerCustomerVOAll(customerVO, currentPage, showRowCount, conn);
+        return pager;
+    }
+
     public List<CustomerPersonalVO> listCustomerPersonalVO(String userId, String customerId, String referralCode, Connection conn) throws Exception {
 
         List<CustomerPersonalVO> list = customerPersonalDao.listCustomerPersonalVO(userId, customerId, referralCode, conn);

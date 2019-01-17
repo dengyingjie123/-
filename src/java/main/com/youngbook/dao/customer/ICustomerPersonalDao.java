@@ -42,4 +42,6 @@ public interface ICustomerPersonalDao {
     public CustomerPersonalPO loadCustomerByMobile(String mobile, Connection conn) throws Exception;
     public CustomerPersonalPO loadByCustomerPersonalId(String customerPersonalId, Connection conn) throws Exception;
     public Integer updateCustomerRealName(String id, String realName, Connection conn) throws Exception;
+
+    Pager listPagerCustomerVOAll(CustomerPersonalVO customerVO, int currentPage, int showRowCount, Connection conn) throws Exception;
 }

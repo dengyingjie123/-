@@ -22,6 +22,7 @@ var CustomerPersonalClass = function (token) {
         onClickCustomerPersonalSearch();
         // 初始化查询重置事件
         onClickCustomerPersonalSearchReset();
+        onClickCustomerPersonalShowAllCustomer();
 
         // 初始化表格
         initTableCustomerPersonalTable();
@@ -30,9 +31,11 @@ var CustomerPersonalClass = function (token) {
         * */
         initAddCustomerPersonalQuickWindow();
 
+
     }
 
-    function initCustomerPersonalSearch() {}
+    function initCustomerPersonalSearch() {
+    }
 
 
     /**
@@ -76,12 +79,13 @@ var CustomerPersonalClass = function (token) {
             pagination: true,
             frozenColumns: [
                 [  // 固定列，没有滚动条
-                    {field: 'ck', checkbox: true}  ,
-                    { field: 'personalNumber', title: '客户号'},
-                    { field: 'name', title: '姓名', sortable: true},
-                    { field: 'loginName', title: '用户名', sortable: true,
+                    {field: 'ck', checkbox: true},
+                    {field: 'personalNumber', title: '客户号'},
+                    {field: 'name', title: '姓名', sortable: true},
+                    {
+                        field: 'loginName', title: '用户名', sortable: true,
                         //HOPEWEALTH-1276
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             if (row['loginName'] == "") {
                                 return row['loginName'];
                             }
@@ -90,11 +94,13 @@ var CustomerPersonalClass = function (token) {
 
                             }
                             return row['loginName'];
-                        }},
-                    { field: 'mobile', title: '移动电话', sortable: true},
-                    { field: 'customerTypeName', title: '类别'},
-                    { field: 'sex', title: '性别',
-                        formatter: function(value,row,index) {
+                        }
+                    },
+                    {field: 'mobile', title: '移动电话', sortable: true},
+                    {field: 'customerTypeName', title: '类别'},
+                    {
+                        field: 'sex', title: '性别',
+                        formatter: function (value, row, index) {
                             if (row['sex'] == '0') {
                                 return '女';
                             }
@@ -103,15 +109,17 @@ var CustomerPersonalClass = function (token) {
                             }
                         }
                     },
-                    { field: 'birthday', title: '出生日期'},
-                    { field: 'groupName', title: '负责组', sortable: true},
-                    { field: 'saleManName', title: '负责销售', sortable: true},
-                    { field: 'referralCode', title: '推荐码'},
-                    { field: 'distributionStatus', title: '分配状态',
-                        formatter: function(value,row,index) {
+                    {field: 'birthday', title: '出生日期'},
+                    {field: 'groupName', title: '负责组', sortable: true},
+                    {field: 'saleManName', title: '负责销售', sortable: true},
+                    {field: 'referralCode', title: '推荐码'},
+                    {
+                        field: 'distributionStatus', title: '分配状态',
+                        formatter: function (value, row, index) {
                             if (row['distributionStatus'] == 0) {
                                 return '未审核';
-                            } if (row['distributionStatus'] == 1) {
+                            }
+                            if (row['distributionStatus'] == 1) {
                                 return '通过';
                             } else if (row['distributionStatus'] == 2) {
                                 return '不通过';
@@ -125,12 +133,13 @@ var CustomerPersonalClass = function (token) {
             ],
             columns: [
                 [
-                    { field: 'sid', title: '序号', hidden: true},
-                    { field: 'id', title: '编号', hidden: true},
-                    { field: 'saleManId', title: '负责编号', hidden: true, sortable: true},
-                    { field: 'identityCardAddress', title: '身份证地址', sortable: true,
+                    {field: 'sid', title: '序号', hidden: true},
+                    {field: 'id', title: '编号', hidden: true},
+                    {field: 'saleManId', title: '负责编号', hidden: true, sortable: true},
+                    {
+                        field: 'identityCardAddress', title: '身份证地址', sortable: true,
                         //HOPEWEALTH-1276
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             if (row['identityCardAddress'] == "") {
                                 return row['identityCardAddress'];
                             }
@@ -140,11 +149,12 @@ var CustomerPersonalClass = function (token) {
                             return row['identityCardAddress'];
                         }
                     },
-                    { field: 'workAddress', title: '工作地址', sortable: true},
-                    { field: 'homeAddress', title: '家庭地址', sortable: true},
-                    { field: 'phone', title: '固定电话',
+                    {field: 'workAddress', title: '工作地址', sortable: true},
+                    {field: 'homeAddress', title: '家庭地址', sortable: true},
+                    {
+                        field: 'phone', title: '固定电话',
                         //HOPEWEALTH-1276
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             if (row['phone'] == "") {
                                 return row['phone'];
                             }
@@ -154,22 +164,26 @@ var CustomerPersonalClass = function (token) {
                             return row['phone'];
                         }
                     },
-                    { field: 'createTime', title: '创建时间'},
-                    { field: 'remark', title: '备注'},
-                    { field: 'customerChannelTypeId', title: '渠道种类',
-                        formatter: function(value,row,index) {
+                    {field: 'createTime', title: '创建时间'},
+                    {field: 'remark', title: '备注'},
+                    {
+                        field: 'customerChannelTypeId', title: '渠道种类',
+                        formatter: function (value, row, index) {
                             if (row['customerChannelTypeId'] == '0') {
                                 return '个人客户';
-                            } if (row['customerChannelTypeId'] == '1') {
+                            }
+                            if (row['customerChannelTypeId'] == '1') {
                                 return '渠道客户';
                             }
                         }
                     },
-                    { field: 'customerCatalogId', title: '客户分类',
-                        formatter: function(value,row,index) {
+                    {
+                        field: 'customerCatalogId', title: '客户分类',
+                        formatter: function (value, row, index) {
                             if (row['customerCatalogId'] == '0') {
                                 return '未确认客户';
-                            } if (row['customerCatalogId'] == '1') {
+                            }
+                            if (row['customerCatalogId'] == '1') {
                                 return '已确认客户';
                             }
                         }
@@ -309,20 +323,21 @@ var CustomerPersonalClass = function (token) {
             ],
             columns: [
                 [
-                    { field: 'customerId', title: 'id', hidden: true},
-                    { field: 'orderNum', title: '订单编号'},
-                    { field: 'customerName', title: '客户姓名'},
-                    { field: 'name', title: '产品名称'},
-                    { field: 'projectName', title: '所属项目', hidden: true},
-                    { field: 'productCompositionName', title: '产品规模', hidden: true},
-                    { field: 'payTime', title: '认购时间'},
-                    { field: 'money', title: '金额',
-                        formatter: function(value,row,index) {
+                    {field: 'customerId', title: 'id', hidden: true},
+                    {field: 'orderNum', title: '订单编号'},
+                    {field: 'customerName', title: '客户姓名'},
+                    {field: 'name', title: '产品名称'},
+                    {field: 'projectName', title: '所属项目', hidden: true},
+                    {field: 'productCompositionName', title: '产品规模', hidden: true},
+                    {field: 'payTime', title: '认购时间'},
+                    {
+                        field: 'money', title: '金额',
+                        formatter: function (value, row, index) {
                             return fw.formatMoney(row['money'])
                         }
                     },
-                    { field: 'moneyStatusName', title: '状态'},
-                    { field: 'originSalesman', title: '销售人员', hidden: true}
+                    {field: 'moneyStatusName', title: '状态'},
+                    {field: 'originSalesman', title: '销售人员', hidden: true}
                 ]
             ],
             toolbar: [
@@ -465,7 +480,7 @@ var CustomerPersonalClass = function (token) {
             fw.datagridGetSelected('CustomerPersonalTable' + token, function (selected) {
                 process.beforeClick();
 
-                var phoneNumber = fw.getTextValue("mobileNotMasked"+token);
+                var phoneNumber = fw.getTextValue("mobileNotMasked" + token);
                 if (phoneNumber == null || phoneNumber == "") {
                     fw.alert("电话为空", "该客户电话为空！");
                     process.afterClick();
@@ -525,7 +540,6 @@ var CustomerPersonalClass = function (token) {
             //fw.windowClose(windowId);
         });
     }
-
 
 
     /**
@@ -610,7 +624,11 @@ var CustomerPersonalClass = function (token) {
                 var waitingTime = fw.getTimeNow();
                 receiverNames = fw.removeLastLetters(receiverNames, ",");
                 receiverIds = fw.removeLastLetters(receiverIds, ",");
-                var data = {"sms.receiverIds": receiverIds, "sms.receiverName": receiverNames, "sms.waitingTime": waitingTime};
+                var data = {
+                    "sms.receiverIds": receiverIds,
+                    "sms.receiverName": receiverNames,
+                    "sms.waitingTime": waitingTime
+                };
                 openWindowPatchSendSms(data);
                 process.afterClick();
             });
@@ -626,12 +644,12 @@ var CustomerPersonalClass = function (token) {
             fw.datagridGetSelected('CustomerPersonalTable' + token, function (selected) {
                 process.beforeClick();
                 var customerId = selected.id;
-                var saleManId=selected.saleManId;
+                var saleManId = selected.saleManId;
 
-                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action?customerDistribution.saleManId=' + saleManId+'&customerDistribution.customerId='+customerId;
+                var url = WEB_ROOT + '/customer/CustomerDistribution_load.action?customerDistribution.saleManId=' + saleManId + '&customerDistribution.customerId=' + customerId;
                 fw.post(url, null, function (data) {
                     using(SCRIPTS_ROOT + '/sale/CustomerSaleClass.js', function () {
-                        var customerSaleClass = new CustomerSaleClass(token, customerId, remark,  data);
+                        var customerSaleClass = new CustomerSaleClass(token, customerId, remark, data);
                         customerSaleClass.initModule();
 
                         process.afterClick();
@@ -706,6 +724,31 @@ var CustomerPersonalClass = function (token) {
             $('#search_GroupName' + token).val('');
             $('#search_SaleManName' + token).val('');
         });
+    }
+
+
+    /**
+     * @description 显示全部客户
+     * 默认的是只显示有订单的客户，点击会显示全部的客户
+     * @author 胡超怡
+     *
+     * @date 2019/1/11 9:46
+     */
+    function onClickCustomerPersonalShowAllCustomer() {
+
+        var btnId = 'switchBtnCustomerPersonal' + token;
+
+        var box = $('#' + btnId);
+
+        //点击事件
+        $(box).click(function () {
+            if (box.is(":checked")) {
+                initDataGrid();
+            } else {
+                initTableCustomerPersonalTable();
+            }
+        });
+
     }
 
 
@@ -831,17 +874,17 @@ var CustomerPersonalClass = function (token) {
         fw.bindOnClick(buttonId, function (process) {
 
             var strTableId = 'CustomerPersonalTable' + token;
-            var datagrid = $('#'+strTableId+'');  //获取datagrid对象
+            var datagrid = $('#' + strTableId + '');  //获取datagrid对象
 
             //获取固定列表头信息
             var header = datagrid.datagrid('options').frozenColumns[0];
             var fields = "";
             var titles = "";
-            for(var i = 0;i<header.length;i++){
+            for (var i = 0; i < header.length; i++) {
                 var field = header[i].field;
                 var title = header[i].title;
                 var hiddenFlag = header[i].hidden;
-                if(!hiddenFlag && field!="ck"){
+                if (!hiddenFlag && field != "ck") {
                     fields = fields + field + ",";
                     titles = titles + title + ",";
                 }
@@ -849,16 +892,15 @@ var CustomerPersonalClass = function (token) {
 
             //获取表头信息
             var header = datagrid.datagrid('options').columns[0];
-            for(var i = 0;i<header.length;i++){
+            for (var i = 0; i < header.length; i++) {
                 var field = header[i].field;
                 var title = header[i].title;
                 var hiddenFlag = header[i].hidden;
-                if(!hiddenFlag && field!="ck"){
-                    if( i  == header.length-1)
-                    {
+                if (!hiddenFlag && field != "ck") {
+                    if (i == header.length - 1) {
                         fields = fields + field;
                         titles = titles + title;
-                    }else{
+                    } else {
                         fields = fields + field + ",";
                         titles = titles + title + ",";
                     }
@@ -872,40 +914,40 @@ var CustomerPersonalClass = function (token) {
             var url = WEB_ROOT + "/customer/CustomerPersonal_export.action";
 
             var form = $("<form>");//定义一个form表单
-            form.attr('style','display:none');
-            form.attr('target','');
-            form.attr('method','post');
-            form.attr('action',url);
+            form.attr('style', 'display:none');
+            form.attr('target', '');
+            form.attr('method', 'post');
+            form.attr('action', url);
             //添加input
             var input1 = $("<input>");
-            input1.attr('type','hidden');
-            input1.attr('name','fields');
-            input1.attr('value',fields);
+            input1.attr('type', 'hidden');
+            input1.attr('name', 'fields');
+            input1.attr('value', fields);
 
             var input2 = $("<input>");
-            input2.attr('type','hidden');
-            input2.attr('name','titles');
-            input2.attr('value',titles);
+            input2.attr('type', 'hidden');
+            input2.attr('name', 'titles');
+            input2.attr('value', titles);
 
             var input3 = $("<input>");
-            input3.attr('type','hidden');
-            input3.attr('name','personalVO.loginName');
-            input3.attr('value',$("#search_LoginName" + token).val());
+            input3.attr('type', 'hidden');
+            input3.attr('name', 'personalVO.loginName');
+            input3.attr('value', $("#search_LoginName" + token).val());
 
             var input4 = $("<input>");
-            input4.attr('type','hidden');
-            input4.attr('name','personalVO.name');
-            input4.attr('value',$("#search_Name" + token).val());
+            input4.attr('type', 'hidden');
+            input4.attr('name', 'personalVO.name');
+            input4.attr('value', $("#search_Name" + token).val());
 
             var input5 = $("<input>");
-            input5.attr('type','hidden');
-            input5.attr('name','personalVO.mobile');
-            input5.attr('value',$("#search_Mobile" + token).val());
+            input5.attr('type', 'hidden');
+            input5.attr('name', 'personalVO.mobile');
+            input5.attr('value', $("#search_Mobile" + token).val());
 
             var input6 = $("<input>");
-            input6.attr('type','hidden');
-            input6.attr('name','personalVO.workAddress');
-            input6.attr('value',$("#search_WorkAddress" + token).val());
+            input6.attr('type', 'hidden');
+            input6.attr('name', 'personalVO.workAddress');
+            input6.attr('value', $("#search_WorkAddress" + token).val());
 
             //将表单放到body中
             $('body').append(form);
@@ -920,41 +962,41 @@ var CustomerPersonalClass = function (token) {
         });
     }
 
-/**
- * @description 初始化快速添加窗口
- * 
- * @author 苟熙霖 
- * 
- * @date 2018/12/14 14:39
- * @param null
- * @return 
- * @throws Exception
- */
-    function initAddCustomerPersonalQuickWindow(){
+    /**
+     * @description 初始化快速添加窗口
+     *
+     * @author 苟熙霖
+     *
+     * @date 2018/12/14 14:39
+     * @param null
+     * @return
+     * @throws Exception
+     */
+    function initAddCustomerPersonalQuickWindow() {
         var buttonId = "btnCustomerPersonalQuickAdd" + token;
-        fw.bindOnClick(buttonId,function () {
+        fw.bindOnClick(buttonId, function () {
 
 
 
-                /*
-                * 初始化窗口
-                * */
-                var url =  WEB_ROOT +"/modules/customer/CustomerPersonal_Quick_Save.jsp?token="+token;
-                fw.window('customerPersonalQuickWindow'+ token, '快速添加客户', 400, 250, url, function () {
-                    onClickAddCustomerPersonalQuickSubmit();
-                });
+            /*
+            * 初始化窗口
+            * */
+            var url = WEB_ROOT + "/modules/customer/CustomerPersonal_Quick_Save.jsp?token=" + token;
+            fw.window('customerPersonalQuickWindow' + token, '快速添加客户', 400, 250, url, function () {
+                onClickAddCustomerPersonalQuickSubmit();
             });
+        });
     }
 
-    
+
     /**
      * @description 绑定提交事件
-     * 
-     * @author 苟熙霖 
-     * 
+     *
+     * @author 苟熙霖
+     *
      * @date 2018/12/14 14:41
      * @param null
-     * @return 
+     * @return
      * @throws Exception
      */
     function onClickAddCustomerPersonalQuickSubmit() {
@@ -963,13 +1005,9 @@ var CustomerPersonalClass = function (token) {
         fw.bindOnClick(buttonId, function (process) {
 
 
-
-
             fw.confirm("通知", "是否确认快速添加客户", function () {
                 var formId = "formCustomerPersonalQuick" + token;
                 var url = WEB_ROOT + "/customer/CustomerPersonal_addCustomerPersonalQuick.action";
-
-
 
 
                 fw.bindOnSubmitForm(formId, url, function () {
@@ -1001,8 +1039,8 @@ var CustomerPersonalClass = function (token) {
             icallcenter.logon.startLogon(loginName, password, extenType);
         });
 
-        hojo.addOnWindowUnload(function (){
-            if(phone) {
+        hojo.addOnWindowUnload(function () {
+            if (phone) {
                 //phone.destroy(true);
             }
         });
@@ -1010,10 +1048,170 @@ var CustomerPersonalClass = function (token) {
         softphoneBar.dialout(hojo.byId('icallcenter.dialout.input').value)
     }
 
+    function initDataGrid() {
+        var strTableId = 'CustomerPersonalTable' + token;
+        var url = WEB_ROOT + "/customer/CustomerPersonal_listAll.action";
+
+        $('#' + strTableId).datagrid({
+            title: '全部客户信息',
+            url: url,
+            queryParams: {
+                // 此处可定义默认的查询条件
+            },
+            loadMsg: '数据正在加载，请稍后……',
+            rownumbers: true,
+            singleSelect: true,
+            pageList: [10, 30, 60],
+            pageSize: 10,
+            remoteSort: true,//是否从数据库排序
+            sortOrder: 'desc',//排序方法 默认
+            sortName: "sid",//排序的列
+            onSortColumn: function (sort, orders) {
+            },
+            loadFilter: function (data) {
+                try {
+                    data = fw.dealReturnObject(data);
+                    return data;
+                }
+                catch (e) {
+                }
+            },
+            pagination: true,
+            frozenColumns: [
+                [  // 固定列，没有滚动条
+                    {field: 'ck', checkbox: true},
+                    {field: 'personalNumber', title: '客户号'},
+                    {field: 'name', title: '姓名', sortable: true},
+                    {
+                        field: 'loginName', title: '用户名', sortable: true,
+                        //HOPEWEALTH-1276
+                        formatter: function (value, row, index) {
+                            if (row['loginName'] == "") {
+                                return row['loginName'];
+                            }
+                            if (row['saleManId'] != loginUser.getId()) {
+                                return "***";
+
+                            }
+                            return row['loginName'];
+                        }
+                    },
+                    {field: 'mobile', title: '移动电话', sortable: true},
+                    {field: 'customerTypeName', title: '类别'},
+                    {
+                        field: 'sex', title: '性别',
+                        formatter: function (value, row, index) {
+                            if (row['sex'] == '0') {
+                                return '女';
+                            }
+                            if (row['sex'] == '1') {
+                                return '男';
+                            }
+                        }
+                    },
+                    {field: 'birthday', title: '出生日期'},
+                    {field: 'groupName', title: '负责组', sortable: true},
+                    {field: 'saleManName', title: '负责销售', sortable: true},
+                    {field: 'referralCode', title: '推荐码'},
+                    {
+                        field: 'distributionStatus', title: '分配状态',
+                        formatter: function (value, row, index) {
+                            if (row['distributionStatus'] == 0) {
+                                return '未审核';
+                            }
+                            if (row['distributionStatus'] == 1) {
+                                return '通过';
+                            } else if (row['distributionStatus'] == 2) {
+                                return '不通过';
+                            }
+                            else {
+                                return '未分配';
+                            }
+                        }
+                    }
+                ]
+            ],
+            columns: [
+                [
+                    {field: 'sid', title: '序号', hidden: true},
+                    {field: 'id', title: '编号', hidden: true},
+                    {field: 'saleManId', title: '负责编号', hidden: true, sortable: true},
+                    {
+                        field: 'identityCardAddress', title: '身份证地址', sortable: true,
+                        //HOPEWEALTH-1276
+                        formatter: function (value, row, index) {
+                            if (row['identityCardAddress'] == "") {
+                                return row['identityCardAddress'];
+                            }
+                            if (row['saleManId'] != loginUser.getId()) {
+                                return "***";
+                            }
+                            return row['identityCardAddress'];
+                        }
+                    },
+                    {field: 'workAddress', title: '工作地址', sortable: true},
+                    {field: 'homeAddress', title: '家庭地址', sortable: true},
+                    {
+                        field: 'phone', title: '固定电话',
+                        //HOPEWEALTH-1276
+                        formatter: function (value, row, index) {
+                            if (row['phone'] == "") {
+                                return row['phone'];
+                            }
+                            if (row['saleManId'] != loginUser.getId()) {
+                                return "***";
+                            }
+                            return row['phone'];
+                        }
+                    },
+                    {field: 'createTime', title: '创建时间'},
+                    {field: 'remark', title: '备注'},
+                    {
+                        field: 'customerChannelTypeId', title: '渠道种类',
+                        formatter: function (value, row, index) {
+                            if (row['customerChannelTypeId'] == '0') {
+                                return '个人客户';
+                            }
+                            if (row['customerChannelTypeId'] == '1') {
+                                return '渠道客户';
+                            }
+                        }
+                    },
+                    {
+                        field: 'customerCatalogId', title: '客户分类',
+                        formatter: function (value, row, index) {
+                            if (row['customerCatalogId'] == '0') {
+                                return '未确认客户';
+                            }
+                            if (row['customerCatalogId'] == '1') {
+                                return '已确认客户';
+                            }
+                        }
+                    }
+                ]
+            ],
+            onLoadSuccess: function () {
+                onClickCustomerPersonalAdd();
+                onClickCustomerPersonalDelete();
+                onClickCustomerPersonalEdit();
+                // 初始化客户分配事件
+                onClickCustomerDistribution();
+                onClickPassword();
+                onClickSendSms();
+                // Excel导出
+                onClickCustomerPersonalExport();
+                onClickAllinpayCircleQueryCashShare();
+                // HOPEWEALTH-1276 呼叫电话事件
+                //onClickCustomerPersonalDialNew();
+
+            }
+        });
+    }
+
 
     ///  事件定义 结束  /////////////////////////////////////////////////////////////////
 
-    return{
+    return {
         /**
          * boot.js加载时调用的初始化方法
          */

@@ -1,21 +1,21 @@
 <%
-/**
-修改：李昕骏
-时间：2015年8月18日 16:32:31
-内容：
-取消发送短信按钮
-*/
+    /**
+     修改：李昕骏
+     时间：2015年8月18日 16:32:31
+     内容：
+     取消发送短信按钮
+     */
 %>
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""
          import="com.youngbook.common.config.*" %>
 <%@ page import="com.youngbook.entity.po.jeasyui.ButtonPO" %>
 <%@ page import="com.youngbook.entity.po.jeasyui.ToolbarPO" %>
 <%
-    String token = request.getParameter("token") ;
+    String token = request.getParameter("token");
 
     // 创建需要权限控制的按钮
-    ButtonPO btnQuickAdd = new ButtonPO("btnCustomerPersonalQuickAdd" + token, "快速添加", "icon-add","客户管理_个人客户管理_快速添加");
-    ButtonPO btnAdd = new ButtonPO("btnCustomerPersonalAdd" + token, "添加", "icon-add","客户管理_个人客户管理_新建");
+    ButtonPO btnQuickAdd = new ButtonPO("btnCustomerPersonalQuickAdd" + token, "快速添加", "icon-add", "客户管理_个人客户管理_快速添加");
+    ButtonPO btnAdd = new ButtonPO("btnCustomerPersonalAdd" + token, "添加", "icon-add", "客户管理_个人客户管理_新建");
     ButtonPO btnEdit = new ButtonPO("btnCustomerPersonalEdit" + token, "修改", "icon-edit");
     ButtonPO btnDistribution = new ButtonPO("btnCustomerDistribution" + token, "客户分配管理", "icon-search", "客户管理_个人客户管理_客户分配管理");
     // ButtonPO btnSms = new ButtonPO("btnSmsSending"+token , "短信发送" , "icon-edit");
@@ -53,22 +53,27 @@
         <table border="0" cellpadding="3" cellspacing="0">
             <tr>
                 <td>姓名</td>
-                <td><input type="text"  id="search_Name<%=token %>" style="width:100px;" /></td>
+                <td><input type="text" id="search_Name<%=token %>" style="width:100px;"/></td>
                 <td>移动电话</td>
-                <td><input type="text" id="search_Mobile<%=token %>" style="width:80px;" /></td>
+                <td><input type="text" id="search_Mobile<%=token %>" style="width:80px;"/></td>
                 <td>工作地址</td>
-                <td><input type="text" id="search_WorkAddress<%=token %>" style="width:90px;" /></td>
+                <td><input type="text" id="search_WorkAddress<%=token %>" style="width:90px;"/></td>
                 <td>用户名</td>
-                <td><input type="text"  id="search_LoginName<%=token %>" style="width:100px;" /></td>
+                <td><input type="text" id="search_LoginName<%=token %>" style="width:100px;"/></td>
                 <td>销售组</td>
-                <td><input type="text"  id="search_GroupName<%=token %>" style="width:100px;" /></td>
+                <td><input type="text" id="search_GroupName<%=token %>" style="width:100px;"/></td>
                 <td>销售</td>
-                <td><input type="text"  id="search_SaleManName<%=token %>" style="width:100px;" /></td>
+                <td><input type="text" id="search_SaleManName<%=token %>" style="width:100px;"/></td>
                 <td>
-                    <a id="btnSearchCustomerPersonal<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                    <a id="btnSearchCustomerPersonal<%=token %>" href="javascript:void(0)" class="easyui-linkbutton"
+                       iconCls="icon-search">查询</a>
                 </td>
                 <td>
-                    <a id="btnResetCustomerPersonal<%=token %>" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut">重置</a>
+                    <a id="btnResetCustomerPersonal<%=token %>" href="javascript:void(0)" class="easyui-linkbutton"
+                       iconCls="icon-cut">重置</a>
+                </td>
+                <td>
+                    <input id="switchBtnCustomerPersonal<%=token %>" type="checkbox" >显示全部客户
                 </td>
             </tr>
         </table>
@@ -76,7 +81,8 @@
     <br>
     <table id="CustomerPersonalTable<%=token%>" data-options="toolbar:toolbar"></table>
     <script type="text/javascript">
-        var toolbar = <%=toolbar.toJsonObject().getJSONArray("buttons").toString()%>
+        var toolbar =
+        <%=toolbar.toJsonObject().getJSONArray("buttons").toString()%>
     </script>
 
 </div>
