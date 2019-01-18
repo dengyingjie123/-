@@ -2,8 +2,10 @@ package com.youngbook.action.api.monopoly;
 
 import com.youngbook.action.BaseAction;
 import com.youngbook.common.KVObjects;
+import com.youngbook.common.MyException;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
+import com.youngbook.common.utils.StringUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.cms.ArticlePO;
@@ -56,7 +58,7 @@ public class MonopolyAction extends BaseAction {
      * @return java.util.List<com.youngbook.entity.vo.monopoly.ReturnArticleVO>
      * @throws Exception
      */
-    public List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) {
+    private List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) {
 
         //新建返回列表
         List<ReturnArticleVO> listReturnArticleVO = new ArrayList<>();
@@ -87,12 +89,21 @@ public class MonopolyAction extends BaseAction {
      */
     public String loadPage_home_list() throws Exception {
 
-
+        //获得需要的对象数量
+        if(StringUtils.isEmptyAny(getHttpRequestParameter("news24")
+                , getHttpRequestParameter("news_fund")
+                , getHttpRequestParameter("news_stock")
+                , getHttpRequestParameter("news_money")
+                , getHttpRequestParameter("production"))){
+            MyException.newInstance("参数不完整").throwException();
+        }
         Integer news24 = Integer.parseInt(getHttpRequestParameter("news24"));
         Integer news_fund = Integer.parseInt(getHttpRequestParameter("news_fund"));
         Integer news_stock = Integer.parseInt(getHttpRequestParameter("news_stock"));
         Integer news_money = Integer.parseInt(getHttpRequestParameter("news_money"));
         Integer production  = Integer.parseInt(getHttpRequestParameter("production"));
+
+
 
         ArticleVO articleVO = new ArticleVO();
         articleVO.setColumnName("商城");
@@ -166,12 +177,15 @@ public class MonopolyAction extends BaseAction {
         ProductionVO productionVO = new ProductionVO();
         List<ProductionVO> listProductionVOs = productionService.getListProductionVO(productionVO, getConnection());
         List<ReturnProductionVO> listReturnProductionVO = new ArrayList<>();
-        if(listProductionVOs.size() >= 1){
-            for (int i =0; i < 1; i++){
-                ReturnProductionVO returnArticleVO = new ReturnProductionVO();
-                BeanUtils.copyProperties(listProductionVOs.get(i), returnArticleVO);
-                listReturnProductionVO.add(returnArticleVO);
-            }
+        //限制返回数量最大值
+        if(listProductionVOs.size() <= production){
+            production = listProductionVOs.size();
+        }
+        //产品属性部分屏蔽
+        for (int i =0; i < production; i++){
+            ReturnProductionVO returnArticleVO = new ReturnProductionVO();
+            BeanUtils.copyProperties(listProductionVOs.get(i), returnArticleVO);
+            listReturnProductionVO.add(returnArticleVO);
         }
 
 

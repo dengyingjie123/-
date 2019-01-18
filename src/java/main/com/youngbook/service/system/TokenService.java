@@ -270,8 +270,13 @@ public class TokenService extends BaseService {
         if (tokenBizType.equals(TokenBizType.CustomerLoginToken)) {
             key = "system.customer.login.timeout.second";
         }
-
-        return Config.getSystemConfigInt(key);
+        Integer a;
+        try{
+            a = Config.getSystemConfigInt(key);
+        }catch (Exception e){
+            a = 1200;
+        }
+        return a;
     }
 
     public TokenPO checkAndRenewToken(String tokenString, String bizId, String bizType, String ip, Connection conn) throws Exception {
