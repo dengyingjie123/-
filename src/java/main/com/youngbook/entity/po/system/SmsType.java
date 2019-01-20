@@ -19,5 +19,7 @@ public class SmsType {
 
     public static final int TYPE_PAYMENTPLAN_MESSAGE = 5; // 兑付消息
 
+    public static final int TYPE_NEW_USER_PASSWORD = 6; // 新用户密码
+
     public static final int TYPE_OTHER = 100;  // 其他类型
 }

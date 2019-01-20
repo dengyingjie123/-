@@ -17,10 +17,7 @@ import com.youngbook.dao.system.IUserDao;
 import com.youngbook.entity.po.DepartmentPO;
 import com.youngbook.entity.po.UserPO;
 import com.youngbook.entity.po.sale.SalesmanPO;
-import com.youngbook.entity.po.system.FilesPO;
-import com.youngbook.entity.po.system.SmsPO;
-import com.youngbook.entity.po.system.UserPositionType;
-import com.youngbook.entity.po.system.UserPositionInfoPO;
+import com.youngbook.entity.po.system.*;
 import com.youngbook.entity.vo.system.UserVO;
 import com.youngbook.service.BaseService;
 import com.youngbook.service.customer.CustomerDistributionService;
@@ -272,7 +269,7 @@ public class UserService extends BaseService {
 
 
     /**
-     * @description 方法实现说明
+     * @description 添加新用户
      * @author 徐明煜
      * @date 2019/1/4 14:03
      * @param user
@@ -292,8 +289,8 @@ public class UserService extends BaseService {
         /**
          * 转为md5值，保存到对象中
          */
-        newPassword = PasswordUtils.getUserPassswordInMd5(newPassword);
-        user.setPassword(newPassword);
+        String savePassword = PasswordUtils.getUserPassswordInMd5(newPassword);
+        user.setPassword(savePassword);
 
 
 
@@ -302,14 +299,31 @@ public class UserService extends BaseService {
          * 新增用户，保存到数据库
          */
         if (user.getId().equals("")) {
+
+            /**
+             * 保存到数据库
+             */
+            Integer type = SmsType.TYPE_NEW_USER_PASSWORD;
+            String subject = "新用户密码";
+//            String content = Config.getSystemVariable("web.code.password.content.before") +
+//                    + Config.getSystemVariable("web.code.password.content.after");
+            String content = "你的初始化登录密码是" + newPassword+ "，请注意保密【开普乐】";
+//            String signature = Config.getSystemConfig("system.oa.sms.identityCode.signature");
+            String signature = Config.getSystemConfig("新用户密码");
+            //保存到数据库
+            smsService.insertSMS("", "新用户密码", user.getMobile(), subject, content, signature, type, conn);
+
+
+
+
             /**
              * 创建短信对象并发送
              */
             SmsPO smsPO = new SmsPO();
-            smsPO.setContent("密码为" + newPassword);
+            smsPO.setContent(content);
             smsPO.setReceiverMobile(user.getMobile());
             smsPO.setReceiverName(user.getName());
-            List<SmsPO> list = new ArrayList<SmsPO>();
+            List<SmsPO> list = new ArrayList<>();
             list.add(smsPO);
             smsService.send(list, user, conn);
 
