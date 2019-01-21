@@ -18,16 +18,25 @@ import java.sql.Connection;
 @Component("logDao")
 public class LogDaoImpl implements ILogDao {
 
+    /**
+     * 方法实现说明: 修改查找日志对象方法
+     * @author 徐明煜
+     * @time 2019.1.21
+     * @param logPO
+     * @param currentPage
+     * @param showRowCount
+     * @param conn
+     * @return
+     * @throws Exception
+     */
     public Pager listPagerLogPO(LogPO logPO, int currentPage, int showRowCount, Connection conn) throws Exception {
 
-        DatabaseSQL dbSQL = DatabaseSQL.newInstance("listPagerLogPO", this);
+        /**
+         * 通过Id从system_kv中获得sql
+         */
+        DatabaseSQL dbSQL = DatabaseSQL.newInstance("955EX804");
         dbSQL.initSQL();
-
-        StringBuffer sbSQL = new StringBuffer(dbSQL.getSQL());
-        sbSQL.insert(0, "select DISTINCT _ft_.* from (").append(" ) _ft_ ");
-
-        QueryType queryType = new QueryType(Database.QUERY_FUZZY, Database.NUMBER_EQUAL);
-        Pager pager = Pager.search(sbSQL.toString(), dbSQL.getParameters(), logPO, null, currentPage, showRowCount, queryType, conn);
+        Pager pager = Pager.search(dbSQL, logPO, currentPage, showRowCount, conn);
 
         return pager;
     }
