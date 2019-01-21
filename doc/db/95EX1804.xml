@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql>
+    <select-sql>
+        <select id="955EX804">
+            SELECT
+            *
+            FROM
+            system_log
+            WHERE
+            1 = 1
+            AND state = 0
+            ORDER BY
+            operateTime DESC
+        </select>
+    </select-sql>
+</sql>
