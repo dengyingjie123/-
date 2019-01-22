@@ -3,6 +3,7 @@ package com.youngbook.entity.vo.monopoly;
 import com.youngbook.entity.vo.BaseVO;
 import com.youngbook.entity.vo.production.ProductionVO;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class HomeListVO extends BaseVO {
 
-    private List<String> frontImage;
+    private List<HashMap> frontImage;
 
     private List<ReturnArticleVO> listArticleVONews_24;
 
@@ -26,11 +27,11 @@ public class HomeListVO extends BaseVO {
 
     private List<ReturnProductionVO> listProductionVOs;
 
-    public List<String> getFrontImage() {
+    public List<HashMap> getFrontImage() {
         return frontImage;
     }
 
-    public void setFrontImage(List<String> frontImage) {
+    public void setFrontImage(List<HashMap> frontImage) {
         this.frontImage = frontImage;
     }
 
@@ -74,7 +75,7 @@ public class HomeListVO extends BaseVO {
         this.listProductionVOs = listProductionVOs;
     }
 
-    public HomeListVO(List<String> frontImage, List<ReturnArticleVO> listArticleVONews_24, List<ReturnArticleVO> listArticleVONews_fund, List<ReturnArticleVO> listArticleVONews_stock, List<ReturnArticleVO> listArticleVONews_money, List<ReturnProductionVO> listProductionVOs) {
+    public HomeListVO(List<HashMap> frontImage, List<ReturnArticleVO> listArticleVONews_24, List<ReturnArticleVO> listArticleVONews_fund, List<ReturnArticleVO> listArticleVONews_stock, List<ReturnArticleVO> listArticleVONews_money, List<ReturnProductionVO> listProductionVOs) {
         this.frontImage = frontImage;
         this.listArticleVONews_24 = listArticleVONews_24;
         this.listArticleVONews_fund = listArticleVONews_fund;

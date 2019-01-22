@@ -6,6 +6,7 @@ import com.youngbook.common.MyException;
 import com.youngbook.common.database.DatabaseSQL;
 import com.youngbook.common.utils.HttpUtils;
 import com.youngbook.common.utils.StringUtils;
+import com.youngbook.common.utils.TimeUtils;
 import com.youngbook.dao.MySQLDao;
 import com.youngbook.entity.po.KVPO;
 import com.youngbook.entity.po.cms.ArticlePO;
@@ -14,6 +15,7 @@ import com.youngbook.entity.po.customer.CustomerScorePO;
 import com.youngbook.entity.po.customer.CustomerScoreType;
 import com.youngbook.entity.po.production.ProductionDisplayType;
 import com.youngbook.entity.po.production.ProductionPO;
+import com.youngbook.entity.po.web.AdImagePO;
 import com.youngbook.entity.vo.cms.ArticleVO;
 import com.youngbook.entity.vo.customer.CustomerScoreVO;
 import com.youngbook.entity.vo.monopoly.HomeListVO;
@@ -28,7 +30,11 @@ import com.youngbook.service.production.ProductionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,7 +64,7 @@ public class MonopolyAction extends BaseAction {
      * @return java.util.List<com.youngbook.entity.vo.monopoly.ReturnArticleVO>
      * @throws Exception
      */
-    private List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) {
+    private List<ReturnArticleVO> transforArticleVO(List<ArticleVO> listArticleVO, Integer size) throws Exception {
 
         //新建返回列表
         List<ReturnArticleVO> listReturnArticleVO = new ArrayList<>();
@@ -68,9 +74,28 @@ public class MonopolyAction extends BaseAction {
             size = listArticleVO.size();
         }
 
+
+
         //进行对象转换
         for (int i =0; i < size; i++){
+            //新建返回对象
             ReturnArticleVO returnArticleVO = new ReturnArticleVO();
+
+
+            /**
+             * 从数据库读出的日期末尾多零，进行格式化
+             */
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //创建要显示的日期格式
+            Date date = fmt.parse(listArticleVO.get(i).getPublishedTime());      //将从数据库读出来的 timestamp 类型的时间转换为java的Date类型
+            String s = fmt.format(date);
+            listArticleVO.get(i).setPublishedTime(s);
+
+
+
+
+            /**
+             * 复制对象属性
+             */
             BeanUtils.copyProperties(listArticleVO.get(i), returnArticleVO);
             listReturnArticleVO.add(returnArticleVO);
         }
@@ -110,7 +135,7 @@ public class MonopolyAction extends BaseAction {
 
         List<ArticleVO> listArticleVO = articleService.getListArticleVO(articleVO, getConnection());
 
-        getRequest().setAttribute("listArticleVO", listArticleVO);
+
 
 
         ArticleVO articleNews = new ArticleVO();
@@ -189,7 +214,26 @@ public class MonopolyAction extends BaseAction {
         }
 
 
-        List<String> listImage = new ArrayList<>();
+
+
+        /**
+         * 轮播图全路径
+         */
+        List<HashMap> listImage = new ArrayList<>();
+        //本机IP地址
+        String ip = InetAddress.getLocalHost().getHostAddress();
+        //组装录井对象
+        HashMap<String, String> image01 = new HashMap();
+        image01.put("src", "http://" + ip + ":8080" + "/core/monopoly/image/home/banner01.png");
+        HashMap<String, String> image02 = new HashMap();
+        image02.put("src", "http://" + ip + ":8080" + "/core/monopoly/image/home/banner02.png");
+        listImage.add(image01);
+        listImage.add(image02);
+
+
+        /**
+         * 组装返回对象
+         */
         HomeListVO homeListVO = new HomeListVO(listImage, listReturnArticleVONews_24, listReturnArticleVONews_fund, listReturnArticleVONews_stock, listReturnArticleVONews_money, listReturnProductionVO);
         getResult().setReturnValue(homeListVO);
 
