@@ -98,6 +98,21 @@ public class ArticleService extends BaseService {
         return articlePO;
     }
 
+
+    public ArticlePO saveTechnicalSupport(String userName, String email, String description, Connection conn) throws Exception {
+        ArticlePO articlePO = new ArticlePO();
+
+        articlePO.setColumnId("6BFNYQ6IP1F0P38LD5IGI923Z2M3DZBX");
+        articlePO.setContent(" 用户名:"+userName+" 邮箱:"+email+" 描述:"+description);
+        articlePO.setOrders(1);
+        articlePO.setPublishedTime(TimeUtils.getNow());
+
+        MySQLDao.insertOrUpdate(articlePO, conn);
+
+        return articlePO;
+    }
+
+
     /**
      * 列出数据
      *

@@ -77,6 +77,24 @@ public class ArticleAction extends BaseAction {
         return SUCCESS;
     }
 
+    public String saveTechnicalSupport() throws Exception {
+
+        String formValue = getHttpRequestParameter("formValue");
+        String[] split = formValue.split("_");
+
+        String userName = split[0];
+        String email = split[1];
+        String description = split[2];
+
+        ArticlePO articlePO = articleService.saveTechnicalSupport(userName, email, description, getConnection());
+
+        if (articlePO != null) {
+            getResult().setReturnValue(articlePO);
+        }
+
+        return SUCCESS;
+    }
+
     @Permission(require = "内容管理-文章管理-新增")
     public String saveProperties() throws Exception {
 
