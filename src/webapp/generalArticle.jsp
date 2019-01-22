@@ -18,12 +18,13 @@
 <body>
 
 <script type="text/javascript">
-    //FD8A58B4AAB74750BF4ABC6461CEB604
-    //171C6186C24D4C088766C9BA9E0A6A84
-    var all = location.href;
-    var b = all.substring(all.indexOf("?"));
-    console.log(b)
-    var url = "/core/cms/Article_getArticlePO.action"+b;
+
+    //获取href路径
+    var index = location.href;
+    //通过？定位加截取字符串
+    var params = index.substring(index.indexOf("?"));
+    //拼接字符串
+    var url = "/core/cms/Article_getArticlePO.action"+params;
     $(function () {
         fw.get(url, null, function (data) {
                 var content = data.returnValue[0].content;
