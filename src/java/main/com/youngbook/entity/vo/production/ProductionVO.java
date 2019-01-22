@@ -17,7 +17,7 @@ public class ProductionVO extends BaseVO {
     // 名称
     private String productId = new String();
 
-    // 分期名称
+    // 名称
     private String name = new String();
 
     // 产品名称
