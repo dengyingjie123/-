@@ -327,6 +327,35 @@ public class ArticleAction extends BaseAction {
         return  SUCCESS;
     }
 
+
+    /**
+     * @description 跳转接口
+     * 通过articleId来获取数据再跳转
+     * @author 胡超怡
+     *
+     * @date 2019/1/22 15:20
+     * @return java.lang.String
+     * @throws Exception
+     */
+    public String getArticlePO() throws Exception {
+
+        String articleId = getHttpRequestParameter("articleId");
+        ArticlePO articlePO = new ArticlePO();
+        articlePO.setId(articleId);
+
+        List<ArticlePO> articlePOs = articleService.getArticlePO(articlePO, getConnection());
+
+        if (articlePOs != null) {
+            getResult().setReturnValue(articlePOs);
+        }
+
+        return SUCCESS;
+    }
+
+
+
+
+
     public ArticlePO getArticle() {return article;}
     public void setArticle(ArticlePO article) {this.article = article;}
 

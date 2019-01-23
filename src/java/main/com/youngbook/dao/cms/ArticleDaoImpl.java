@@ -80,6 +80,25 @@ public class ArticleDaoImpl implements IArticleDao {
         return pager;
     }
 
+
+    /**
+     * @description 跳转接口
+     *
+     * @author 胡超怡
+     * @date 2019/1/22 15:21
+     * @param articlePO
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.cms.ArticlePO>
+     * @throws Exception
+     */
+    @Override
+    public List<ArticlePO> getArticlePO(ArticlePO articlePO, Connection conn) throws Exception {
+
+        List<ArticlePO> search = MySQLDao.search(articlePO, ArticlePO.class, conn);
+
+        return search;
+    }
+
     public ArticlePO loadByArticleId(String articleId, Connection conn) throws Exception {
 
         if (StringUtils.isEmpty(articleId)) {

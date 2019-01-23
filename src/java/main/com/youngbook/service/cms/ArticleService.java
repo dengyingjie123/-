@@ -429,4 +429,19 @@ public class ArticleService extends BaseService {
         return pager;
     }
 
+
+    /**
+     * @description 跳转接口
+     * @author 胡超怡
+     * @date 2019/1/22 15:21
+     * @param articlePO
+     * @param conn
+     * @return java.util.List<com.youngbook.entity.po.cms.ArticlePO>
+     * @throws Exception
+     */
+    public List<ArticlePO> getArticlePO(ArticlePO articlePO, Connection conn) throws Exception {
+
+        return articleDao.getArticlePO(articlePO,conn);
+
+    }
 }
