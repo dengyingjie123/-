@@ -57,6 +57,7 @@
             width:424px;
             height: 29px;
         }
+
         .intro {
             position: absolute;
             top: 256px;
