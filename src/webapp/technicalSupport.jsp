@@ -32,9 +32,9 @@
         <!--
         #logo_hw {
             background: url("include/images/kepler logo 2.0.png") no-repeat;
-            background-size: cover;
-            width: 258px;
-            height: 270px;
+            background-size:cover ;
+            width: 150px;
+            height: 150px;
             margin: -40px auto -80px auto;
         }
 
@@ -48,11 +48,12 @@
 
         #panel {
             position: relative;
+            margin-top: 70px;
         }
 
         .tip {
             position: absolute;
-            top: 282px;
+            top: 360px;
             left: 195px;
             width:424px;
             height: 29px;
@@ -61,8 +62,8 @@
         .intro {
             margin-bottom:30px ;
             margin-left:45px ;
-            width:466px;
-            height: 29px;
+            width:408px;
+            height: 5px;
         }
 
 
