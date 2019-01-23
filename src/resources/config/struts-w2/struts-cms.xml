@@ -25,7 +25,12 @@
                 <interceptor-ref name="defaultInterceptor"></interceptor-ref>
                 <interceptor-ref name="securityInterceptor"></interceptor-ref>
                 <interceptor-ref name="transaction"></interceptor-ref>
-
+            </interceptor-stack>
+            <interceptor-stack name="baseStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="defaultInterceptor"></interceptor-ref>
+                <interceptor-ref name="securityInterceptor"></interceptor-ref>
+                <interceptor-ref name="transaction"></interceptor-ref>
             </interceptor-stack>
             <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
         </interceptors>
@@ -41,6 +46,17 @@
 
         <action name="*_*" class="com.youngbook.action.cms.{1}Action" method="{2}">
             <interceptor-ref name ="authStack"/>
+            <result type="json">
+                <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+                <param name="root">result</param>
+                <param name="contentType">text/html</param>
+                <param name="excludeNullProperties">true</param>
+                <param name="ignoreHierarchy">true</param>
+            </result>
+        </action>
+
+        <action name="saveTechnicalSupport" class="com.youngbook.action.cms.ArticleAction" method="saveTechnicalSupport">
+            <interceptor-ref name ="baseStack"/>
             <result type="json">
                 <!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
                 <param name="root">result</param>

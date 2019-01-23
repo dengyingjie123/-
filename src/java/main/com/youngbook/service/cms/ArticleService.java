@@ -98,6 +98,44 @@ public class ArticleService extends BaseService {
         return articlePO;
     }
 
+
+    /**
+     * @description 保存技术支持相关
+     *
+     * @author 苟熙霖
+     *
+     * @date 2019/1/23 8:42
+     * @param userName
+     * @param email
+     * @param description
+     * @param conn
+     * @return com.youngbook.entity.po.cms.ArticlePO
+     * @throws Exception
+     */
+    public ArticlePO saveTechnicalSupport(String userName, String email, String description, Connection conn) throws Exception {
+
+        ArticlePO articlePO = new ArticlePO();
+
+
+
+
+        articlePO.setColumnId("6BFNYQ6IP1F0P38LD5IGI923Z2M3DZBX");
+        articlePO.setContent(" 用户名:"+userName+" 邮箱:"+email+" 描述:"+description);
+        articlePO.setOrders(1);
+        articlePO.setPublishedTime(TimeUtils.getNow());
+
+
+
+
+        MySQLDao.insertOrUpdate(articlePO, conn);
+
+
+
+        
+        return articlePO;
+    }
+
+
     /**
      * 列出数据
      *
