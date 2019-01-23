@@ -43,7 +43,7 @@
             width: 529px;
             height: 310px;;
             z-index: 1;
-            margin-top: 145px;
+            margin-top: 128px;
         }
 
         #panel {
@@ -52,16 +52,15 @@
 
         .tip {
             position: absolute;
-            top: 300px;
+            top: 282px;
             left: 195px;
             width:424px;
             height: 29px;
         }
 
         .intro {
-            position: absolute;
-            top: 256px;
-            left: 450px;
+            margin-bottom:30px ;
+            margin-left:45px ;
             width:466px;
             height: 29px;
         }
@@ -116,19 +115,25 @@
     function onClickTechnicalSupportSubmit() {
         if ($("#technicalSupportFrom").form('validate')) {
 
+
+
+
             var username = fw.getFormValueByName("username");
             var email = fw.getFormValueByName("email");
             var description = $("#description").val();
             var formValue = username + "_" + email + "_" + description;
 
 
-            var url = WEB_ROOT + "/cms/saveTechnicalSupport";
 
+
+            var url = WEB_ROOT + "/cms/saveTechnicalSupport";
             fw.post(url, "formValue=" + formValue, function (data) {
             }, null);
+
+
+
+
             fw.alert("提示","提交成功");
-        }else{
-            fw.alert("提示","提交失败");
         }
     }
 </script>
